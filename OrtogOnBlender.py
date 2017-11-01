@@ -2,13 +2,13 @@ bl_info = {
     "name": "OrtogOnBlender",
     "author": "Cicero Moraes and Everton da Rosa",
     "version": (1, 0),
-    "blender": (2, 75, 0),
-    "location": "View3D > Tools > Ortog",
-    "description": "Adds a new Mesh Object",
+    "blender": (2, 7, 8),
+    "location": "Tool Shelf",
+    "description": "Interface to use Cork library for advanced boolean operations",
     "warning": "",
     "wiki_url": "",
-    "category": "Add Mesh",
-    }
+    "tracker_url": "",
+    "category": "3D View"}
 
 import bpy
 
