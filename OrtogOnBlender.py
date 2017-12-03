@@ -31,6 +31,30 @@ from mathutils import Vector
 
 # CRIA OBJETOS E DEFINE FUNÇÕES CHAMADAS POSTERIORMENTE
 
+class ortogPreferences(bpy.types.AddonPreferences):
+    bl_idname = __name__
+
+    dicom2stl_filepath = StringProperty(
+        name="Dicom2STL Path",
+        description="Location of Dicom2STL Python file",
+        subtype="FILE_PATH",
+        default="",
+        )
+
+    def draw(self, context):
+        layout = self.layout
+
+        row = layout.row()
+        row.prop(self, "dicom2stl_filepath")
+        #print(dicom2stl_filepath)
+
+def get_dicom2stl_filepath(context):
+    """preference set in the addon"""
+#    addon = get_addon_name()
+    preferences = context.user_preferences.addons["OrtogOnBlender"].preferences
+    return preferences.dicom2stl_filepath
+
+
 def CriaEsperssuraDef(self, context):
     
     context = bpy.context
@@ -67,6 +91,10 @@ def CriaMentoDef(self, context):
     mesh.from_pydata(verts, edges, faces)
     object_data_add(context, mesh, operator=self)
 
+    bpy.ops.object.modifier_add(type='SOLIDIFY') 
+    bpy.context.object.modifiers["Solidify"].thickness = 0.3
+    bpy.context.object.modifiers["Solidify"].offset = 0
+
 
 def CriaMaxilaDef(self, context):
 
@@ -86,6 +114,18 @@ def CriaMaxilaDef(self, context):
     mesh = bpy.data.meshes.new(name="Maxila")
     mesh.from_pydata(verts, edges, faces)
     object_data_add(context, mesh, operator=self)
+
+    bpy.ops.object.modifier_add(type='SOLIDIFY') 
+    bpy.context.object.modifiers["Solidify"].thickness = 0.3
+    bpy.context.object.modifiers["Solidify"].offset = 0
+
+def ConfiguraMentoDef(self, context):
+    
+    activeObject = bpy.context.active_object #Set active object to variable
+    mat = bpy.data.materials.new(name="MaterialMento") #set new material to variable
+    activeObject.data.materials.append(mat) #add the material to the object
+    bpy.context.object.active_material.diffuse_color = (1, 0, 0) #change color
+    bpy.context.object.name = "me"
 
 def AreasInfluenciaDef(self, context):
     
@@ -225,18 +265,20 @@ def GeraModelosTomoDef(self, context):
     
     tmpdir = tempfile.gettempdir()
     tmpSTLossos = tmpdir+'/ossos.stl'
-    tmoSTLmole = tmpdir+'/mole.stl'
-    
-    subprocess.call(['vtk6python','/home/cogitas3d/Programs/dicom2stl/dicom2stl.py', '-t',  'orthobone' , '-o', '/tmp/ossos.stl' ,  scn.my_tool.path])
+    tmpSTLmole = tmpdir+'/mole.stl'
+    dicom2DtlPath = get_dicom2stl_filepath(context)
 
-    bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory="/tmp/")
+    
+    subprocess.call(['vtk6python',dicom2DtlPath, '-t',  'orthobone' , '-o', tmpSTLossos ,  scn.my_tool.path])
+
+    bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory=tmpdir)
     
     bpy.ops.view3d.view_all(center=False)
     
     
-    subprocess.call(['vtk6python','/home/cogitas3d/Programs/dicom2stl/dicom2stl.py', '-t',  'skin' , '-o', '/tmp/mole.stl' ,  scn.my_tool.path])
+    subprocess.call(['vtk6python',dicom2DtlPath , '-t',  'skin' , '-o', tmpSTLmole ,  scn.my_tool.path])
 
-    bpy.ops.import_mesh.stl(filepath=tmoSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory="/tmp/")
+    bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
     
     bpy.ops.view3d.view_all(center=False)
 
@@ -292,6 +334,11 @@ def CriaRamoDef(self, context):
     mesh.from_pydata(verts, edges, faces)
     object_data_add(context, mesh, operator=self)
 
+    bpy.ops.object.modifier_add(type='SOLIDIFY') 
+    bpy.context.object.modifiers["Solidify"].thickness = 0.3
+    bpy.context.object.modifiers["Solidify"].offset = 0
+
+
 class CriaRamo(Operator, AddObjectHelper):
     """Create a new Mesh Object"""
     bl_idname = "mesh.add_ramo"
@@ -330,6 +377,15 @@ def add_object_button(self, context):
         CriaMaxila.bl_idname,
         text="Maxila",
         icon='VIEW3D')
+
+class ConfiguraMento(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_mento"
+    bl_label = "Configura Mento"
+    
+    def execute(self, context):
+        ConfiguraMentoDef(self, context)
+        return {'FINISHED'}
 
 class AreasInfluencia(bpy.types.Operator):
     """Tooltip"""
@@ -389,7 +445,7 @@ class ImportaTomo(bpy.types.Panel):
         row = layout.row()
         row.operator("object.gera_modelos_tomo", text="Converte DICOM para 3D", icon="SNAP_FACE")
         
- #       print (scn.my_tool.path)
+#       print (scn.my_tool.path)
  
 # ZOOM
 class ZoomCena(bpy.types.Panel):
@@ -590,8 +646,9 @@ class Osteotomia(bpy.types.Panel):
         #row.label(text="Nome Atual: " + obj.name)
         row = layout.row()
         row.prop(obj, "name", text="Renomear ")
-        
-        
+
+        row = layout.row()
+        row.operator("object.configura_mento", text="Configura Mento")
 
         
 class DinamicaMole(bpy.types.Panel):
@@ -660,6 +717,7 @@ class CriaSplint(bpy.types.Panel):
 
 
 def register():
+    bpy.utils.register_class(ortogPreferences)
     bpy.utils.register_class(CriaMento)
     bpy.types.INFO_MT_mesh_add.append(add_object_button)
     bpy.utils.register_class(CriaEspessura)
@@ -668,6 +726,7 @@ def register():
     bpy.types.INFO_MT_mesh_add.append(add_object_button)
     bpy.utils.register_class(CriaMaxila)
     bpy.types.INFO_MT_mesh_add.append(add_object_button)
+    bpy.utils.register_class(ConfiguraMento)
     bpy.utils.register_class(AreasInfluencia)
     bpy.utils.register_class(CriaAreasDeformacao)
     bpy.utils.register_class(GeraModelosTomo)
@@ -685,6 +744,7 @@ def register():
 
 
 def unregister():
+    bpy.utils.unregister_class(ortogPreferences)
     bpy.utils.unregister_class(CriaEspessura)
     bpy.utils.unregister_class(CriaMento)
     bpy.types.INFO_MT_mesh_add.remove(add_object_button)
@@ -693,6 +753,7 @@ def unregister():
     bpy.types.INFO_MT_mesh_add.remove(add_object_button)
     bpy.utils.unregister_class(CriaMaxila)
     bpy.types.INFO_MT_mesh_add.remove(add_object_button)
+    bpy.utils.unregister_class(ConfiguraMento)
     bpy.utils.unregister_class(AreasInfluencia)
     bpy.utils.unregister_class(CriaAreasDeformacao)
     bpy.utils.unregister_class(GeraModelosTomo)
