@@ -15,6 +15,7 @@ import os
 import sys
 import subprocess
 import tempfile
+import bmesh
 
 from bpy_extras.object_utils import AddObjectHelper, object_data_add
 
@@ -124,8 +125,49 @@ def ConfiguraMentoDef(self, context):
     activeObject = bpy.context.active_object #Set active object to variable
     mat = bpy.data.materials.new(name="MaterialMento") #set new material to variable
     activeObject.data.materials.append(mat) #add the material to the object
-    bpy.context.object.active_material.diffuse_color = (1, 0, 0) #change color
+    bpy.context.object.active_material.diffuse_color = (0.8, 0.35, 0.2) #change color
     bpy.context.object.name = "me"
+
+def ConfiguraCorpoMandDef(self, context):
+    
+    activeObject = bpy.context.active_object #Set active object to variable
+    mat = bpy.data.materials.new(name="MaterialCorpoMand") #set new material to variable
+    activeObject.data.materials.append(mat) #add the material to the object
+    bpy.context.object.active_material.diffuse_color = (0.35, 0.8, 0.4) #change color
+    bpy.context.object.name = "cm"
+
+def ConfiguraRamoDirDef(self, context):
+    
+    activeObject = bpy.context.active_object #Set active object to variable
+    mat = bpy.data.materials.new(name="MaterialRamoDir") #set new material to variable
+    activeObject.data.materials.append(mat) #add the material to the object
+    bpy.context.object.active_material.diffuse_color = (0.4, 0.3, 0.8) #change color
+    bpy.context.object.name = "rd"
+
+def ConfiguraRamoEsqDef(self, context):
+    
+    activeObject = bpy.context.active_object #Set active object to variable
+    mat = bpy.data.materials.new(name="MaterialRamoEsq") #set new material to variable
+    activeObject.data.materials.append(mat) #add the material to the object
+    bpy.context.object.active_material.diffuse_color = (0.4, 0.3, 0.8) #change color
+    bpy.context.object.name = "re"
+
+def ConfiguraMaxilaDef(self, context):
+    
+    activeObject = bpy.context.active_object #Set active object to variable
+    mat = bpy.data.materials.new(name="MaterialMaxila") #set new material to variable
+    activeObject.data.materials.append(mat) #add the material to the object
+    bpy.context.object.active_material.diffuse_color = (0.8, 0.3, 0.2) #change color
+    bpy.context.object.name = "ma"
+
+def ConfiguraCabecaDef(self, context):
+    
+    activeObject = bpy.context.active_object #Set active object to variable
+    mat = bpy.data.materials.new(name="MaterialCabeca") #set new material to variable
+    activeObject.data.materials.append(mat) #add the material to the object
+    bpy.context.object.active_material.diffuse_color = (0.8, 0.75, 0.2) #change color
+    bpy.context.object.name = "ca"
+
 
 def AreasInfluenciaDef(self, context):
     
@@ -134,6 +176,12 @@ def AreasInfluenciaDef(self, context):
     scn = context.scene
 
     #vg = obj.vertex_groups.new(name=slot.material.name)
+    bpy.ops.object.mode_set(mode='EDIT')
+#    bpy.ops.object.editmode_toggle()
+    mesh=bmesh.from_edit_mesh(bpy.context.object.data)
+    for v in mesh.verts:
+        v.select = True
+
 
     # CORPO MANDÍBULA
 
@@ -189,6 +237,9 @@ def AreasInfluenciaDef(self, context):
     bpy.ops.object.mode_set(mode='EDIT')
 
     bpy.ops.object.vertex_group_assign()
+
+
+    bpy.ops.object.mode_set(mode='OBJECT') # Depois de fazer tudo voltar ao modo de Objeto
 
 
 def CriaAreasDeformacaoDef(self, context):
@@ -282,6 +333,16 @@ def GeraModelosTomoDef(self, context):
     
     bpy.ops.view3d.view_all(center=False)
 
+
+def ConfiguraDinamicaMoleDef(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.areas_influencia()
+    bpy.ops.object.cria_areas_deformacao()
+    bpy.ops.object.convert(target='MESH')
 
 class CriaEspessura(bpy.types.Operator):
     """Tooltip"""
@@ -387,6 +448,51 @@ class ConfiguraMento(bpy.types.Operator):
         ConfiguraMentoDef(self, context)
         return {'FINISHED'}
 
+class ConfiguraCorpoMand(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_corpo_mand"
+    bl_label = "Configura Mento"
+    
+    def execute(self, context):
+        ConfiguraCorpoMandDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraRamoDir(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_ramo_dir"
+    bl_label = "Configura Ramo Direito"
+    
+    def execute(self, context):
+        ConfiguraRamoDirDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraRamoEsq(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_ramo_esq"
+    bl_label = "Configura Ramo Esquerdo"
+    
+    def execute(self, context):
+        ConfiguraRamoEsqDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraMaxila(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_maxila"
+    bl_label = "Configura Maxila"
+    
+    def execute(self, context):
+        ConfiguraMaxilaDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraCabeca(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_cabeca"
+    bl_label = "Configura Cabeça"
+    
+    def execute(self, context):
+        ConfiguraCabecaDef(self, context)
+        return {'FINISHED'}
+
 class AreasInfluencia(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.areas_influencia"
@@ -412,6 +518,15 @@ class GeraModelosTomo(bpy.types.Operator):
     
     def execute(self, context):
         GeraModelosTomoDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraDinamicaMole(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_dinamica_mole"
+    bl_label = "Configura Dinâmica do Mole"
+    
+    def execute(self, context):
+        ConfiguraDinamicaMoleDef(self, context)
         return {'FINISHED'}
 
 
@@ -641,11 +756,24 @@ class Osteotomia(bpy.types.Panel):
         row = layout.row()
         circle=row.operator("mesh.separate", text="Separa Osteotomia", icon="GROUP_VERTEX")
         circle.type='LOOSE'
-        
+
+        row = layout.row()        
+        row.label(text="Configura Peças:")
+
         row = layout.row()
-        #row.label(text="Nome Atual: " + obj.name)
+        row.operator("object.configura_cabeca", text="Configura Cabeça")
+
         row = layout.row()
-        row.prop(obj, "name", text="Renomear ")
+        row.operator("object.configura_maxila", text="Configura Maxila")
+
+        row = layout.row()
+        row.operator("object.configura_ramo_dir", text="Configura Ramo Direito")
+
+        row = layout.row()
+        row.operator("object.configura_ramo_esq", text="Configura Ramo Esquerdo")
+
+        row = layout.row()
+        row.operator("object.configura_corpo_mand", text="Configura Corpo Mandíbula")
 
         row = layout.row()
         row.operator("object.configura_mento", text="Configura Mento")
@@ -664,14 +792,18 @@ class DinamicaMole(bpy.types.Panel):
         
         obj = context.object
               
+
         row = layout.row()
-        circle=row.operator("object.areas_influencia", text="Gera Grupos Influêcia", icon="GROUP_VCOL")
+        circle=row.operator("object.configura_dinamica_mole", text="Configura Dinâmica Mole", icon="STYLUS_PRESSURE")
+
+#        row = layout.row()
+#        circle=row.operator("object.areas_influencia", text="Gera Grupos Influêcia", icon="GROUP_VCOL")
         
-        row = layout.row()
-        circle=row.operator("object.cria_areas_deformacao", text="Cria Áreas de Deformação", icon="STYLUS_PRESSURE")
+#        row = layout.row()
+#        circle=row.operator("object.cria_areas_deformacao", text="Cria Áreas de Deformação", icon="STYLUS_PRESSURE")
         
-        row = layout.row()
-        circle=row.operator("object.convert", text="Aplica Deformação", icon="FILE_TICK").target='MESH'
+#        row = layout.row()
+#        circle=row.operator("object.convert", text="Aplica Deformação", icon="FILE_TICK").target='MESH'
 
         row = layout.row()
         circle=row.operator("object.parent_set", text="Parentear Estrutura", icon="BONE_DATA").type='ARMATURE'
@@ -727,9 +859,15 @@ def register():
     bpy.utils.register_class(CriaMaxila)
     bpy.types.INFO_MT_mesh_add.append(add_object_button)
     bpy.utils.register_class(ConfiguraMento)
+    bpy.utils.register_class(ConfiguraCorpoMand)
+    bpy.utils.register_class(ConfiguraRamoEsq)
+    bpy.utils.register_class(ConfiguraRamoDir)
+    bpy.utils.register_class(ConfiguraMaxila)
+    bpy.utils.register_class(ConfiguraCabeca)
     bpy.utils.register_class(AreasInfluencia)
     bpy.utils.register_class(CriaAreasDeformacao)
     bpy.utils.register_class(GeraModelosTomo)
+    bpy.utils.register_class(ConfiguraDinamicaMole)
     bpy.utils.register_class(ImportaTomo)
     bpy.utils.register_class(ZoomCena)
     bpy.utils.register_class(OOB_import_stl)
@@ -754,8 +892,14 @@ def unregister():
     bpy.utils.unregister_class(CriaMaxila)
     bpy.types.INFO_MT_mesh_add.remove(add_object_button)
     bpy.utils.unregister_class(ConfiguraMento)
+    bpy.utils.unregister_class(ConfiguraCorpoMand)
+    bpy.utils.unregister_class(ConfiguraRamoDir)
+    bpy.utils.unregister_class(ConfiguraRamoEsq)
+    bpy.utils.unregister_class(ConfiguraMaxila)
+    bpy.utils.unregister_class(ConfiguraCabeca)
     bpy.utils.unregister_class(AreasInfluencia)
     bpy.utils.unregister_class(CriaAreasDeformacao)
+    bpy.utils.unregister_class(ConfiguraDinamicaMole)
     bpy.utils.unregister_class(GeraModelosTomo)
     bpy.utils.unregister_class(ImportaTomo)
     bpy.utils.unregister_class(ZoomCena)
