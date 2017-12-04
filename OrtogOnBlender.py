@@ -68,6 +68,27 @@ def CriaEsperssuraDef(self, context):
     bpy.context.object.modifiers["Solidify"].thickness = 0.3
     bpy.context.object.modifiers["Solidify"].offset = 0
 
+
+def CortaFaceDef(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+
+
+    bpy.context.object.name = "FaceMalha"
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.knife_project(cut_through=True)
+    bpy.ops.mesh.separate(type='SELECTED')
+    bpy.ops.object.mode_set(mode='OBJECT')
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects['FaceMalha.001'].select = False
+    bpy.data.objects['FaceMalha'].select = True
+    bpy.ops.object.delete()
+    bpy.data.objects['Circle'].select = True
+    bpy.ops.object.delete()
+        
+
+
 def PreparaImpressaoDef(self, context):
     
     context = bpy.context
@@ -343,6 +364,26 @@ def ConfiguraDinamicaMoleDef(self, context):
     bpy.ops.object.areas_influencia()
     bpy.ops.object.cria_areas_deformacao()
     bpy.ops.object.convert(target='MESH')
+
+
+#    a = bpy.data.objects['FaceMalha.001']
+    armatureHead = bpy.data.objects['Armature_Head']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.context.scene.objects.active = armatureHead
+    bpy.data.objects['FaceMalha.001'].select = True
+    bpy.data.objects['Armature_Head'].select = True
+    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+
+class CortaFace(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.corta_face"
+    bl_label = "Corta Face"
+    
+    def execute(self, context):
+        CortaFaceDef(self, context)
+        return {'FINISHED'}
+
 
 class CriaEspessura(bpy.types.Operator):
     """Tooltip"""
@@ -659,14 +700,17 @@ class OOB_import_obj(bpy.types.Panel):
         circle.vertices=100
         circle.location=(85,-185,0)
         circle.rotation=(0,1.5708,0)
-        
+
         row = layout.row()
-        knife=row.operator("mesh.knife_project", text="Cortar!", icon="META_PLANE")
-        knife.cut_through=True
+        knife=row.operator("object.corta_face", text="Cortar!", icon="META_PLANE")
         
-        row = layout.row()
-        circle=row.operator("mesh.separate", text="Separa Face", icon="GROUP_VERTEX")
-        circle.type='SELECTED'
+#        row = layout.row()
+#        knife=row.operator("mesh.knife_project", text="Cortar!", icon="META_PLANE")
+#        knife.cut_through=True
+        
+#        row = layout.row()
+#        circle=row.operator("mesh.separate", text="Separa Face", icon="GROUP_VERTEX")
+#        circle.type='SELECTED'
  
             
 # IMPORTA CEFALOMETRIA
@@ -805,8 +849,8 @@ class DinamicaMole(bpy.types.Panel):
 #        row = layout.row()
 #        circle=row.operator("object.convert", text="Aplica Deformação", icon="FILE_TICK").target='MESH'
 
-        row = layout.row()
-        circle=row.operator("object.parent_set", text="Parentear Estrutura", icon="BONE_DATA").type='ARMATURE'
+#        row = layout.row()
+#        circle=row.operator("object.parent_set", text="Parentear Estrutura", icon="BONE_DATA").type='ARMATURE'
         
         row = layout.row()
         circle=row.operator("view3d.clip_border", text="Filete de Visualização", icon="UV_FACESEL")
@@ -852,6 +896,7 @@ def register():
     bpy.utils.register_class(ortogPreferences)
     bpy.utils.register_class(CriaMento)
     bpy.types.INFO_MT_mesh_add.append(add_object_button)
+    bpy.utils.register_class(CortaFace)
     bpy.utils.register_class(CriaEspessura)
     bpy.utils.register_class(PreparaImpressao)
     bpy.utils.register_class(CriaRamo)
@@ -883,6 +928,7 @@ def register():
 
 def unregister():
     bpy.utils.unregister_class(ortogPreferences)
+    bpy.utils.unregister_class(CortaFace)
     bpy.utils.unregister_class(CriaEspessura)
     bpy.utils.unregister_class(CriaMento)
     bpy.types.INFO_MT_mesh_add.remove(add_object_button)
