@@ -15,6 +15,7 @@ import os
 import sys
 import subprocess
 import tempfile
+import bmesh
 
 from bpy_extras.object_utils import AddObjectHelper, object_data_add
 
@@ -29,7 +30,7 @@ from bpy.types import (Panel,
 
 from mathutils import Vector
 
-# CRIA OBJETOS E DEFINE FUNÇÕES CHAMADAS POSTERIORMENTE
+# CONFIGURA EXECUTÁVEIS E SCRIPTS
 
 class ortogPreferences(bpy.types.AddonPreferences):
     bl_idname = __name__
@@ -41,11 +42,22 @@ class ortogPreferences(bpy.types.AddonPreferences):
         default="",
         )
 
+    OpenMVG_filepath = StringProperty(
+        name="OpenMVG Path",
+        description="Location of OpenMVG Python file",
+        subtype="FILE_PATH",
+        default="",
+        )
+
     def draw(self, context):
         layout = self.layout
 
         row = layout.row()
         row.prop(self, "dicom2stl_filepath")
+        #print(dicom2stl_filepath)
+
+        row = layout.row()
+        row.prop(self, "OpenMVG_filepath")
         #print(dicom2stl_filepath)
 
 def get_dicom2stl_filepath(context):
@@ -54,6 +66,14 @@ def get_dicom2stl_filepath(context):
     preferences = context.user_preferences.addons["OrtogOnBlender"].preferences
     return preferences.dicom2stl_filepath
 
+def get_OpenMVG_filepath(context):
+    """preference set in the addon"""
+#    addon = get_addon_name()
+    preferences = context.user_preferences.addons["OrtogOnBlender"].preferences
+    return preferences.OpenMVG_filepath
+
+
+# -----------------------------------
 
 def CriaEsperssuraDef(self, context):
     
@@ -66,6 +86,27 @@ def CriaEsperssuraDef(self, context):
     bpy.ops.object.modifier_add(type='SOLIDIFY') 
     bpy.context.object.modifiers["Solidify"].thickness = 0.3
     bpy.context.object.modifiers["Solidify"].offset = 0
+
+
+def CortaFaceDef(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+
+
+    bpy.context.object.name = "FaceMalha"
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.knife_project(cut_through=True)
+    bpy.ops.mesh.separate(type='SELECTED')
+    bpy.ops.object.mode_set(mode='OBJECT')
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects['FaceMalha.001'].select = False
+    bpy.data.objects['FaceMalha'].select = True
+    bpy.ops.object.delete()
+    bpy.data.objects['Circle'].select = True
+    bpy.ops.object.delete()
+        
+
 
 def PreparaImpressaoDef(self, context):
     
@@ -124,8 +165,49 @@ def ConfiguraMentoDef(self, context):
     activeObject = bpy.context.active_object #Set active object to variable
     mat = bpy.data.materials.new(name="MaterialMento") #set new material to variable
     activeObject.data.materials.append(mat) #add the material to the object
-    bpy.context.object.active_material.diffuse_color = (1, 0, 0) #change color
+    bpy.context.object.active_material.diffuse_color = (0.8, 0.35, 0.2) #change color
     bpy.context.object.name = "me"
+
+def ConfiguraCorpoMandDef(self, context):
+    
+    activeObject = bpy.context.active_object #Set active object to variable
+    mat = bpy.data.materials.new(name="MaterialCorpoMand") #set new material to variable
+    activeObject.data.materials.append(mat) #add the material to the object
+    bpy.context.object.active_material.diffuse_color = (0.35, 0.8, 0.4) #change color
+    bpy.context.object.name = "cm"
+
+def ConfiguraRamoDirDef(self, context):
+    
+    activeObject = bpy.context.active_object #Set active object to variable
+    mat = bpy.data.materials.new(name="MaterialRamoDir") #set new material to variable
+    activeObject.data.materials.append(mat) #add the material to the object
+    bpy.context.object.active_material.diffuse_color = (0.4, 0.3, 0.8) #change color
+    bpy.context.object.name = "rd"
+
+def ConfiguraRamoEsqDef(self, context):
+    
+    activeObject = bpy.context.active_object #Set active object to variable
+    mat = bpy.data.materials.new(name="MaterialRamoEsq") #set new material to variable
+    activeObject.data.materials.append(mat) #add the material to the object
+    bpy.context.object.active_material.diffuse_color = (0.4, 0.3, 0.8) #change color
+    bpy.context.object.name = "re"
+
+def ConfiguraMaxilaDef(self, context):
+    
+    activeObject = bpy.context.active_object #Set active object to variable
+    mat = bpy.data.materials.new(name="MaterialMaxila") #set new material to variable
+    activeObject.data.materials.append(mat) #add the material to the object
+    bpy.context.object.active_material.diffuse_color = (0.8, 0.3, 0.2) #change color
+    bpy.context.object.name = "ma"
+
+def ConfiguraCabecaDef(self, context):
+    
+    activeObject = bpy.context.active_object #Set active object to variable
+    mat = bpy.data.materials.new(name="MaterialCabeca") #set new material to variable
+    activeObject.data.materials.append(mat) #add the material to the object
+    bpy.context.object.active_material.diffuse_color = (0.8, 0.75, 0.2) #change color
+    bpy.context.object.name = "ca"
+
 
 def AreasInfluenciaDef(self, context):
     
@@ -134,6 +216,12 @@ def AreasInfluenciaDef(self, context):
     scn = context.scene
 
     #vg = obj.vertex_groups.new(name=slot.material.name)
+    bpy.ops.object.mode_set(mode='EDIT')
+#    bpy.ops.object.editmode_toggle()
+    mesh=bmesh.from_edit_mesh(bpy.context.object.data)
+    for v in mesh.verts:
+        v.select = True
+
 
     # CORPO MANDÍBULA
 
@@ -189,6 +277,9 @@ def AreasInfluenciaDef(self, context):
     bpy.ops.object.mode_set(mode='EDIT')
 
     bpy.ops.object.vertex_group_assign()
+
+
+    bpy.ops.object.mode_set(mode='OBJECT') # Depois de fazer tudo voltar ao modo de Objeto
 
 
 def CriaAreasDeformacaoDef(self, context):
@@ -281,6 +372,72 @@ def GeraModelosTomoDef(self, context):
     bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
     
     bpy.ops.view3d.view_all(center=False)
+
+def GeraModeloFotoDef(self, context):
+    
+    scn = context.scene
+    
+    tmpdir = tempfile.gettempdir()
+    OpenMVGtmpDir = tmpdir+'/OpenMVG'
+    tmpOBJface = tmpdir+'/MVS/scene_dense_mesh_texture2.obj'
+
+    OpenMVGPath = get_OpenMVG_filepath(context)
+
+    subprocess.call(['python', '/home/cogitas3d/Programs/openMVG/openMVG_Build/software/SfM/SfM_SequentialPipeline.py', scn.my_tool.path ,  OpenMVGtmpDir])
+
+    subprocess.call('OpenMVS' ,  shell=True)
+
+    subprocess.call([ 'meshlabserver', '-i', '/tmp/MVS/scene_dense_mesh_texture.ply', '-o', '/tmp/MVS/scene_dense_mesh_texture2.obj', '-om', 'vn', 'wt' ])
+
+    bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
+
+    scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.context.scene.objects.active = scene_dense_mesh_texture2
+    bpy.data.objects['scene_dense_mesh_texture2'].select = True
+
+
+    bpy.context.object.data.use_auto_smooth = False
+    bpy.context.object.active_material.specular_hardness = 60
+    bpy.context.object.active_material.diffuse_intensity = 0.6
+    bpy.context.object.active_material.specular_intensity = 0.3
+    bpy.ops.object.modifier_add(type='SMOOTH')
+    bpy.context.object.modifiers["Smooth"].factor = 2
+    bpy.context.object.modifiers["Smooth"].iterations = 3
+    bpy.ops.object.convert(target='MESH')
+    bpy.ops.view3d.view_all(center=False)
+
+
+
+def ConfiguraDinamicaMoleDef(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.areas_influencia()
+    bpy.ops.object.cria_areas_deformacao()
+    bpy.ops.object.convert(target='MESH')
+
+
+#    a = bpy.data.objects['FaceMalha.001']
+    armatureHead = bpy.data.objects['Armature_Head']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.context.scene.objects.active = armatureHead
+    bpy.data.objects['FaceMalha.001'].select = True
+    bpy.data.objects['Armature_Head'].select = True
+    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+
+class CortaFace(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.corta_face"
+    bl_label = "Corta Face"
+    
+    def execute(self, context):
+        CortaFaceDef(self, context)
+        return {'FINISHED'}
 
 
 class CriaEspessura(bpy.types.Operator):
@@ -387,6 +544,51 @@ class ConfiguraMento(bpy.types.Operator):
         ConfiguraMentoDef(self, context)
         return {'FINISHED'}
 
+class ConfiguraCorpoMand(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_corpo_mand"
+    bl_label = "Configura Mento"
+    
+    def execute(self, context):
+        ConfiguraCorpoMandDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraRamoDir(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_ramo_dir"
+    bl_label = "Configura Ramo Direito"
+    
+    def execute(self, context):
+        ConfiguraRamoDirDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraRamoEsq(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_ramo_esq"
+    bl_label = "Configura Ramo Esquerdo"
+    
+    def execute(self, context):
+        ConfiguraRamoEsqDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraMaxila(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_maxila"
+    bl_label = "Configura Maxila"
+    
+    def execute(self, context):
+        ConfiguraMaxilaDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraCabeca(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_cabeca"
+    bl_label = "Configura Cabeça"
+    
+    def execute(self, context):
+        ConfiguraCabecaDef(self, context)
+        return {'FINISHED'}
+
 class AreasInfluencia(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.areas_influencia"
@@ -412,6 +614,24 @@ class GeraModelosTomo(bpy.types.Operator):
     
     def execute(self, context):
         GeraModelosTomoDef(self, context)
+        return {'FINISHED'}
+
+class GeraModeloFoto(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_modelo_foto"
+    bl_label = "Gera Modelos Foto"
+    
+    def execute(self, context):
+        GeraModeloFotoDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraDinamicaMole(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_dinamica_mole"
+    bl_label = "Configura Dinâmica do Mole"
+    
+    def execute(self, context):
+        ConfiguraDinamicaMoleDef(self, context)
         return {'FINISHED'}
 
 
@@ -446,7 +666,7 @@ class ImportaTomo(bpy.types.Panel):
         row.operator("object.gera_modelos_tomo", text="Converte DICOM para 3D", icon="SNAP_FACE")
         
 #       print (scn.my_tool.path)
- 
+
 # ZOOM
 class ZoomCena(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
@@ -518,7 +738,32 @@ class OOB_import_stl(bpy.types.Panel):
         row = layout.row()
         circle=row.operator("object.join", text="Junta com Molde", icon="GROUP")
 
+# FOTOGRAMETRIA
+
+class CriaFotogrametria(bpy.types.Panel):
+    """Planejamento de cirurgia ortognática no Blender"""
+    bl_label = "Cria Fotogrametria"
+    bl_idname = "cria_fotogrametria"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
+    bl_category = "Ortog"
+
+
+    def draw(self, context):
+        layout = self.layout
+        scn = context.scene
+        obj = context.object 
         
+        col = layout.column(align=True)
+        col.prop(scn.my_tool, "path", text="")
+ 
+        row = layout.row()
+        row.operator("object.gera_modelo_foto", text="Iniciar Fotogrametria", icon="IMAGE_DATA")
+        
+#       print (scn.my_tool.path)
+ 
+
+      
 #IMPORTA OBJ
    
 class OOB_import_obj(bpy.types.Panel):
@@ -544,14 +789,17 @@ class OOB_import_obj(bpy.types.Panel):
         circle.vertices=100
         circle.location=(85,-185,0)
         circle.rotation=(0,1.5708,0)
-        
+
         row = layout.row()
-        knife=row.operator("mesh.knife_project", text="Cortar!", icon="META_PLANE")
-        knife.cut_through=True
+        knife=row.operator("object.corta_face", text="Cortar!", icon="META_PLANE")
         
-        row = layout.row()
-        circle=row.operator("mesh.separate", text="Separa Face", icon="GROUP_VERTEX")
-        circle.type='SELECTED'
+#        row = layout.row()
+#        knife=row.operator("mesh.knife_project", text="Cortar!", icon="META_PLANE")
+#        knife.cut_through=True
+        
+#        row = layout.row()
+#        circle=row.operator("mesh.separate", text="Separa Face", icon="GROUP_VERTEX")
+#        circle.type='SELECTED'
  
             
 # IMPORTA CEFALOMETRIA
@@ -641,11 +889,24 @@ class Osteotomia(bpy.types.Panel):
         row = layout.row()
         circle=row.operator("mesh.separate", text="Separa Osteotomia", icon="GROUP_VERTEX")
         circle.type='LOOSE'
-        
+
+        row = layout.row()        
+        row.label(text="Configura Peças:")
+
         row = layout.row()
-        #row.label(text="Nome Atual: " + obj.name)
+        row.operator("object.configura_cabeca", text="Configura Cabeça")
+
         row = layout.row()
-        row.prop(obj, "name", text="Renomear ")
+        row.operator("object.configura_maxila", text="Configura Maxila")
+
+        row = layout.row()
+        row.operator("object.configura_ramo_dir", text="Configura Ramo Direito")
+
+        row = layout.row()
+        row.operator("object.configura_ramo_esq", text="Configura Ramo Esquerdo")
+
+        row = layout.row()
+        row.operator("object.configura_corpo_mand", text="Configura Corpo Mandíbula")
 
         row = layout.row()
         row.operator("object.configura_mento", text="Configura Mento")
@@ -664,17 +925,21 @@ class DinamicaMole(bpy.types.Panel):
         
         obj = context.object
               
-        row = layout.row()
-        circle=row.operator("object.areas_influencia", text="Gera Grupos Influêcia", icon="GROUP_VCOL")
-        
-        row = layout.row()
-        circle=row.operator("object.cria_areas_deformacao", text="Cria Áreas de Deformação", icon="STYLUS_PRESSURE")
-        
-        row = layout.row()
-        circle=row.operator("object.convert", text="Aplica Deformação", icon="FILE_TICK").target='MESH'
 
         row = layout.row()
-        circle=row.operator("object.parent_set", text="Parentear Estrutura", icon="BONE_DATA").type='ARMATURE'
+        circle=row.operator("object.configura_dinamica_mole", text="Configura Dinâmica Mole", icon="STYLUS_PRESSURE")
+
+#        row = layout.row()
+#        circle=row.operator("object.areas_influencia", text="Gera Grupos Influêcia", icon="GROUP_VCOL")
+        
+#        row = layout.row()
+#        circle=row.operator("object.cria_areas_deformacao", text="Cria Áreas de Deformação", icon="STYLUS_PRESSURE")
+        
+#        row = layout.row()
+#        circle=row.operator("object.convert", text="Aplica Deformação", icon="FILE_TICK").target='MESH'
+
+#        row = layout.row()
+#        circle=row.operator("object.parent_set", text="Parentear Estrutura", icon="BONE_DATA").type='ARMATURE'
         
         row = layout.row()
         circle=row.operator("view3d.clip_border", text="Filete de Visualização", icon="UV_FACESEL")
@@ -697,7 +962,7 @@ class CriaSplint(bpy.types.Panel):
         row = layout.row()
         row.operator("screen.frame_jump", text="Inicio", icon="REW").end=False
         row.operator("screen.animation_play", text="", icon="PLAY_REVERSE").reverse=True
-        row.operator("anim.keyframe_insert", text="", icon="CLIP").type='BUILTIN_KSI_LocRot'
+        row.operator("anim.keyframe_insert", text="", icon="CLIP")#.type='BUILTIN_KSI_LocRot'
         row.operator("screen.animation_play", text="", icon="PLAY")
         row.operator("screen.frame_jump", text="Final", icon="FF").end=True
         
@@ -718,8 +983,10 @@ class CriaSplint(bpy.types.Panel):
 
 def register():
     bpy.utils.register_class(ortogPreferences)
+#    bpy.utils.register_class(ortogPreferences2)
     bpy.utils.register_class(CriaMento)
     bpy.types.INFO_MT_mesh_add.append(add_object_button)
+    bpy.utils.register_class(CortaFace)
     bpy.utils.register_class(CriaEspessura)
     bpy.utils.register_class(PreparaImpressao)
     bpy.utils.register_class(CriaRamo)
@@ -727,12 +994,20 @@ def register():
     bpy.utils.register_class(CriaMaxila)
     bpy.types.INFO_MT_mesh_add.append(add_object_button)
     bpy.utils.register_class(ConfiguraMento)
+    bpy.utils.register_class(ConfiguraCorpoMand)
+    bpy.utils.register_class(ConfiguraRamoEsq)
+    bpy.utils.register_class(ConfiguraRamoDir)
+    bpy.utils.register_class(ConfiguraMaxila)
+    bpy.utils.register_class(ConfiguraCabeca)
     bpy.utils.register_class(AreasInfluencia)
     bpy.utils.register_class(CriaAreasDeformacao)
     bpy.utils.register_class(GeraModelosTomo)
+    bpy.utils.register_class(GeraModeloFoto)
+    bpy.utils.register_class(ConfiguraDinamicaMole)
     bpy.utils.register_class(ImportaTomo)
     bpy.utils.register_class(ZoomCena)
     bpy.utils.register_class(OOB_import_stl)
+    bpy.utils.register_class(CriaFotogrametria)
     bpy.utils.register_class(OOB_import_obj)
     bpy.utils.register_class(ImportaCefalometria)
     bpy.utils.register_class(AlinhaFaces)
@@ -745,6 +1020,8 @@ def register():
 
 def unregister():
     bpy.utils.unregister_class(ortogPreferences)
+#    bpy.utils.unregister_class(ortogPreferences2)
+    bpy.utils.unregister_class(CortaFace)
     bpy.utils.unregister_class(CriaEspessura)
     bpy.utils.unregister_class(CriaMento)
     bpy.types.INFO_MT_mesh_add.remove(add_object_button)
@@ -754,12 +1031,20 @@ def unregister():
     bpy.utils.unregister_class(CriaMaxila)
     bpy.types.INFO_MT_mesh_add.remove(add_object_button)
     bpy.utils.unregister_class(ConfiguraMento)
+    bpy.utils.unregister_class(ConfiguraCorpoMand)
+    bpy.utils.unregister_class(ConfiguraRamoDir)
+    bpy.utils.unregister_class(ConfiguraRamoEsq)
+    bpy.utils.unregister_class(ConfiguraMaxila)
+    bpy.utils.unregister_class(ConfiguraCabeca)
     bpy.utils.unregister_class(AreasInfluencia)
     bpy.utils.unregister_class(CriaAreasDeformacao)
+    bpy.utils.unregister_class(ConfiguraDinamicaMole)
     bpy.utils.unregister_class(GeraModelosTomo)
+    bpy.utils.unregister_class(GeraModeloFoto)
     bpy.utils.unregister_class(ImportaTomo)
     bpy.utils.unregister_class(ZoomCena)
     bpy.utils.unregister_class(OOB_import_stl)
+    bpy.utils.unregister_class(CriaFotogrametria)
     bpy.utils.unregister_class(OOB_import_obj)
     bpy.utils.unregister_class(ImportaCefalometria)
     bpy.utils.unregister_class(AlinhaFaces)
