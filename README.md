@@ -7,7 +7,7 @@ No ano de 2014 iniciou-se uma parceria entre o cirurgião bucomaxilofacial, Dr. 
 
 De 2014 a 2017 dos dois especialistas desenvolveram e lapidaram não apenas uma metodologia de uso do software livre na cirurgia ortognática, mas também uma forma de compartilhar esse conhecimento através de cursos presenciais. No segundo semestre de 2017 o OrtogOnBlender começou a ser desenvolvido e em poucos meses já contava com uma versão funcional.
 
-<h2>Sobre o sistema</h2>
+<h2>Sobre o Addon</h2>
 
 O OrtogOnBlender é um addon de planejamento digital de cirurgia ortognática, baseado no software de modelagem e animação Blender 3D e é focado na facilitação do uso de ferramentas 3D por parte de profissionais da área de cirurgia bucomaxilofacial.
 
