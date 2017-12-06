@@ -13,47 +13,25 @@ O OrtogOnBlender é um addon de planejamento digital de cirurgia ortognática, b
 
 Organizado em um painel na parte esquerda da 3D View, o addon tem em sua estrutura os seguintes passos:
 
-* **Importa Tomo**
+* **Importa Tomo**: Reconstrução dos ossos e do mole em 3D, a partir de uma tomografia computadorizada. EXPERIMENTAL.
 
-Reconstrução dos ossos e do mole em 3D, a partir de uma tomografia computadorizada.
-Obs.: Este módulo se encontra em estado experimental.
+* **Importar Tomo 3D/Moldes**: Importação da reconstrução da tomografia computadorizada ou digitalização de moles das arcadas dentárias, efetuadas em software externo.
 
-* **Importar Tomo 3D/Moldes**
+* **Zoom Cena**: Elementos de visualização da cena.
 
-Importação da reconstrução da tomografia computadorizada ou digitalização de moles das arcadas dentárias, efetuadas em software externo.
+* **Cria Fotogrametria**: Digitalização de faces a partir de fotografias. EXPERIMENTAL.
 
-* **Zoom Cena**
+* **Importa Fotogrametria**: Importa digitalização de face efetuada em software externo.
 
-Elementos de visualização da cena.
+* **Importar Cefalometria**: Importa imagem de cefalometria para alinhamento da face.
 
-* **Cria Fotogrametria**
+* **Redimensiona e alinha Faces**: Redimensiona a face baseada em medida conhecida e alinha a fotogrametria em relação ao mole reconstruído a partir da tomografia.
 
-Digitalização de faces a partir de fotografias.
-Obs.: Este módulo se encontra em estado experimental.
+* **Osteotomia**: Osteotomia dos ossos da cabeça, com ferramentas de booleana complexa e configura cada uma das peças separadas (coloração e nomeamento).
 
-* **Importa Fotogrametria**
+* **Dinâmica do Mole**: Atrela a deformação da pele em relação a movimentação dos ossos provindos da osteotomia.
 
-Importa digitalização de face efetuada em software externo.
-
-* **Importar Cefalometria**
-
-Importa imagem de cefalometria para alinhamento da face.
-
-* **Redimensiona e alinha Faces**
-
-Redimensiona a face baseada em medida conhecida e alinha a fotogrametria em relação ao mole reconstruído a partir da tomografia.
-
-* **Osteotomia**
-
-Osteotomia dos ossos da cabeça, com ferramentas de booleana complexa e configura cada uma das peças separadas (coloração e nomeamento).
-
-* **Dinâmica do Mole**
-
-Atrela a deformação da pele em relação a movimentação dos ossos provindos da osteotomia.
-
-* **Criação do Splint**
-
-Configuração dos estados do planejamento digital e criação dos splints cirúrgicos, para posterior impressão 3D
+* **Criação do Splint**: Configuração dos estados do planejamento digital e criação dos splints cirúrgicos, para posterior impressão 3D
 
 <h2>Dependências</h2>
 
@@ -84,4 +62,4 @@ O OrtogOnBlender utiliza uma série de addons e bibliotecas/programas, alguns na
 
 <h3>Agradecimentos</h3>
 
-Pierre Moulon, Patrick Moore, Dalai Felinto, Rodrigo Dornelles, Liogi Iwaki Filho, Antônio Eduardo Izidro, Paulo Henrique  Luiz de Freitas, Vinicius de Paula Ribeiro, Richard Gravalos, José Patrício Neto, e Hugo Santos Cunha.
+ *[Dalai Felinto](https://github.com/dfelinto/), *[Pierre Moulon](https://github.com/pmoulon), *[Patrick Moore](https://github.com/patmo141/), Rodrigo Dornelles, Liogi Iwaki Filho, Antônio Eduardo Izidro, Paulo Henrique  Luiz de Freitas, Vinicius de Paula Ribeiro, Richard Gravalos, José Patrício Neto, e Hugo Santos Cunha.
