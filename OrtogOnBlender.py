@@ -667,6 +667,36 @@ class ImportaTomo(bpy.types.Panel):
         
 #       print (scn.my_tool.path)
 
+  
+        
+#IMPORTA STL
+  
+class OOB_import_stl(bpy.types.Panel):
+    """Planejamento de cirurgia ortognática no Blender"""
+    bl_label = "Importar Tomo 3D/Moldes"
+    bl_idname = "import_stl"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
+    bl_category = "Ortog"
+
+    def draw(self, context):
+        layout = self.layout
+
+        obj = context.object
+
+        row = layout.row()
+        row.operator("import_mesh.stl", text="Importa STL", icon="IMPORT")
+        
+        row = layout.row()
+        row.operator("object.align_picked_points", text="Alinha Mode Pontos", icon="PARTICLE_TIP")
+
+        row = layout.row()
+        row.operator("object.align_icp", text="Alinha Molde ICP", icon="PARTICLE_PATH")
+        
+        row = layout.row()
+        circle=row.operator("object.join", text="Junta com Molde", icon="GROUP")
+
+
 # ZOOM
 class ZoomCena(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
@@ -709,34 +739,7 @@ class ZoomCena(bpy.types.Panel):
         
         row = layout.row()
         row.operator("view3d.view_persportho", text="Persp/Orto")
-        row.operator("view3d.view_all", text="Centraliza Zoom", icon="VIEWZOOM").center=False      
-        
-#IMPORTA STL
-  
-class OOB_import_stl(bpy.types.Panel):
-    """Planejamento de cirurgia ortognática no Blender"""
-    bl_label = "Importar Reconstrução Tomo"
-    bl_idname = "import_stl"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'TOOLS'
-    bl_category = "Ortog"
-
-    def draw(self, context):
-        layout = self.layout
-
-        obj = context.object
-
-        row = layout.row()
-        row.operator("import_mesh.stl", text="Importa STL", icon="IMPORT")
-        
-        row = layout.row()
-        row.operator("object.align_picked_points", text="Alinha Mode Pontos", icon="PARTICLE_TIP")
-
-        row = layout.row()
-        row.operator("object.align_icp", text="Alinha Molde ICP", icon="PARTICLE_PATH")
-        
-        row = layout.row()
-        circle=row.operator("object.join", text="Junta com Molde", icon="GROUP")
+        row.operator("view3d.view_all", text="Centraliza Zoom", icon="VIEWZOOM").center=False    
 
 # FOTOGRAMETRIA
 
@@ -1005,8 +1008,8 @@ def register():
     bpy.utils.register_class(GeraModeloFoto)
     bpy.utils.register_class(ConfiguraDinamicaMole)
     bpy.utils.register_class(ImportaTomo)
-    bpy.utils.register_class(ZoomCena)
     bpy.utils.register_class(OOB_import_stl)
+    bpy.utils.register_class(ZoomCena)
     bpy.utils.register_class(CriaFotogrametria)
     bpy.utils.register_class(OOB_import_obj)
     bpy.utils.register_class(ImportaCefalometria)
@@ -1042,8 +1045,8 @@ def unregister():
     bpy.utils.unregister_class(GeraModelosTomo)
     bpy.utils.unregister_class(GeraModeloFoto)
     bpy.utils.unregister_class(ImportaTomo)
-    bpy.utils.unregister_class(ZoomCena)
     bpy.utils.unregister_class(OOB_import_stl)
+    bpy.utils.unregister_class(ZoomCena)
     bpy.utils.unregister_class(CriaFotogrametria)
     bpy.utils.unregister_class(OOB_import_obj)
     bpy.utils.unregister_class(ImportaCefalometria)
