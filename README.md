@@ -39,26 +39,26 @@ Obs.: Este módulo se encontra em estado experimental.
 
 O OrtogOnBlender utiliza uma série de addons e bibliotecas/programas, alguns nativos e outros externos em relação ao Blender 3D, são eles:
 
-Addons
-Measureit (nativo)
-3D Navigation (nativo)
-Import Images as Planes (nativo)
-Cork on Blender - https://github.com/dfelinto/cork-on-blender	
-Cut Mesh - https://github.com/patmo141/cut_mesh
-Object Alignment - https://github.com/patmo141/object_alignment
+<h4>Addons</h4>
+* Measureit (nativo)
+* 3D Navigation (nativo)
+* Import Images as Planes (nativo)
+* Cork on Blender - https://github.com/dfelinto/cork-on-blender	
+* Cut Mesh - https://github.com/patmo141/cut_mesh
+* Object Alignment - https://github.com/patmo141/object_alignment
 
-Programas
-Meshlab (meshlabserver) - http://www.meshlab.net/
-OpenMVG - https://github.com/openMVG/openMVG
-OpenMVS - http://cdcseacave.github.io/openMVS/
-dicom2stl - https://github.com/dave3d/dicom2stl/
+<h4>Programas</h4>
+* Meshlab (meshlabserver) - http://www.meshlab.net/
+* OpenMVG - https://github.com/openMVG/openMVG
+* OpenMVS - http://cdcseacave.github.io/openMVS/
+* dicom2stl - https://github.com/dave3d/dicom2stl/
 
 <h2>Como Instalar</h2>
 
-Baixe o arquivo em “Clone or download”
-No Blender vá em: `File` → `User Preferences` → `Addons` → `Install from file` Procure o arquivo OrtogOnBlender-master.zip, clique sobre ele e em seguida no botão: `Install from file`
-Ativer a opção `ortog:OrtogOnBlender' e configure os caminhos dos scripts expandindo a setinha do lado esquerdo.
-Para manter o addon ativo clique em: `Save User Settings`.
+* Baixe o arquivo em “Clone or download”
+* No Blender vá em: `File` → `User Preferences` → `Addons` → `Install from file` Procure o arquivo OrtogOnBlender-master.zip, clique sobre ele e em seguida no botão: `Install from file`
+* Ativar a opção `ortog:OrtogOnBlender` e configure os caminhos dos scripts expandindo a setinha do lado esquerdo.
+* Para manter o addon ativo clique em: `Save User Settings`.
 
 <h3>Agradecimentos</h3>
 
