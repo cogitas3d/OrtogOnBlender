@@ -63,13 +63,13 @@ class ortogPreferences(bpy.types.AddonPreferences):
 def get_dicom2stl_filepath(context):
     """preference set in the addon"""
 #    addon = get_addon_name()
-    preferences = context.user_preferences.addons["OrtogOnBlender"].preferences
+    preferences = context.user_preferences.addons["OrtogOnBlender-master"].preferences
     return preferences.dicom2stl_filepath
 
 def get_OpenMVG_filepath(context):
     """preference set in the addon"""
 #    addon = get_addon_name()
-    preferences = context.user_preferences.addons["OrtogOnBlender"].preferences
+    preferences = context.user_preferences.addons["OrtogOnBlender-master"].preferences
     return preferences.OpenMVG_filepath
 
 
@@ -360,14 +360,14 @@ def GeraModelosTomoDef(self, context):
     dicom2DtlPath = get_dicom2stl_filepath(context)
 
     
-    subprocess.call(['vtk6python',dicom2DtlPath, '-t',  'orthobone' , '-o', tmpSTLossos ,  scn.my_tool.path])
+    subprocess.call(['vtk6python',dicom2DtlPath, '-t',  'bonetest' , '-o', tmpSTLossos ,  scn.my_tool.path])
 
     bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory=tmpdir)
     
     bpy.ops.view3d.view_all(center=False)
     
     
-    subprocess.call(['vtk6python',dicom2DtlPath , '-t',  'skin' , '-o', tmpSTLmole ,  scn.my_tool.path])
+    subprocess.call(['vtk6python',dicom2DtlPath , '-t',  'skintest' , '-o', tmpSTLmole ,  scn.my_tool.path])
 
     bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
     
@@ -965,7 +965,7 @@ class CriaSplint(bpy.types.Panel):
         row = layout.row()
         row.operator("screen.frame_jump", text="Inicio", icon="REW").end=False
         row.operator("screen.animation_play", text="", icon="PLAY_REVERSE").reverse=True
-        row.operator("anim.keyframe_insert", text="", icon="CLIP")#.type='BUILTIN_KSI_LocRot'
+        row.operator("anim.keyframe_insert", text="", icon="CLIP").type='BUILTIN_KSI_LocRot'
         row.operator("screen.animation_play", text="", icon="PLAY")
         row.operator("screen.frame_jump", text="Final", icon="FF").end=True
         
