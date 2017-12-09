@@ -160,7 +160,22 @@ def CriaMaxilaDef(self, context):
     bpy.context.object.modifiers["Solidify"].thickness = 0.3
     bpy.context.object.modifiers["Solidify"].offset = 0
 
+# CONFIGURA MENTO
 def ConfiguraMentoDef(self, context):
+
+    context = bpy.context
+    obj = context.active_object
+ #   scn = context.scene
+
+    bpy.ops.object.mode_set(mode='EDIT')
+    mesh=bmesh.from_edit_mesh(bpy.context.object.data)
+    for v in mesh.verts:
+        v.select = True
+
+    vg = obj.vertex_groups.new(name="me")
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.object.vertex_group_assign()
+    bpy.ops.object.mode_set(mode='OBJECT')
     
     activeObject = bpy.context.active_object #Set active object to variable
     mat = bpy.data.materials.new(name="MaterialMento") #set new material to variable
@@ -168,23 +183,89 @@ def ConfiguraMentoDef(self, context):
     bpy.context.object.active_material.diffuse_color = (0.8, 0.35, 0.2) #change color
     bpy.context.object.name = "me"
 
+    armatureHead = bpy.data.objects['Armature_Head']
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.context.scene.objects.active = armatureHead
+    bpy.data.objects['me'].select = True
+    bpy.data.objects['Armature_Head'].select = True
+    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+
+# CONFIGURA RAMO DA MANDÍBULA
 def ConfiguraCorpoMandDef(self, context):
     
+    context = bpy.context
+    obj = context.active_object
+ #   scn = context.scene
+
+    bpy.ops.object.mode_set(mode='EDIT')
+    mesh=bmesh.from_edit_mesh(bpy.context.object.data)
+    for v in mesh.verts:
+        v.select = True
+
+    vg = obj.vertex_groups.new(name="Corpo_Mandibular.GUIA")
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.object.vertex_group_assign()
+    bpy.ops.object.mode_set(mode='OBJECT')
+
     activeObject = bpy.context.active_object #Set active object to variable
     mat = bpy.data.materials.new(name="MaterialCorpoMand") #set new material to variable
     activeObject.data.materials.append(mat) #add the material to the object
     bpy.context.object.active_material.diffuse_color = (0.35, 0.8, 0.4) #change color
     bpy.context.object.name = "cm"
 
+    armatureHead = bpy.data.objects['Armature_Head']
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.context.scene.objects.active = armatureHead
+    bpy.data.objects['cm'].select = True
+    bpy.data.objects['Armature_Head'].select = True
+    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+
+# CONFIGURA RAMO DIREITO
 def ConfiguraRamoDirDef(self, context):
     
+    context = bpy.context
+    obj = context.active_object
+ #   scn = context.scene
+
+    bpy.ops.object.mode_set(mode='EDIT')
+    mesh=bmesh.from_edit_mesh(bpy.context.object.data)
+    for v in mesh.verts:
+        v.select = True
+
+    vg = obj.vertex_groups.new(name="rd")
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.object.vertex_group_assign()
+    bpy.ops.object.mode_set(mode='OBJECT')
+
     activeObject = bpy.context.active_object #Set active object to variable
     mat = bpy.data.materials.new(name="MaterialRamoDir") #set new material to variable
     activeObject.data.materials.append(mat) #add the material to the object
     bpy.context.object.active_material.diffuse_color = (0.4, 0.3, 0.8) #change color
     bpy.context.object.name = "rd"
 
+    armatureHead = bpy.data.objects['Armature_Head']
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.context.scene.objects.active = armatureHead
+    bpy.data.objects['rd'].select = True
+    bpy.data.objects['Armature_Head'].select = True
+    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+
+# CONFIGURA RAMO ESQUERDO
 def ConfiguraRamoEsqDef(self, context):
+
+    context = bpy.context
+    obj = context.active_object
+ #   scn = context.scene
+
+    bpy.ops.object.mode_set(mode='EDIT')
+    mesh=bmesh.from_edit_mesh(bpy.context.object.data)
+    for v in mesh.verts:
+        v.select = True
+
+    vg = obj.vertex_groups.new(name="re")
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.object.vertex_group_assign()
+    bpy.ops.object.mode_set(mode='OBJECT')
     
     activeObject = bpy.context.active_object #Set active object to variable
     mat = bpy.data.materials.new(name="MaterialRamoEsq") #set new material to variable
@@ -192,7 +273,29 @@ def ConfiguraRamoEsqDef(self, context):
     bpy.context.object.active_material.diffuse_color = (0.4, 0.3, 0.8) #change color
     bpy.context.object.name = "re"
 
+    armatureHead = bpy.data.objects['Armature_Head']
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.context.scene.objects.active = armatureHead
+    bpy.data.objects['re'].select = True
+    bpy.data.objects['Armature_Head'].select = True
+    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+
+# CONFIGURA MAXILA
 def ConfiguraMaxilaDef(self, context):
+
+    context = bpy.context
+    obj = context.active_object
+ #   scn = context.scene
+
+    bpy.ops.object.mode_set(mode='EDIT')
+    mesh=bmesh.from_edit_mesh(bpy.context.object.data)
+    for v in mesh.verts:
+        v.select = True
+
+    vg = obj.vertex_groups.new(name="Maxila.GUIA")
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.object.vertex_group_assign()
+    bpy.ops.object.mode_set(mode='OBJECT')
     
     activeObject = bpy.context.active_object #Set active object to variable
     mat = bpy.data.materials.new(name="MaterialMaxila") #set new material to variable
@@ -200,13 +303,42 @@ def ConfiguraMaxilaDef(self, context):
     bpy.context.object.active_material.diffuse_color = (0.8, 0.3, 0.2) #change color
     bpy.context.object.name = "ma"
 
+    armatureHead = bpy.data.objects['Armature_Head']
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.context.scene.objects.active = armatureHead
+    bpy.data.objects['ma'].select = True
+    bpy.data.objects['Armature_Head'].select = True
+    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+
+# CONFIGURA CABEÇA
 def ConfiguraCabecaDef(self, context):
+
+    context = bpy.context
+    obj = context.active_object
+ #   scn = context.scene
+
+    bpy.ops.object.mode_set(mode='EDIT')
+    mesh=bmesh.from_edit_mesh(bpy.context.object.data)
+    for v in mesh.verts:
+        v.select = True
+
+    vg = obj.vertex_groups.new(name="ca")
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.object.vertex_group_assign()
+    bpy.ops.object.mode_set(mode='OBJECT')
     
     activeObject = bpy.context.active_object #Set active object to variable
     mat = bpy.data.materials.new(name="MaterialCabeca") #set new material to variable
     activeObject.data.materials.append(mat) #add the material to the object
     bpy.context.object.active_material.diffuse_color = (0.8, 0.75, 0.2) #change color
     bpy.context.object.name = "ca"
+
+    armatureHead = bpy.data.objects['Armature_Head']
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.context.scene.objects.active = armatureHead
+    bpy.data.objects['ca'].select = True
+    bpy.data.objects['Armature_Head'].select = True
+    bpy.ops.object.parent_set(type='ARMATURE_NAME')
 
 
 def AreasInfluenciaDef(self, context):
@@ -359,15 +491,20 @@ def GeraModelosTomoDef(self, context):
     tmpSTLmole = tmpdir+'/mole.stl'
     dicom2DtlPath = get_dicom2stl_filepath(context)
 
-    
-    subprocess.call(['vtk6python',dicom2DtlPath, '-t',  'bonetest' , '-o', tmpSTLossos ,  scn.my_tool.path])
+
+    subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '200', '-o', tmpSTLossos])
+  
+
+#    subprocess.call(['vtk6python',dicom2DtlPath, '-t',  'bonetest' , '-o', tmpSTLossos ,  scn.my_tool.path])
 
     bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory=tmpdir)
     
     bpy.ops.view3d.view_all(center=False)
     
     
-    subprocess.call(['vtk6python',dicom2DtlPath , '-t',  'skintest' , '-o', tmpSTLmole ,  scn.my_tool.path])
+ #   subprocess.call(['vtk6python',dicom2DtlPath , '-t',  'skintest' , '-o', tmpSTLmole ,  scn.my_tool.path])
+
+    subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '65', '-o', tmpSTLmole])
 
     bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
     

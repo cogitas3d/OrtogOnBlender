@@ -25,7 +25,7 @@ Organizado em um painel na parte esquerda da 3D View, o addon tem em sua estrutu
 
 * **Importar Cefalometria**: Importa imagem de cefalometria para alinhamento da face.
 
-* **Redimensiona e alinha Faces**: Redimensiona a face baseada em medida conhecida e alinha a fotogrametria em relação ao mole reconstruído a partir da tomografia.
+* **Redimensiona e Alinha Faces**: Redimensiona a face baseada em medida conhecida e alinha a fotogrametria em relação ao mole reconstruído a partir da tomografia.
 
 * **Osteotomia**: Osteotomia dos ossos da cabeça, com ferramentas de booleana complexa e configura cada uma das peças separadas (coloração e nomeamento).
 
@@ -51,7 +51,7 @@ O OrtogOnBlender utiliza uma série de addons e bibliotecas/programas, alguns na
 * Meshlab (meshlabserver) - http://www.meshlab.net/
 * OpenMVG - https://github.com/openMVG/openMVG
 * OpenMVS - http://cdcseacave.github.io/openMVS/
-* dicom2stl - https://github.com/dave3d/dicom2stl/
+* Dicom2Mesh - https://github.com/AOT-AG/DicomToMesh
 
 <h2>Como Instalar</h2>
 
