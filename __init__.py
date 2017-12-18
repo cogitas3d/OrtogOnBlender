@@ -16,6 +16,7 @@ import sys
 import subprocess
 import tempfile
 import bmesh
+import shutil
 
 from bpy_extras.object_utils import AddObjectHelper, object_data_add
 
@@ -49,6 +50,14 @@ class ortogPreferences(bpy.types.AddonPreferences):
         default="",
         )
 
+    OpenMVS_filepath = StringProperty(
+        name="OpenMVS Path",
+        description="Location of OpenMVS script",
+        subtype="FILE_PATH",
+        default="",
+        )
+
+
     def draw(self, context):
         layout = self.layout
 
@@ -59,6 +68,9 @@ class ortogPreferences(bpy.types.AddonPreferences):
         row = layout.row()
         row.prop(self, "OpenMVG_filepath")
         #print(dicom2stl_filepath)
+
+        row = layout.row()
+        row.prop(self, "OpenMVS_filepath")
 
 def get_dicom2stl_filepath(context):
     """preference set in the addon"""
@@ -72,7 +84,11 @@ def get_OpenMVG_filepath(context):
     preferences = context.user_preferences.addons["OrtogOnBlender-master"].preferences
     return preferences.OpenMVG_filepath
 
-
+def get_OpenMVS_filepath(context):
+    """preference set in the addon"""
+#    addon = get_addon_name()
+    preferences = context.user_preferences.addons["OrtogOnBlender-master"].preferences
+    return preferences.OpenMVS_filepath
 # -----------------------------------
 
 def CriaEsperssuraDef(self, context):
@@ -515,16 +531,33 @@ def GeraModeloFotoDef(self, context):
     scn = context.scene
     
     tmpdir = tempfile.gettempdir()
+
     OpenMVGtmpDir = tmpdir+'/OpenMVG'
     tmpOBJface = tmpdir+'/MVS/scene_dense_mesh_texture2.obj'
 
+    
+
     OpenMVGPath = get_OpenMVG_filepath(context)
 
-    subprocess.call(['python', '/home/cogitas3d/Programs/openMVG/openMVG_Build/software/SfM/SfM_SequentialPipeline.py', scn.my_tool.path ,  OpenMVGtmpDir])
+    OpenMVSPath = get_OpenMVS_filepath(context)
 
-    subprocess.call('OpenMVS' ,  shell=True)
 
-    subprocess.call([ 'meshlabserver', '-i', '/tmp/MVS/scene_dense_mesh_texture.ply', '-o', '/tmp/MVS/scene_dense_mesh_texture2.obj', '-om', 'vn', 'wt' ])
+    shutil.rmtree(tmpdir+'/OpenMVG', ignore_errors=True)
+    shutil.rmtree(tmpdir+'/MVS', ignore_errors=True)
+
+#    if os.name=='posix':
+#    	shutil.rmtree(tmpdir+'/OpenMVG')
+#    	shutil.rmtree(tmpdir+'/MVS')
+
+#    if os.name=='nt':
+#    	subprocess.call(['rmdir', '/Q', '/S', tmpdir+'/OpenMVG'])
+#    	subprocess.call(['rmdir', '/Q', '/S', tmpdir+'/MVS'])
+
+    subprocess.call(['python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
+
+    subprocess.call(OpenMVSPath ,  shell=True)
+
+#    subprocess.call([ 'meshlabserver', '-i', tmpdir+'scene_dense_mesh_texture.ply', '-o', tmpdir+'scene_dense_mesh_texture2.obj', '-om', 'vn', 'wt' ])
 
     bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
 
