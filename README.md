@@ -53,12 +53,16 @@ O OrtogOnBlender utiliza uma série de addons e bibliotecas/programas, alguns na
 * OpenMVS - http://cdcseacave.github.io/openMVS/
 * Dicom2Mesh - https://github.com/AOT-AG/DicomToMesh
 
-<h2>Como Instalar</h2>
+<h2>Como Instalar (Geral)</h2>
 
 * Baixe o arquivo em “Clone or download”
 * No Blender vá em: `File` → `User Preferences` → `Addons` → `Install from file` Procure o arquivo OrtogOnBlender-master.zip, clique sobre ele e em seguida no botão: `Install from file`
 * Ativar a opção `ortog:OrtogOnBlender` e configure os caminhos dos scripts expandindo a setinha do lado esquerdo.
 * Para manter o addon ativo clique em: `Save User Settings`.
+
+<h2>Como Instalar no Windows</h2>
+
+Acesse o tutorial passo-a-passo de como rodar o OrtogOnBlender no Windows: https://docs.google.com/document/d/147HzcdofYpKdJfDZRcBgcx7-cX8YvvyMe2H3rgRUqi8/edit?usp=sharing
 
 <h3>Agradecimentos</h3>
 
