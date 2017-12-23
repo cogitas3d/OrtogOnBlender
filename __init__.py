@@ -155,7 +155,8 @@ def AlinhaRostoDef(self, context):
 # FATOR DE ESCALA
 
 def posicionaEmpties():
-    
+
+    context = bpy.context    
     obj = context.active_object
     v0 = obj.data.vertices[0]
     v1 = obj.data.vertices[1]
@@ -196,8 +197,6 @@ def medidaAtual():
 
     distancia1 = sqrt( (l[0][0] - l[2][0])**2 + (l[0][1] - l[2][1])**2 + (l[0][2] - l[2][2])**2)
     distancia2 = sqrt( (l[1][0] - l[2][0])**2 + (l[1][1] - l[2][1])**2 + (l[1][2] - l[2][2])**2)
-
-# TRETAAAAAA ============
     distancia3 = sqrt( (l[1][0] - l[0][0])**2 + (l[1][1] - l[0][1])**2 + (l[1][2] - l[0][2])**2)
 
     print(distancia1)
