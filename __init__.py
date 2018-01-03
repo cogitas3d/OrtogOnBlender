@@ -41,7 +41,7 @@ class ortogPreferences(bpy.types.AddonPreferences):
 
     dicom2stl_filepath = StringProperty(
         name="Dicom2STL Path",
-        description="Location of Dicom2STL Python file",
+        description="Location of Dicom2Mesh Python file",
         subtype="FILE_PATH",
         default="",
         )
@@ -61,6 +61,14 @@ class ortogPreferences(bpy.types.AddonPreferences):
         )
 
 
+    SMVS_filepath = StringProperty(
+        name="SMVS Path",
+        description="Location of SMVS script",
+        subtype="FILE_PATH",
+        default="",
+        )
+
+
     def draw(self, context):
         layout = self.layout
 
@@ -74,6 +82,9 @@ class ortogPreferences(bpy.types.AddonPreferences):
 
         row = layout.row()
         row.prop(self, "OpenMVS_filepath")
+
+        row = layout.row()
+        row.prop(self, "SMVS_filepath")
 
 def get_dicom2stl_filepath(context):
     """preference set in the addon"""
@@ -92,6 +103,14 @@ def get_OpenMVS_filepath(context):
 #    addon = get_addon_name()
     preferences = context.user_preferences.addons["OrtogOnBlender-master"].preferences
     return preferences.OpenMVS_filepath
+
+
+def get_SMVS_filepath(context):
+    """preference set in the addon"""
+#    addon = get_addon_name()
+    preferences = context.user_preferences.addons["OrtogOnBlender-master"].preferences
+    return preferences.SMVS_filepath
+
 # -----------------------------------
 
 def CriaEsperssuraDef(self, context):
@@ -771,6 +790,8 @@ def GeraModeloFotoDef(self, context):
 
 #    subprocess.call([ 'meshlabserver', '-i', tmpdir+'scene_dense_mesh_texture.ply', '-o', tmpdir+'scene_dense_mesh_texture2.obj', '-om', 'vn', 'wt' ])
 
+
+
     bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
 
     scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
@@ -790,7 +811,44 @@ def GeraModeloFotoDef(self, context):
     bpy.ops.object.convert(target='MESH')
     bpy.ops.view3d.view_all(center=False)
 
+    
+def GeraModeloFotoSMVSDef(self, context):
 
+    scn = context.scene
+    
+    tmpdir = tempfile.gettempdir()
+    tmpOBJface = tmpdir+'/scene/scene_dense_mesh_texture2.obj'
+#    subprocess.call(['rm /tmp/DIRETORIO_FOTOS.txt'],  shell=True)
+
+    SMVSPath = get_SMVS_filepath(context)
+
+
+
+    subprocess.call(['rm', '-rf', '/tmp/scene'])
+
+    subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path, '/tmp/scene'])
+
+    subprocess.call([SMVSPath+'./sfmrecon', '/tmp/scene'])
+
+    subprocess.call([SMVSPath+'./smvsrecon', '-s2', '/tmp/scene'])
+
+    subprocess.call(['meshlabserver', '-i', tmpdir+'/scene/smvs-B2.ply', '-o', tmpdir+'/scene/meshlab.ply', '-s', SMVSPath+'SMVSmeshlab.mlx', '-om'])
+
+    subprocess.call([SMVSPath+'./texrecon', '--data_term=area', '--skip_global_seam_leveling', '--outlier_removal=gauss_damping', tmpdir+'/scene::undistorted', tmpdir+'/scene/meshlab.ply', tmpdir+'/scene/scene_dense_mesh_texture2'])
+
+
+    bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
+
+    scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.context.scene.objects.active = scene_dense_mesh_texture2
+    bpy.data.objects['scene_dense_mesh_texture2'].select = True
+
+
+    bpy.ops.view3d.view_all(center=False)
+
+# ------------------------
 
 def ConfiguraDinamicaMoleDef(self, context):
     
@@ -1007,6 +1065,15 @@ class GeraModeloFoto(bpy.types.Operator):
         GeraModeloFotoDef(self, context)
         return {'FINISHED'}
 
+class GeraModeloFotoSMVS(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_modelo_foto_smvs"
+    bl_label = "Gera Modelos Foto"
+    
+    def execute(self, context):
+        GeraModeloFotoSMVSDef(self, context)
+        return {'FINISHED'}
+
 class ConfiguraDinamicaMole(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.configura_dinamica_mole"
@@ -1144,6 +1211,10 @@ class CriaFotogrametria(bpy.types.Panel):
  
         row = layout.row()
         row.operator("object.gera_modelo_foto", text="Iniciar Fotogrametria", icon="IMAGE_DATA")
+
+        row = layout.row()
+        row.operator("object.gera_modelo_foto_smvs", text="SMVS+Meshlab", icon="IMAGE_DATA")
+
         
 #       print (scn.my_tool.path)
  
@@ -1357,7 +1428,7 @@ class CriaSplint(bpy.types.Panel):
         row = layout.row()
         row.operator("screen.frame_jump", text="Inicio", icon="REW").end=False
         row.operator("screen.animation_play", text="", icon="PLAY_REVERSE").reverse=True
-        row.operator("anim.keyframe_insert", text="", icon="CLIP").type='BUILTIN_KSI_LocRot'
+#        row.operator("anim.keyframe_insert", text="", icon="CLIP").type='BUILTIN_KSI_LocRot'
         row.operator("screen.animation_play", text="", icon="PLAY")
         row.operator("screen.frame_jump", text="Final", icon="FF").end=True
         
@@ -1407,6 +1478,7 @@ def register():
     bpy.utils.register_class(CriaAreasDeformacao)
     bpy.utils.register_class(GeraModelosTomo)
     bpy.utils.register_class(GeraModeloFoto)
+    bpy.utils.register_class(GeraModeloFotoSMVS)
     bpy.utils.register_class(ConfiguraDinamicaMole)
     bpy.utils.register_class(ImportaTomo)
     bpy.utils.register_class(OOB_import_stl)
@@ -1449,6 +1521,7 @@ def unregister():
     bpy.utils.unregister_class(ConfiguraDinamicaMole)
     bpy.utils.unregister_class(GeraModelosTomo)
     bpy.utils.unregister_class(GeraModeloFoto)
+    bpy.utils.unregister_class(GeraModeloFotoSMVS)
     bpy.utils.unregister_class(ImportaTomo)
     bpy.utils.unregister_class(OOB_import_stl)
     bpy.utils.unregister_class(ZoomCena)
