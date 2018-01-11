@@ -48,10 +48,20 @@ O OrtogOnBlender utiliza uma série de addons e bibliotecas/programas, alguns na
 
 <h4>Programas</h4>
 
-* Meshlab (meshlabserver) - http://www.meshlab.net/
-* OpenMVG - https://github.com/openMVG/openMVG
-* OpenMVS - http://cdcseacave.github.io/openMVS/
-* Dicom2Mesh - https://github.com/AOT-AG/DicomToMesh
+* Meshlab (instalador) - http://www.meshlab.net/
+* OpenMVG (código-fonte) - https://github.com/openMVG/openMVG
+* OpenMVS (código-fonte) - http://cdcseacave.github.io/openMVS/
+* MVE/SMVS (código-fonte) - https://github.com/flanggut/smvs
+* Dicom2Mesh (código-fonte) - https://github.com/AOT-AG/DicomToMesh
+
+* Binários para o Ubuntu
+	* OpenMVG, OpenMVS, MVE/SMVS e Dicom2Mesh: https://goo.gl/Rqf1T4
+	* Meshlab: use o comando ```apt-get install meshlab```
+
+* Binários para o Windows
+	* OpenMVG, OpenMVS e Dicom2Mesh: https://goo.gl/r7nLck
+	* O software MVE/SMVS precisará ser compilado, estamos trabalhando para fornecê-lo em breve.
+	* O instalador do Meshlab está disponível no link acima.
 
 <h2>Como Instalar (Geral)</h2>
 
