@@ -233,6 +233,24 @@ def medidaAtual():
     fatorEscala = medidaReal / medidaAtual
     print(fatorEscala)
 
+# ANIMA LOCAL E ROTAÇÃO
+
+def AnimaLocRotDef(self, context):
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+    bpy.ops.anim.keyframe_insert_menu(type='BUILTIN_KSI_LocRot')
+
+class AnimaLocRot(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "anim.animalocrot"
+    bl_label = "Anima Localização e Rotação"
+    
+    def execute(self, context):
+        AnimaLocRotDef(self, context)
+        return {'FINISHED'}
+
 # ALINHAMENTO ROSTO PARTE 2 - ALINHA OBJETO
 
 def AlinhaRostoDef2(self, context):
@@ -1429,6 +1447,7 @@ class CriaSplint(bpy.types.Panel):
         row.operator("screen.frame_jump", text="Inicio", icon="REW").end=False
         row.operator("screen.animation_play", text="", icon="PLAY_REVERSE").reverse=True
 #        row.operator("anim.keyframe_insert", text="", icon="CLIP").type='BUILTIN_KSI_LocRot'
+        row.operator("anim.animalocrot", text="", icon="CLIP")
         row.operator("screen.animation_play", text="", icon="PLAY")
         row.operator("screen.frame_jump", text="Final", icon="FF").end=True
         
@@ -1462,6 +1481,7 @@ def register():
         default = "1"
       )
     bpy.utils.register_class(AlinhaRosto2)
+    bpy.utils.register_class(AnimaLocRot)
     bpy.utils.register_class(CriaEspessura)
     bpy.utils.register_class(PreparaImpressao)
     bpy.utils.register_class(CriaRamo)
@@ -1502,6 +1522,7 @@ def unregister():
     bpy.utils.register_class(MedidaReal)
     del bpy.types.Scene.medida_real
     bpy.utils.unregister_class(AlinhaRosto2)
+    bpy.utils.unregister_class(AnimaLocRot)
     bpy.utils.unregister_class(CriaEspessura)
     bpy.utils.unregister_class(CriaMento)
     bpy.types.INFO_MT_mesh_add.remove(add_object_button)
