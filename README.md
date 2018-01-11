@@ -1,6 +1,6 @@
 **OrtogOnBlender**
 ==================
-
+![GitHub Logo](http://www.ciceromoraes.com.br/ups/OrtogOnBlender.jpg)
 <h2>História</h2>
 
 No ano de 2014 iniciou-se uma parceria entre o cirurgião bucomaxilofacial, Dr. Everton da Rosa e o 3D designer [Cicero Moraes](http://www.ciceromoraes.com.br) com o objetivo de criar uma metodologia de planejamento de cirurgia ortognática baseada em software livre. A ferramenta principal de trabalho seria o Blender 3D, poderoso software livre de modelagem e animação. No entanto, apesar de este contar com um workflow bem preparado para o campo artístico, o mesmo não poderia se dizer em relação às ciências da saúde. Dentre os muitos problemas encontrados podem ser citados: a falta de uma poderosa ferramenta de cálculos booleanos para o processo de osteotomia e criação de guias cirúrgicos, a falta de suporte e conversão de  arquivos DICOM (tomografias computadorizadas) e a distribuição difusa dos comandos pela interface, o que  dificultava em muito a utilização do software por iniciantes no mundo da computação gráfica 3D.
