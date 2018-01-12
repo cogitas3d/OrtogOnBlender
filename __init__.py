@@ -1452,7 +1452,7 @@ def register():
     bpy.types.INFO_MT_mesh_add.append(add_object_button)
     bpy.utils.register_class(CortaFace)
     bpy.utils.register_class(AlinhaRosto)
-    bpy.utils.register_class(MedidaReal)
+#    bpy.utils.register_class(MedidaReal)
     bpy.types.Scene.medida_real = bpy.props.StringProperty \
       (
         name = "Medida Real",
@@ -1498,7 +1498,7 @@ def unregister():
 #    bpy.utils.unregister_class(ortogPreferences2)
     bpy.utils.unregister_class(CortaFace)
     bpy.utils.unregister_class(AlinhaRosto)
-    bpy.utils.register_class(MedidaReal)
+#    bpy.utils.register_class(MedidaReal)
     del bpy.types.Scene.medida_real
     bpy.utils.unregister_class(AlinhaRosto2)
     bpy.utils.unregister_class(AnimaLocRot)
