@@ -823,10 +823,12 @@ def GeraModeloFotoDef(self, context):
     bpy.context.object.active_material.specular_hardness = 60
     bpy.context.object.active_material.diffuse_intensity = 0.6
     bpy.context.object.active_material.specular_intensity = 0.3
-    bpy.ops.object.modifier_add(type='SMOOTH')
-    bpy.context.object.modifiers["Smooth"].factor = 2
-    bpy.context.object.modifiers["Smooth"].iterations = 3
-    bpy.ops.object.convert(target='MESH')
+    bpy.context.object.active_material.specular_color = (0.233015, 0.233015, 0.233015)
+#    bpy.ops.object.modifier_add(type='SMOOTH')
+#    bpy.context.object.modifiers["Smooth"].factor = 2
+#    bpy.context.object.modifiers["Smooth"].iterations = 3
+#    bpy.ops.object.convert(target='MESH')
+    bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
     bpy.ops.view3d.view_all(center=False)
 
     
@@ -1267,14 +1269,6 @@ class OOB_import_obj(bpy.types.Panel):
         row = layout.row()
         knife=row.operator("object.corta_face", text="Cortar!", icon="META_PLANE")
         
-#        row = layout.row()
-#        knife=row.operator("mesh.knife_project", text="Cortar!", icon="META_PLANE")
-#        knife.cut_through=True
-        
-#        row = layout.row()
-#        circle=row.operator("mesh.separate", text="Separa Face", icon="GROUP_VERTEX")
-#        circle.type='SELECTED'
- 
             
 # IMPORTA CEFALOMETRIA
 
@@ -1365,7 +1359,6 @@ class Osteotomia(bpy.types.Panel):
         circle=row.operator("object.cria_espessura", text="Cria Espessura", icon="MOD_SOLIDIFY")
                
         row = layout.row()
-        #circle=row.operator("import_image.to_plane", text="Habilita Planos de Corte", icon="BONE_DATA")
         circle=row.operator("view3d.cork_mesh_slicer", text="Boolean Cortes", icon="MOD_BOOLEAN")
         circle.method='DIFF'
         
@@ -1412,19 +1405,7 @@ class DinamicaMole(bpy.types.Panel):
 
         row = layout.row()
         circle=row.operator("object.configura_dinamica_mole", text="Configura Dinâmica Mole", icon="STYLUS_PRESSURE")
-
-#        row = layout.row()
-#        circle=row.operator("object.areas_influencia", text="Gera Grupos Influêcia", icon="GROUP_VCOL")
-        
-#        row = layout.row()
-#        circle=row.operator("object.cria_areas_deformacao", text="Cria Áreas de Deformação", icon="STYLUS_PRESSURE")
-        
-#        row = layout.row()
-#        circle=row.operator("object.convert", text="Aplica Deformação", icon="FILE_TICK").target='MESH'
-
-#        row = layout.row()
-#        circle=row.operator("object.parent_set", text="Parentear Estrutura", icon="BONE_DATA").type='ARMATURE'
-        
+       
         row = layout.row()
         circle=row.operator("view3d.clip_border", text="Filete de Visualização", icon="UV_FACESEL")
 
@@ -1446,7 +1427,6 @@ class CriaSplint(bpy.types.Panel):
         row = layout.row()
         row.operator("screen.frame_jump", text="Inicio", icon="REW").end=False
         row.operator("screen.animation_play", text="", icon="PLAY_REVERSE").reverse=True
-#        row.operator("anim.keyframe_insert", text="", icon="CLIP").type='BUILTIN_KSI_LocRot'
         row.operator("anim.animalocrot", text="", icon="CLIP")
         row.operator("screen.animation_play", text="", icon="PLAY")
         row.operator("screen.frame_jump", text="Final", icon="FF").end=True
@@ -1460,7 +1440,6 @@ class CriaSplint(bpy.types.Panel):
         
         row = layout.row()
         row.operator("object.prepara_impressao", text="Prepara Impressão 3D", icon="MOD_REMESH")
-        #row.prop(obj.modifiers["Remesh"], "octree_depth", text="Subdivisão")
         
         row = layout.row()
         row.operator("export_mesh.stl", text="Exporta STL", icon="EXPORT")
