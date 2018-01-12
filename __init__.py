@@ -357,7 +357,7 @@ class MedidaReal(bpy.types.Panel):
     bl_label = "Object Info ..."
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
-    bl_category = "Shortcuts ... (:"
+    bl_category = "Ortog"
 
     def draw(self, context) :
         col = self.layout.column(align = True)
