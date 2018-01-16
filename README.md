@@ -13,15 +13,17 @@ O OrtogOnBlender é um addon de planejamento digital de cirurgia ortognática, b
 
 Organizado em um painel na parte esquerda da 3D View, o addon tem em sua estrutura os seguintes passos:
 
-* **Importa Tomo**: Reconstrução dos ossos e do mole em 3D, a partir de uma tomografia computadorizada. EXPERIMENTAL.
+* **Importa Tomo**: Reconstrução dos ossos e do mole em 3D, a partir de uma tomografia computadorizada.
 
 * **Importar Tomo 3D/Moldes**: Importação da reconstrução da tomografia computadorizada ou digitalização de moles das arcadas dentárias, efetuadas em software externo.
 
 * **Zoom Cena**: Elementos de visualização da cena.
 
-* **Cria Fotogrametria**: Digitalização de faces a partir de fotografias. EXPERIMENTAL.
+* **Cria Fotogrametria**: Digitalização de faces a partir de fotografias.
 
 * **Importa Fotogrametria**: Importa digitalização de face efetuada em software externo.
+
+* **Alinha  Faces**: Alinha a face e a redimensiona utilizando as informações fornecidas pelo usuário.
 
 * **Importar Cefalometria**: Importa imagem de cefalometria para alinhamento da face.
 
@@ -59,8 +61,7 @@ O OrtogOnBlender utiliza uma série de addons e bibliotecas/programas, alguns na
 	* Meshlab: use o comando ```sudo apt-get install meshlab```
 
 * Binários para o Windows
-	* OpenMVG, OpenMVS e Dicom2Mesh: https://goo.gl/r7nLck
-	* O software MVE/SMVS precisará ser compilado, estamos trabalhando para fornecê-lo em breve.
+	* OpenMVG, OpenMVS, MVE/SMVS e Dicom2Mesh: https://goo.gl/r7nLck
 	* O instalador do Meshlab está disponível no link acima.
 
 <h2>Como Instalar (Geral)</h2>
@@ -76,4 +77,4 @@ Acesse o tutorial passo-a-passo de como rodar o OrtogOnBlender no Windows: https
 
 <h3>Agradecimentos</h3>
 
-[Dalai Felinto](https://github.com/dfelinto/), [Pierre Moulon](https://github.com/pmoulon), [Patrick Moore](https://github.com/patmo141/), Rodrigo Dornelles, Liogi Iwaki Filho, Antônio Eduardo Izidro, Paulo Henrique  Luiz de Freitas, Vinicius de Paula Ribeiro, Richard Gravalos, José Patrício Neto, e Hugo Santos Cunha.
+[Dalai Felinto](https://github.com/dfelinto/), [Pierre Moulon](https://github.com/pmoulon), [Patrick Moore](https://github.com/patmo141/), [Adrian Schneider](https://github.com/eidelen),Rodrigo Dornelles, Liogi Iwaki Filho, Antônio Eduardo Izidro, Paulo Henrique  Luiz de Freitas, Vinicius de Paula Ribeiro, Richard Gravalos, José Patrício Neto, e Hugo Santos Cunha.

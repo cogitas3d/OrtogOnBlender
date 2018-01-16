@@ -17,6 +17,7 @@ import subprocess
 import tempfile
 import bmesh
 import shutil
+import platform
 
 from bpy_extras.object_utils import AddObjectHelper, object_data_add
 
@@ -113,9 +114,6 @@ def get_SMVS_filepath(context):
 
 # -----------------------------------
 
-
-# CRIA ESPESSURA
-
 def CriaEsperssuraDef(self, context):
     
     context = bpy.context
@@ -128,16 +126,6 @@ def CriaEsperssuraDef(self, context):
     bpy.context.object.modifiers["Solidify"].thickness = 0.3
     bpy.context.object.modifiers["Solidify"].offset = 0
 
-class CriaEspessura(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.cria_espessura"
-    bl_label = "Cria Espessura"
-    
-    def execute(self, context):
-        CriaEsperssuraDef(self, context)
-        return {'FINISHED'}
-
-# CORTA FACE
 
 def CortaFaceDef(self, context):
     
@@ -156,17 +144,6 @@ def CortaFaceDef(self, context):
     bpy.ops.object.delete()
     bpy.data.objects['Circle'].select = True
     bpy.ops.object.delete()
-
-class CortaFace(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.corta_face"
-    bl_label = "Corta Face"
-    
-    def execute(self, context):
-        CortaFaceDef(self, context)
-        return {'FINISHED'}
-
-# ALINHA ROSTO
 
 def AlinhaRostoDef(self, context):
     
@@ -193,15 +170,7 @@ def AlinhaRostoDef(self, context):
     bpy.ops.view3d.viewnumpad(type='TOP', align_active=True) # alinha a vista com a face selecionada
 
     bpy.ops.object.editmode_toggle() #sai edit mode
-
-class AlinhaRosto(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.alinha_rosto"
-    bl_label = "Prepara Impressao"
     
-    def execute(self, context):
-        AlinhaRostoDef(self, context)
-        return {'FINISHED'}    
 
 # FATOR DE ESCALA
 
@@ -372,17 +341,16 @@ def AlinhaRostoDef2(self, context):
 
     bpy.ops.object.delete(use_global=False)
 
-class AlinhaRosto2(bpy.types.Operator):
+#-------------------------------------
+
+class AlinhaRosto(bpy.types.Operator):
     """Tooltip"""
-    bl_idname = "object.alinha_rosto2"
+    bl_idname = "object.alinha_rosto"
     bl_label = "Prepara Impressao"
     
     def execute(self, context):
-        AlinhaRostoDef2(self, context)
-        return {'FINISHED'}  
-
-#-------------------------------------
-
+        AlinhaRostoDef(self, context)
+        return {'FINISHED'}
 
 class MedidaReal(bpy.types.Panel):
     
@@ -396,8 +364,15 @@ class MedidaReal(bpy.types.Panel):
         col = self.layout.column(align = True)
         col.prop(context.scene, "medida_real")        
 
+class AlinhaRosto2(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.alinha_rosto2"
+    bl_label = "Prepara Impressao"
+    
+    def execute(self, context):
+        AlinhaRostoDef2(self, context)
+        return {'FINISHED'}        
 
-# PREPARA IMPRESSÃO
 
 def PreparaImpressaoDef(self, context):
     
@@ -407,18 +382,6 @@ def PreparaImpressaoDef(self, context):
     bpy.ops.object.modifier_add(type='REMESH') 
     bpy.context.object.modifiers["Remesh"].mode = 'SMOOTH'
     bpy.context.object.modifiers["Remesh"].octree_depth = 8
-
-
-class PreparaImpressao(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.prepara_impressao"
-    bl_label = "Prepara Impressao"
-    
-    def execute(self, context):
-        PreparaImpressaoDef(self, context)
-        return {'FINISHED'}
-
-# CRIA MENTO
 
 def CriaMentoDef(self, context):
 
@@ -439,19 +402,6 @@ def CriaMentoDef(self, context):
     bpy.context.object.modifiers["Solidify"].thickness = 0.3
     bpy.context.object.modifiers["Solidify"].offset = 0
 
-class CriaMento(Operator, AddObjectHelper):
-    """Create a new Mesh Object"""
-    bl_idname = "mesh.add_mento"
-    bl_label = "Add Mento"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    def execute(self, context):
-
-        CriaMentoDef(self, context)
-
-        return {'FINISHED'}
-
-# CRIA MAXILA
 
 def CriaMaxilaDef(self, context):
 
@@ -476,20 +426,7 @@ def CriaMaxilaDef(self, context):
     bpy.context.object.modifiers["Solidify"].thickness = 0.3
     bpy.context.object.modifiers["Solidify"].offset = 0
 
-class CriaMaxila(Operator, AddObjectHelper):
-    """Create a new Mesh Object"""
-    bl_idname = "mesh.add_maxila"
-    bl_label = "Add Maxila"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    def execute(self, context):
-
-        CriaMaxilaDef(self, context)
-
-        return {'FINISHED'}
-
 # CONFIGURA MENTO
-
 def ConfiguraMentoDef(self, context):
 
     context = bpy.context
@@ -519,17 +456,7 @@ def ConfiguraMentoDef(self, context):
     bpy.data.objects['Armature_Head'].select = True
     bpy.ops.object.parent_set(type='ARMATURE_NAME')
 
-class ConfiguraMento(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.configura_mento"
-    bl_label = "Configura Mento"
-    
-    def execute(self, context):
-        ConfiguraMentoDef(self, context)
-        return {'FINISHED'}
-
-# CONFIGURA CORPO DA MANDÍBULA
-
+# CONFIGURA RAMO DA MANDÍBULA
 def ConfiguraCorpoMandDef(self, context):
     
     context = bpy.context
@@ -559,17 +486,7 @@ def ConfiguraCorpoMandDef(self, context):
     bpy.data.objects['Armature_Head'].select = True
     bpy.ops.object.parent_set(type='ARMATURE_NAME')
 
-class ConfiguraCorpoMand(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.configura_corpo_mand"
-    bl_label = "Configura Mento"
-    
-    def execute(self, context):
-        ConfiguraCorpoMandDef(self, context)
-        return {'FINISHED'}
-
 # CONFIGURA RAMO DIREITO
-
 def ConfiguraRamoDirDef(self, context):
     
     context = bpy.context
@@ -599,17 +516,7 @@ def ConfiguraRamoDirDef(self, context):
     bpy.data.objects['Armature_Head'].select = True
     bpy.ops.object.parent_set(type='ARMATURE_NAME')
 
-class ConfiguraRamoDir(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.configura_ramo_dir"
-    bl_label = "Configura Ramo Direito"
-    
-    def execute(self, context):
-        ConfiguraRamoDirDef(self, context)
-        return {'FINISHED'}
-
 # CONFIGURA RAMO ESQUERDO
-
 def ConfiguraRamoEsqDef(self, context):
 
     context = bpy.context
@@ -639,17 +546,7 @@ def ConfiguraRamoEsqDef(self, context):
     bpy.data.objects['Armature_Head'].select = True
     bpy.ops.object.parent_set(type='ARMATURE_NAME')
 
-class ConfiguraRamoEsq(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.configura_ramo_esq"
-    bl_label = "Configura Ramo Esquerdo"
-    
-    def execute(self, context):
-        ConfiguraRamoEsqDef(self, context)
-        return {'FINISHED'}
-
 # CONFIGURA MAXILA
-
 def ConfiguraMaxilaDef(self, context):
 
     context = bpy.context
@@ -679,17 +576,7 @@ def ConfiguraMaxilaDef(self, context):
     bpy.data.objects['Armature_Head'].select = True
     bpy.ops.object.parent_set(type='ARMATURE_NAME')
 
-class ConfiguraMaxila(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.configura_maxila"
-    bl_label = "Configura Maxila"
-    
-    def execute(self, context):
-        ConfiguraMaxilaDef(self, context)
-        return {'FINISHED'}
-
 # CONFIGURA CABEÇA
-
 def ConfiguraCabecaDef(self, context):
 
     context = bpy.context
@@ -719,16 +606,6 @@ def ConfiguraCabecaDef(self, context):
     bpy.data.objects['Armature_Head'].select = True
     bpy.ops.object.parent_set(type='ARMATURE_NAME')
 
-class ConfiguraCabeca(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.configura_cabeca"
-    bl_label = "Configura Cabeça"
-    
-    def execute(self, context):
-        ConfiguraCabecaDef(self, context)
-        return {'FINISHED'}
-
-# ÁREAS DE INFLUÊNCIA
 
 def AreasInfluenciaDef(self, context):
     
@@ -803,17 +680,6 @@ def AreasInfluenciaDef(self, context):
     bpy.ops.object.mode_set(mode='OBJECT') # Depois de fazer tudo voltar ao modo de Objeto
 
 
-class AreasInfluencia(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.areas_influencia"
-    bl_label = "Áreas de Influência - Dinâmica de Tecidos Moles"
-    
-    def execute(self, context):
-        AreasInfluenciaDef(self, context)
-        return {'FINISHED'}
-
-# ÁREAS DE DEFORMAÇÃO
-
 def CriaAreasDeformacaoDef(self, context):
     
     context = bpy.context
@@ -882,17 +748,6 @@ def CriaAreasDeformacaoDef(self, context):
     bpy.context.object.modifiers["VertexWeightProximity"].name = "Cabeça"
     bpy.context.object.modifiers["Cabeça"].show_expanded = False
 
-class CriaAreasDeformacao(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.cria_areas_deformacao"
-    bl_label = "Cria Areas Deformação"
-    
-    def execute(self, context):
-        CriaAreasDeformacaoDef(self, context)
-        return {'FINISHED'}
-
-# GERA MODELOS TOMOFRAFIA
-
 def GeraModelosTomoDef(self, context):
     
     scn = context.scene
@@ -920,18 +775,6 @@ def GeraModelosTomoDef(self, context):
     bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
     
     bpy.ops.view3d.view_all(center=False)
-
-class GeraModelosTomo(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.gera_modelos_tomo"
-    bl_label = "Prepara Impressao"
-    
-    def execute(self, context):
-        GeraModelosTomoDef(self, context)
-        return {'FINISHED'}
-
-
-# GERA MODELO FOTOS FOTOGRAMETRIA OPENMVG+OPENMVS
 
 def GeraModeloFotoDef(self, context):
     
@@ -989,17 +832,6 @@ def GeraModeloFotoDef(self, context):
     bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
     bpy.ops.view3d.view_all(center=False)
 
-class GeraModeloFoto(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.gera_modelo_foto"
-    bl_label = "Gera Modelos Foto"
-    
-    def execute(self, context):
-        GeraModeloFotoDef(self, context)
-        return {'FINISHED'}
-
-
-# GERA MODELO FOTOS FOTOGRAMETRIA SMVS
     
 def GeraModeloFotoSMVSDef(self, context):
 
@@ -1011,44 +843,38 @@ def GeraModeloFotoSMVSDef(self, context):
 
     SMVSPath = get_SMVS_filepath(context)
 
-
-
-    subprocess.call(['rm', '-rf', '/tmp/scene'])
-
-    subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path, '/tmp/scene'])
-
-    subprocess.call([SMVSPath+'./sfmrecon', '/tmp/scene'])
-
-    subprocess.call([SMVSPath+'./smvsrecon', '-s2', '/tmp/scene'])
-
-    subprocess.call(['meshlabserver', '-i', tmpdir+'/scene/smvs-B2.ply', '-o', tmpdir+'/scene/meshlab.ply', '-s', SMVSPath+'SMVSmeshlab.mlx', '-om'])
-
-    subprocess.call([SMVSPath+'./texrecon', '--data_term=area', '--skip_global_seam_leveling', '--outlier_removal=gauss_damping', tmpdir+'/scene::undistorted', tmpdir+'/scene/meshlab.ply', tmpdir+'/scene/scene_dense_mesh_texture2'])
-
-
-    bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
-
-    scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
-
-    bpy.ops.object.select_all(action='DESELECT')
-    bpy.context.scene.objects.active = scene_dense_mesh_texture2
-    bpy.data.objects['scene_dense_mesh_texture2'].select = True
-
-
-    bpy.ops.view3d.view_all(center=False)
-
-
-class GeraModeloFotoSMVS(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.gera_modelo_foto_smvs"
-    bl_label = "Gera Modelos Foto"
     
-    def execute(self, context):
-        GeraModeloFotoSMVSDef(self, context)
-        return {'FINISHED'}
+    if platform.system() == "Linux":
+        subprocess.call(['rm', '-rf', tmpdir+'/scene'])
+        subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path, tmpdir+'/scene'])
+        subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
+        subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
+        subprocess.call(['meshlabserver', '-i', tmpdir+'/scene/smvs-B2.ply', '-o', tmpdir+'/scene/meshlab.ply', '-s', SMVSPath+'SMVSmeshlab.mlx', '-om'])
+        subprocess.call([SMVSPath+'./texrecon', '--data_term=area', '--skip_global_seam_leveling', '--outlier_removal=gauss_damping', tmpdir+'/scene::undistorted', tmpdir+'/scene/meshlab.ply', tmpdir+'/scene/scene_dense_mesh_texture2'])
+        bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
+        scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
+        bpy.ops.object.select_all(action='DESELECT')
+        bpy.context.scene.objects.active = scene_dense_mesh_texture2
+        bpy.data.objects['scene_dense_mesh_texture2'].select = True
+        bpy.ops.view3d.view_all(center=False)
 
 
-# CONFIGURA DINÂMICA DO MOLE
+    if platform.system() == "Windows":
+        shutil.rmtree(tmpdir+'/scene')
+        subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path, tmpdir+'/scene'])
+        subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
+        subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
+        subprocess.call([SMVSPath+'./fssrecon', tmpdir+'/scene/smvs-B2.ply', tmpdir+'/scene/smvs-surface.ply'])
+        subprocess.call([SMVSPath+'./meshclean', '-p10', tmpdir+'/scene/smvs-surface.ply', tmpdir+'/scene/smvs-surface-clean.ply'])
+        tmpPLYface = tmpdir+'/scene/smvs-surface-clean.ply'        
+        bpy.ops.import_mesh.ply(filepath=tmpPLYface, filter_glob="*.ply")
+        smvs_surface_clean = bpy.data.objects['smvs-surface-clean']
+        bpy.ops.object.select_all(action='DESELECT')
+        bpy.context.scene.objects.active = smvs_surface_clean
+        bpy.data.objects['smvs-surface-clean'].select = True
+        bpy.ops.view3d.view_all(center=False)        
+
+# ------------------------
 
 def ConfiguraDinamicaMoleDef(self, context):
     
@@ -1070,16 +896,45 @@ def ConfiguraDinamicaMoleDef(self, context):
     bpy.data.objects['Armature_Head'].select = True
     bpy.ops.object.parent_set(type='ARMATURE_NAME')
 
-
-class ConfiguraDinamicaMole(bpy.types.Operator):
+class CortaFace(bpy.types.Operator):
     """Tooltip"""
-    bl_idname = "object.configura_dinamica_mole"
-    bl_label = "Configura Dinâmica do Mole"
+    bl_idname = "object.corta_face"
+    bl_label = "Corta Face"
     
     def execute(self, context):
-        ConfiguraDinamicaMoleDef(self, context)
+        CortaFaceDef(self, context)
         return {'FINISHED'}
 
+
+class CriaEspessura(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.cria_espessura"
+    bl_label = "Cria Espessura"
+    
+    def execute(self, context):
+        CriaEsperssuraDef(self, context)
+        return {'FINISHED'}
+
+class PreparaImpressao(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.prepara_impressao"
+    bl_label = "Prepara Impressao"
+    
+    def execute(self, context):
+        PreparaImpressaoDef(self, context)
+        return {'FINISHED'}
+
+class CriaMento(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "mesh.add_mento"
+    bl_label = "Add Mento"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+
+        CriaMentoDef(self, context)
+
+        return {'FINISHED'}
 
 def add_object_button(self, context):
     self.layout.operator(
@@ -1127,11 +982,132 @@ def add_object_button(self, context):
         icon='VIEW3D')
 
 
+class CriaMaxila(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "mesh.add_maxila"
+    bl_label = "Add Maxila"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+
+        CriaMaxilaDef(self, context)
+
+        return {'FINISHED'}
+
+
 def add_object_button(self, context):
     self.layout.operator(
         CriaMaxila.bl_idname,
         text="Maxila",
         icon='VIEW3D')
+
+class ConfiguraMento(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_mento"
+    bl_label = "Configura Mento"
+    
+    def execute(self, context):
+        ConfiguraMentoDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraCorpoMand(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_corpo_mand"
+    bl_label = "Configura Mento"
+    
+    def execute(self, context):
+        ConfiguraCorpoMandDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraRamoDir(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_ramo_dir"
+    bl_label = "Configura Ramo Direito"
+    
+    def execute(self, context):
+        ConfiguraRamoDirDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraRamoEsq(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_ramo_esq"
+    bl_label = "Configura Ramo Esquerdo"
+    
+    def execute(self, context):
+        ConfiguraRamoEsqDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraMaxila(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_maxila"
+    bl_label = "Configura Maxila"
+    
+    def execute(self, context):
+        ConfiguraMaxilaDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraCabeca(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_cabeca"
+    bl_label = "Configura Cabeça"
+    
+    def execute(self, context):
+        ConfiguraCabecaDef(self, context)
+        return {'FINISHED'}
+
+class AreasInfluencia(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.areas_influencia"
+    bl_label = "Áreas de Influência - Dinâmica de Tecidos Moles"
+    
+    def execute(self, context):
+        AreasInfluenciaDef(self, context)
+        return {'FINISHED'}
+
+class CriaAreasDeformacao(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.cria_areas_deformacao"
+    bl_label = "Cria Areas Deformação"
+    
+    def execute(self, context):
+        CriaAreasDeformacaoDef(self, context)
+        return {'FINISHED'}
+
+class GeraModelosTomo(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_modelos_tomo"
+    bl_label = "Prepara Impressao"
+    
+    def execute(self, context):
+        GeraModelosTomoDef(self, context)
+        return {'FINISHED'}
+
+class GeraModeloFoto(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_modelo_foto"
+    bl_label = "Gera Modelos Foto"
+    
+    def execute(self, context):
+        GeraModeloFotoDef(self, context)
+        return {'FINISHED'}
+
+class GeraModeloFotoSMVS(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_modelo_foto_smvs"
+    bl_label = "Gera Modelos Foto"
+    
+    def execute(self, context):
+        GeraModeloFotoSMVSDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraDinamicaMole(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_dinamica_mole"
+    bl_label = "Configura Dinâmica do Mole"
+    
+    def execute(self, context):
+        ConfiguraDinamicaMoleDef(self, context)
+        return {'FINISHED'}
 
 
 #IMPORTA TOMO
@@ -1166,6 +1142,7 @@ class ImportaTomo(bpy.types.Panel):
         
 #       print (scn.my_tool.path)
 
+  
         
 #IMPORTA STL
   
