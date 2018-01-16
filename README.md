@@ -77,4 +77,4 @@ Acesse o tutorial passo-a-passo de como rodar o OrtogOnBlender no Windows: https
 
 <h3>Agradecimentos</h3>
 
-[Dalai Felinto](https://github.com/dfelinto/), [Pierre Moulon](https://github.com/pmoulon), [Patrick Moore](https://github.com/patmo141/), [Adrian Schneider](https://github.com/eidelen),Rodrigo Dornelles, Liogi Iwaki Filho, Antônio Eduardo Izidro, Paulo Henrique  Luiz de Freitas, Vinicius de Paula Ribeiro, Richard Gravalos, José Patrício Neto, e Hugo Santos Cunha.
+[Dalai Felinto](https://github.com/dfelinto/), [Pierre Moulon](https://github.com/pmoulon), [Patrick Moore](https://github.com/patmo141/), [Adrian Schneider](https://github.com/eidelen), Rodrigo Dornelles, Liogi Iwaki Filho, Antônio Eduardo Izidro, Paulo Henrique  Luiz de Freitas, Vinicius de Paula Ribeiro, Richard Gravalos, José Patrício Neto, e Hugo Santos Cunha.
