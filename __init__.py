@@ -112,6 +112,43 @@ def get_SMVS_filepath(context):
     preferences = context.user_preferences.addons["OrtogOnBlender-master"].preferences
     return preferences.SMVS_filepath
 
+#------------------------------------
+
+# LINHA BASE
+
+def LinhaBaseDef(self, context):
+
+    verts = [Vector((0, 0, 125)),
+             Vector((0, 0, -125)),
+            ]
+
+    edges = [[0,1]]
+    
+    faces = []
+
+
+    mesh = bpy.data.meshes.new(name="LinhaBase")
+    mesh.from_pydata(verts, edges, faces)
+    object_data_add(context, mesh, operator=self)
+
+class LinhaBase(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "mesh.add_linhabase"
+    bl_label = "Add Linha Base"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+
+        LinhaBaseDef(self, context)
+
+        return {'FINISHED'}
+
+def add_object_button(self, context):
+    self.layout.operator(
+        RhinLinhaBase.bl_idname,
+        text="LinhaBase",
+        icon='VIEW3D')
+
 # -----------------------------------
 
 def CriaEsperssuraDef(self, context):
@@ -773,8 +810,29 @@ def GeraModelosTomoDef(self, context):
     subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '65', '-o', tmpSTLmole])
 
     bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
+
+
+    a = bpy.data.objects['Ossos']
+    b = bpy.data.objects['Mole']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+
+    bpy.ops.object.select_all(action='DESELECT')
+    b.select = True
+    bpy.context.scene.objects.active = b
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
     
     bpy.ops.view3d.view_all(center=False)
+
 
 def GeraModeloFotoDef(self, context):
     
@@ -1140,7 +1198,20 @@ class ImportaTomo(bpy.types.Panel):
         row = layout.row()
         row.operator("object.gera_modelos_tomo", text="Converte DICOM para 3D", icon="SNAP_FACE")
         
-#       print (scn.my_tool.path)
+
+        row = layout.row()
+        linha=row.operator("mesh.add_linhabase", text="Linha Central Ver", icon="PAUSE")
+        linha.location=(0,-200,0)
+
+        row = layout.row()
+        linha=row.operator("mesh.add_linhabase", text="Linha Central Hor", icon="ZOOMOUT")
+        linha.location=(0,-200,0)
+        linha.rotation=(0,1.5708,0)
+        
+        row = layout.row()
+        linha=row.operator("mesh.add_linhabase", text="Linha Lateral Hor", icon="ZOOMOUT")
+        linha.location=(200,30,0)
+        linha.rotation=(1.5708,0,0)
 
   
         
@@ -1467,6 +1538,7 @@ def register():
       )
     bpy.utils.register_class(AlinhaRosto2)
     bpy.utils.register_class(AnimaLocRot)
+    bpy.utils.register_class(LinhaBase)
     bpy.utils.register_class(CriaEspessura)
     bpy.utils.register_class(PreparaImpressao)
     bpy.utils.register_class(CriaRamo)
@@ -1489,9 +1561,9 @@ def register():
     bpy.utils.register_class(OOB_import_stl)
     bpy.utils.register_class(ZoomCena)
     bpy.utils.register_class(CriaFotogrametria)
+    bpy.utils.register_class(AlinhaFaces)
     bpy.utils.register_class(OOB_import_obj)
     bpy.utils.register_class(ImportaCefalometria)
-    bpy.utils.register_class(AlinhaFaces)
     bpy.utils.register_class(Osteotomia)
     bpy.utils.register_class(DinamicaMole)
     bpy.utils.register_class(CriaSplint)
@@ -1508,6 +1580,7 @@ def unregister():
     del bpy.types.Scene.medida_real
     bpy.utils.unregister_class(AlinhaRosto2)
     bpy.utils.unregister_class(AnimaLocRot)
+    bpy.utils.unregister_class(LinhaBase)
     bpy.utils.unregister_class(CriaEspessura)
     bpy.utils.unregister_class(CriaMento)
     bpy.types.INFO_MT_mesh_add.remove(add_object_button)
@@ -1532,9 +1605,9 @@ def unregister():
     bpy.utils.unregister_class(OOB_import_stl)
     bpy.utils.unregister_class(ZoomCena)
     bpy.utils.unregister_class(CriaFotogrametria)
+    bpy.utils.unregister_class(AlinhaFaces)
     bpy.utils.unregister_class(OOB_import_obj)
     bpy.utils.unregister_class(ImportaCefalometria)
-    bpy.utils.unregister_class(AlinhaFaces)
     bpy.utils.unregister_class(Osteotomia)
     bpy.utils.unregister_class(DinamicaMole)
     bpy.utils.unregister_class(CapturaLocal)
