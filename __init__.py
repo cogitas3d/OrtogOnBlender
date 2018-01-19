@@ -1192,12 +1192,18 @@ class ImportaTomo(bpy.types.Panel):
         scn = context.scene
         obj = context.object 
         
+        row = layout.row()
+        row.label(text="Reconstrução da Tomografia:")
+
         col = layout.column(align=True)
         col.prop(scn.my_tool, "path", text="")
  
         row = layout.row()
         row.operator("object.gera_modelos_tomo", text="Converte DICOM para 3D", icon="SNAP_FACE")
         
+
+        row = layout.row()
+        row.label(text="Referências gráficas:")
 
         row = layout.row()
         linha=row.operator("mesh.add_linhabase", text="Linha Central Ver", icon="PAUSE")
