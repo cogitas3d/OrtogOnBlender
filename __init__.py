@@ -149,6 +149,68 @@ def add_object_button(self, context):
         text="LinhaBase",
         icon='VIEW3D')
 
+
+# IMPORTA ARMATURE
+
+def ImportaArmatureDef(self, context):
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    dirScript = bpy.utils.user_resource('SCRIPTS')
+
+    blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+    section   = "\\Object\\"
+    object    = "Armature_Head"
+
+    filepath  = blendfile + section + object
+    directory = blendfile + section
+    filename  = object
+
+    bpy.ops.wm.append(
+        filepath=filepath, 
+        filename=filename,
+        directory=directory)
+        
+    bpy.ops.wm.append(filename=filename, directory=directory)
+
+    # APAGA OBJETOS EXCEDENTES
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['Armature_Head.001']
+    b = bpy.data.objects['Mandibula']
+    c = bpy.data.objects['SETA_Corpo_M']
+    d = bpy.data.objects['SETA_Maxila']
+    e = bpy.data.objects['SETA_Mento']
+    f = bpy.data.objects['Mandibula.001']
+    g = bpy.data.objects['SETA_Corpo_M.001']
+    h = bpy.data.objects['SETA_Maxila.001']
+    i = bpy.data.objects['SETA_Mento.001']
+
+    a.select = True
+    b.select = True
+    c.select = True
+    d.select = True
+    e.select = True
+    f.select = True
+    g.select = True
+    h.select = True
+    i.select = True
+
+
+    bpy.ops.object.delete(use_global=False)
+    
+
+class ImportaArmature(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.importa_armature"
+    bl_label = "Importa estrutura de bones"
+    
+    def execute(self, context):
+        ImportaArmatureDef(self, context)
+        return {'FINISHED'}
+
 # -----------------------------------
 
 def CriaEsperssuraDef(self, context):
@@ -1203,7 +1265,7 @@ class ImportaTomo(bpy.types.Panel):
         
 
         row = layout.row()
-        row.label(text="Referências gráficas:")
+        row.label(text="Referências Gráficas:")
 
         row = layout.row()
         linha=row.operator("mesh.add_linhabase", text="Linha Central Ver", icon="PAUSE")
@@ -1449,6 +1511,9 @@ class Osteotomia(bpy.types.Panel):
         row = layout.row()
         circle=row.operator("mesh.separate", text="Separa Osteotomia", icon="GROUP_VERTEX")
         circle.type='LOOSE'
+        
+        row = layout.row()
+        circle=row.operator("object.importa_armature", text="Configura Armature", icon="GROUP_BONE")        
 
         row = layout.row()        
         row.label(text="Configura Peças:")
@@ -1545,6 +1610,7 @@ def register():
     bpy.utils.register_class(AlinhaRosto2)
     bpy.utils.register_class(AnimaLocRot)
     bpy.utils.register_class(LinhaBase)
+    bpy.utils.register_class(ImportaArmature)
     bpy.utils.register_class(CriaEspessura)
     bpy.utils.register_class(PreparaImpressao)
     bpy.utils.register_class(CriaRamo)
@@ -1587,6 +1653,7 @@ def unregister():
     bpy.utils.unregister_class(AlinhaRosto2)
     bpy.utils.unregister_class(AnimaLocRot)
     bpy.utils.unregister_class(LinhaBase)
+    bpy.utils.unregister_class(ImportaArmature)
     bpy.utils.unregister_class(CriaEspessura)
     bpy.utils.unregister_class(CriaMento)
     bpy.types.INFO_MT_mesh_add.remove(add_object_button)
