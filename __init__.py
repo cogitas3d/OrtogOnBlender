@@ -173,30 +173,21 @@ def ImportaArmatureDef(self, context):
         filename=filename,
         directory=directory)
         
-    bpy.ops.wm.append(filename=filename, directory=directory)
+ #   bpy.ops.wm.append(filename=filename, directory=directory)
 
     # APAGA OBJETOS EXCEDENTES
 
     bpy.ops.object.select_all(action='DESELECT')
-    a = bpy.data.objects['Armature_Head.001']
-    b = bpy.data.objects['Mandibula']
-    c = bpy.data.objects['SETA_Corpo_M']
-    d = bpy.data.objects['SETA_Maxila']
-    e = bpy.data.objects['SETA_Mento']
-    f = bpy.data.objects['Mandibula.001']
-    g = bpy.data.objects['SETA_Corpo_M.001']
-    h = bpy.data.objects['SETA_Maxila.001']
-    i = bpy.data.objects['SETA_Mento.001']
+    a = bpy.data.objects['Mandibula']
+    b = bpy.data.objects['SETA_Corpo_M']
+    c = bpy.data.objects['SETA_Maxila']
+    d = bpy.data.objects['SETA_Mento']
+
 
     a.select = True
     b.select = True
     c.select = True
     d.select = True
-    e.select = True
-    f.select = True
-    g.select = True
-    h.select = True
-    i.select = True
 
 
     bpy.ops.object.delete(use_global=False)
