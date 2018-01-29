@@ -541,10 +541,33 @@ def ConfiguraMentoDef(self, context):
 
     armatureHead = bpy.data.objects['Armature_Head']
     bpy.ops.object.select_all(action='DESELECT')
+    armatureHead.hide=False
+    armatureHead.select=True
     bpy.context.scene.objects.active = armatureHead
-    bpy.data.objects['me'].select = True
-    bpy.data.objects['Armature_Head'].select = True
-    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+    bpy.ops.object.posemode_toggle()
+
+ #   bpy.data.objects['me'].select = True
+ #   bpy.data.objects['Armature_Head'].select = True
+ #   bpy.ops.object.parent_set(type='ARMATURE_NAME')
+
+    bpy.ops.pose.select_all(action='DESELECT')
+    o=bpy.context.object
+    b=o.data.bones['me']
+    b.select=True
+    o.data.bones.active=b
+ 
+    bpy.ops.pose.constraint_add(type='CHILD_OF')
+    bpy.context.object.pose.bones["me"].constraints["Child Of"].target = bpy.data.objects["me"]
+
+    pbone = bpy.context.active_object.pose.bones["me"] # Bone
+    context_copy = bpy.context.copy()
+    context_copy["constraint"] = pbone.constraints["Child Of"]
+    bpy.ops.constraint.childof_set_inverse(context_copy, constraint="Child Of", owner='BONE')
+
+    bpy.ops.object.posemode_toggle()
+    armatureHead.hide=True
+
+ #   bpy.context.active_object.data.bones.active = pbone.bone
 
 # CONFIGURA RAMO DA MANDÍBULA
 def ConfiguraCorpoMandDef(self, context):
@@ -571,10 +594,32 @@ def ConfiguraCorpoMandDef(self, context):
 
     armatureHead = bpy.data.objects['Armature_Head']
     bpy.ops.object.select_all(action='DESELECT')
+    armatureHead.hide=False
+    armatureHead.select=True
     bpy.context.scene.objects.active = armatureHead
-    bpy.data.objects['cm'].select = True
-    bpy.data.objects['Armature_Head'].select = True
-    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+    bpy.ops.object.posemode_toggle()
+
+#    bpy.data.objects['cm'].select = True
+#    bpy.data.objects['Armature_Head'].select = True
+#    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+
+    bpy.ops.pose.select_all(action='DESELECT')
+    o=bpy.context.object
+    b=o.data.bones['Corpo_Mandibular.GUIA']
+    b.select=True
+    o.data.bones.active=b
+ 
+    bpy.ops.pose.constraint_add(type='CHILD_OF')
+    bpy.context.object.pose.bones["Corpo_Mandibular.GUIA"].constraints["Child Of"].target = bpy.data.objects["cm"]
+
+    pbone = bpy.context.active_object.pose.bones["Corpo_Mandibular.GUIA"] # Bone
+    context_copy = bpy.context.copy()
+    context_copy["constraint"] = pbone.constraints["Child Of"]
+    bpy.ops.constraint.childof_set_inverse(context_copy, constraint="Child Of", owner='BONE')
+
+
+    bpy.ops.object.posemode_toggle()
+    armatureHead.hide=True
 
 # CONFIGURA RAMO DIREITO
 def ConfiguraRamoDirDef(self, context):
@@ -601,10 +646,30 @@ def ConfiguraRamoDirDef(self, context):
 
     armatureHead = bpy.data.objects['Armature_Head']
     bpy.ops.object.select_all(action='DESELECT')
+    armatureHead.hide=False
+    armatureHead.select=True
     bpy.context.scene.objects.active = armatureHead
-    bpy.data.objects['rd'].select = True
-    bpy.data.objects['Armature_Head'].select = True
-    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+    bpy.ops.object.posemode_toggle()
+#    bpy.data.objects['rd'].select = True
+#    bpy.data.objects['Armature_Head'].select = True
+#    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+
+    bpy.ops.pose.select_all(action='DESELECT')
+    o=bpy.context.object
+    b=o.data.bones['rd']
+    b.select=True
+    o.data.bones.active=b
+ 
+    bpy.ops.pose.constraint_add(type='CHILD_OF')
+    bpy.context.object.pose.bones["rd"].constraints["Child Of"].target = bpy.data.objects["rd"]
+
+    pbone = bpy.context.active_object.pose.bones["rd"] # Bone
+    context_copy = bpy.context.copy()
+    context_copy["constraint"] = pbone.constraints["Child Of"]
+    bpy.ops.constraint.childof_set_inverse(context_copy, constraint="Child Of", owner='BONE')
+
+    bpy.ops.object.posemode_toggle()
+    armatureHead.hide=True
 
 # CONFIGURA RAMO ESQUERDO
 def ConfiguraRamoEsqDef(self, context):
@@ -631,10 +696,30 @@ def ConfiguraRamoEsqDef(self, context):
 
     armatureHead = bpy.data.objects['Armature_Head']
     bpy.ops.object.select_all(action='DESELECT')
+    armatureHead.hide=False
+    armatureHead.select=True
     bpy.context.scene.objects.active = armatureHead
-    bpy.data.objects['re'].select = True
-    bpy.data.objects['Armature_Head'].select = True
-    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+    bpy.ops.object.posemode_toggle()
+#    bpy.data.objects['re'].select = True
+#    bpy.data.objects['Armature_Head'].select = True
+#    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+
+    bpy.ops.pose.select_all(action='DESELECT')
+    o=bpy.context.object
+    b=o.data.bones['re']
+    b.select=True
+    o.data.bones.active=b
+ 
+    bpy.ops.pose.constraint_add(type='CHILD_OF')
+    bpy.context.object.pose.bones["re"].constraints["Child Of"].target = bpy.data.objects["re"]
+
+    pbone = bpy.context.active_object.pose.bones["re"] # Bone
+    context_copy = bpy.context.copy()
+    context_copy["constraint"] = pbone.constraints["Child Of"]
+    bpy.ops.constraint.childof_set_inverse(context_copy, constraint="Child Of", owner='BONE')
+
+    bpy.ops.object.posemode_toggle()
+    armatureHead.hide=True
 
 # CONFIGURA MAXILA
 def ConfiguraMaxilaDef(self, context):
@@ -661,10 +746,30 @@ def ConfiguraMaxilaDef(self, context):
 
     armatureHead = bpy.data.objects['Armature_Head']
     bpy.ops.object.select_all(action='DESELECT')
+    armatureHead.hide=False
+    armatureHead.select=True
     bpy.context.scene.objects.active = armatureHead
-    bpy.data.objects['ma'].select = True
-    bpy.data.objects['Armature_Head'].select = True
-    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+    bpy.ops.object.posemode_toggle()
+#    bpy.data.objects['ma'].select = True
+#    bpy.data.objects['Armature_Head'].select = True
+#    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+
+    bpy.ops.pose.select_all(action='DESELECT')
+    o=bpy.context.object
+    b=o.data.bones['Maxila.GUIA']
+    b.select=True
+    o.data.bones.active=b
+ 
+    bpy.ops.pose.constraint_add(type='CHILD_OF')
+    bpy.context.object.pose.bones["Maxila.GUIA"].constraints["Child Of"].target = bpy.data.objects["ma"]
+
+    pbone = bpy.context.active_object.pose.bones["Maxila.GUIA"] # Bone
+    context_copy = bpy.context.copy()
+    context_copy["constraint"] = pbone.constraints["Child Of"]
+    bpy.ops.constraint.childof_set_inverse(context_copy, constraint="Child Of", owner='BONE')
+
+    bpy.ops.object.posemode_toggle()
+    armatureHead.hide=True
 
 # CONFIGURA CABEÇA
 def ConfiguraCabecaDef(self, context):
@@ -691,11 +796,30 @@ def ConfiguraCabecaDef(self, context):
 
     armatureHead = bpy.data.objects['Armature_Head']
     bpy.ops.object.select_all(action='DESELECT')
+    armatureHead.hide=False
+    armatureHead.select=True
     bpy.context.scene.objects.active = armatureHead
-    bpy.data.objects['ca'].select = True
-    bpy.data.objects['Armature_Head'].select = True
-    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+    bpy.ops.object.posemode_toggle()
+#    bpy.data.objects['ca'].select = True
+#    bpy.data.objects['Armature_Head'].select = True
+#    bpy.ops.object.parent_set(type='ARMATURE_NAME')
 
+    bpy.ops.pose.select_all(action='DESELECT')
+    o=bpy.context.object
+    b=o.data.bones['ca']
+    b.select=True
+    o.data.bones.active=b
+ 
+    bpy.ops.pose.constraint_add(type='CHILD_OF')
+    bpy.context.object.pose.bones["ca"].constraints["Child Of"].target = bpy.data.objects["ca"]
+
+    pbone = bpy.context.active_object.pose.bones["ca"] # Bone
+    context_copy = bpy.context.copy()
+    context_copy["constraint"] = pbone.constraints["Child Of"]
+    bpy.ops.constraint.childof_set_inverse(context_copy, constraint="Child Of", owner='BONE')
+
+    bpy.ops.object.posemode_toggle()
+    armatureHead.hide=True
 
 def AreasInfluenciaDef(self, context):
     
@@ -1001,11 +1125,15 @@ def ConfiguraDinamicaMoleDef(self, context):
 #    a = bpy.data.objects['FaceMalha.001']
     armatureHead = bpy.data.objects['Armature_Head']
 
+    armatureHead.hide=False
+
     bpy.ops.object.select_all(action='DESELECT')
     bpy.context.scene.objects.active = armatureHead
     bpy.data.objects['FaceMalha.001'].select = True
     bpy.data.objects['Armature_Head'].select = True
     bpy.ops.object.parent_set(type='ARMATURE_NAME')
+
+    armatureHead.hide=True
 
 class CortaFace(bpy.types.Operator):
     """Tooltip"""
