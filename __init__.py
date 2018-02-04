@@ -1,7 +1,7 @@
 bl_info = {
     "name": "OrtogOnBlender",
     "author": "Cicero Moraes e Everton da Rosa",
-    "version": (1, 0),
+    "version": (1, 1),
     "blender": (2, 75, 0),
     "location": "View3D",
     "description": "Planejamento de Cirurgia Ortognática no Blender",
@@ -149,6 +149,14 @@ def add_object_button(self, context):
         text="LinhaBase",
         icon='VIEW3D')
 
+class BooleanCortes(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "mesh.boolean_cortes"
+    bl_label = "Boolean Cortes"
+    
+    def execute(self, context):
+        BooleanCortesDef(self, context)
+        return {'FINISHED'}
 
 # IMPORTA ARMATURE
 
@@ -1503,6 +1511,13 @@ class ImportaTomo(bpy.types.Panel):
         linha.location=(200,30,0)
         linha.rotation=(1.5708,0,0)
 
+        row = layout.row()
+        row.label(text="Segmentação Mandíbula:")
+        
+        row = layout.row()
+        linha=row.operator("mesh.select_more", text="Sel. Mais", icon="ZOOMIN")
+        
+        linha=row.operator("mesh.select_less", text="Sel. Menos", icon="ZOOMOUT")     
   
         
 #IMPORTA STL
