@@ -1,7 +1,7 @@
 bl_info = {
     "name": "OrtogOnBlender",
     "author": "Cicero Moraes e Everton da Rosa",
-    "version": (1, 1),
+    "version": (1, 1, 1),
     "blender": (2, 75, 0),
     "location": "View3D",
     "description": "Planejamento de Cirurgia Ortognática no Blender",
@@ -535,6 +535,9 @@ def ERROtipoDef(self, context):
 def ERROruntimeDef(self, context):
     self.layout.label("Você não selecionou nenhum objeto!")
 
+def ERROcmDef(self, context):
+    self.layout.label("Você não configurou o Ramo da Mandíbula!")
+
 # CONFIGURA MENTO
 def ConfiguraMentoDef(self, context):
 
@@ -546,51 +549,69 @@ def ConfiguraMentoDef(self, context):
     try: 
         ob=bpy.data.objects["Armature_Head"]
 
-        bpy.ops.object.mode_set(mode='EDIT')
-        mesh=bmesh.from_edit_mesh(bpy.context.object.data)
-        for v in mesh.verts:
-            v.select = True
+        try: 
+            ob=bpy.data.objects["cm"]
 
-        vg = obj.vertex_groups.new(name="me")
-        bpy.ops.object.mode_set(mode='EDIT')
-        bpy.ops.object.vertex_group_assign()
-        bpy.ops.object.mode_set(mode='OBJECT')
+            bpy.ops.object.mode_set(mode='EDIT')
+            mesh=bmesh.from_edit_mesh(bpy.context.object.data)
+
+
+            for v in mesh.verts:
+                v.select = True
+
+            vg = obj.vertex_groups.new(name="me")
+            bpy.ops.object.mode_set(mode='EDIT')
+            bpy.ops.object.vertex_group_assign()
+            bpy.ops.object.mode_set(mode='OBJECT')
+            
+            activeObject = bpy.context.active_object #Set active object to variable
+            mat = bpy.data.materials.new(name="MaterialMento") #set new material to variable
+            activeObject.data.materials.append(mat) #add the material to the object
+            bpy.context.object.active_material.diffuse_color = (0.8, 0.35, 0.2) #change color
+            bpy.context.object.name = "me"
+
+            armatureHead = bpy.data.objects['Armature_Head']
+            bpy.ops.object.select_all(action='DESELECT')
+            armatureHead.hide=False
+            armatureHead.select=True
+            bpy.context.scene.objects.active = armatureHead
+            bpy.ops.object.posemode_toggle()
+
+         #   bpy.data.objects['me'].select = True
+         #   bpy.data.objects['Armature_Head'].select = True
+         #   bpy.ops.object.parent_set(type='ARMATURE_NAME')
+
+            bpy.ops.pose.select_all(action='DESELECT')
+            o=bpy.context.object
+            b=o.data.bones['me']
+            b.select=True
+            o.data.bones.active=b
+         
+            bpy.ops.pose.constraint_add(type='CHILD_OF')
+            bpy.context.object.pose.bones["me"].constraints["Child Of"].target = bpy.data.objects["me"]
+
+            pbone = bpy.context.active_object.pose.bones["me"] # Bone
+            context_copy = bpy.context.copy()
+            context_copy["constraint"] = pbone.constraints["Child Of"]
+            bpy.ops.constraint.childof_set_inverse(context_copy, constraint="Child Of", owner='BONE')
+
+            bpy.ops.object.posemode_toggle()
+            armatureHead.hide=True
+
+            a = bpy.data.objects['cm']
+            b = bpy.data.objects['me']
+
+            bpy.ops.object.select_all(action='DESELECT')
+            a.select = True
+            b.select = True 
+            bpy.context.scene.objects.active = a
+            bpy.ops.object.parent_set()
         
-        activeObject = bpy.context.active_object #Set active object to variable
-        mat = bpy.data.materials.new(name="MaterialMento") #set new material to variable
-        activeObject.data.materials.append(mat) #add the material to the object
-        bpy.context.object.active_material.diffuse_color = (0.8, 0.35, 0.2) #change color
-        bpy.context.object.name = "me"
-
-        armatureHead = bpy.data.objects['Armature_Head']
-        bpy.ops.object.select_all(action='DESELECT')
-        armatureHead.hide=False
-        armatureHead.select=True
-        bpy.context.scene.objects.active = armatureHead
-        bpy.ops.object.posemode_toggle()
-
-     #   bpy.data.objects['me'].select = True
-     #   bpy.data.objects['Armature_Head'].select = True
-     #   bpy.ops.object.parent_set(type='ARMATURE_NAME')
-
-        bpy.ops.pose.select_all(action='DESELECT')
-        o=bpy.context.object
-        b=o.data.bones['me']
-        b.select=True
-        o.data.bones.active=b
-     
-        bpy.ops.pose.constraint_add(type='CHILD_OF')
-        bpy.context.object.pose.bones["me"].constraints["Child Of"].target = bpy.data.objects["me"]
-
-        pbone = bpy.context.active_object.pose.bones["me"] # Bone
-        context_copy = bpy.context.copy()
-        context_copy["constraint"] = pbone.constraints["Child Of"]
-        bpy.ops.constraint.childof_set_inverse(context_copy, constraint="Child Of", owner='BONE')
-
-        bpy.ops.object.posemode_toggle()
-        armatureHead.hide=True
+        except KeyError:
+            bpy.context.window_manager.popup_menu(ERROcmDef, title="Atenção!", icon='INFO')
 
  #   bpy.context.active_object.data.bones.active = pbone.bone
+
 
     except KeyError:
         bpy.context.window_manager.popup_menu(ERROarmatureDef, title="Atenção!", icon='INFO')
