@@ -1,7 +1,7 @@
 bl_info = {
     "name": "OrtogOnBlender",
     "author": "Cicero Moraes e Everton da Rosa",
-    "version": (1, 1, 1),
+    "version": (1, 1, 2),
     "blender": (2, 75, 0),
     "location": "View3D",
     "description": "Planejamento de Cirurgia Ortognática no Blender",
@@ -1480,6 +1480,696 @@ class ConfiguraDinamicaMole(bpy.types.Operator):
         ConfiguraDinamicaMoleDef(self, context)
         return {'FINISHED'}
 
+# IMPORTA SPLINT COM ARMATURE
+
+def ImportaSplintDef(self, context):
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    dirScript = bpy.utils.user_resource('SCRIPTS')
+
+    blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+    section   = "\\Group\\"
+    object    = "SPLINT"
+
+    filepath  = blendfile + section + object
+    directory = blendfile + section
+    filename  = object
+
+    bpy.ops.wm.append(
+        filepath=filepath, 
+        filename=filename,
+        directory=directory)
+        
+
+class ImportaSplint(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.importa_splint"
+    bl_label = "Importa Splint com Armature"
+    
+    def execute(self, context):
+        ImportaSplintDef(self, context)
+        return {'FINISHED'}
+
+# PONTOS NOS DENTES SUPERIORES
+
+def EMP11Def(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMP11"
+    bpy.context.object.empty_draw_size = 3
+    
+    
+    a = bpy.data.objects['ma']
+    b = bpy.data.objects['EMP11']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+
+class EMP11(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.emp11"
+    bl_label = "EMP11"
+    
+    def execute(self, context):
+        EMP11Def(self, context)
+        return {'FINISHED'}
+
+def EMP21Def(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMP21"
+    bpy.context.object.empty_draw_size = 3
+    
+    
+    a = bpy.data.objects['ma']
+    b = bpy.data.objects['EMP21']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+
+class EMP21(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.emp21"
+    bl_label = "EMP21"
+    
+    def execute(self, context):
+        EMP21Def(self, context)
+        return {'FINISHED'}
+    
+def EMP13Def(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMP13"
+    bpy.context.object.empty_draw_size = 3
+    
+    
+    a = bpy.data.objects['ma']
+    b = bpy.data.objects['EMP13']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+
+class EMP13(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.emp13"
+    bl_label = "EMP1"
+    
+    def execute(self, context):
+        EMP13Def(self, context)
+        return {'FINISHED'}
+    
+def EMP23Def(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMP23"
+    bpy.context.object.empty_draw_size = 3
+    
+    
+    a = bpy.data.objects['ma']
+    b = bpy.data.objects['EMP23']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+
+class EMP23(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.emp23"
+    bl_label = "EMP23"
+    
+    def execute(self, context):
+        EMP23Def(self, context)
+        return {'FINISHED'}
+    
+def EMP16Def(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMP16"
+    bpy.context.object.empty_draw_size = 3
+    
+    
+    a = bpy.data.objects['ma']
+    b = bpy.data.objects['EMP16']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+
+class EMP16(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.emp16"
+    bl_label = "EMP16"
+    
+    def execute(self, context):
+        EMP16Def(self, context)
+        return {'FINISHED'}
+    
+def EMP26Def(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMP26"
+    bpy.context.object.empty_draw_size = 3
+    
+    
+    a = bpy.data.objects['ma']
+    b = bpy.data.objects['EMP26']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+
+class EMP26(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.emp26"
+    bl_label = "EMP26"
+    
+    def execute(self, context):
+        EMP26Def(self, context)
+        return {'FINISHED'}
+
+# PONTOS NOS DENTES INFERIORES
+
+def EMP31Def(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMP31"
+    bpy.context.object.empty_draw_size = 3
+    
+    
+    a = bpy.data.objects['cm']
+    b = bpy.data.objects['EMP31']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+
+class EMP31(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.emp31"
+    bl_label = "EMP31"
+    
+    def execute(self, context):
+        EMP31Def(self, context)
+        return {'FINISHED'}
+
+def EMP41Def(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMP41"
+    bpy.context.object.empty_draw_size = 3
+    
+    
+    a = bpy.data.objects['cm']
+    b = bpy.data.objects['EMP41']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+
+class EMP41(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.emp41"
+    bl_label = "EMP41"
+    
+    def execute(self, context):
+        EMP41Def(self, context)
+        return {'FINISHED'}
+    
+def EMP33Def(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMP33"
+    bpy.context.object.empty_draw_size = 3
+    
+    
+    a = bpy.data.objects['cm']
+    b = bpy.data.objects['EMP33']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+
+class EMP33(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.emp33"
+    bl_label = "EMP33"
+    
+    def execute(self, context):
+        EMP33Def(self, context)
+        return {'FINISHED'}
+    
+def EMP43Def(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMP43"
+    bpy.context.object.empty_draw_size = 3
+    
+    
+    a = bpy.data.objects['cm']
+    b = bpy.data.objects['EMP43']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+
+class EMP43(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.emp43"
+    bl_label = "EMP43"
+    
+    def execute(self, context):
+        EMP43Def(self, context)
+        return {'FINISHED'}
+    
+def EMP36Def(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMP36"
+    bpy.context.object.empty_draw_size = 3
+    
+    
+    a = bpy.data.objects['cm']
+    b = bpy.data.objects['EMP36']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+
+class EMP36(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.emp36"
+    bl_label = "EMP36"
+    
+    def execute(self, context):
+        EMP36Def(self, context)
+        return {'FINISHED'}
+    
+def EMP46Def(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMP46"
+    bpy.context.object.empty_draw_size = 3
+    
+    
+    a = bpy.data.objects['cm']
+    b = bpy.data.objects['EMP46']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+
+class EMP46(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.emp46"
+    bl_label = "EMP46"
+    
+    def execute(self, context):
+        EMP46Def(self, context)
+        return {'FINISHED'}
+    
+# CRIA EMPTIES INTERMEDIÁRIOS
+
+def CriaSplintDef(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    a = bpy.data.objects['EMP11']
+    b = bpy.data.objects['EMP41']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.view3d.snap_cursor_to_selected()
+
+    bpy.ops.object.empty_add(type='SPHERE')
+    bpy.context.object.name = "EMP1141"
+    bpy.context.object.empty_draw_size = .5
+    
+    
+    a = bpy.data.objects['ca']
+    b = bpy.data.objects['EMP1141']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+
+    # ----------------------------
+
+    a = bpy.data.objects['EMP21']
+    b = bpy.data.objects['EMP31']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.view3d.snap_cursor_to_selected()
+
+    bpy.ops.object.empty_add(type='SPHERE')
+    bpy.context.object.name = "EMP2131"
+    bpy.context.object.empty_draw_size = .5
+    
+    
+    a = bpy.data.objects['ca']
+    b = bpy.data.objects['EMP2131']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+    # ----------------------------
+
+    a = bpy.data.objects['EMP23']
+    b = bpy.data.objects['EMP33']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.view3d.snap_cursor_to_selected()
+
+    bpy.ops.object.empty_add(type='SPHERE')
+    bpy.context.object.name = "EMP2333"
+    bpy.context.object.empty_draw_size = .5
+    
+    
+    a = bpy.data.objects['ca']
+    b = bpy.data.objects['EMP2333']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+    # ----------------------------
+
+    a = bpy.data.objects['EMP13']
+    b = bpy.data.objects['EMP43']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.view3d.snap_cursor_to_selected()
+
+    bpy.ops.object.empty_add(type='SPHERE')
+    bpy.context.object.name = "EMP1343"
+    bpy.context.object.empty_draw_size = .5
+    
+    
+    a = bpy.data.objects['ca']
+    b = bpy.data.objects['EMP1343']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+    # ----------------------------
+
+    a = bpy.data.objects['EMP26']
+    b = bpy.data.objects['EMP36']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.view3d.snap_cursor_to_selected()
+
+    bpy.ops.object.empty_add(type='SPHERE')
+    bpy.context.object.name = "EMP2636"
+    bpy.context.object.empty_draw_size = .5
+    
+    
+    a = bpy.data.objects['ca']
+    b = bpy.data.objects['EMP2636']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+    # ----------------------------
+
+    a = bpy.data.objects['EMP16']
+    b = bpy.data.objects['EMP46']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.view3d.snap_cursor_to_selected()
+
+    bpy.ops.object.empty_add(type='SPHERE')
+    bpy.context.object.name = "EMP1646"
+    bpy.context.object.empty_draw_size = .5
+    
+    
+    a = bpy.data.objects['ca']
+    b = bpy.data.objects['EMP1646']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    
+    # ---------------
+    
+    bpy.ops.object.importa_splint()
+    
+    # --------------
+    
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['EMP1646']                 
+    a.select = True
+    bpy.ops.view3d.snap_cursor_to_selected()
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['EMPbone1646']                 
+    a.select = True
+    bpy.ops.view3d.snap_selected_to_cursor(use_offset=False)
+    
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['EMP1343']                 
+    a.select = True
+    bpy.ops.view3d.snap_cursor_to_selected()
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['EMPbone1343']                 
+    a.select = True
+    bpy.ops.view3d.snap_selected_to_cursor(use_offset=False)
+    
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['EMP1141']                 
+    a.select = True
+    bpy.ops.view3d.snap_cursor_to_selected()
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['EMPbone1141']                 
+    a.select = True
+    bpy.ops.view3d.snap_selected_to_cursor(use_offset=False)
+    
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['EMP2131']                 
+    a.select = True
+    bpy.ops.view3d.snap_cursor_to_selected()
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['EMPbone2131']                 
+    a.select = True
+    bpy.ops.view3d.snap_selected_to_cursor(use_offset=False)
+    
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['EMP2333']                 
+    a.select = True
+    bpy.ops.view3d.snap_cursor_to_selected()
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['EMPbone2333']                 
+    a.select = True
+    bpy.ops.view3d.snap_selected_to_cursor(use_offset=False)
+    
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['EMP2636']                 
+    a.select = True
+    bpy.ops.view3d.snap_cursor_to_selected()
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['EMPbone2636']                 
+    a.select = True
+    bpy.ops.view3d.snap_selected_to_cursor(use_offset=False)
+
+    
+class CriaSplint(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.cria_splint"
+    bl_label = "Cria Splint"
+    
+    def execute(self, context):
+        CriaSplintDef(self, context)
+        return {'FINISHED'}
+
+def ConfSplintDef(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    a = bpy.data.objects['ma']
+    b = bpy.data.objects['cm']
+
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+    
+    bpy.ops.object.duplicate()
+    bpy.ops.object.join()
+    
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['SPLINT']
+    a.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.duplicate()
+    
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['SPLINT']
+    a.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.hide_view_set(unselected=False)
+        
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['ma.001']
+    b = bpy.data.objects['SPLINT.001']
+    a.select = True
+    b.select = True 
+    bpy.context.scene.objects.active = a
+#    bpy.ops.view3d.cork_mesh_slicer(method='DIFF')            
+    
+class ConfSplint(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.conf_splint"
+    bl_label = "Boolean Splint"
+    
+    def execute(self, context):
+        ConfSplintDef(self, context)
+        return {'FINISHED'}
 
 #IMPORTA TOMO
 
@@ -1817,7 +2507,7 @@ class DinamicaMole(bpy.types.Panel):
 
 # SPLINT
 
-class CriaSplint(bpy.types.Panel):
+class CriaSplintPanel(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
     bl_label = "Criação do Splint"
     bl_idname = "Cria_Splint"
@@ -1837,13 +2527,64 @@ class CriaSplint(bpy.types.Panel):
         row.operator("screen.animation_play", text="", icon="PLAY")
         row.operator("screen.frame_jump", text="Final", icon="FF").end=True
         
+        row = layout.row()        
+        row.label(text="Arcada Superior:")
+
         row = layout.row()
-        circle=row.operator("object.convert", text="Aplica Deformação", icon="FILE_TICK").target='MESH'
+        row.operator("object.emp11", text="Dente 11", icon="X")
+
+        row = layout.row()
+        row.operator("object.emp21", text="Dente 21", icon="X")
         
         row = layout.row()
-        circle=row.operator("view3d.cork_mesh_slicer", text="Boolean Splint", icon="MOD_BOOLEAN")
-        circle.method='DIFF'
+        row.operator("object.emp13", text="Dente 13", icon="X")       
+
+        row = layout.row()
+        row.operator("object.emp23", text="Dente 23", icon="X") 
         
+        row = layout.row()
+        row.operator("object.emp16", text="Dente 16", icon="X")
+        
+        row = layout.row()
+        row.operator("object.emp26", text="Dente 26", icon="X")
+        
+        row = layout.row()        
+        row.label(text="Arcada Inferior:") 
+
+        row = layout.row()
+        row.operator("object.emp31", text="Dente 31", icon="X")
+        
+        row = layout.row()
+        row.operator("object.emp41", text="Dente 41", icon="X")
+        
+        row = layout.row()
+        row.operator("object.emp33", text="Dente 33", icon="X")
+
+        row = layout.row()
+        row.operator("object.emp43", text="Dente 43", icon="X")
+        
+        row = layout.row()
+        row.operator("object.emp36", text="Dente 36", icon="X")
+        
+        row = layout.row()
+        row.operator("object.emp46", text="Dente 46", icon="X")
+
+        row = layout.row()        
+        row.label(text="Configuração do Splint:") 
+
+        row = layout.row()
+        row.operator("object.cria_splint", text="Cria Splint", icon="OUTLINER_OB_CURVE")
+
+        row = layout.row()
+        row.operator("object.conf_splint", text="Prepara Boolean", icon="RECOVER_AUTO")        
+        
+        row = layout.row()
+        circle=row.operator("view3d.cork_mesh_slicer", text="Boolean Cortes", icon="MOD_BOOLEAN")
+        circle.method='DIFF'    
+
+#        row = layout.row()
+#        circle=row.operator("object.convert", text="Aplica Deformação", icon="FILE_TICK").target='MESH'
+    
         row = layout.row()
         row.operator("object.prepara_impressao", text="Prepara Impressão 3D", icon="MOD_REMESH")
         
@@ -1899,6 +2640,21 @@ def register():
     bpy.utils.register_class(CriaSplint)
     bpy.utils.register_class(CapturaLocal)
     bpy.types.Scene.my_tool = PointerProperty(type=CapturaLocal)
+    bpy.utils.register_class(ImportaSplint)
+    bpy.utils.register_class(EMP11)
+    bpy.utils.register_class(EMP21)
+    bpy.utils.register_class(EMP13)
+    bpy.utils.register_class(EMP23)
+    bpy.utils.register_class(EMP16)
+    bpy.utils.register_class(EMP26)
+    bpy.utils.register_class(EMP31)
+    bpy.utils.register_class(EMP41)
+    bpy.utils.register_class(EMP33)
+    bpy.utils.register_class(EMP43)
+    bpy.utils.register_class(EMP36)
+    bpy.utils.register_class(EMP46)
+    bpy.utils.register_class(CriaSplintPanel)
+    bpy.utils.register_class(ConfSplint)
 
 
 def unregister():
@@ -1943,7 +2699,21 @@ def unregister():
     bpy.utils.unregister_class(DinamicaMole)
     bpy.utils.unregister_class(CapturaLocal)
     bpy.utils.unregister_class(CriaSplint)
-
+    bpy.utils.unregister_class(ImportaSplint)
+    bpy.utils.unregister_class(EMP11)
+    bpy.utils.unregister_class(EMP21)
+    bpy.utils.unregister_class(EMP13)
+    bpy.utils.unregister_class(EMP23)
+    bpy.utils.unregister_class(EMP16)
+    bpy.utils.unregister_class(EMP26)
+    bpy.utils.unregister_class(EMP31)
+    bpy.utils.unregister_class(EMP41)
+    bpy.utils.unregister_class(EMP33)
+    bpy.utils.unregister_class(EMP43)
+    bpy.utils.unregister_class(EMP36)
+    bpy.utils.unregister_class(EMP46)
+    bpy.utils.unregister_class(CriaSplintPanel)
+    bpy.utils.unregister_class(ConfSplint)
 
 if __name__ == "__main__":
     register()
