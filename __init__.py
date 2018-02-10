@@ -1184,6 +1184,7 @@ def GeraModeloFotoDef(self, context):
 #    bpy.ops.object.convert(target='MESH')
     bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
     bpy.ops.view3d.view_all(center=False)
+    bpy.ops.file.pack_all()
 
     
 def GeraModeloFotoSMVSDef(self, context):
@@ -1210,6 +1211,7 @@ def GeraModeloFotoSMVSDef(self, context):
         bpy.context.scene.objects.active = scene_dense_mesh_texture2
         bpy.data.objects['scene_dense_mesh_texture2'].select = True
         bpy.ops.view3d.view_all(center=False)
+        bpy.ops.file.pack_all()
 
 
     if platform.system() == "Windows":
@@ -1225,7 +1227,8 @@ def GeraModeloFotoSMVSDef(self, context):
         bpy.ops.object.select_all(action='DESELECT')
         bpy.context.scene.objects.active = smvs_surface_clean
         bpy.data.objects['smvs-surface-clean'].select = True
-        bpy.ops.view3d.view_all(center=False)        
+        bpy.ops.view3d.view_all(center=False)
+        bpy.ops.file.pack_all()        
 
 # ------------------------
 
