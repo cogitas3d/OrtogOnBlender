@@ -1,7 +1,7 @@
 bl_info = {
     "name": "OrtogOnBlender",
     "author": "Cicero Moraes e Everton da Rosa",
-    "version": (1, 1, 2),
+    "version": (1, 1, 3),
     "blender": (2, 75, 0),
     "location": "View3D",
     "description": "Planejamento de Cirurgia Ortognática no Blender",
@@ -111,6 +111,25 @@ def get_SMVS_filepath(context):
 #    addon = get_addon_name()
     preferences = context.user_preferences.addons["OrtogOnBlender-master"].preferences
     return preferences.SMVS_filepath
+
+# ROTACIONA/FLIP Z
+
+def rotacionaZDef(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.transform.rotate(value=3.14159, axis=(0, 0, 1))
+
+class rotacionaZ(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.rotaciona_z"
+    bl_label = "Rotaciona "
+    
+    def execute(self, context):
+        rotacionaZDef(self, context)
+        return {'FINISHED'}
 
 #------------------------------------
 
@@ -230,18 +249,24 @@ def CortaFaceDef(self, context):
     context = bpy.context
     obj = context.active_object
 
+    try:
 
-    bpy.context.object.name = "FaceMalha"
-    bpy.ops.object.mode_set(mode='EDIT')
-    bpy.ops.mesh.knife_project(cut_through=True)
-    bpy.ops.mesh.separate(type='SELECTED')
-    bpy.ops.object.mode_set(mode='OBJECT')
-    bpy.ops.object.select_all(action='DESELECT')
-    bpy.data.objects['FaceMalha.001'].select = False
-    bpy.data.objects['FaceMalha'].select = True
-    bpy.ops.object.delete()
-    bpy.data.objects['Circle'].select = True
-    bpy.ops.object.delete()
+        bpy.context.object.name = "FaceMalha"
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.knife_project(cut_through=True)
+        bpy.ops.mesh.separate(type='SELECTED')
+        bpy.ops.object.mode_set(mode='OBJECT')
+        bpy.ops.object.select_all(action='DESELECT')
+        bpy.data.objects['FaceMalha.001'].select = False
+        bpy.data.objects['FaceMalha'].select = True
+        bpy.ops.object.delete()
+        bpy.data.objects['Circle'].select = True
+        bpy.ops.object.delete()
+        
+    except RuntimeError:
+        bpy.context.object.name = "Circle"        
+        bpy.context.window_manager.popup_menu(ERROruntimeCorteDef, title="Atenção!", icon='INFO')
+         
 
 def AlinhaRostoDef(self, context):
     
@@ -249,25 +274,30 @@ def AlinhaRostoDef(self, context):
     obj = context.active_object
     scn = context.scene
 
-    bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
+    try:
+        
+        bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
 
-    bpy.context.object.name = "Rosto"
-    bpy.ops.mesh.edge_face_add() # cria face nos pontos selecionados
-    bpy.ops.mesh.normals_make_consistent(inside=False)
+        bpy.context.object.name = "Rosto"
+        bpy.ops.mesh.edge_face_add() # cria face nos pontos selecionados
+        bpy.ops.mesh.normals_make_consistent(inside=False)
 
-    bpy.ops.mesh.separate(type='SELECTED') # separa triângulo
-    bpy.ops.object.editmode_toggle() #sai do modo de edição
-    bpy.ops.object.select_all(action='DESELECT')
-    bpy.data.objects['Rosto.001'].select = True
-    bpy.context.scene.objects.active = bpy.data.objects['Rosto.001']
-    bpy.ops.object.editmode_toggle() #entra modo edição
-    bpy.ops.mesh.select_all(action='TOGGLE') #seleciona tudo
+        bpy.ops.mesh.separate(type='SELECTED') # separa triângulo
+        bpy.ops.object.editmode_toggle() #sai do modo de edição
+        bpy.ops.object.select_all(action='DESELECT')
+        bpy.data.objects['Rosto.001'].select = True
+        bpy.context.scene.objects.active = bpy.data.objects['Rosto.001']
+        bpy.ops.object.editmode_toggle() #entra modo edição
+        bpy.ops.mesh.select_all(action='TOGGLE') #seleciona tudo
 
-#    bpy.ops.mesh.flip_normals() # inverte os normals
-#    bpy.ops.mesh.normals_make_consistent(inside=False) # Força normals para fora
-    bpy.ops.view3d.viewnumpad(type='TOP', align_active=True) # alinha a vista com a face selecionada
+    #    bpy.ops.mesh.flip_normals() # inverte os normals
+    #    bpy.ops.mesh.normals_make_consistent(inside=False) # Força normals para fora
+        bpy.ops.view3d.viewnumpad(type='TOP', align_active=True) # alinha a vista com a face selecionada
 
-    bpy.ops.object.editmode_toggle() #sai edit mode
+        bpy.ops.object.editmode_toggle() #sai edit mode
+    
+    except RuntimeError:
+        bpy.context.window_manager.popup_menu(ERROruntimePontosDef, title="Atenção!", icon='INFO')    
     
 
 # FATOR DE ESCALA
@@ -537,6 +567,18 @@ def ERROruntimeDef(self, context):
 
 def ERROcmDef(self, context):
     self.layout.label("Você não configurou o Ramo da Mandíbula!")
+    
+def ERROruntimeDICOMDef(self, context):
+    self.layout.label("Você não indicou a pasta com os DICOMS!")
+
+def ERROruntimeFotosDef(self, context):
+    self.layout.label("Você não indicou a pasta com as fotos!")
+    
+def ERROruntimePontosDef(self, context):
+    self.layout.label("Você não selecionou os três pontos!")
+    
+def ERROruntimeCorteDef(self, context):
+    self.layout.label("Você não selecionou o objeto a ser cortado!")
 
 # CONFIGURA MENTO
 def ConfiguraMentoDef(self, context):
@@ -1087,47 +1129,52 @@ def GeraModelosTomoDef(self, context):
     tmpdir = tempfile.gettempdir()
     tmpSTLossos = tmpdir+'/ossos.stl'
     tmpSTLmole = tmpdir+'/mole.stl'
-    dicom2DtlPath = get_dicom2stl_filepath(context)
+
+    try:
+
+        dicom2DtlPath = get_dicom2stl_filepath(context)
 
 
-    subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '200', '-o', tmpSTLossos])
-  
+        subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '200', '-o', tmpSTLossos])
+      
 
-#    subprocess.call(['vtk6python',dicom2DtlPath, '-t',  'bonetest' , '-o', tmpSTLossos ,  scn.my_tool.path])
+    #    subprocess.call(['vtk6python',dicom2DtlPath, '-t',  'bonetest' , '-o', tmpSTLossos ,  scn.my_tool.path])
 
-    bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory=tmpdir)
-    
-    bpy.ops.view3d.view_all(center=False)
-    
-    
- #   subprocess.call(['vtk6python',dicom2DtlPath , '-t',  'skintest' , '-o', tmpSTLmole ,  scn.my_tool.path])
+        bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory=tmpdir)
+        
+        bpy.ops.view3d.view_all(center=False)
+        
+        
+     #   subprocess.call(['vtk6python',dicom2DtlPath , '-t',  'skintest' , '-o', tmpSTLmole ,  scn.my_tool.path])
 
-    subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '65', '-o', tmpSTLmole])
+        subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '65', '-o', tmpSTLmole])
 
-    bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
+        bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
 
 
-    a = bpy.data.objects['Ossos']
-    b = bpy.data.objects['Mole']
+        a = bpy.data.objects['Ossos']
+        b = bpy.data.objects['Mole']
 
-    bpy.ops.object.select_all(action='DESELECT')
-    a.select = True
-    bpy.context.scene.objects.active = a
-    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+        bpy.ops.object.select_all(action='DESELECT')
+        a.select = True
+        bpy.context.scene.objects.active = a
+        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
-    bpy.ops.object.select_all(action='DESELECT')
-    b.select = True
-    bpy.context.scene.objects.active = b
-    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+        bpy.ops.object.select_all(action='DESELECT')
+        b.select = True
+        bpy.context.scene.objects.active = b
+        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
-    bpy.ops.object.select_all(action='DESELECT')
-    a.select = True
-    b.select = True 
-    bpy.context.scene.objects.active = a
-    bpy.ops.object.parent_set()
-    
-    bpy.ops.view3d.view_all(center=False)
+        bpy.ops.object.select_all(action='DESELECT')
+        a.select = True
+        b.select = True 
+        bpy.context.scene.objects.active = a
+        bpy.ops.object.parent_set()
+        
+        bpy.ops.view3d.view_all(center=False)
 
+    except RuntimeError:
+        bpy.context.window_manager.popup_menu(ERROruntimeDICOMDef, title="Atenção!", icon='INFO')
 
 def GeraModeloFotoDef(self, context):
     
@@ -1135,100 +1182,111 @@ def GeraModeloFotoDef(self, context):
     
     tmpdir = tempfile.gettempdir()
 
-    OpenMVGtmpDir = tmpdir+'/OpenMVG'
-    tmpOBJface = tmpdir+'/MVS/scene_dense_mesh_texture2.obj'
+    try:
 
-    
+        OpenMVGtmpDir = tmpdir+'/OpenMVG'
+        tmpOBJface = tmpdir+'/MVS/scene_dense_mesh_texture2.obj'
 
-    OpenMVGPath = get_OpenMVG_filepath(context)
+        
 
-    OpenMVSPath = get_OpenMVS_filepath(context)
+        OpenMVGPath = get_OpenMVG_filepath(context)
 
-
-    shutil.rmtree(tmpdir+'/OpenMVG', ignore_errors=True)
-    shutil.rmtree(tmpdir+'/MVS', ignore_errors=True)
-
-#    if os.name=='posix':
-#    	shutil.rmtree(tmpdir+'/OpenMVG')
-#    	shutil.rmtree(tmpdir+'/MVS')
-
-#    if os.name=='nt':
-#    	subprocess.call(['rmdir', '/Q', '/S', tmpdir+'/OpenMVG'])
-#    	subprocess.call(['rmdir', '/Q', '/S', tmpdir+'/MVS'])
-
-    subprocess.call(['python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
-
-    subprocess.call(OpenMVSPath ,  shell=True)
-
-#    subprocess.call([ 'meshlabserver', '-i', tmpdir+'scene_dense_mesh_texture.ply', '-o', tmpdir+'scene_dense_mesh_texture2.obj', '-om', 'vn', 'wt' ])
+        OpenMVSPath = get_OpenMVS_filepath(context)
 
 
+        shutil.rmtree(tmpdir+'/OpenMVG', ignore_errors=True)
+        shutil.rmtree(tmpdir+'/MVS', ignore_errors=True)
 
-    bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
+    #    if os.name=='posix':
+    #    	shutil.rmtree(tmpdir+'/OpenMVG')
+    #    	shutil.rmtree(tmpdir+'/MVS')
 
-    scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
+    #    if os.name=='nt':
+    #    	subprocess.call(['rmdir', '/Q', '/S', tmpdir+'/OpenMVG'])
+    #    	subprocess.call(['rmdir', '/Q', '/S', tmpdir+'/MVS'])
 
-    bpy.ops.object.select_all(action='DESELECT')
-    bpy.context.scene.objects.active = scene_dense_mesh_texture2
-    bpy.data.objects['scene_dense_mesh_texture2'].select = True
+        subprocess.call(['python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
+
+        subprocess.call(OpenMVSPath ,  shell=True)
+
+    #    subprocess.call([ 'meshlabserver', '-i', tmpdir+'scene_dense_mesh_texture.ply', '-o', tmpdir+'scene_dense_mesh_texture2.obj', '-om', 'vn', 'wt' ])
 
 
-    bpy.context.object.data.use_auto_smooth = False
-    bpy.context.object.active_material.specular_hardness = 60
-    bpy.context.object.active_material.diffuse_intensity = 0.6
-    bpy.context.object.active_material.specular_intensity = 0.3
-    bpy.context.object.active_material.specular_color = (0.233015, 0.233015, 0.233015)
-#    bpy.ops.object.modifier_add(type='SMOOTH')
-#    bpy.context.object.modifiers["Smooth"].factor = 2
-#    bpy.context.object.modifiers["Smooth"].iterations = 3
-#    bpy.ops.object.convert(target='MESH')
-    bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
-    bpy.ops.view3d.view_all(center=False)
-    bpy.ops.file.pack_all()
 
-    
-def GeraModeloFotoSMVSDef(self, context):
-
-    scn = context.scene
-    
-    tmpdir = tempfile.gettempdir()
-    tmpOBJface = tmpdir+'/scene/scene_dense_mesh_texture2.obj'
-#    subprocess.call(['rm /tmp/DIRETORIO_FOTOS.txt'],  shell=True)
-
-    SMVSPath = get_SMVS_filepath(context)
-
-    
-    if platform.system() == "Linux":
-        subprocess.call(['rm', '-rf', tmpdir+'/scene'])
-        subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path, tmpdir+'/scene'])
-        subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
-        subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
-        subprocess.call(['meshlabserver', '-i', tmpdir+'/scene/smvs-B2.ply', '-o', tmpdir+'/scene/meshlab.ply', '-s', SMVSPath+'SMVSmeshlab.mlx', '-om'])
-        subprocess.call([SMVSPath+'./texrecon', '--data_term=area', '--skip_global_seam_leveling', '--outlier_removal=gauss_damping', tmpdir+'/scene::undistorted', tmpdir+'/scene/meshlab.ply', tmpdir+'/scene/scene_dense_mesh_texture2'])
         bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
+
         scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
+
         bpy.ops.object.select_all(action='DESELECT')
         bpy.context.scene.objects.active = scene_dense_mesh_texture2
         bpy.data.objects['scene_dense_mesh_texture2'].select = True
+
+
+        bpy.context.object.data.use_auto_smooth = False
+        bpy.context.object.active_material.specular_hardness = 60
+        bpy.context.object.active_material.diffuse_intensity = 0.6
+        bpy.context.object.active_material.specular_intensity = 0.3
+        bpy.context.object.active_material.specular_color = (0.233015, 0.233015, 0.233015)
+    #    bpy.ops.object.modifier_add(type='SMOOTH')
+    #    bpy.context.object.modifiers["Smooth"].factor = 2
+    #    bpy.context.object.modifiers["Smooth"].iterations = 3
+    #    bpy.ops.object.convert(target='MESH')
+        bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
         bpy.ops.view3d.view_all(center=False)
         bpy.ops.file.pack_all()
+        
+    except RuntimeError:
+        bpy.context.window_manager.popup_menu(ERROruntimeFotosDef, title="Atenção!", icon='INFO')
+
+        
+def GeraModeloFotoSMVSDef(self, context):
+
+    scn = context.scene
+        
+    tmpdir = tempfile.gettempdir()
+    tmpOBJface = tmpdir+'/scene/scene_dense_mesh_texture2.obj'
+#    subprocess.call(['rm /tmp/DIRETORIO_FOTOS.txt'],  shell=True)
+    
 
 
-    if platform.system() == "Windows":
-        shutil.rmtree(tmpdir+'/scene')
-        subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path, tmpdir+'/scene'])
-        subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
-        subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
-        subprocess.call([SMVSPath+'./fssrecon', tmpdir+'/scene/smvs-B2.ply', tmpdir+'/scene/smvs-surface.ply'])
-        subprocess.call([SMVSPath+'./meshclean', '-p10', tmpdir+'/scene/smvs-surface.ply', tmpdir+'/scene/smvs-surface-clean.ply'])
-        tmpPLYface = tmpdir+'/scene/smvs-surface-clean.ply'        
-        bpy.ops.import_mesh.ply(filepath=tmpPLYface, filter_glob="*.ply")
-        smvs_surface_clean = bpy.data.objects['smvs-surface-clean']
-        bpy.ops.object.select_all(action='DESELECT')
-        bpy.context.scene.objects.active = smvs_surface_clean
-        bpy.data.objects['smvs-surface-clean'].select = True
-        bpy.ops.view3d.view_all(center=False)
-        bpy.ops.file.pack_all()        
+    try:
+
+        SMVSPath = get_SMVS_filepath(context)
+    
+        if platform.system() == "Linux":
+            subprocess.call(['rm', '-rf', tmpdir+'/scene'])
+            subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path, tmpdir+'/scene'])
+            subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
+            subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
+            subprocess.call(['meshlabserver', '-i', tmpdir+'/scene/smvs-B2.ply', '-o', tmpdir+'/scene/meshlab.ply', '-s', SMVSPath+'SMVSmeshlab.mlx', '-om'])
+            subprocess.call([SMVSPath+'./texrecon', '--data_term=area', '--skip_global_seam_leveling', '--outlier_removal=gauss_damping', tmpdir+'/scene::undistorted', tmpdir+'/scene/meshlab.ply', tmpdir+'/scene/scene_dense_mesh_texture2'])
+            bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
+            scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.context.scene.objects.active = scene_dense_mesh_texture2
+            bpy.data.objects['scene_dense_mesh_texture2'].select = True
+            bpy.ops.view3d.view_all(center=False)
+            bpy.ops.file.pack_all()
+
+
+        if platform.system() == "Windows":
+            shutil.rmtree(tmpdir+'/scene')
+            subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path, tmpdir+'/scene'])
+            subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
+            subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
+            subprocess.call([SMVSPath+'./fssrecon', tmpdir+'/scene/smvs-B2.ply', tmpdir+'/scene/smvs-surface.ply'])
+            subprocess.call([SMVSPath+'./meshclean', '-p10', tmpdir+'/scene/smvs-surface.ply', tmpdir+'/scene/smvs-surface-clean.ply'])
+            tmpPLYface = tmpdir+'/scene/smvs-surface-clean.ply'        
+            bpy.ops.import_mesh.ply(filepath=tmpPLYface, filter_glob="*.ply")
+            smvs_surface_clean = bpy.data.objects['smvs-surface-clean']
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.context.scene.objects.active = smvs_surface_clean
+            bpy.data.objects['smvs-surface-clean'].select = True
+            bpy.ops.view3d.view_all(center=False)
+            bpy.ops.file.pack_all()        
+
+    except RuntimeError:
+        bpy.context.window_manager.popup_menu(ERROruntimeFotosDef, title="Atenção!", icon='INFO')
 
 # ------------------------
 
@@ -2365,6 +2423,8 @@ class OOB_import_obj(bpy.types.Panel):
         row = layout.row()
         knife=row.operator("object.corta_face", text="Cortar!", icon="META_PLANE")
         
+        
+        
             
 # IMPORTA CEFALOMETRIA
 
@@ -2405,6 +2465,9 @@ class AlinhaFaces(bpy.types.Panel):
         col = self.layout.column(align = True)
         col.prop(context.scene, "medida_real")  
         layout.operator("object.alinha_rosto2", text="2 - Alinha e Redimensiona", icon="LAMP_POINT")
+        
+        row = layout.row()
+        row.operator("object.rotaciona_z", text="Flip Z", icon="FORCE_MAGNETIC")
 
         row = layout.row()
         row.label(text="Alinhamento por Pontos:")
@@ -2611,6 +2674,7 @@ def register():
       )
     bpy.utils.register_class(AlinhaRosto2)
     bpy.utils.register_class(AnimaLocRot)
+    bpy.utils.register_class(rotacionaZ)
     bpy.utils.register_class(LinhaBase)
     bpy.utils.register_class(ImportaArmature)
     bpy.utils.register_class(CriaEspessura)
@@ -2669,6 +2733,7 @@ def unregister():
     del bpy.types.Scene.medida_real
     bpy.utils.unregister_class(AlinhaRosto2)
     bpy.utils.unregister_class(AnimaLocRot)
+    bpy.utils.unregister_class(rotacionaZ)
     bpy.utils.unregister_class(LinhaBase)
     bpy.utils.unregister_class(ImportaArmature)
     bpy.utils.unregister_class(CriaEspessura)
