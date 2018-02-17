@@ -185,11 +185,19 @@ def ImportaArmatureDef(self, context):
     obj = context.active_object
     scn = context.scene
 
-    dirScript = bpy.utils.user_resource('SCRIPTS')
+    if platform.system() == "Linux":
+        dirScript = bpy.utils.user_resource('SCRIPTS')
+        
+        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+        section   = "\\Object\\"
+        object    = "Armature_Head"
+        
+    if platform.system() == "Windows":
+        dirScript = 'C:/OrtogOnBlender/Blender/2.78/scripts/' 
 
-    blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
-    section   = "\\Object\\"
-    object    = "Armature_Head"
+        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+        section   = "\\Object\\"
+        object    = "Armature_Head"
 
     filepath  = blendfile + section + object
     directory = blendfile + section
@@ -1188,10 +1196,13 @@ def GeraModeloFotoDef(self, context):
         tmpOBJface = tmpdir+'/MVS/scene_dense_mesh_texture2.obj'
 
         
-
-        OpenMVGPath = get_OpenMVG_filepath(context)
-
-        OpenMVSPath = get_OpenMVS_filepath(context)
+        if platform.system() == "Linux":
+            OpenMVGPath = get_OpenMVG_filepath(context)
+            OpenMVSPath = get_OpenMVS_filepath(context)
+            
+        if platform.system() == "Windows":
+            OpenMVGPath = 'C:/OrtogOnBlender/openMVGWin/software/SfM/SfM_SequentialPipeline.py' 
+            OpenMVSPath = 'C:/OrtogOnBlender/openMVSWin/OpenMVS.bat' 
 
 
         shutil.rmtree(tmpdir+'/OpenMVG', ignore_errors=True)
@@ -1205,7 +1216,12 @@ def GeraModeloFotoDef(self, context):
     #    	subprocess.call(['rmdir', '/Q', '/S', tmpdir+'/OpenMVG'])
     #    	subprocess.call(['rmdir', '/Q', '/S', tmpdir+'/MVS'])
 
-        subprocess.call(['python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
+
+        if platform.system() == "Linux":
+            subprocess.call(['python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
+            
+        if platform.system() == "Windows":
+            subprocess.call(['C:/OrtogOnBlender/Python27/python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
 
         subprocess.call(OpenMVSPath ,  shell=True)
 
@@ -1238,7 +1254,7 @@ def GeraModeloFotoDef(self, context):
     except RuntimeError:
         bpy.context.window_manager.popup_menu(ERROruntimeFotosDef, title="Atenção!", icon='INFO')
 
-        
+
 def GeraModeloFotoSMVSDef(self, context):
 
     scn = context.scene
@@ -1251,9 +1267,8 @@ def GeraModeloFotoSMVSDef(self, context):
 
     try:
 
-        SMVSPath = get_SMVS_filepath(context)
-    
         if platform.system() == "Linux":
+            SMVSPath = get_SMVS_filepath(context)
             subprocess.call(['rm', '-rf', tmpdir+'/scene'])
             subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path, tmpdir+'/scene'])
             subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
@@ -1270,7 +1285,8 @@ def GeraModeloFotoSMVSDef(self, context):
 
 
         if platform.system() == "Windows":
-            shutil.rmtree(tmpdir+'/scene')
+            SMVSPath = 'C:/OrtogOnBlender/SMVS/'
+#            shutil.rmtree(tmpdir+'/scene')
             subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path, tmpdir+'/scene'])
             subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
             subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
@@ -1549,11 +1565,22 @@ def ImportaSplintDef(self, context):
     obj = context.active_object
     scn = context.scene
 
-    dirScript = bpy.utils.user_resource('SCRIPTS')
 
-    blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
-    section   = "\\Group\\"
-    object    = "SPLINT"
+    if platform.system() == "Linux":
+
+        dirScript = bpy.utils.user_resource('SCRIPTS')
+
+        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+        section   = "\\Group\\"
+        object    = "SPLINT"
+        
+    if platform.system() == "Windows":
+
+        dirScript = 'C:/OrtogOnBlender/Blender/2.78/scripts/'
+
+        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+        section   = "\\Group\\"
+        object    = "SPLINT"    
 
     filepath  = blendfile + section + object
     directory = blendfile + section
@@ -1974,7 +2001,7 @@ def CriaSplintDef(self, context):
     bpy.context.object.empty_draw_size = .5
     
     
-    a = bpy.data.objects['ca']
+    a = bpy.data.objects['cm']
     b = bpy.data.objects['EMP1141']
 
     bpy.ops.object.select_all(action='DESELECT')
@@ -2001,7 +2028,7 @@ def CriaSplintDef(self, context):
     bpy.context.object.empty_draw_size = .5
     
     
-    a = bpy.data.objects['ca']
+    a = bpy.data.objects['cm']
     b = bpy.data.objects['EMP2131']
 
     bpy.ops.object.select_all(action='DESELECT')
@@ -2027,7 +2054,7 @@ def CriaSplintDef(self, context):
     bpy.context.object.empty_draw_size = .5
     
     
-    a = bpy.data.objects['ca']
+    a = bpy.data.objects['cm']
     b = bpy.data.objects['EMP2333']
 
     bpy.ops.object.select_all(action='DESELECT')
@@ -2053,7 +2080,7 @@ def CriaSplintDef(self, context):
     bpy.context.object.empty_draw_size = .5
     
     
-    a = bpy.data.objects['ca']
+    a = bpy.data.objects['cm']
     b = bpy.data.objects['EMP1343']
 
     bpy.ops.object.select_all(action='DESELECT')
@@ -2079,7 +2106,7 @@ def CriaSplintDef(self, context):
     bpy.context.object.empty_draw_size = .5
     
     
-    a = bpy.data.objects['ca']
+    a = bpy.data.objects['cm']
     b = bpy.data.objects['EMP2636']
 
     bpy.ops.object.select_all(action='DESELECT')
@@ -2105,7 +2132,7 @@ def CriaSplintDef(self, context):
     bpy.context.object.empty_draw_size = .5
     
     
-    a = bpy.data.objects['ca']
+    a = bpy.data.objects['cm']
     b = bpy.data.objects['EMP1646']
 
     bpy.ops.object.select_all(action='DESELECT')
