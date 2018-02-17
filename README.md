@@ -61,8 +61,8 @@ O OrtogOnBlender utiliza uma série de addons e bibliotecas/programas, alguns na
 	* Meshlab: use o comando ```sudo apt-get install meshlab```
 
 * Binários para o Windows
-	* OpenMVG, OpenMVS, MVE/SMVS e Dicom2Mesh: https://goo.gl/r7nLck
-	* O instalador do Meshlab está disponível no link acima.
+	* Instalador do OrtogOnBlender com todos os programas e addons necessários: https://goo.gl/jMQbRH
+
 
 <h2>Como Instalar (Geral)</h2>
 
@@ -71,10 +71,7 @@ O OrtogOnBlender utiliza uma série de addons e bibliotecas/programas, alguns na
 * Ativar a opção `ortog:OrtogOnBlender` e configure os caminhos dos scripts expandindo a setinha do lado esquerdo.
 * Para manter o addon ativo clique em: `Save User Settings`.
 
-<h2>Como Instalar no Windows</h2>
-
-Acesse o tutorial passo-a-passo de como rodar o OrtogOnBlender no Windows: https://docs.google.com/document/d/147HzcdofYpKdJfDZRcBgcx7-cX8YvvyMe2H3rgRUqi8/edit?usp=sharing
 
 <h3>Agradecimentos</h3>
 
-[Dalai Felinto](https://github.com/dfelinto/), [Pierre Moulon](https://github.com/pmoulon), [Patrick Moore](https://github.com/patmo141/), [Adrian Schneider](https://github.com/eidelen), Rodrigo Dornelles, Liogi Iwaki Filho, Antônio Eduardo Izidro, Paulo Henrique  Luiz de Freitas, Vinicius de Paula Ribeiro, Richard Gravalos, José Patrício Neto, e Hugo Santos Cunha.
+[Dalai Felinto](https://github.com/dfelinto/), [Pierre Moulon](https://github.com/pmoulon), [Patrick Moore](https://github.com/patmo141/), [Adrian Schneider](https://github.com/eidelen), Rodrigo Dornelles, Liogi Iwaki Filho, Antônio Eduardo Izidro, Paulo Henrique  Luiz de Freitas, Vinicius de Paula Ribeiro, Richard Gravalos, José Patrício Neto, Hugo Santos Cunha, Frederico Yonezaky, Eduardo Correa Costa, Renata Porto Stypulkowski, Samuel Cardoso Santiago Júnior, José Arnaldo dos Santos Júnior, Lucio Gamboa Villegas e Walace Guimarães Matos.
