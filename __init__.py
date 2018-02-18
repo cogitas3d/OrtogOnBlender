@@ -1140,24 +1140,42 @@ def GeraModelosTomoDef(self, context):
 
     try:
 
-        dicom2DtlPath = get_dicom2stl_filepath(context)
+
+        if platform.system() == "Linux":
 
 
-        subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '200', '-o', tmpSTLossos])
-      
+            dicom2DtlPath = get_dicom2stl_filepath(context)
 
-    #    subprocess.call(['vtk6python',dicom2DtlPath, '-t',  'bonetest' , '-o', tmpSTLossos ,  scn.my_tool.path])
 
-        bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory=tmpdir)
-        
-        bpy.ops.view3d.view_all(center=False)
-        
-        
-     #   subprocess.call(['vtk6python',dicom2DtlPath , '-t',  'skintest' , '-o', tmpSTLmole ,  scn.my_tool.path])
+            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '200', '-o', tmpSTLossos])
+	      
 
-        subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '65', '-o', tmpSTLmole])
+            bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory=tmpdir)
+		
+            bpy.ops.view3d.view_all(center=False)
+	      
 
-        bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
+            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '65', '-o', tmpSTLmole])
+
+            bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
+
+
+        if platform.system() == "Windows":
+
+            dicom2DtlPath = 'C:/OrtogOnBlender/DicomToMeshWin/dicom2mesh.exe'
+
+
+            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '200', '-o', tmpSTLossos])
+	      
+
+            bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory=tmpdir)
+		
+            bpy.ops.view3d.view_all(center=False)
+	      
+
+            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '65', '-o', tmpSTLmole])
+
+            bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
 
 
         a = bpy.data.objects['Ossos']
