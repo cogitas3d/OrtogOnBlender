@@ -63,15 +63,21 @@ O OrtogOnBlender utiliza uma série de addons e bibliotecas/programas, alguns na
 * Binários para o Windows
 	* Instalador do OrtogOnBlender com todos os programas e addons necessários: https://goo.gl/jMQbRH
 
+* Binários para o Mac OS X
+	* Arquivos e scripts compilados para o Mac OS X: https://goo.gl/W5rMu3
 
-<h2>Como Instalar (Geral)</h2>
+<h2>Como Instalar</h2>
 
 * Baixe o arquivo em “Clone or download”
 * No Blender vá em: `File` → `User Preferences` → `Addons` → `Install from file` Procure o arquivo OrtogOnBlender-master.zip, clique sobre ele e em seguida no botão: `Install from file`
 * Ativar a opção `ortog:OrtogOnBlender` e configure os caminhos dos scripts expandindo a setinha do lado esquerdo.
 * Para manter o addon ativo clique em: `Save User Settings`.
 
+* Tutorial de instalação no Windows: https://goo.gl/xobPsq
+
+* Tutorial de instalação no Mac OS X: https://goo.gl/CNTjrB
+
 
 <h3>Agradecimentos</h3>
 
-[Dalai Felinto](https://github.com/dfelinto/), [Pierre Moulon](https://github.com/pmoulon), [Patrick Moore](https://github.com/patmo141/), [Adrian Schneider](https://github.com/eidelen), Rodrigo Dornelles, Liogi Iwaki Filho, Antônio Eduardo Izidro, Paulo Henrique  Luiz de Freitas, Vinicius de Paula Ribeiro, Richard Gravalos, José Patrício Neto, Hugo Santos Cunha, Frederico Yonezaki, Eduardo Correa Costa, Renata Porto Stypulkowski, Samuel Cardoso Santiago Júnior, José Arnaldo dos Santos Júnior, Lucio Gamboa Villegas e Walace Guimarães Matos.
+[Dalai Felinto](https://github.com/dfelinto/), [Pierre Moulon](https://github.com/pmoulon), [Patrick Moore](https://github.com/patmo141/), [Adrian Schneider](https://github.com/eidelen), Rodrigo Dornelles, Liogi Iwaki Filho, Antônio Eduardo Izidro, Paulo Henrique  Luiz de Freitas, Vinicius de Paula Ribeiro, Richard Gravalos, José Patrício Neto, Hugo Santos Cunha, Frederico Yonezaki, Eduardo Correa Costa, Renata Porto Stypulkowski, Samuel Cardoso Santiago Júnior, José Arnaldo dos Santos Júnior, Lucio Gamboa Villegas, Walace Guimarães Matos e Adriano Rocha Campos.
