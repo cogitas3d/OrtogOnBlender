@@ -34,32 +34,36 @@ from bpy.types import (Panel,
 from mathutils import Matrix, Vector
 from math import sqrt
 from bpy import context
+from os.path import expanduser
 
 # CONFIGURA EXECUTÁVEIS E SCRIPTS
 
 class ortogPreferences(bpy.types.AddonPreferences):
     bl_idname = __name__
 
-    dicom2stl_filepath = StringProperty(
-        name="Dicom2STL Path",
-        description="Location of Dicom2Mesh Python file",
-        subtype="FILE_PATH",
-        default="",
-        )
+#    dicom2stl_filepath = StringProperty(
+#        name="Dicom2STL Path",
+#        description="Location of Dicom2Mesh Python file",
+#        subtype="FILE_PATH",
+#        default="",
+#        )
 
-    OpenMVG_filepath = StringProperty(
-        name="OpenMVG Path",
-        description="Location of OpenMVG Python file",
-        subtype="FILE_PATH",
-        default="",
-        )
 
-    OpenMVS_filepath = StringProperty(
-        name="OpenMVS Path",
-        description="Location of OpenMVS script",
-        subtype="FILE_PATH",
-        default="",
-        )
+#    OpenMVG_filepath = StringProperty(
+#        name="OpenMVG Path",
+#        description="Location of OpenMVG Python file",
+#        subtype="FILE_PATH",
+#        default="",
+#        )
+
+
+ #   OpenMVS_filepath = StringProperty(
+ #       name="OpenMVS Path",
+ #       description="Location of OpenMVS script",
+ #       subtype="FILE_PATH",
+ #       default="",
+ #       )
+
 
 
     SMVS_filepath = StringProperty(
@@ -1178,6 +1182,25 @@ def GeraModelosTomoDef(self, context):
             bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
 
 
+        if platform.system() == "Darwin":
+
+
+            dicom2DtlPath = get_dicom2stl_filepath(context)
+
+
+            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '200', '-o', tmpSTLossos])
+	      
+
+            bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory=tmpdir)
+		
+            bpy.ops.view3d.view_all(center=False)
+	      
+
+            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '65', '-o', tmpSTLmole])
+
+            bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
+
+
         a = bpy.data.objects['Ossos']
         b = bpy.data.objects['Mole']
 
@@ -1208,6 +1231,8 @@ def GeraModeloFotoDef(self, context):
     
     tmpdir = tempfile.gettempdir()
 
+    homeall = expanduser("~")
+
     try:
 
         OpenMVGtmpDir = tmpdir+'/OpenMVG'
@@ -1215,12 +1240,16 @@ def GeraModeloFotoDef(self, context):
 
         
         if platform.system() == "Linux":
-            OpenMVGPath = get_OpenMVG_filepath(context)
-            OpenMVSPath = get_OpenMVS_filepath(context)
+            OpenMVGPath = homeall+'/Programs/OrtogOnBlender/openMVG/software/SfM/SfM_SequentialPipeline.py'
+            OpenMVSPath = homeall+'/Programs/OrtogOnBlender/openMVS/OpenMVS'
             
         if platform.system() == "Windows":
             OpenMVGPath = 'C:/OrtogOnBlender/openMVGWin/software/SfM/SfM_SequentialPipeline.py' 
             OpenMVSPath = 'C:/OrtogOnBlender/openMVSWin/OpenMVS.bat' 
+
+        if platform.system() == "Darwin":
+            OpenMVGPath = homeall+'/OrtogOnBlender/openMVGMAC/SfM_SequentialPipeline.py' 
+            OpenMVSPath = homeall+'/OrtogOnBlender/openMVSMAC/openMVSMAC.sh'
 
 
         shutil.rmtree(tmpdir+'/OpenMVG', ignore_errors=True)
@@ -1240,6 +1269,9 @@ def GeraModeloFotoDef(self, context):
             
         if platform.system() == "Windows":
             subprocess.call(['C:/OrtogOnBlender/Python27/python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
+
+        if platform.system() == "Darwin":
+            subprocess.call(['python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
 
         subprocess.call(OpenMVSPath ,  shell=True)
 
@@ -1318,6 +1350,29 @@ def GeraModeloFotoSMVSDef(self, context):
             bpy.data.objects['smvs-surface-clean'].select = True
             bpy.ops.view3d.view_all(center=False)
             bpy.ops.file.pack_all()        
+
+
+        if platform.system() == "Darwin":
+            homemac = expanduser("~")
+            SMVSPath = homemac+'/OrtogOnBlender/SMVSMAC/'
+
+            subprocess.call(['rm', '-Rf', tmpdir+'/scene'])
+            subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path, tmpdir+'/scene'])
+            subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
+            subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
+            subprocess.call([SMVSPath+'./fssrecon', '-s4', tmpdir+'/scene/smvs-B2.ply', tmpdir+'/scene/smvs-surface.ply'])
+            subprocess.call([SMVSPath+'./meshclean', '-p10', tmpdir+'/scene/smvs-surface.ply', tmpdir+'/scene/smvs-clean.ply'])
+            subprocess.call(['rm', '-Rf', tmpdir+'/scene/tmp'])
+            subprocess.call([SMVSPath+'./texrecon', '--data_term=area', '--skip_global_seam_leveling', '--outlier_removal=gauss_damping', tmpdir+'/scene::undistorted', tmpdir+'/scene/smvs-clean.ply', tmpdir+'/scene/scene_dense_mesh_texture2'])
+
+            bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
+            scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.context.scene.objects.active = scene_dense_mesh_texture2
+            bpy.data.objects['scene_dense_mesh_texture2'].select = True
+            bpy.ops.view3d.view_all(center=False)
+            bpy.ops.file.pack_all()
+
 
     except RuntimeError:
         bpy.context.window_manager.popup_menu(ERROruntimeFotosDef, title="Atenção!", icon='INFO')
