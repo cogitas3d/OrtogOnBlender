@@ -66,12 +66,14 @@ O OrtogOnBlender utiliza uma série de addons e bibliotecas/programas, alguns na
 * Binários para o Mac OS X
 	* Arquivos e scripts compilados para o Mac OS X: https://goo.gl/W5rMu3
 
-<h2>Como Instalar</h2>
+<h2>Como Instalar (Geral)</h2>
 
 * Baixe o arquivo em “Clone or download”
 * No Blender vá em: `File` → `User Preferences` → `Addons` → `Install from file` Procure o arquivo OrtogOnBlender-master.zip, clique sobre ele e em seguida no botão: `Install from file`
 * Ativar a opção `ortog:OrtogOnBlender` e configure os caminhos dos scripts expandindo a setinha do lado esquerdo.
 * Para manter o addon ativo clique em: `Save User Settings`.
+
+<h2>Como Instalar (Detalhado)</h2>
 
 * Tutorial de instalação no Windows: https://goo.gl/xobPsq
 
