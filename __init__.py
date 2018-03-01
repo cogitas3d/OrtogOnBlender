@@ -41,12 +41,12 @@ from os.path import expanduser
 class ortogPreferences(bpy.types.AddonPreferences):
     bl_idname = __name__
 
-#    dicom2stl_filepath = StringProperty(
-#        name="Dicom2STL Path",
-#        description="Location of Dicom2Mesh Python file",
-#        subtype="FILE_PATH",
-#        default="",
-#        )
+    dicom2stl_filepath = StringProperty(
+        name="Dicom2STL Path",
+        description="Location of Dicom2Mesh Python file",
+        subtype="FILE_PATH",
+        default="",
+        )
 
 
 #    OpenMVG_filepath = StringProperty(
