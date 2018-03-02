@@ -1142,6 +1142,8 @@ def GeraModelosTomoDef(self, context):
     tmpSTLossos = tmpdir+'/ossos.stl'
     tmpSTLmole = tmpdir+'/mole.stl'
 
+    homeall = expanduser("~")
+
     try:
 
 
@@ -1185,7 +1187,9 @@ def GeraModelosTomoDef(self, context):
         if platform.system() == "Darwin":
 
 
-            dicom2DtlPath = get_dicom2stl_filepath(context)
+            dicom2DtlPath = homeall+'/OrtogOnBlender/DicomToMeshMAC/dicom2mesh'
+
+#            dicom2DtlPath = get_dicom2stl_filepath(context)
 
 
             subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '200', '-o', tmpSTLossos])
