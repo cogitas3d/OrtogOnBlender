@@ -1,7 +1,7 @@
 bl_info = {
     "name": "OrtogOnBlender",
     "author": "Cicero Moraes e Everton da Rosa",
-    "version": (1, 1, 3),
+    "version": (1, 1, 4),
     "blender": (2, 75, 0),
     "location": "View3D",
     "description": "Planejamento de Cirurgia Ortognática no Blender",
@@ -189,7 +189,7 @@ def ImportaArmatureDef(self, context):
     obj = context.active_object
     scn = context.scene
 
-    if platform.system() == "Linux":
+    if platform.system() == "Linux" or platform.system() == "Darwin":
         dirScript = bpy.utils.user_resource('SCRIPTS')
         
         blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
@@ -1643,7 +1643,7 @@ def ImportaSplintDef(self, context):
     scn = context.scene
 
 
-    if platform.system() == "Linux":
+    if platform.system() == "Linux" or platform.system() == "Darwin":
 
         dirScript = bpy.utils.user_resource('SCRIPTS')
 
@@ -1658,6 +1658,16 @@ def ImportaSplintDef(self, context):
         blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
         section   = "\\Group\\"
         object    = "SPLINT"    
+
+
+#    if platform.system() == "Darwin":
+
+#        dirScript = bpy.utils.user_resource('SCRIPTS')
+
+#        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+#        section   = "\\Group\\"
+#        object    = "SPLINT"
+
 
     filepath  = blendfile + section + object
     directory = blendfile + section
