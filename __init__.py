@@ -1153,15 +1153,21 @@ def GeraModelosTomoDef(self, context):
             dicom2DtlPath = get_dicom2stl_filepath(context)
 
 
-            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '200', '-o', tmpSTLossos])
+            interesseOssos = bpy.context.scene.interesse_ossos
+            interesseMole = bpy.context.scene.interesse_mole
+
+
+            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseOssos, '-o', tmpSTLossos])
 	      
 
             bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory=tmpdir)
 		
             bpy.ops.view3d.view_all(center=False)
-	      
 
-            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '65', '-o', tmpSTLmole])
+            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseMole, '-o', tmpSTLmole])
+
+# CASO DIDATICO
+#            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '65', '-o', tmpSTLmole])
 
             bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
 
@@ -2375,7 +2381,13 @@ class ImportaTomo(bpy.types.Panel):
 
         col = layout.column(align=True)
         col.prop(scn.my_tool, "path", text="")
- 
+
+        col = self.layout.column(align = True)
+        col.prop(context.scene, "interesse_ossos")
+
+        col = self.layout.column(align = True)
+        col.prop(context.scene, "interesse_mole")
+
         row = layout.row()
         row.operator("object.gera_modelos_tomo", text="Converte DICOM para 3D", icon="SNAP_FACE")
         
@@ -2805,6 +2817,18 @@ def register():
     bpy.utils.register_class(ConfiguraCabeca)
     bpy.utils.register_class(AreasInfluencia)
     bpy.utils.register_class(CriaAreasDeformacao)
+    bpy.types.Scene.interesse_ossos = bpy.props.StringProperty \
+      (
+        name = "Fator Ossos",
+        description = "Fatos interesse ossos",
+        default = "200"
+      )
+    bpy.types.Scene.interesse_mole = bpy.props.StringProperty \
+      (
+        name = "Fator Mole",
+        description = "Fatos interesse mole",
+        default = "-300"
+      )
     bpy.utils.register_class(GeraModelosTomo)
     bpy.utils.register_class(GeraModeloFoto)
     bpy.utils.register_class(GeraModeloFotoSMVS)
@@ -2870,6 +2894,8 @@ def unregister():
     bpy.utils.unregister_class(GeraModelosTomo)
     bpy.utils.unregister_class(GeraModeloFoto)
     bpy.utils.unregister_class(GeraModeloFotoSMVS)
+    del bpy.types.Scene.interesse_ossos
+    del bpy.types.Scene.interesse_mole
     bpy.utils.unregister_class(ImportaTomo)
     bpy.utils.unregister_class(OOB_import_stl)
     bpy.utils.unregister_class(ZoomCena)
