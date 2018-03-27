@@ -1229,7 +1229,14 @@ def GeraModelosTomoDef(self, context):
         b.select = True 
         bpy.context.scene.objects.active = a
         bpy.ops.object.parent_set()
-        
+
+        bpy.ops.transform.rotate(value=3.14159, axis=(0, 1, 0), constraint_axis=(False, True, False),
+                                 constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED',
+                                 proportional_edit_falloff='SMOOTH', proportional_size=1)
+        bpy.ops.transform.rotate(value=3.14159, axis=(0, 0, 1), constraint_axis=(False, False, True),
+                                 constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED',
+                                 proportional_edit_falloff='SMOOTH', proportional_size=1)
+
         bpy.ops.view3d.view_all(center=False)
 
     except RuntimeError:
