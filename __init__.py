@@ -35,6 +35,709 @@ from mathutils import Matrix, Vector
 from math import sqrt
 from bpy import context
 from os.path import expanduser
+import math
+
+
+# COLOCACAO DOS PONTOS
+
+class EventWatcher:
+    # Set of watchers
+    eventWatchers = set()
+
+    @staticmethod
+    def AddWatcher(watcher):
+        EventWatcher.eventWatchers.add(watcher)
+
+    @staticmethod
+    def RemoveWatcher(watcher):
+        EventWatcher.eventWatchers.remove(watcher)
+
+    @staticmethod
+    def RemoveAllWatchers():
+        EventWatcher.eventWatchers.clear()
+
+    # From 'context', 'path' needs to exist
+    # 'comparer' is to compare the previous value of context.path to its new value
+    # 'callback' is the cb called if the value if changed
+    # 'copyValue' indicates if the value needs to be copied (that can be needed as if not old and new value may point onto the same object)
+    def __init__(self, context, path, comparer, callback, copyValue):
+        self.context = context
+        self.path = path
+        self.comparer = comparer
+        self.callback = callback
+        self.copyValue = copyValue
+        self.currentValue = self.GetValue()
+        print("QUANDO COMEÇA")
+
+    def GetValue(self):
+        #        print("CONSTANTE")
+        value = getattr(self.context, self.path)
+        if self.copyValue:
+            # print("CONSTANTE")
+            value = value.copy()
+            # print("CONSTANTE")
+        return value
+
+    def Fire(self):
+        newValue = self.GetValue()
+        #        print("CONSTANTE")
+
+        #        for obj in bpy.data.objects:
+        A = bpy.context.scene.objects.active
+        #            print(obj)
+
+        if self.comparer(self.currentValue, newValue) == False and A.name != "Empty.002":
+            self.callback(self, newValue)
+            self.currentValue = newValue
+            #   bpy.ops.mesh.primitive_cube_add()
+            bpy.ops.object.empty_add(type='PLAIN_AXES', radius=1)
+
+            #            bpy.context.object.name = "EMPPonto" #NÃO FUNCIONA!!!
+            print("nome", A.name)
+        return {'FINISHED'}  # DEU CERTO!
+
+
+# Global loop on the watchers. This callback responds to scene_update_post global handler
+def cb_scene_update(context):
+    #    print("FICA CONSTANTE")
+    for ew in EventWatcher.eventWatchers:
+        ew.Fire()
+
+
+# To stop the calls at the scene_update_post event level
+class StopCallback(bpy.types.Operator):
+    bl_idname = "scene.stop_callback"
+    bl_label = "Stop Callback"
+
+    @classmethod
+    def poll(cls, context):
+        #        print("FICA CONSTANTEMENTE")
+        return cb_scene_update in bpy.app.handlers.scene_update_post
+
+    def execute(self, context):
+        print("ASSIM QUE CLICA NO STOP")
+        bpy.app.handlers.scene_update_post.remove(cb_scene_update)
+        return {'FINISHED'}
+
+
+# To start the calls at the scene_update_post event level
+class StartCallback(bpy.types.Operator):
+    bl_idname = "scene.start_callback"
+    bl_label = "Start Callback"
+
+    @classmethod
+    def poll(cls, context):
+        #        print("PQP") # CONSTANTE, SEM PARAR
+        return cb_scene_update not in bpy.app.handlers.scene_update_post
+
+    def execute(self, context):
+        bpy.app.handlers.scene_update_post.append(cb_scene_update)
+        print("QUANDO CLICA NO START")
+        return {'FINISHED'}
+
+
+# ALINHA MAXILA
+
+def ColocaPontosDef(self, context):
+    EventWatcher.AddWatcher(
+        EventWatcher(bpy.data.scenes[0], "cursor_location", CompareLocation, CompareLocationCallback, True))
+    bpy.ops.scene.start_callback()
+
+
+class ColocaPontos(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.colocapontos"
+    bl_label = "Coloca Pontos"
+
+    def execute(self, context):
+        ColocaPontosDef(self, context)
+        return {'FINISHED'}
+
+
+def CalcAlinhaMandibulaDef(self, context):
+    bpy.ops.scene.stop_callback()
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a = bpy.data.objects['scene_dense_mesh_texture2']
+    a.select = True
+    bpy.context.scene.objects.active = a
+
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+
+    EMP1 = bpy.data.objects['Empty']
+    EMP2 = bpy.data.objects['Empty.001']
+    EMP3 = bpy.data.objects['Empty.002']
+
+    a = bpy.data.objects['scene_dense_mesh_texture2']
+    b = bpy.data.objects['Empty']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+    a = bpy.data.objects['scene_dense_mesh_texture2']
+    b = bpy.data.objects['Empty.001']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+    a = bpy.data.objects['scene_dense_mesh_texture2']
+    b = bpy.data.objects['Empty.002']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+    # Frontal
+
+    AB = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP2.location[2] - EMP1.location[2]) ** 2)
+
+    AC = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP1.location[2] - EMP1.location[2]) ** 2)
+
+    BC = math.sqrt((EMP2.location[0] - EMP2.location[0]) ** 2 + (EMP1.location[2] - EMP2.location[2]) ** 2)
+
+    # Superior
+
+    EF = math.sqrt((EMP2.location[0] - EMP2.location[0]) ** 2 + (EMP1.location[1] - EMP2.location[1]) ** 2)
+    DE = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP2.location[1] - EMP1.location[1]) ** 2)
+
+    # Valor rotação frontal
+    valor = BC / AB
+
+    # Valor rotação superior
+    valor2 = EF / DE
+
+    bpy.ops.object.select_all(action='DESELECT')
+    #    PT_INCISIVOS = bpy.data.objects['PT_INCISIVOS']
+    #    PT_INCISIVOS.select = True
+    #    bpy.context.scene.objects.active = PT_INCISIVOS
+    #    bpy.ops.view3d.snap_cursor_to_selected()
+    #    bpy.context.space_data.pivot_point = 'CURSOR'
+
+    a = bpy.data.objects['scene_dense_mesh_texture2']
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    bpy.context.scene.objects.active = a
+
+    # Rotação frontal
+    if EMP1.location[2] > EMP2.location[2]:
+        bpy.ops.transform.rotate(value=valor, axis=(0, -1, 0))
+
+    else:
+        bpy.ops.transform.rotate(value=valor, axis=(0, 1, 0))
+
+    # Rotação superior
+    if EMP1.location[1] > EMP2.location[1]:
+        bpy.ops.transform.rotate(value=valor2, axis=(0, 0, 1))
+
+    else:
+        bpy.ops.transform.rotate(value=valor2, axis=(0, 0, -1))
+
+    #    bpy.context.space_data.pivot_point = 'MEDIAN_POINT'
+
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+
+    # Calcula rotação em X
+
+    bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
+
+    bpy.context.object.location[0] = 0
+    bpy.context.object.location[1] = 0
+    bpy.context.object.location[2] = 0
+
+    AB2 = math.sqrt((EMP3.location[1] - EMP1.location[1]) ** 2 + (EMP3.location[2] - EMP1.location[2]) ** 2)
+
+    BC2 = math.sqrt((EMP1.location[1] - EMP3.location[1]) ** 2 + (EMP3.location[2] - EMP3.location[2]) ** 2)
+
+    valor3 = BC2 / AB2
+
+    bpy.ops.transform.rotate(value=valor3, axis=(1, 0, 0))
+
+    # OUTRA VEZ 1
+
+    # Frontal
+
+    AB = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP2.location[2] - EMP1.location[2]) ** 2)
+
+    AC = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP1.location[2] - EMP1.location[2]) ** 2)
+
+    BC = math.sqrt((EMP2.location[0] - EMP2.location[0]) ** 2 + (EMP1.location[2] - EMP2.location[2]) ** 2)
+
+    # Superior
+
+    EF = math.sqrt((EMP2.location[0] - EMP2.location[0]) ** 2 + (EMP1.location[1] - EMP2.location[1]) ** 2)
+    DE = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP2.location[1] - EMP1.location[1]) ** 2)
+
+    # Valor rotação frontal
+    valor = BC / AB
+
+    # Valor rotação superior
+    valor2 = EF / DE
+
+    bpy.ops.object.select_all(action='DESELECT')
+    #    PT_INCISIVOS = bpy.data.objects['PT_INCISIVOS']
+    #    PT_INCISIVOS.select = True
+    #    bpy.context.scene.objects.active = PT_INCISIVOS
+    #    bpy.ops.view3d.snap_cursor_to_selected()
+    #    bpy.context.space_data.pivot_point = 'CURSOR'
+
+    a = bpy.data.objects['scene_dense_mesh_texture2']
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    bpy.context.scene.objects.active = a
+
+    # Rotação frontal
+    if EMP1.location[2] > EMP2.location[2]:
+        bpy.ops.transform.rotate(value=valor, axis=(0, -1, 0))
+
+    else:
+        bpy.ops.transform.rotate(value=valor, axis=(0, 1, 0))
+
+    # Rotação superior
+    if EMP1.location[1] > EMP2.location[1]:
+        bpy.ops.transform.rotate(value=valor2, axis=(0, 0, 1))
+
+    else:
+        bpy.ops.transform.rotate(value=valor2, axis=(0, 0, -1))
+
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+
+    # Calcula rotação em X
+
+    bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
+
+    bpy.context.object.location[0] = 0
+    bpy.context.object.location[1] = 0
+    bpy.context.object.location[2] = 0
+
+    AB2 = math.sqrt((EMP3.location[1] - EMP1.location[1]) ** 2 + (EMP3.location[2] - EMP1.location[2]) ** 2)
+
+    BC2 = math.sqrt((EMP1.location[1] - EMP3.location[1]) ** 2 + (EMP3.location[2] - EMP3.location[2]) ** 2)
+
+    valor3 = BC2 / AB2
+
+    bpy.ops.transform.rotate(value=valor3, axis=(1, 0, 0))
+
+    # OUTRA VEZ 2
+
+    # Frontal
+
+    AB = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP2.location[2] - EMP1.location[2]) ** 2)
+
+    AC = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP1.location[2] - EMP1.location[2]) ** 2)
+
+    BC = math.sqrt((EMP2.location[0] - EMP2.location[0]) ** 2 + (EMP1.location[2] - EMP2.location[2]) ** 2)
+
+    # Superior
+
+    EF = math.sqrt((EMP2.location[0] - EMP2.location[0]) ** 2 + (EMP1.location[1] - EMP2.location[1]) ** 2)
+    DE = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP2.location[1] - EMP1.location[1]) ** 2)
+
+    # Valor rotação frontal
+    valor = BC / AB
+
+    # Valor rotação superior
+    valor2 = EF / DE
+
+    bpy.ops.object.select_all(action='DESELECT')
+    #    PT_INCISIVOS = bpy.data.objects['PT_INCISIVOS']
+    #    PT_INCISIVOS.select = True
+    #    bpy.context.scene.objects.active = PT_INCISIVOS
+    #    bpy.ops.view3d.snap_cursor_to_selected()
+    #    bpy.context.space_data.pivot_point = 'CURSOR'
+
+    a = bpy.data.objects['scene_dense_mesh_texture2']
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    bpy.context.scene.objects.active = a
+
+    # Rotação frontal
+    if EMP1.location[2] > EMP2.location[2]:
+        bpy.ops.transform.rotate(value=valor, axis=(0, -1, 0))
+
+    else:
+        bpy.ops.transform.rotate(value=valor, axis=(0, 1, 0))
+
+    # Rotação superior
+    if EMP1.location[1] > EMP2.location[1]:
+        bpy.ops.transform.rotate(value=valor2, axis=(0, 0, 1))
+
+    else:
+        bpy.ops.transform.rotate(value=valor2, axis=(0, 0, -1))
+
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+
+    # Calcula rotação em X
+
+    bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
+
+    bpy.context.object.location[0] = 0
+    bpy.context.object.location[1] = 0
+    bpy.context.object.location[2] = 0
+
+    AB2 = math.sqrt((EMP3.location[1] - EMP1.location[1]) ** 2 + (EMP3.location[2] - EMP1.location[2]) ** 2)
+
+    BC2 = math.sqrt((EMP1.location[1] - EMP3.location[1]) ** 2 + (EMP3.location[2] - EMP3.location[2]) ** 2)
+
+    valor3 = BC2 / AB2
+
+    bpy.ops.transform.rotate(value=valor3, axis=(1, 0, 0))
+
+    # OUTRA VEZ 3
+
+    # Frontal
+
+    AB = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP2.location[2] - EMP1.location[2]) ** 2)
+
+    AC = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP1.location[2] - EMP1.location[2]) ** 2)
+
+    BC = math.sqrt((EMP2.location[0] - EMP2.location[0]) ** 2 + (EMP1.location[2] - EMP2.location[2]) ** 2)
+
+    # Superior
+
+    EF = math.sqrt((EMP2.location[0] - EMP2.location[0]) ** 2 + (EMP1.location[1] - EMP2.location[1]) ** 2)
+    DE = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP2.location[1] - EMP1.location[1]) ** 2)
+
+    # Valor rotação frontal
+    valor = BC / AB
+
+    # Valor rotação superior
+    valor2 = EF / DE
+
+    bpy.ops.object.select_all(action='DESELECT')
+    #    PT_INCISIVOS = bpy.data.objects['PT_INCISIVOS']
+    #    PT_INCISIVOS.select = True
+    #    bpy.context.scene.objects.active = PT_INCISIVOS
+    #    bpy.ops.view3d.snap_cursor_to_selected()
+    #    bpy.context.space_data.pivot_point = 'CURSOR'
+
+    a = bpy.data.objects['scene_dense_mesh_texture2']
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    bpy.context.scene.objects.active = a
+
+    # Rotação frontal
+    if EMP1.location[2] > EMP2.location[2]:
+        bpy.ops.transform.rotate(value=valor, axis=(0, -1, 0))
+
+    else:
+        bpy.ops.transform.rotate(value=valor, axis=(0, 1, 0))
+
+    # Rotação superior
+    if EMP1.location[1] > EMP2.location[1]:
+        bpy.ops.transform.rotate(value=valor2, axis=(0, 0, 1))
+
+    else:
+        bpy.ops.transform.rotate(value=valor2, axis=(0, 0, -1))
+
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+
+    # Calcula rotação em X
+
+    bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
+
+    bpy.context.object.location[0] = 0
+    bpy.context.object.location[1] = 0
+    bpy.context.object.location[2] = 0
+
+    AB2 = math.sqrt((EMP3.location[1] - EMP1.location[1]) ** 2 + (EMP3.location[2] - EMP1.location[2]) ** 2)
+
+    BC2 = math.sqrt((EMP1.location[1] - EMP3.location[1]) ** 2 + (EMP3.location[2] - EMP3.location[2]) ** 2)
+
+    valor3 = BC2 / AB2
+
+    bpy.ops.transform.rotate(value=valor3, axis=(1, 0, 0))
+
+    # OUTRA VEZ 4
+
+    # Frontal
+
+    AB = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP2.location[2] - EMP1.location[2]) ** 2)
+
+    AC = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP1.location[2] - EMP1.location[2]) ** 2)
+
+    BC = math.sqrt((EMP2.location[0] - EMP2.location[0]) ** 2 + (EMP1.location[2] - EMP2.location[2]) ** 2)
+
+    # Superior
+
+    EF = math.sqrt((EMP2.location[0] - EMP2.location[0]) ** 2 + (EMP1.location[1] - EMP2.location[1]) ** 2)
+    DE = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP2.location[1] - EMP1.location[1]) ** 2)
+
+    # Valor rotação frontal
+    valor = BC / AB
+
+    # Valor rotação superior
+    valor2 = EF / DE
+
+    bpy.ops.object.select_all(action='DESELECT')
+    #    PT_INCISIVOS = bpy.data.objects['PT_INCISIVOS']
+    #    PT_INCISIVOS.select = True
+    #    bpy.context.scene.objects.active = PT_INCISIVOS
+    #    bpy.ops.view3d.snap_cursor_to_selected()
+    #    bpy.context.space_data.pivot_point = 'CURSOR'
+
+    a = bpy.data.objects['scene_dense_mesh_texture2']
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    bpy.context.scene.objects.active = a
+
+    # Rotação frontal
+    if EMP1.location[2] > EMP2.location[2]:
+        bpy.ops.transform.rotate(value=valor, axis=(0, -1, 0))
+
+    else:
+        bpy.ops.transform.rotate(value=valor, axis=(0, 1, 0))
+
+    # Rotação superior
+    if EMP1.location[1] > EMP2.location[1]:
+        bpy.ops.transform.rotate(value=valor2, axis=(0, 0, 1))
+
+    else:
+        bpy.ops.transform.rotate(value=valor2, axis=(0, 0, -1))
+
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+
+    # Calcula rotação em X
+
+    bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
+
+    bpy.context.object.location[0] = 0
+    bpy.context.object.location[1] = 0
+    bpy.context.object.location[2] = 0
+
+    AB2 = math.sqrt((EMP3.location[1] - EMP1.location[1]) ** 2 + (EMP3.location[2] - EMP1.location[2]) ** 2)
+
+    BC2 = math.sqrt((EMP1.location[1] - EMP3.location[1]) ** 2 + (EMP3.location[2] - EMP3.location[2]) ** 2)
+
+    valor3 = BC2 / AB2
+
+    bpy.ops.transform.rotate(value=valor3, axis=(1, 0, 0))
+
+    # OUTRA VEZ 5
+
+    # Frontal
+
+    AB = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP2.location[2] - EMP1.location[2]) ** 2)
+
+    AC = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP1.location[2] - EMP1.location[2]) ** 2)
+
+    BC = math.sqrt((EMP2.location[0] - EMP2.location[0]) ** 2 + (EMP1.location[2] - EMP2.location[2]) ** 2)
+
+    # Superior
+
+    EF = math.sqrt((EMP2.location[0] - EMP2.location[0]) ** 2 + (EMP1.location[1] - EMP2.location[1]) ** 2)
+    DE = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP2.location[1] - EMP1.location[1]) ** 2)
+
+    # Valor rotação frontal
+    valor = BC / AB
+
+    # Valor rotação superior
+    valor2 = EF / DE
+
+    bpy.ops.object.select_all(action='DESELECT')
+    #    PT_INCISIVOS = bpy.data.objects['PT_INCISIVOS']
+    #    PT_INCISIVOS.select = True
+    #    bpy.context.scene.objects.active = PT_INCISIVOS
+    #    bpy.ops.view3d.snap_cursor_to_selected()
+    #    bpy.context.space_data.pivot_point = 'CURSOR'
+
+    a = bpy.data.objects['scene_dense_mesh_texture2']
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    bpy.context.scene.objects.active = a
+
+    # Rotação frontal
+    if EMP1.location[2] > EMP2.location[2]:
+        bpy.ops.transform.rotate(value=valor, axis=(0, -1, 0))
+
+    else:
+        bpy.ops.transform.rotate(value=valor, axis=(0, 1, 0))
+
+    # Rotação superior
+    if EMP1.location[1] > EMP2.location[1]:
+        bpy.ops.transform.rotate(value=valor2, axis=(0, 0, 1))
+
+    else:
+        bpy.ops.transform.rotate(value=valor2, axis=(0, 0, -1))
+
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+
+    # Calcula rotação em X
+
+    bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
+
+    bpy.context.object.location[0] = 0
+    bpy.context.object.location[1] = 0
+    bpy.context.object.location[2] = 0
+
+    AB2 = math.sqrt((EMP3.location[1] - EMP1.location[1]) ** 2 + (EMP3.location[2] - EMP1.location[2]) ** 2)
+
+    BC2 = math.sqrt((EMP1.location[1] - EMP3.location[1]) ** 2 + (EMP3.location[2] - EMP3.location[2]) ** 2)
+
+    valor3 = BC2 / AB2
+
+    bpy.ops.transform.rotate(value=valor3, axis=(1, 0, 0))
+
+    # OUTRA VEZ 6
+
+    # Frontal
+
+    AB = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP2.location[2] - EMP1.location[2]) ** 2)
+
+    AC = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP1.location[2] - EMP1.location[2]) ** 2)
+
+    BC = math.sqrt((EMP2.location[0] - EMP2.location[0]) ** 2 + (EMP1.location[2] - EMP2.location[2]) ** 2)
+
+    # Superior
+
+    EF = math.sqrt((EMP2.location[0] - EMP2.location[0]) ** 2 + (EMP1.location[1] - EMP2.location[1]) ** 2)
+    DE = math.sqrt((EMP2.location[0] - EMP1.location[0]) ** 2 + (EMP2.location[1] - EMP1.location[1]) ** 2)
+
+    # Valor rotação frontal
+    valor = BC / AB
+
+    # Valor rotação superior
+    valor2 = EF / DE
+
+    bpy.ops.object.select_all(action='DESELECT')
+    #    PT_INCISIVOS = bpy.data.objects['PT_INCISIVOS']
+    #    PT_INCISIVOS.select = True
+    #    bpy.context.scene.objects.active = PT_INCISIVOS
+    #    bpy.ops.view3d.snap_cursor_to_selected()
+    #    bpy.context.space_data.pivot_point = 'CURSOR'
+
+    a = bpy.data.objects['scene_dense_mesh_texture2']
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    bpy.context.scene.objects.active = a
+
+    # Rotação frontal
+    if EMP1.location[2] > EMP2.location[2]:
+        bpy.ops.transform.rotate(value=valor, axis=(0, -1, 0))
+
+    else:
+        bpy.ops.transform.rotate(value=valor, axis=(0, 1, 0))
+
+    # Rotação superior
+    if EMP1.location[1] > EMP2.location[1]:
+        bpy.ops.transform.rotate(value=valor2, axis=(0, 0, 1))
+
+    else:
+        bpy.ops.transform.rotate(value=valor2, axis=(0, 0, -1))
+
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+
+    # Calcula rotação em X
+
+    bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
+
+    bpy.context.object.location[0] = 0
+    bpy.context.object.location[1] = 0
+    bpy.context.object.location[2] = 0
+
+    AB2 = math.sqrt((EMP3.location[1] - EMP1.location[1]) ** 2 + (EMP3.location[2] - EMP1.location[2]) ** 2)
+
+    BC2 = math.sqrt((EMP1.location[1] - EMP3.location[1]) ** 2 + (EMP3.location[2] - EMP3.location[2]) ** 2)
+
+    valor3 = BC2 / AB2
+
+    bpy.ops.transform.rotate(value=valor3, axis=(1, 0, 0))
+
+    # CORRIGE ROTAÇÃO
+
+    FACE = bpy.data.objects['scene_dense_mesh_texture2']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    EMP1.select = True
+    EMP2.select = True
+    EMP3.select = True
+    bpy.context.scene.objects.active = EMP1
+
+    bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+
+    print("EMP1 Z:", EMP1.location[2])
+    print("EMP1 Y:", EMP1.location[1])
+    print("EMP3 Z:", EMP3.location[2])
+    print("EMP3 Y:", EMP3.location[1])
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    FACE.select = True
+    bpy.context.scene.objects.active = FACE
+
+    if EMP1.location[2] > 0 and EMP1.location[1] < 0 and EMP3.location[2] < 0 and EMP3.location[1] < 0:
+        print("Rotação CORRETA")
+
+    if EMP1.location[2] > 0 and EMP1.location[1] > 0 and EMP3.location[2] > 0 and EMP3.location[1] < 0:
+        bpy.ops.transform.rotate(value=1.5707963268, axis=(1, 0, 0))
+        print("Estava olhando para CIMA")
+
+    if EMP1.location[2] < 0 and EMP1.location[1] > 0 and EMP3.location[2] > 0 and EMP3.location[1] > 0:
+        bpy.ops.transform.rotate(value=3.141592, axis=(1, 0, 0))
+        print("Estava olhando para TRÁS com olhos baixos")
+
+    if EMP1.location[2] < 0 and EMP1.location[1] < 0 and EMP3.location[2] < 0 and EMP3.location[1] > 0:
+        bpy.ops.transform.rotate(value=-1.5707963268, axis=(1, 0, 0))
+        print("Estava olhando para BAIXO")
+
+    # Distância intercantal
+
+    l = []
+    EMP1EMP2 = [bpy.data.objects['Empty'], bpy.data.objects['Empty.001']]
+
+    for item in EMP1EMP2:
+        l.append(item.location)
+
+    medidaAtual2 = math.sqrt((l[0][0] - l[1][0]) ** 2 + (l[0][1] - l[1][1]) ** 2 + (l[0][2] - l[1][2]) ** 2)
+    print("Medida atual: ", medidaAtual2)
+
+    medidaReal2 = float(bpy.context.scene.medida_real2)
+    print("Medida real: ", medidaReal2)
+
+    # Apaga empties
+
+    bpy.ops.object.select_all(action='DESELECT')
+    EMP1.select = True
+    EMP2.select = True
+    EMP3.select = True
+    bpy.context.scene.objects.active = EMP1
+
+    bpy.ops.object.delete(use_global=False)
+
+    # Redimensiona
+
+    fatorEscala2 = medidaReal2 / medidaAtual2
+
+    bpy.ops.object.select_all(action='DESELECT')
+    FACE.select = True
+    bpy.context.scene.objects.active = FACE
+    FACE.scale = (fatorEscala2, fatorEscala2, fatorEscala2)
+
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+
+    bpy.ops.view3d.viewnumpad(type='FRONT')
+    bpy.ops.view3d.view_selected()
+
+
+class CalcAlinhaMandibula(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.calcalinhamand"
+    bl_label = "Cálculo de Alinhamento da Mandíbula"
+
+    def execute(self, context):
+        CalcAlinhaMandibulaDef(self, context)
+        return {'FINISHED'}
+
 
 # CONFIGURA EXECUTÁVEIS E SCRIPTS
 
@@ -2585,9 +3288,31 @@ class ImportaCefalometria(bpy.types.Panel):
 
 #ALINHA FACES
 
+class AlinhaMaxila(bpy.types.Panel):
+    """Planejamento de cirurgia ortognática no Blender"""
+    bl_label = "Alinha Face (Novo)"
+    bl_idname = "Alinha Face 2"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
+    bl_category = "Ortog"
+
+    def draw(self, context):
+        layout = self.layout
+
+        obj = context.object
+
+        row = layout.row()
+        row.operator("object.colocapontos", text="3 Pontos", icon="CURSOR")
+
+        col = self.layout.column(align = True)
+        col.prop(context.scene, "medida_real2")
+
+        row = layout.row()
+        row.operator("object.calcalinhamand", text="Alinha e Redimensionar", icon="FILE_TICK")
+
 class AlinhaFaces(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
-    bl_label = "Alinha Faces"
+    bl_label = "Alinha Face (Antigo)"
     bl_idname = "alinha_faces"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
@@ -2798,6 +3523,16 @@ class CriaSplintPanel(bpy.types.Panel):
 
 
 def register():
+    bpy.utils.register_class(StartCallback)
+    bpy.utils.register_class(StopCallback)
+    bpy.types.Scene.medida_real2 = bpy.props.StringProperty \
+      (
+        name = "Medida Real",
+        description = "Medida real distância cantal",
+        default = "1"
+      )
+    bpy.utils.register_class(ColocaPontos)
+    bpy.utils.register_class(CalcAlinhaMandibula)
     bpy.utils.register_class(ortogPreferences)
 #    bpy.utils.register_class(ortogPreferences2)
     bpy.utils.register_class(CriaMento)
@@ -2850,6 +3585,7 @@ def register():
     bpy.utils.register_class(OOB_import_stl)
     bpy.utils.register_class(ZoomCena)
     bpy.utils.register_class(CriaFotogrametria)
+    bpy.utils.register_class(AlinhaMaxila)
     bpy.utils.register_class(AlinhaFaces)
     bpy.utils.register_class(OOB_import_obj)
     bpy.utils.register_class(ImportaCefalometria)
@@ -2876,6 +3612,12 @@ def register():
 
 
 def unregister():
+    bpy.utils.unregister_class(StartCallback)
+    bpy.utils.unregister_class(StopCallback)
+    del bpy.types.Scene.medida_real
+    bpy.utils.register_class(ColocaPontos)
+    bpy.utils.register_class(CalcAlinhaMandibula)
+    bpy.utils.unregister_class(AlinhaMaxila)
     bpy.utils.unregister_class(ortogPreferences)
 #    bpy.utils.unregister_class(ortogPreferences2)
     bpy.utils.unregister_class(CortaFace)
@@ -2938,3 +3680,16 @@ def unregister():
 
 if __name__ == "__main__":
     register()
+
+#Example:
+
+#The comparaison (for cursor location, it is a vector comparison)
+def CompareLocation( l1, l2 ):
+    return l1 == l2
+
+#The callback to execute when the cursor's location changes
+def CompareLocationCallback( watcher, newValue ):
+    print( 'New value', newValue )
+
+#Install the watcher which will run the callback
+#EventWatcher.AddWatcher( EventWatcher( bpy.data.scenes[0], "cursor_location", CompareLocation, CompareLocationCallback, True ) )
