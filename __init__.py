@@ -3308,7 +3308,7 @@ class AlinhaMaxila(bpy.types.Panel):
         col.prop(context.scene, "medida_real2")
 
         row = layout.row()
-        row.operator("object.calcalinhamand", text="Alinha e Redimensionar", icon="FILE_TICK")
+        row.operator("object.calcalinhamand", text="Alinhar e Redimensionar", icon="FILE_TICK")
 
 class AlinhaFaces(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
