@@ -1,7 +1,7 @@
 bl_info = {
     "name": "OrtogOnBlender",
     "author": "Cicero Moraes e Everton da Rosa",
-    "version": (1, 1, 6),
+    "version": (1, 1, 7),
     "blender": (2, 75, 0),
     "location": "View3D",
     "description": "Planejamento de Cirurgia Ortognática no Blender",
@@ -738,6 +738,74 @@ class CalcAlinhaMandibula(bpy.types.Operator):
         CalcAlinhaMandibulaDef(self, context)
         return {'FINISHED'}
 
+# IMPORTA TOMO MOLDES
+
+def GeraModelosTomoArcDef(self, context):
+    
+    scn = context.scene
+    
+    tmpdir = tempfile.gettempdir()
+    tmpSTLarcada = tmpdir+'/Arcada.stl'
+
+    homeall = expanduser("~")
+
+    try:
+
+
+        if platform.system() == "Linux":
+
+
+            dicom2DtlPath = homeall+'/Programs/OrtogOnBlender/Dicom2Mesh/dicom2mesh'
+#            dicom2DtlPath = get_dicom2stl_filepath(context)
+
+
+            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.5', '-s', '-t', '226', '-o', tmpSTLarcada])
+	      
+
+            bpy.ops.import_mesh.stl(filepath=tmpSTLarcada, filter_glob="*.stl",  files=[{"name":"Arcada.stl", "name":"Arcada.stl"}], directory=tmpdir)
+      
+
+
+        if platform.system() == "Windows":
+
+            dicom2DtlPath = 'C:/OrtogOnBlender/DicomToMeshWin/dicom2mesh.exe'
+
+
+            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.5', '-s', '-t', '226', '-o', tmpSTLarcada])
+	      
+
+            bpy.ops.import_mesh.stl(filepath=tmpSTLarcada, filter_glob="*.stl",  files=[{"name":"Arcada.stl", "name":"Arcada.stl"}], directory=tmpdir)
+
+
+        if platform.system() == "Darwin":
+
+
+            dicom2DtlPath = '/OrtogOnBlender/DicomToMeshMAC/dicom2mesh'
+
+#            dicom2DtlPath = get_dicom2stl_filepath(context)
+
+
+            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.5', '-s', '-t', '226', '-o', tmpSTLarcada])
+	      
+
+            bpy.ops.import_mesh.stl(filepath=tmpSTLarcada, filter_glob="*.stl",  files=[{"name":"Arcada.stl", "name":"Arcada.stl"}], directory=tmpdir)
+
+  
+        bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
+        bpy.ops.view3d.view_all(center=False)
+
+    except RuntimeError:
+        bpy.context.window_manager.popup_menu(ERROruntimeDICOMDef, title="Atenção!", icon='INFO')
+
+
+class GeraModelosTomoArc(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_modelos_tomo_arc"
+    bl_label = "Gera Tomografia Molde"
+    
+    def execute(self, context):
+        GeraModelosTomoArcDef(self, context)
+        return {'FINISHED'}
 
 # CONFIGURA EXECUTÁVEIS E SCRIPTS
 
@@ -895,7 +963,7 @@ def ImportaArmatureDef(self, context):
     if platform.system() == "Linux" or platform.system() == "Darwin":
         dirScript = bpy.utils.user_resource('SCRIPTS')
         
-        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+        blendfile = "/OrtogOnBlender/Blender/blender.app/Contents/Resources/2.78/scripts/addons/OrtogOnBlender-master/objetos.blend"
         section   = "\\Object\\"
         object    = "Armature_Head"
         
@@ -1899,7 +1967,7 @@ def GeraModelosTomoDef(self, context):
         if platform.system() == "Darwin":
 
 
-            dicom2DtlPath = homeall+'/OrtogOnBlender/DicomToMeshMAC/dicom2mesh'
+            dicom2DtlPath = '/OrtogOnBlender/DicomToMeshMAC/dicom2mesh'
 
             interesseOssos = bpy.context.scene.interesse_ossos
             interesseMole = bpy.context.scene.interesse_mole
@@ -1945,6 +2013,10 @@ def GeraModelosTomoDef(self, context):
         bpy.ops.transform.rotate(value=3.14159, axis=(0, 0, 1), constraint_axis=(False, False, True),
                                  constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED',
                                  proportional_edit_falloff='SMOOTH', proportional_size=1)
+                                 
+        bpy.context.object.location[0] = 0
+        bpy.context.object.location[1] = 0
+        bpy.context.object.location[2] = 0
 
         bpy.ops.view3d.view_all(center=False)
 
@@ -1974,9 +2046,17 @@ def GeraModeloFotoDef(self, context):
             OpenMVSPath = 'C:/OrtogOnBlender/openMVSWin/OpenMVS.bat' 
 
         if platform.system() == "Darwin":
-            OpenMVGPath = homeall+'/OrtogOnBlender/openMVGMAC/SfM_SequentialPipeline.py' 
-            OpenMVSPath = homeall+'/OrtogOnBlender/openMVSMAC/openMVSMAC.sh'
-
+   #         if platform.release() == '15.6.0':
+#                OpenMVGPath = '/OrtogOnBlender/openMVGMACelcap/SfM_SequentialPipeline.py' 
+#                OpenMVSPath = '/OrtogOnBlender/openMVSMACelcap/openMVSMAC.sh' 
+#            if platform.release() == '17.5.0':
+#                OpenMVGPath = '/OrtogOnBlender/openMVGMACelcap/SfM_SequentialPipeline.py' 
+#                OpenMVSPath = '/OrtogOnBlender/openMVSMACelcap/openMVSMAC.sh'                       
+#            else:
+#                OpenMVGPath = '/OrtogOnBlender/openMVGMAC/SfM_SequentialPipeline.py' 
+#                OpenMVSPath = '/OrtogOnBlender/openMVSMAC/openMVSMAC.sh'
+            OpenMVGPath = '/OrtogOnBlender/openMVGMACelcap/SfM_SequentialPipeline.py' 
+            OpenMVSPath = '/OrtogOnBlender/openMVSMACelcap/openMVSMAC.sh'
 
         shutil.rmtree(tmpdir+'/OpenMVG', ignore_errors=True)
         shutil.rmtree(tmpdir+'/MVS', ignore_errors=True)
@@ -2023,9 +2103,15 @@ def GeraModeloFotoDef(self, context):
     #    bpy.context.object.modifiers["Smooth"].factor = 2
     #    bpy.context.object.modifiers["Smooth"].iterations = 3
     #    bpy.ops.object.convert(target='MESH')
+    #    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Smooth")    
+    
         bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
         bpy.ops.view3d.view_all(center=False)
         bpy.ops.file.pack_all()
+        
+        bpy.ops.object.modifier_add(type='SMOOTH')
+        bpy.context.object.modifiers["Smooth"].factor = 2
+        bpy.context.object.modifiers["Smooth"].iterations = 4
         
     except RuntimeError:
         bpy.context.window_manager.popup_menu(ERROruntimeFotosDef, title="Atenção!", icon='INFO')
@@ -2080,7 +2166,7 @@ def GeraModeloFotoSMVSDef(self, context):
 
         if platform.system() == "Darwin":
             homemac = expanduser("~")
-            SMVSPath = homemac+'/OrtogOnBlender/SMVSMAC/'
+            SMVSPath = '/OrtogOnBlender/SMVSMAC/'
 
             subprocess.call(['rm', '-Rf', tmpdir+'/scene'])
             subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path, tmpdir+'/scene'])
@@ -2369,7 +2455,7 @@ def ImportaSplintDef(self, context):
 
         dirScript = bpy.utils.user_resource('SCRIPTS')
 
-        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+        blendfile = "/OrtogOnBlender/Blender/blender.app/Contents/Resources/2.78/scripts/addons/OrtogOnBlender-master/objetos.blend"
         section   = "\\Group\\"
         object    = "SPLINT"
         
@@ -3133,21 +3219,14 @@ class ImportaTomo(bpy.types.Panel):
         
         linha=row.operator("mesh.select_less", text="Sel. Menos", icon="ZOOMOUT")     
   
-        
-#IMPORTA STL
-  
-class OOB_import_stl(bpy.types.Panel):
-    """Planejamento de cirurgia ortognática no Blender"""
-    bl_label = "Importar Tomo 3D/Moldes"
-    bl_idname = "import_stl"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'TOOLS'
-    bl_category = "Ortog"
+        row = layout.row()
+        row.label(text="Importação das Arcadas:")
 
-    def draw(self, context):
-        layout = self.layout
-
-        obj = context.object
+        col = layout.column(align=True)
+        col.prop(scn.my_tool, "path", text="")
+ 
+        row = layout.row()
+        row.operator("object.gera_modelos_tomo_arc", text="Gera Arcada", icon="SNAP_FACE")
 
         row = layout.row()
         row.operator("import_mesh.stl", text="Importa STL", icon="IMPORT")
@@ -3159,7 +3238,7 @@ class OOB_import_stl(bpy.types.Panel):
         row.operator("object.align_icp", text="Alinha Molde ICP", icon="PARTICLE_PATH")
         
         row = layout.row()
-        circle=row.operator("object.join", text="Junta com Molde", icon="GROUP")
+        circle=row.operator("object.join", text="Junta com Molde", icon="GROUP")       
 
 
 # ZOOM
@@ -3549,6 +3628,7 @@ def register():
     bpy.utils.register_class(AlinhaRosto2)
     bpy.utils.register_class(AnimaLocRot)
     bpy.utils.register_class(rotacionaZ)
+    bpy.utils.register_class(GeraModelosTomoArc)
     bpy.utils.register_class(LinhaBase)
     bpy.utils.register_class(ImportaArmature)
     bpy.utils.register_class(CriaEspessura)
@@ -3582,7 +3662,6 @@ def register():
     bpy.utils.register_class(GeraModeloFotoSMVS)
     bpy.utils.register_class(ConfiguraDinamicaMole)
     bpy.utils.register_class(ImportaTomo)
-    bpy.utils.register_class(OOB_import_stl)
     bpy.utils.register_class(ZoomCena)
     bpy.utils.register_class(CriaFotogrametria)
     bpy.utils.register_class(AlinhaMaxila)
@@ -3627,6 +3706,7 @@ def unregister():
     bpy.utils.unregister_class(AlinhaRosto2)
     bpy.utils.unregister_class(AnimaLocRot)
     bpy.utils.unregister_class(rotacionaZ)
+    bpy.utils.unregister_class(GeraModelosTomoArc)
     bpy.utils.unregister_class(LinhaBase)
     bpy.utils.unregister_class(ImportaArmature)
     bpy.utils.unregister_class(CriaEspessura)
@@ -3652,7 +3732,6 @@ def unregister():
     del bpy.types.Scene.interesse_ossos
     del bpy.types.Scene.interesse_mole
     bpy.utils.unregister_class(ImportaTomo)
-    bpy.utils.unregister_class(OOB_import_stl)
     bpy.utils.unregister_class(ZoomCena)
     bpy.utils.unregister_class(CriaFotogrametria)
     bpy.utils.unregister_class(AlinhaFaces)
