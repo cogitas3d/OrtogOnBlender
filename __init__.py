@@ -963,7 +963,7 @@ def ImportaArmatureDef(self, context):
     if platform.system() == "Linux" or platform.system() == "Darwin":
         dirScript = bpy.utils.user_resource('SCRIPTS')
         
-        blendfile = "/OrtogOnBlender/Blender/blender.app/Contents/Resources/2.78/scripts/addons/OrtogOnBlender-master/objetos.blend"
+        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
         section   = "\\Object\\"
         object    = "Armature_Head"
         
