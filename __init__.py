@@ -1,7 +1,7 @@
 bl_info = {
     "name": "OrtogOnBlender",
     "author": "Cicero Moraes e Everton da Rosa",
-    "version": (1, 1, 8),
+    "version": (1, 1, 9),
     "blender": (2, 75, 0),
     "location": "View3D",
     "description": "Planejamento de Cirurgia Ortognática no Blender",
