@@ -2451,7 +2451,15 @@ def ImportaSplintDef(self, context):
     scn = context.scene
 
 
-    if platform.system() == "Linux" or platform.system() == "Darwin":
+    if platform.system() == "Linux":
+
+        dirScript = bpy.utils.user_resource('SCRIPTS')
+
+        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+        section   = "\\Group\\"
+        object    = "SPLINT"
+
+    if platform.system() == "Darwin":
 
         dirScript = bpy.utils.user_resource('SCRIPTS')
 
