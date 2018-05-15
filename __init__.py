@@ -1920,8 +1920,8 @@ def GeraModelosTomoDef(self, context):
 
         if platform.system() == "Linux":
 
-
-            dicom2DtlPath = get_dicom2stl_filepath(context)
+            dicom2DtlPath = homeall+'/Programs/OrtogOnBlender/Dicom2Mesh/dicom2mesh'
+#            dicom2DtlPath = get_dicom2stl_filepath(context)
 
 
             interesseOssos = bpy.context.scene.interesse_ossos
