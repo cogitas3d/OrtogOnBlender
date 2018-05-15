@@ -3608,6 +3608,44 @@ class CriaSplintPanel(bpy.types.Panel):
         row = layout.row()
         row.operator("export_mesh.stl", text="Exporta STL", icon="EXPORT")
 
+class FerrZoom(bpy.types.Header):
+    """Planejamento de cirurgia ortognática no Blender"""
+    bl_label = "Criação do Splint"
+    bl_idname = "Cria_Splint"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'HEADER'
+    bl_category = "Ortog"
+
+    def draw(self, context):
+        layout = self.layout
+
+        obj = context.object
+
+        row = layout.row()
+        row = layout.row()
+        row.operator("view3d.viewnumpad", text="F").type='FRONT'
+        row.operator("view3d.viewnumpad", text="A").type='BACK'
+        row.operator("view3d.viewnumpad", text="D").type='RIGHT'
+        row.operator("view3d.viewnumpad", text="E").type='LEFT'
+        row.operator("view3d.viewnumpad", text="C").type='TOP'
+        row.operator("view3d.viewnumpad", text="B").type='BOTTOM'
+        
+        row = layout.row()
+        row.operator("opr.pan_down_view1", text="", icon="TRIA_UP")
+        row.operator("opr.pan_up_view1", text="", icon="TRIA_DOWN")
+        row.operator("opr.pan_right_view1", text="", icon="TRIA_LEFT")
+        row.operator("opr.pan_left_view1", text="", icon="TRIA_RIGHT")
+
+        row = layout.row()
+        row.operator("opr.orbit_down_view1", text="", icon="FILE_PARENT")
+        row.operator("opr.orbit_up_view1", text="", icon="FILE_REFRESH")
+        row.operator("opr.orbit_right_view1", text="", icon="LOOP_BACK")
+        row.operator("opr.orbit_left_view1", text="", icon="LOOP_FORWARDS")
+
+        
+        row = layout.row()
+        row.operator("view3d.view_persportho", text="Persp/Orto")
+        row.operator("view3d.view_all", text="Cent. Zoom", icon="VIEWZOOM").center=False    
 
 def register():
     bpy.utils.register_class(StartCallback)
@@ -3696,6 +3734,7 @@ def register():
     bpy.utils.register_class(EMP46)
     bpy.utils.register_class(CriaSplintPanel)
     bpy.utils.register_class(ConfSplint)
+    bpy.utils.register_class(FerrZoom)
 
 
 def unregister():
@@ -3764,6 +3803,7 @@ def unregister():
     bpy.utils.unregister_class(EMP46)
     bpy.utils.unregister_class(CriaSplintPanel)
     bpy.utils.unregister_class(ConfSplint)
+    bpy.utils.unregister_class(FerrZoom)
 
 if __name__ == "__main__":
     register()
