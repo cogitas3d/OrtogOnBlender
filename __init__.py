@@ -1254,6 +1254,31 @@ def AlinhaRostoDef2(self, context):
 
 #-------------------------------------
 
+# CRIA CIRCULO DE CORTE
+
+def CriaCirculoCorteDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+
+    bpy.ops.mesh.primitive_circle_add(vertices=100, radius=200, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+
+    bpy.context.object.rotation_euler[1] = 1.5708
+
+    bpy.context.object.show_x_ray = True
+
+
+class CriaCirculoCorte(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.cria_circulo_corte"
+    bl_label = "Cria Circulo de Corte"
+
+    def execute(self, context):
+        CriaCirculoCorteDef(self, context)
+        return {'FINISHED'}
+
+#-------------------------------------
+
+
 class AlinhaRosto(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.alinha_rosto"
@@ -3343,11 +3368,12 @@ class OOB_import_obj(bpy.types.Panel):
         #ORIGINAL bpy.ops.import_mesh.stl()
         
         row = layout.row()
-        circle=row.operator("mesh.primitive_circle_add", text="Círculo de Corte", icon="MESH_CIRCLE")
-        circle.radius=200
-        circle.vertices=100
-        circle.location=(85,-185,0)
-        circle.rotation=(0,1.5708,0)
+        row.operator("object.cria_circulo_corte", text="Círculo de Corte", icon="MESH_CIRCLE")
+#        circle=row.operator("mesh.primitive_circle_add", text="Círculo de Corte", icon="MESH_CIRCLE")
+#        circle.radius=200
+#        circle.vertices=100
+#        circle.location=(85,-185,0)
+#        circle.rotation=(0,1.5708,0)
 
         row = layout.row()
         knife=row.operator("object.corta_face", text="Cortar!", icon="META_PLANE")
@@ -3664,6 +3690,7 @@ def register():
     bpy.types.INFO_MT_mesh_add.append(add_object_button)
     bpy.utils.register_class(CortaFace)
     bpy.utils.register_class(AlinhaRosto)
+    bpy.utils.register_class(CriaCirculoCorte)
 #    bpy.utils.register_class(MedidaReal)
     bpy.types.Scene.medida_real = bpy.props.StringProperty \
       (
@@ -3748,6 +3775,7 @@ def unregister():
 #    bpy.utils.unregister_class(ortogPreferences2)
     bpy.utils.unregister_class(CortaFace)
     bpy.utils.unregister_class(AlinhaRosto)
+    bpy.utils.unregister_class(CriaCirculoCorte)
 #    bpy.utils.register_class(MedidaReal)
     del bpy.types.Scene.medida_real
     bpy.utils.unregister_class(AlinhaRosto2)
