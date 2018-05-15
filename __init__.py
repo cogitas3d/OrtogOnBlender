@@ -1859,6 +1859,15 @@ def AreasInfluenciaDef(self, context):
     bpy.ops.object.vertex_group_assign()
 
 
+    # FRENTE
+
+    vg = obj.vertex_groups.new(name="frente")
+
+    bpy.ops.object.mode_set(mode='EDIT')
+
+    bpy.ops.object.vertex_group_assign()
+
+
     bpy.ops.object.mode_set(mode='OBJECT') # Depois de fazer tudo voltar ao modo de Objeto
 
 
@@ -1873,8 +1882,8 @@ def CriaAreasDeformacaoDef(self, context):
     bpy.context.object.modifiers["VertexWeightProximity"].vertex_group = "me"
     bpy.context.object.modifiers["VertexWeightProximity"].target = bpy.data.objects["me"]
     bpy.context.object.modifiers["VertexWeightProximity"].proximity_mode = 'GEOMETRY'
-    bpy.context.object.modifiers["VertexWeightProximity"].min_dist = 25
-    bpy.context.object.modifiers["VertexWeightProximity"].max_dist = 3
+    bpy.context.object.modifiers["VertexWeightProximity"].min_dist =30
+    bpy.context.object.modifiers["VertexWeightProximity"].max_dist = 12 #3
     bpy.context.object.modifiers["VertexWeightProximity"].falloff_type = 'SHARP'
     bpy.context.object.modifiers["VertexWeightProximity"].name = "Mento"
     bpy.context.object.modifiers["Mento"].show_expanded = False
@@ -1884,9 +1893,9 @@ def CriaAreasDeformacaoDef(self, context):
     bpy.context.object.modifiers["VertexWeightProximity"].vertex_group = "cm"
     bpy.context.object.modifiers["VertexWeightProximity"].target = bpy.data.objects["cm"]
     bpy.context.object.modifiers["VertexWeightProximity"].proximity_mode = 'GEOMETRY'
-    bpy.context.object.modifiers["VertexWeightProximity"].min_dist = 35
-    bpy.context.object.modifiers["VertexWeightProximity"].max_dist = 12
-    bpy.context.object.modifiers["VertexWeightProximity"].falloff_type = 'SHARP'
+    bpy.context.object.modifiers["VertexWeightProximity"].min_dist = 20
+    bpy.context.object.modifiers["VertexWeightProximity"].max_dist = 11
+    bpy.context.object.modifiers["VertexWeightProximity"].falloff_type = 'LINEAR'
     bpy.context.object.modifiers["VertexWeightProximity"].name = "Corpo Mandibula"
     bpy.context.object.modifiers["Corpo Mandibula"].show_expanded = False
     
@@ -1919,7 +1928,7 @@ def CriaAreasDeformacaoDef(self, context):
     bpy.context.object.modifiers["VertexWeightProximity"].falloff_type = 'SHARP'
     bpy.context.object.modifiers["VertexWeightProximity"].name = "Maxila"
     bpy.context.object.modifiers["Maxila"].show_expanded = False
-    
+
     bpy.ops.object.modifier_add(type='VERTEX_WEIGHT_PROXIMITY')
     bpy.context.object.modifiers["VertexWeightProximity"].vertex_group = "ca"
     bpy.context.object.modifiers["VertexWeightProximity"].target = bpy.data.objects["ca"]
@@ -1929,6 +1938,16 @@ def CriaAreasDeformacaoDef(self, context):
     bpy.context.object.modifiers["VertexWeightProximity"].falloff_type = 'SHARP'
     bpy.context.object.modifiers["VertexWeightProximity"].name = "Cabeça"
     bpy.context.object.modifiers["Cabeça"].show_expanded = False
+
+    bpy.ops.object.modifier_add(type='VERTEX_WEIGHT_PROXIMITY')
+    bpy.context.object.modifiers["VertexWeightProximity"].vertex_group = "frente"
+    bpy.context.object.modifiers["VertexWeightProximity"].target = bpy.data.objects["ma"]
+    bpy.context.object.modifiers["VertexWeightProximity"].proximity_mode = 'GEOMETRY'
+    bpy.context.object.modifiers["VertexWeightProximity"].min_dist = 40
+    bpy.context.object.modifiers["VertexWeightProximity"].max_dist = 20
+    bpy.context.object.modifiers["VertexWeightProximity"].falloff_type = 'LINEAR'
+    bpy.context.object.modifiers["VertexWeightProximity"].name = "Frente"
+    bpy.context.object.modifiers["Maxila"].show_expanded = False
 
 def GeraModelosTomoDef(self, context):
     
@@ -2224,10 +2243,10 @@ def ConfiguraDinamicaMoleDef(self, context):
 
     bpy.ops.object.areas_influencia()
     bpy.ops.object.cria_areas_deformacao()
+
     bpy.ops.object.convert(target='MESH')
 
-
-#    a = bpy.data.objects['FaceMalha.001']
+    #    a = bpy.data.objects['FaceMalha.001']
     armatureHead = bpy.data.objects['Armature_Head']
 
     armatureHead.hide=False
@@ -2239,6 +2258,17 @@ def ConfiguraDinamicaMoleDef(self, context):
     bpy.ops.object.parent_set(type='ARMATURE_NAME')
 
     armatureHead.hide=True
+
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects['FaceMalha.001'].select = True
+#    faceMalha = bpy.data.objects['FaceMalha.001']
+    bpy.context.scene.objects.active = bpy.data.objects['FaceMalha.001']
+
+    bpy.ops.object.modifier_add(type='SMOOTH')
+    bpy.context.object.modifiers["Smooth"].factor = 2
+    bpy.context.object.modifiers["Smooth"].iterations = 3
+    bpy.context.object.modifiers["Smooth"].vertex_group = "frente"
 
 class CortaFace(bpy.types.Operator):
     """Tooltip"""
