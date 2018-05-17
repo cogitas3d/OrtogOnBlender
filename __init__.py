@@ -37,6 +37,10 @@ from bpy import context
 from os.path import expanduser
 import math
 
+from os import listdir
+from os.path import isfile, join
+import exifread
+
 
 # COLOCACAO DOS PONTOS
 
@@ -1260,7 +1264,7 @@ def CriaCirculoCorteDef(self, context):
     context = bpy.context
     obj = context.active_object
 
-    bpy.ops.mesh.primitive_circle_add(vertices=100, radius=200, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+    bpy.ops.mesh.primitive_circle_add(vertices=100, radius=200, view_align=False, enter_editmode=False, location=(0, 0, 0))
 
     bpy.context.object.rotation_euler[1] = 1.5708
 
@@ -2075,6 +2079,57 @@ def GeraModeloFotoDef(self, context):
 
     homeall = expanduser("~")
 
+    # TESTA CAMERA
+
+    mypath = scn.my_tool.path  # Tem que ter o / no final
+
+    onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+
+    FotoTeste = onlyfiles[0]
+
+    with open(mypath + FotoTeste, 'rb') as f_jpg:
+        tags = exifread.process_file(f_jpg, details=True)
+        print (tags['Image Model'])
+        CamModel = str(tags['Image Model'])
+    #   print("CamModel:", CamModel)
+
+    # TESTA MODELO CAMERA
+
+    camDatabase = "/home/cogitas3d/Programs/OrtogOnBlender/openMVG/sensor_width_camera_database.txt"
+
+    infile = open(camDatabase, "r")
+
+    numlines = 0
+    found = 0
+    for line in infile:
+        numlines += 1
+        while 1:
+            str_found_at = line.find(CamModel)
+            if str_found_at == -1:
+                # string not found in line ...
+                # go to next (ie break out of the while loop)
+                break
+            else:
+                # string found in line
+                found += 1
+                # more than once in this line?
+                # lets strip string and anything prior from line and
+                # then go through the testing loop again
+                line = line[str_found_at + len(CamModel):]
+    infile.close()
+
+    print(CamModel, "was found", found, "times in", numlines, "lines")
+
+    if found == 0:
+        print("Nao apareceu!")
+
+        with open(camDatabase, 'a') as file:
+            inputCam = CamModel, "; 3.80"
+            print(inputCam)
+            file.writelines(inputCam) # Escreve o modelo de camera no arquivo
+
+    # GERA FOTOGRAMETRIA
+
     try:
 
         OpenMVGtmpDir = tmpdir+'/OpenMVG'
@@ -2168,13 +2223,15 @@ def GeraModeloFotoSMVSDef(self, context):
     tmpdir = tempfile.gettempdir()
     tmpOBJface = tmpdir+'/scene/scene_dense_mesh_texture2.obj'
 #    subprocess.call(['rm /tmp/DIRETORIO_FOTOS.txt'],  shell=True)
+
+    homeall = expanduser("~")
     
 
 
     try:
 
         if platform.system() == "Linux":
-            SMVSPath = get_SMVS_filepath(context)
+            SMVSPath = homeall+"/Programs/OrtogOnBlender/SMVS/"
             subprocess.call(['rm', '-rf', tmpdir+'/scene'])
             subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path, tmpdir+'/scene'])
             subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
