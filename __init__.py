@@ -2104,6 +2104,7 @@ def GeraModeloFotoDef(self, context):
 
     if platform.system() == "Windows":
         camDatabase = "C:/OrtogOnBlender/openMVGWIN/sensor_width_camera_database.txt"
+        print("EH WINDOWS")
 
     infile = open(camDatabase, "r")
 
@@ -2134,7 +2135,7 @@ def GeraModeloFotoDef(self, context):
         with open(camDatabase, 'a') as file:
             inputCam = CamModel, "; 3.80"
             print(inputCam)
-            if platform.system() == "Darwin":
+            if platform.system() == "Darwin" or platform.system() == "Windows":
                file.write("\n")
             file.writelines(inputCam) # Escreve o modelo de camera no arquivo
 
