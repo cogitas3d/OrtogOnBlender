@@ -2095,7 +2095,15 @@ def GeraModeloFotoDef(self, context):
 
     # TESTA MODELO CAMERA
 
-    camDatabase = "/home/cogitas3d/Programs/OrtogOnBlender/openMVG/sensor_width_camera_database.txt"
+    if platform.system() == "Linux":
+        camDatabase = "/home/cogitas3d/Programs/OrtogOnBlender/openMVG/sensor_width_camera_database.txt"
+
+    if platform.system() == "Darwin":
+        camDatabase = "/OrtogOnBlender/openMVGMACelcap/sensor_width_camera_database.txt"
+
+
+    if platform.system() == "Windows":
+        camDatabase = "C:/OrtogOnBlender/openMVGWIN/sensor_width_camera_database.txt"
 
     infile = open(camDatabase, "r")
 
@@ -2126,6 +2134,8 @@ def GeraModeloFotoDef(self, context):
         with open(camDatabase, 'a') as file:
             inputCam = CamModel, "; 3.80"
             print(inputCam)
+            if platform.system() == "Darwin":
+               file.write("\n")
             file.writelines(inputCam) # Escreve o modelo de camera no arquivo
 
     # GERA FOTOGRAMETRIA
