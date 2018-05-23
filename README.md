@@ -56,17 +56,7 @@ O OrtogOnBlender utiliza uma série de addons e bibliotecas/programas, alguns na
 * MVE/SMVS (código-fonte) - https://github.com/flanggut/smvs
 * Dicom2Mesh (código-fonte) - https://github.com/AOT-AG/DicomToMesh
 
-* Binários para o Ubuntu
-	* OpenMVG, OpenMVS, MVE/SMVS e Dicom2Mesh: https://goo.gl/Rqf1T4
-	* Meshlab: use o comando ```sudo apt-get install meshlab```
-
-* Binários para o Windows
-	* Instalador do OrtogOnBlender com todos os programas e addons necessários: https://goo.gl/jMQbRH
-
-* Binários para o Mac OS X
-	* Arquivos e scripts compilados para o Mac OS X: https://goo.gl/W5rMu3
-
-<h2>Como Instalar (Geral)</h2>
+<h2>Como Instalar (Geral e Atualização)</h2>
 
 * Baixe o arquivo em “Clone or download”
 * No Blender vá em: `File` → `User Preferences` → `Addons` → `Install from file` Procure o arquivo OrtogOnBlender-master.zip, clique sobre ele e em seguida no botão: `Install from file`
@@ -77,9 +67,12 @@ O OrtogOnBlender utiliza uma série de addons e bibliotecas/programas, alguns na
 
 * Tutorial de instalação no Windows: https://goo.gl/xobPsq
 
-* Tutorial de instalação no Mac OS X: https://goo.gl/CNTjrB
+* Tutorial de instalação no Mac OS X
+	* Tutorial clássico: https://goo.gl/CNTjrB
+	* Instalação por linha de comando: https://goo.gl/sJZxjC
 
+* Binários para o Ubuntu (ainda sem tutorial): https://goo.gl/Rqf1T4
 
 <h3>Agradecimentos</h3>
 
-[Dalai Felinto](https://github.com/dfelinto/), [Pierre Moulon](https://github.com/pmoulon), [Patrick Moore](https://github.com/patmo141/), [Adrian Schneider](https://github.com/eidelen), Rodrigo Dornelles, Liogi Iwaki Filho, Antônio Eduardo Izidro, Paulo Henrique  Luiz de Freitas, Vinicius de Paula Ribeiro, Richard Gravalos, José Patrício Neto, Hugo Santos Cunha, Frederico Yonezaki, Eduardo Correa Costa, Renata Porto Stypulkowski, Samuel Cardoso Santiago Júnior, José Arnaldo dos Santos Júnior, Lucio Gamboa Villegas, Walace Guimarães Matos e Adriano Rocha Campos.
+[Dalai Felinto](https://github.com/dfelinto/), [Pierre Moulon](https://github.com/pmoulon), [Patrick Moore](https://github.com/patmo141/), [Adrian Schneider](https://github.com/eidelen), Rodrigo Dornelles, Liogi Iwaki Filho, Antônio Eduardo Izidro, Paulo Henrique  Luiz de Freitas, Vinicius de Paula Ribeiro, Richard Gravalos, José Patrício Neto, Hugo Santos Cunha, Frederico Yonezaki, Eduardo Correa Costa, Renata Porto Stypulkowski, Samuel Cardoso Santiago Júnior, José Arnaldo dos Santos Júnior, Lucio Gamboa Villegas, Walace Guimarães Matos, Luciano Porto, Joyce Azevedo, e Adriano Rocha Campos.
