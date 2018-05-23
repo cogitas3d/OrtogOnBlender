@@ -2137,7 +2137,7 @@ def GeraModeloFotoDef(self, context):
             print(inputCam)
  #           if platform.system() == "Darwin" or platform.system() == "Windows":
  #              file.write("\n")
-	    file.write("\n")
+            file.write("\n")
             file.writelines(inputCam) # Escreve o modelo de camera no arquivo
 
     # GERA FOTOGRAMETRIA
