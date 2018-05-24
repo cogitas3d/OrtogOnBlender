@@ -1256,6 +1256,10 @@ def AlinhaRostoDef2(self, context):
 
     bpy.ops.object.delete(use_global=False)
 
+    rosto = bpy.data.objects['Rosto_OK']
+    rosto.select = True
+    bpy.context.scene.objects.active = rosto
+
 #-------------------------------------
 
 # CRIA CIRCULO DE CORTE
@@ -2222,7 +2226,32 @@ def GeraModeloFotoDef(self, context):
         
         bpy.ops.object.modifier_add(type='SMOOTH')
         bpy.context.object.modifiers["Smooth"].factor = 2
-        bpy.context.object.modifiers["Smooth"].iterations = 4
+        bpy.context.object.modifiers["Smooth"].iterations = 3
+
+        #bpy.ops.object.convert(target='MESH')
+
+        # MutRes
+        bpy.ops.object.modifier_add(type='MULTIRES')
+        bpy.context.object.modifiers["Multires"].show_viewport = False
+        bpy.ops.object.multires_subdivide(modifier="Multires")
+
+        context = bpy.context
+        obj = context.active_object
+
+        heightTex = bpy.data.textures.new('Texture name', type='IMAGE')
+        heightTex.image = bpy.data.images['scene_dense_mesh_texture2_material_0_map_Kd.jpg']
+        dispMod = obj.modifiers.new("Displace", type='DISPLACE')
+        dispMod.texture = heightTex
+        bpy.context.object.modifiers["Displace"].texture_coords = 'UV'
+        bpy.context.object.modifiers["Displace"].strength = 0.035
+        bpy.context.object.modifiers["Displace"].mid_level = 0.5
+
+        #Comprime modificadores
+        bpy.context.object.modifiers["Smooth"].show_expanded = False
+        bpy.context.object.modifiers["Multires"].show_expanded = False
+        bpy.context.object.modifiers["Displace"].show_expanded = False
+
+        bpy.ops.object.shade_smooth()
         
     except RuntimeError:
         bpy.context.window_manager.popup_menu(ERROruntimeFotosDef, title="Atenção!", icon='INFO')
