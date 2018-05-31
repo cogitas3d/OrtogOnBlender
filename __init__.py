@@ -2843,7 +2843,7 @@ class AlinhaFaces(bpy.types.Panel):
 
         row = layout.row()        
         row.label(text="Alinhamento e Redimensionamento:")
-        layout.operator("object.alinha_rosto", text="1 - Alinha com a Camera", icon="MANIPUL")
+        layout.operator("object.alinha_rosto", text="1 - Alinha com a Câmera", icon="MANIPUL")
         col = self.layout.column(align = True)
         col.prop(context.scene, "medida_real")  
         layout.operator("object.alinha_rosto2", text="3 - Alinha e Redimensiona", icon="LAMP_POINT")
