@@ -2846,7 +2846,7 @@ class AlinhaFaces(bpy.types.Panel):
         layout.operator("object.alinha_rosto", text="1 - Alinha com a Camera", icon="MANIPUL")
         col = self.layout.column(align = True)
         col.prop(context.scene, "medida_real")  
-        layout.operator("object.alinha_rosto2", text="2 - Alinha e Redimensiona", icon="LAMP_POINT")
+        layout.operator("object.alinha_rosto2", text="3 - Alinha e Redimensiona", icon="LAMP_POINT")
         
         row = layout.row()
         row.operator("object.rotaciona_z", text="Flip Z", icon="FORCE_MAGNETIC")
@@ -3089,9 +3089,9 @@ def register():
 #    bpy.utils.register_class(MedidaReal)
     bpy.types.Scene.medida_real = bpy.props.StringProperty \
       (
-        name = "Medida Real",
+        name = "2 - Medida Real",
         description = "Medida real distância cantal",
-        default = "1"
+        default = "0"
       )
     bpy.utils.register_class(AlinhaRosto2)
     bpy.utils.register_class(AnimaLocRot)
