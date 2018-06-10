@@ -187,3 +187,5 @@ def AlinhaRostoDef2(self, context):
     rosto = bpy.data.objects['Rosto_OK']
     rosto.select = True
     bpy.context.scene.objects.active = rosto
+
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
