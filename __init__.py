@@ -826,7 +826,7 @@ class CapturaLocal(PropertyGroup):
 
 class ImportaTomo(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
-    bl_label = "Importa Tomo"
+    bl_label = "Import CT-Scan"
     bl_idname = "importa_tomo"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
@@ -838,7 +838,7 @@ class ImportaTomo(bpy.types.Panel):
         obj = context.object 
         
         row = layout.row()
-        row.label(text="Reconstrução da Tomografia:")
+        row.label(text="CT-Scan Reconstruction:")
 
         col = layout.column(align=True)
         col.prop(scn.my_tool, "path", text="")
@@ -850,78 +850,78 @@ class ImportaTomo(bpy.types.Panel):
         col.prop(context.scene, "interesse_mole")
 
         row = layout.row()
-        row.operator("object.gera_modelos_tomo", text="Converte DICOM para 3D", icon="SNAP_FACE")
+        row.operator("object.gera_modelos_tomo", text="Convert DICOM to 3D", icon="SNAP_FACE")
         
 
         row = layout.row()
-        row.label(text="Referências Gráficas:")
+        row.label(text="Graphic References:")
 
         row = layout.row()
-        linha=row.operator("mesh.add_linhabase", text="Linha Central Ver", icon="PAUSE")
+        linha=row.operator("mesh.add_linhabase", text="Vertical Center Line", icon="PAUSE")
         linha.location=(0,-200,0)
 
         row = layout.row()
-        linha=row.operator("mesh.add_linhabase", text="Linha Central Hor", icon="ZOOMOUT")
+        linha=row.operator("mesh.add_linhabase", text="Horizontal Center Line", icon="ZOOMOUT")
         linha.location=(0,-200,0)
         linha.rotation=(0,1.5708,0)
         
         row = layout.row()
-        linha=row.operator("mesh.add_linhabase", text="Linha Lateral Hor", icon="ZOOMOUT")
+        linha=row.operator("mesh.add_linhabase", text="Horizontal Side Line", icon="ZOOMOUT")
         linha.location=(200,30,0)
         linha.rotation=(1.5708,0,0)
 
         row = layout.row()
-        row.label(text="Segmentação Mandíbula:")
+        row.label(text="Jaw Segmentation:")
         
         row = layout.row()
-        linha=row.operator("mesh.select_more", text="Sel. Mais", icon="ZOOMIN")
+        linha=row.operator("mesh.select_more", text="Sel. More", icon="ZOOMIN")
         
-        linha=row.operator("mesh.select_less", text="Sel. Menos", icon="ZOOMOUT")     
+        linha=row.operator("mesh.select_less", text="Sel. Less", icon="ZOOMOUT")     
   
         row = layout.row()
-        row.label(text="Importação das Arcadas:")
+        row.label(text="Arch Teeth Import:")
 
         col = layout.column(align=True)
         col.prop(scn.my_tool, "path", text="")
  
         row = layout.row()
-        row.operator("object.gera_modelos_tomo_arc", text="Gera Arcada", icon="SNAP_FACE")
+        row.operator("object.gera_modelos_tomo_arc", text="Archs Generator", icon="SNAP_FACE")
 
         row = layout.row()
-        row.operator("import_mesh.stl", text="Importa STL", icon="IMPORT")
+        row.operator("import_mesh.stl", text="Import STL", icon="IMPORT")
 
         row = layout.row()
-        row.label(text="Alinha Arcadas")
+        row.label(text="Archs Lines")
         
         row = layout.row()
-        row.operator("object.align_picked_points", text="Alinha Molde Pontos", icon="PARTICLE_TIP")
+        row.operator("object.align_picked_points", text="Align by Points", icon="PARTICLE_TIP")
 
         row = layout.row()
-        row.operator("object.align_icp", text="Alinha Molde ICP", icon="PARTICLE_PATH")
+        row.operator("object.align_icp", text="Align by ICP", icon="PARTICLE_PATH")
 
         row = layout.row()
-        row.label(text="Segmentação Arcada/Crânio:")
+        row.label(text="Archs/Skull Targeting:")
 
         row = layout.row()
-        row.operator("object.cria_circulo_corte_arc", text="Cria Elipse Corte", icon="META_ELLIPSOID")
+        row.operator("object.cria_circulo_corte_arc", text="Create Cut Ellipse", icon="META_ELLIPSOID")
 
         row = layout.row()
-        row.operator("object.corta_arcada", text="Deleta Fora", icon="META_PLANE")
+        row.operator("object.corta_arcada", text="Delet Out", icon="META_PLANE")
 
         row = layout.row()
-        row.operator("object.corta_ossos", text="Deleta Dentro", icon="MOD_WIREFRAME")
+        row.operator("object.corta_ossos", text="Delet In", icon="MOD_WIREFRAME")
      
         row = layout.row()
-        circle=row.operator("object.join", text="Junta com Molde", icon="GROUP")
+        circle=row.operator("object.join", text="Joint Arch + Bone", icon="GROUP")
 
         row = layout.row()        
-        row.label(text="Ajustes na Malha:")
+        row.label(text="Mesh Adjustments:")
 
         row = layout.row()
-        circle=row.operator("object.fecha_buracos", text="Fecha Buracos", icon="MOD_MESHDEFORM")
+        circle=row.operator("object.fecha_buracos", text="Close Holes", icon="MOD_MESHDEFORM")
 
         row = layout.row()
-        circle=row.operator("object.convert", text="Aplicar!", icon="SAVE_AS") .target='MESH'
+        circle=row.operator("object.convert", text="Apply!", icon="SAVE_AS") .target='MESH'
 
 '''      
 # ZOOM
@@ -974,7 +974,7 @@ class ZoomCena(bpy.types.Panel):
 
 class CriaFotogrametria(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
-    bl_label = "Cria Fotogrametria"
+    bl_label = "Creates photogrammetry"
     bl_idname = "cria_fotogrametria"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
@@ -990,7 +990,7 @@ class CriaFotogrametria(bpy.types.Panel):
         col.prop(scn.my_tool, "path", text="")
  
         row = layout.row()
-        row.operator("object.gera_modelo_foto", text="Iniciar Fotogrametria", icon="IMAGE_DATA")
+        row.operator("object.gera_modelo_foto", text="Start Photogrammetry!", icon="IMAGE_DATA")
 
         row = layout.row()
         row.operator("object.gera_modelo_foto_smvs", text="SMVS+Meshlab", icon="IMAGE_DATA")
@@ -1004,7 +1004,7 @@ class CriaFotogrametria(bpy.types.Panel):
    
 class OOB_import_obj(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
-    bl_label = "Importar Fotogrametria"
+    bl_label = "Import Photogrammetry"
     bl_idname = "import_obj"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
@@ -1016,11 +1016,11 @@ class OOB_import_obj(bpy.types.Panel):
         obj = context.object
 
         row = layout.row()
-        row.operator("import_scene.obj", text="Importa OBJ", icon="MOD_MASK")
+        row.operator("import_scene.obj", text="Import OBJ", icon="MOD_MASK")
         #ORIGINAL bpy.ops.import_mesh.stl()
         
         row = layout.row()
-        row.operator("object.cria_circulo_corte", text="Círculo de Corte", icon="MESH_CIRCLE")
+        row.operator("object.cria_circulo_corte", text="Cutting circle", icon="MESH_CIRCLE")
 #        circle=row.operator("mesh.primitive_circle_add", text="Círculo de Corte", icon="MESH_CIRCLE")
 #        circle.radius=200
 #        circle.vertices=100
@@ -1028,7 +1028,7 @@ class OOB_import_obj(bpy.types.Panel):
 #        circle.rotation=(0,1.5708,0)
 
         row = layout.row()
-        knife=row.operator("object.corta_face", text="Cortar!", icon="META_PLANE")
+        knife=row.operator("object.corta_face", text="Cut!", icon="META_PLANE")
         
         
         
@@ -1037,7 +1037,7 @@ class OOB_import_obj(bpy.types.Panel):
 
 class ImportaCefalometria(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
-    bl_label = "Importar Cefalometria"
+    bl_label = "Import Cephalometry"
     bl_idname = "Importa_Cefalometria"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
@@ -1049,13 +1049,13 @@ class ImportaCefalometria(bpy.types.Panel):
         obj = context.object
 
         row = layout.row()
-        row.operator("import_image.to_plane", text="Importa Imagem", icon="FILE_IMAGE")
+        row.operator("import_image.to_plane", text="Import Image", icon="FILE_IMAGE")
 
 #ALINHA FACES
 
 class AlinhaFaces(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
-    bl_label = "Alinha Face"
+    bl_label = "Align Face"
     bl_idname = "alinha_faces"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
@@ -1068,10 +1068,10 @@ class AlinhaFaces(bpy.types.Panel):
 
         row = layout.row()        
         row.label(text="Alinhamento e Redimensionamento:")
-        layout.operator("object.alinha_rosto", text="1 - Alinha com a Câmera", icon="MANIPUL")
+        layout.operator("object.alinha_rosto", text="1 - Align with the Camera", icon="MANIPUL")
         col = self.layout.column(align = True)
         col.prop(context.scene, "medida_real")  
-        layout.operator("object.alinha_rosto2", text="3 - Alinha e Redimensiona", icon="LAMP_POINT")
+        layout.operator("object.alinha_rosto2", text="3 - Align and resize", icon="LAMP_POINT")
         
         row = layout.row()
         row.operator("object.rotaciona_z", text="Flip Z", icon="FORCE_MAGNETIC")
@@ -1080,17 +1080,17 @@ class AlinhaFaces(bpy.types.Panel):
         row.label(text="Alinhamento por Pontos:")
 
         row = layout.row()
-        row.operator("object.align_picked_points", text="Alinha por Pontos", icon="PARTICLE_TIP")
+        row.operator("object.align_picked_points", text="Align by Points", icon="PARTICLE_TIP")
 
         row = layout.row()
-        row.operator("object.align_icp", text="Alinha ICP", icon="PARTICLE_PATH")
+        row.operator("object.align_icp", text="Align by ICP", icon="PARTICLE_PATH")
     
 
 # OSTEOTOMIA
 
 class Osteotomia(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
-    bl_label = "Osteotomia"
+    bl_label = "Osteotomy"
     bl_idname = "Object_Name"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
@@ -1102,65 +1102,65 @@ class Osteotomia(bpy.types.Panel):
         obj = context.object
        
         row = layout.row()
-        circle=row.operator("mesh.add_mento", text="Plano Mento", icon="TRIA_DOWN")
+        circle=row.operator("mesh.add_mento", text="Chin Plane", icon="TRIA_DOWN")
         circle.location=(0,-35,-81)
         
         row = layout.row()
-        circle=row.operator("mesh.add_ramo", text="Plano Ramo Esquerdo", icon="TRIA_RIGHT")
+        circle=row.operator("mesh.add_ramo", text="Right Ramus Plane", icon="TRIA_RIGHT")
         circle.location=(36, -4, -45)
         
         row = layout.row()
-        circle=row.operator("mesh.add_ramo", text="Plano Ramo Direito", icon="TRIA_LEFT")
+        circle=row.operator("mesh.add_ramo", text="Left Ramus Plane", icon="TRIA_LEFT")
         circle.location=(-36, -4, -45)
         
         row = layout.row()
-        circle=row.operator("mesh.add_maxila", text="Plano Maxila", icon="TRIA_UP")
+        circle=row.operator("mesh.add_maxila", text="Maxilla Plane", icon="TRIA_UP")
         circle.location=(0, -45, -31)
  
         row = layout.row()
-        circle=row.operator("object.join", text="Junta Tudo", icon="GROUP")
+        circle=row.operator("object.join", text="Joint All", icon="GROUP")
     
         
         row = layout.row()
-        circle=row.operator("object.cria_espessura", text="Cria Espessura", icon="MOD_SOLIDIFY")
+        circle=row.operator("object.cria_espessura", text="Create Thickness", icon="MOD_SOLIDIFY")
                
         row = layout.row()
-        circle=row.operator("view3d.cork_mesh_slicer", text="Boolean Cortes", icon="MOD_BOOLEAN")
+        circle=row.operator("view3d.cork_mesh_slicer", text="Cut Boolean", icon="MOD_BOOLEAN")
         circle.method='DIFF'
         
         # Não é necessário estar em Object Mode
         row = layout.row()
-        circle=row.operator("mesh.separate", text="Separa Osteotomia", icon="GROUP_VERTEX")
+        circle=row.operator("mesh.separate", text="Separate Osteotomy", icon="GROUP_VERTEX")
         circle.type='LOOSE'
         
         row = layout.row()
-        circle=row.operator("object.importa_armature", text="Configura Armature", icon="GROUP_BONE")        
+        circle=row.operator("object.importa_armature", text="Setup Armature", icon="GROUP_BONE")        
 
         row = layout.row()        
-        row.label(text="Configura Peças:")
+        row.label(text="Setup Pieces:")
 
         row = layout.row()
-        row.operator("object.configura_cabeca", text="Configura Cabeça")
+        row.operator("object.configura_cabeca", text="Setup Head")
 
         row = layout.row()
-        row.operator("object.configura_maxila", text="Configura Maxila")
+        row.operator("object.configura_maxila", text="Setup Maxilla")
 
         row = layout.row()
-        row.operator("object.configura_ramo_dir", text="Configura Ramo Direito")
+        row.operator("object.configura_ramo_dir", text="Setup Right Ramus")
 
         row = layout.row()
-        row.operator("object.configura_ramo_esq", text="Configura Ramo Esquerdo")
+        row.operator("object.configura_ramo_esq", text="Setup Left Ramus")
 
         row = layout.row()
-        row.operator("object.configura_corpo_mand", text="Configura Corpo Mandíbula")
+        row.operator("object.configura_corpo_mand", text="Configure Mandible Body")
 
         row = layout.row()
-        row.operator("object.configura_mento", text="Configura Mento")
+        row.operator("object.configura_mento", text="Setup Chin")
 
         
 class DinamicaMole(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
-    bl_label = "Dinâmica do Mole"
+    bl_label = "Soft Tissue Dynamics"
     bl_idname = "Dinamica_Mole"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
@@ -1173,16 +1173,16 @@ class DinamicaMole(bpy.types.Panel):
               
 
         row = layout.row()
-        circle=row.operator("object.configura_dinamica_mole", text="Configura Dinâmica Mole", icon="STYLUS_PRESSURE")
+        circle=row.operator("object.configura_dinamica_mole", text="Setup Soft Tissue Dynamics", icon="STYLUS_PRESSURE")
        
         row = layout.row()
-        circle=row.operator("view3d.clip_border", text="Filete de Visualização", icon="UV_FACESEL")
+        circle=row.operator("view3d.clip_border", text="Clipping Border", icon="UV_FACESEL")
 
 # PONTOS ANATÔMICOS
 
 class PontosAnatomicos(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
-    bl_label = "Pontos Anatômicos"
+    bl_label = "Anatomical Points"
     bl_idname = "Pontos_Anatomicos"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
@@ -1194,52 +1194,52 @@ class PontosAnatomicos(bpy.types.Panel):
         obj = context.object
 
         row = layout.row()        
-        row.label(text="Arcada Superior:")
+        row.label(text="Upper Arch:")
 
         row = layout.row()
-        row.operator("object.emp11", text="Dente 11", icon="X")
+        row.operator("object.emp11", text="Tooth 8 (11)", icon="X")
 
         row = layout.row()
-        row.operator("object.emp21", text="Dente 21", icon="X")
+        row.operator("object.emp21", text="Tooth 9 (21)", icon="X")
         
         row = layout.row()
-        row.operator("object.emp13", text="Dente 13", icon="X")       
+        row.operator("object.emp13", text="Tooth 6 (13)", icon="X")       
 
         row = layout.row()
-        row.operator("object.emp23", text="Dente 23", icon="X") 
+        row.operator("object.emp23", text="Tooth 11 (23)", icon="X") 
         
         row = layout.row()
-        row.operator("object.emp16", text="Dente 16", icon="X")
+        row.operator("object.emp16", text="Tooth 3 (16)", icon="X")
         
         row = layout.row()
-        row.operator("object.emp26", text="Dente 26", icon="X")
+        row.operator("object.emp26", text="Tooth 14 (26)", icon="X")
         
         row = layout.row()        
-        row.label(text="Arcada Inferior:") 
+        row.label(text="Lower Arch:") 
 
         row = layout.row()
-        row.operator("object.emp31", text="Dente 31", icon="X")
+        row.operator("object.emp31", text="Tooth 24 (31)", icon="X")
         
         row = layout.row()
-        row.operator("object.emp41", text="Dente 41", icon="X")
+        row.operator("object.emp41", text="Tooth 25 (41)", icon="X")
         
         row = layout.row()
-        row.operator("object.emp33", text="Dente 33", icon="X")
+        row.operator("object.emp33", text="Tooth 22 (33)", icon="X")
 
         row = layout.row()
-        row.operator("object.emp43", text="Dente 43", icon="X")
+        row.operator("object.emp43", text="Tooth 27 (43)", icon="X")
         
         row = layout.row()
-        row.operator("object.emp36", text="Dente 36", icon="X")
+        row.operator("object.emp36", text="Tooth 19 (36)", icon="X")
         
         row = layout.row()
-        row.operator("object.emp46", text="Dente 46", icon="X")
+        row.operator("object.emp46", text="Tooth 30 (46)", icon="X")
 
 # FERRAMENTAS DE MEDIDAS
 
 class FerramentasRefMedidas(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
-    bl_label = "Ferramentas de medidas"
+    bl_label = "Measuring Tools"
     bl_idname = "feramentas_medidas"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
@@ -1251,19 +1251,19 @@ class FerramentasRefMedidas(bpy.types.Panel):
         obj = context.object 
         
         row = layout.row()
-        row.label(text="Medidas Verticais:")
+        row.label(text="Vertical Measurements:")
 
         row = layout.row()
-        row.operator("object.medver", text="Cria Medidas Verticais", icon="LAMP_SUN")
+        row.operator("object.medver", text="Create Vertical Measurements", icon="LAMP_SUN")
 
         row = layout.row()
-        row.operator("measureit.runopenglbutton", text="Mostra/Oculta Medidas", icon="GHOST_ENABLED")
+        row.operator("measureit.runopenglbutton", text="Show/Hide measurements", icon="GHOST_ENABLED")
 
 # ANIMAÇÃO
 
 class CinematicaPanel(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
-    bl_label = "Cinemática"
+    bl_label = "Kinematic"
     bl_idname = "cinematica"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
@@ -1275,17 +1275,17 @@ class CinematicaPanel(bpy.types.Panel):
         obj = context.object
         
         row = layout.row()
-        row.operator("screen.frame_jump", text="Inicio", icon="REW").end=False
+        row.operator("screen.frame_jump", text="Start", icon="REW").end=False
         row.operator("screen.animation_play", text="", icon="PLAY_REVERSE").reverse=True
         row.operator("anim.animalocrot", text="", icon="CLIP")
         row.operator("screen.animation_play", text="", icon="PLAY")
-        row.operator("screen.frame_jump", text="Final", icon="FF").end=True
+        row.operator("screen.frame_jump", text="End", icon="FF").end=True
 
 # SPLINT
 
 class CriaSplintPanel(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
-    bl_label = "Criação do Splint"
+    bl_label = "Splint Creation"
     bl_idname = "Cria_Splint"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
@@ -1301,23 +1301,23 @@ class CriaSplintPanel(bpy.types.Panel):
 #        row.label(text="Configuração do Splint:") 
 
         row = layout.row()
-        row.operator("object.cria_splint", text="Cria Splint", icon="OUTLINER_OB_CURVE")
+        row.operator("object.cria_splint", text="Create Splint", icon="OUTLINER_OB_CURVE")
 
         row = layout.row()
-        row.operator("object.conf_splint", text="Prepara Boolean", icon="RECOVER_AUTO")        
+        row.operator("object.conf_splint", text="Prepare Boolean", icon="RECOVER_AUTO")        
         
         row = layout.row()
-        circle=row.operator("view3d.cork_mesh_slicer", text="Boolean Cortes", icon="MOD_BOOLEAN")
+        circle=row.operator("view3d.cork_mesh_slicer", text="Boolean Cuts", icon="MOD_BOOLEAN")
         circle.method='DIFF'    
 
 #        row = layout.row()
 #        circle=row.operator("object.convert", text="Aplica Deformação", icon="FILE_TICK").target='MESH'
     
         row = layout.row()
-        row.operator("object.prepara_impressao", text="Prepara Impressão 3D", icon="MOD_REMESH")
+        row.operator("object.prepara_impressao", text="Prepares 3D Printing", icon="MOD_REMESH")
         
         row = layout.row()
-        row.operator("export_mesh.stl", text="Exporta STL", icon="EXPORT")
+        row.operator("export_mesh.stl", text="Export STL", icon="EXPORT")
 
 
 class FerrZoom(bpy.types.Header):
@@ -1335,12 +1335,12 @@ class FerrZoom(bpy.types.Header):
 
         row = layout.row()
         row = layout.row()
-        row.operator("view3d.viewnumpad", text="F").type='FRONT'
-        row.operator("view3d.viewnumpad", text="A").type='BACK'
-        row.operator("view3d.viewnumpad", text="D").type='RIGHT'
-        row.operator("view3d.viewnumpad", text="E").type='LEFT'
-        row.operator("view3d.viewnumpad", text="C").type='TOP'
-        row.operator("view3d.viewnumpad", text="B").type='BOTTOM'
+        row.operator("view3d.viewnumpad", text="Front").type='FRONT'
+        row.operator("view3d.viewnumpad", text="Back").type='BACK'
+        row.operator("view3d.viewnumpad", text="Right").type='RIGHT'
+        row.operator("view3d.viewnumpad", text="Left").type='LEFT'
+        row.operator("view3d.viewnumpad", text="Top").type='TOP'
+        row.operator("view3d.viewnumpad", text="Bottom").type='BOTTOM'
         
         row = layout.row()
         row.operator("opr.pan_down_view1", text="", icon="TRIA_UP")
@@ -1356,8 +1356,8 @@ class FerrZoom(bpy.types.Header):
 
         
         row = layout.row()
-        row.operator("view3d.view_persportho", text="Persp/Orto")
-        row.operator("view3d.view_all", text="Cent. Zoom", icon="VIEWZOOM").center=False    
+        row.operator("view3d.view_persportho", text="Persp/Ortho")
+        row.operator("view3d.view_all", text="Center Zoom", icon="VIEWZOOM").center=False    
 
 
 
@@ -1372,7 +1372,7 @@ def register():
 #    bpy.utils.register_class(MedidaReal)
     bpy.types.Scene.medida_real = bpy.props.StringProperty \
       (
-        name = "2 - Medida Real",
+        name = "2 - Actual Measure",
         description = "Medida real distância cantal",
         default = "0"
       )
@@ -1402,13 +1402,13 @@ def register():
     bpy.utils.register_class(CriaAreasDeformacao)
     bpy.types.Scene.interesse_ossos = bpy.props.StringProperty \
       (
-        name = "Fator Ossos",
+        name = "Bone Factor",
         description = "Fatos interesse ossos",
         default = "200"
       )
     bpy.types.Scene.interesse_mole = bpy.props.StringProperty \
       (
-        name = "Fator Mole",
+        name = "Soft Factor",
         description = "Fatos interesse mole",
         default = "-300"
       )
