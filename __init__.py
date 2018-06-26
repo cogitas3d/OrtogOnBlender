@@ -849,6 +849,9 @@ class ImportaTomo(bpy.types.Panel):
         col = self.layout.column(align = True)
         col.prop(context.scene, "interesse_mole")
 
+        col = self.layout.column(align = True)
+        col.prop(context.scene, "interesse_dentes")
+
         row = layout.row()
         row.operator("object.gera_modelos_tomo", text="Convert DICOM to 3D", icon="SNAP_FACE")
         
@@ -1412,6 +1415,12 @@ def register():
         description = "Fatos interesse mole",
         default = "-300"
       )
+    bpy.types.Scene.interesse_dentes = bpy.props.StringProperty \
+      (
+        name = "Teeth Factor",
+        description = "Fatos interesse dentes",
+        default = "1760"
+      )
     bpy.utils.register_class(GeraModelosTomo)
     bpy.utils.register_class(GeraModeloFoto)
     bpy.utils.register_class(GeraModeloFotoSMVS)
@@ -1490,6 +1499,7 @@ def unregister():
     bpy.utils.unregister_class(GeraModeloFotoSMVS)
     del bpy.types.Scene.interesse_ossos
     del bpy.types.Scene.interesse_mole
+    del bpy.types.Scene.interesse_dentes
     bpy.utils.unregister_class(ImportaTomo)
 #    bpy.utils.unregister_class(ZoomCena)
     bpy.utils.unregister_class(CriaFotogrametria)

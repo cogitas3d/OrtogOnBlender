@@ -13,6 +13,7 @@ def GeraModelosTomoDef(self, context):
     tmpdir = tempfile.gettempdir()
     tmpSTLossos = tmpdir+'/ossos.stl'
     tmpSTLmole = tmpdir+'/mole.stl'
+    tmpSTLdentes = tmpdir+'/dentes.stl'
 
     homeall = expanduser("~")
 
@@ -27,10 +28,10 @@ def GeraModelosTomoDef(self, context):
 
             interesseOssos = bpy.context.scene.interesse_ossos
             interesseMole = bpy.context.scene.interesse_mole
+            interesseDentes = bpy.context.scene.interesse_dentes
 
 
-            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseOssos, '-o', tmpSTLossos])
-	      
+            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseOssos, '-o', tmpSTLossos])   
 
             bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory=tmpdir)
 		
@@ -38,10 +39,12 @@ def GeraModelosTomoDef(self, context):
 
             subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseMole, '-o', tmpSTLmole])
 
-# CASO DIDATICO
-#            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', '65', '-o', tmpSTLmole])
-
             bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
+
+
+            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.6', '-s', '-t', interesseDentes, '-o', tmpSTLdentes])
+
+            bpy.ops.import_mesh.stl(filepath=tmpSTLdentes, filter_glob="*.stl",  files=[{"name":"dentes.stl", "name":"dentes.stl"}], directory=tmpdir)
 
 
         if platform.system() == "Windows":
@@ -50,6 +53,7 @@ def GeraModelosTomoDef(self, context):
 
             interesseOssos = bpy.context.scene.interesse_ossos
             interesseMole = bpy.context.scene.interesse_mole
+            interesseMole = bpy.context.scene.interesse_dentes
 
 
             subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseOssos, '-o', tmpSTLossos])
@@ -63,6 +67,11 @@ def GeraModelosTomoDef(self, context):
             subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseMole, '-o', tmpSTLmole])
 
             bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
+
+
+            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseDentes, '-o', tmpSTLdentes])
+
+            bpy.ops.import_mesh.stl(filepath=tmpSTLdentes, filter_glob="*.stl",  files=[{"name":"dentes.stl", "name":"dentes.stl"}], directory=tmpdir)
 
 
         if platform.system() == "Darwin":
@@ -72,6 +81,7 @@ def GeraModelosTomoDef(self, context):
 
             interesseOssos = bpy.context.scene.interesse_ossos
             interesseMole = bpy.context.scene.interesse_mole
+            interesseMole = bpy.context.scene.interesse_dentes
 
 #            dicom2DtlPath = get_dicom2stl_filepath(context)
 
@@ -88,9 +98,14 @@ def GeraModelosTomoDef(self, context):
 
             bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
 
+            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseDentes, '-o', tmpSTLdentes])
+
+            bpy.ops.import_mesh.stl(filepath=tmpSTLdentes, filter_glob="*.stl",  files=[{"name":"dentes.stl", "name":"dentes.stl"}], directory=tmpdir)
+
 
         a = bpy.data.objects['Ossos']
         b = bpy.data.objects['Mole']
+        c = bpy.data.objects['Dentes']
 
         bpy.ops.object.select_all(action='DESELECT')
         a.select = True
@@ -102,9 +117,17 @@ def GeraModelosTomoDef(self, context):
         bpy.context.scene.objects.active = b
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
+
+        bpy.ops.object.select_all(action='DESELECT')
+        c.select = True
+        bpy.context.scene.objects.active = c
+        bpy.ops.object.shade_smooth()
+        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+
         bpy.ops.object.select_all(action='DESELECT')
         a.select = True
         b.select = True 
+        c.select = True
         bpy.context.scene.objects.active = a
         bpy.ops.object.parent_set()
 
