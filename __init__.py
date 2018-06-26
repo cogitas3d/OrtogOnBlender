@@ -61,6 +61,7 @@ from os import listdir
 from os.path import isfile, join
 import exifread
 
+
 # IMPORTA TOMO MOLDES
 
 class GeraModelosTomoArc(bpy.types.Operator):
@@ -151,6 +152,57 @@ def get_SMVS_filepath(context):
 #    addon = get_addon_name()
     preferences = context.user_preferences.addons["OrtogOnBlender-master"].preferences
     return preferences.SMVS_filepath
+
+# TOMOGRAFIAS SELECAO
+
+#HELICAL
+
+def TomoHeliDef(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.context.scene.interesse_ossos = "200"
+    bpy.context.scene.interesse_mole = "-300"
+    bpy.context.scene.interesse_dentes = "1760"
+
+class TomoHeli(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.tomo_heli"
+    bl_label = "Objeto Teste" # Tem que ter nome diferente
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
+    bl_category = "teste"
+    
+    def execute(self, context):
+        TomoHeliDef(self, context)
+        return {'FINISHED'}
+
+#CONEBEAM
+    
+def TomoConeDef(self, context):
+    
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.context.scene.interesse_ossos = "585"
+    bpy.context.scene.interesse_mole = "-300"
+    bpy.context.scene.interesse_dentes = "1195"
+
+class TomoCone(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.tomo_cone"
+    bl_label = "Objeto Teste" # Tem que ter nome diferente
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
+    bl_category = "teste"
+    
+    def execute(self, context):
+        TomoConeDef(self, context)
+        return {'FINISHED'}
+
 
 # ROTACIONA/FLIP Z
 
@@ -843,6 +895,10 @@ class ImportaTomo(bpy.types.Panel):
         col = layout.column(align=True)
         col.prop(scn.my_tool, "path", text="")
 
+        row = layout.row()
+        row.operator("object.tomo_heli", text="CT-Scan")
+        row.operator("object.tomo_cone", text="CBCT")
+
         col = self.layout.column(align = True)
         col.prop(context.scene, "interesse_ossos")
 
@@ -1070,7 +1126,7 @@ class AlinhaFaces(bpy.types.Panel):
         obj = context.object
 
         row = layout.row()        
-        row.label(text="Alinhamento e Redimensionamento:")
+        row.label(text="Align and Resize:")
         layout.operator("object.alinha_rosto", text="1 - Align with the Camera", icon="MANIPUL")
         col = self.layout.column(align = True)
         col.prop(context.scene, "medida_real")  
@@ -1080,7 +1136,7 @@ class AlinhaFaces(bpy.types.Panel):
         row.operator("object.rotaciona_z", text="Flip Z", icon="FORCE_MAGNETIC")
 
         row = layout.row()
-        row.label(text="Alinhamento por Pontos:")
+        row.label(text="Align by Points:")
 
         row = layout.row()
         row.operator("object.align_picked_points", text="Align by Points", icon="PARTICLE_TIP")
@@ -1381,6 +1437,8 @@ def register():
       )
     bpy.utils.register_class(AlinhaRosto2)
     bpy.utils.register_class(AnimaLocRot)
+    bpy.utils.register_class(TomoHeli)
+    bpy.utils.register_class(TomoCone)
     bpy.utils.register_class(rotacionaZ)
     bpy.utils.register_class(GeraModelosTomoArc)
     bpy.utils.register_class(LinhaBase)
@@ -1469,6 +1527,8 @@ def unregister():
     del bpy.types.Scene.medida_real
     bpy.utils.unregister_class(AlinhaRosto2)
     bpy.utils.unregister_class(AnimaLocRot)
+    bpy.utils.unregister_class(TomoHeli)
+    bpy.utils.unregister_class(TomoCone)
     bpy.utils.unregister_class(rotacionaZ)
     bpy.utils.unregister_class(GeraModelosTomoArc)
     bpy.utils.unregister_class(LinhaBase)
