@@ -5,6 +5,16 @@ from os.path import expanduser
 import shutil
 import tempfile
 
+# ERROS
+
+def ERROruntimeFotosDef(self, context):
+    self.layout.label("Doesn't have photo path!")
+
+def ERROTermFoto():
+     CRED = '\033[91m'
+     CEND = '\033[0m'
+     print(CRED + "Doesn't have photo path!" + CEND)
+
 def GeraModeloFotoSMVSDef(self, context):
 
     scn = context.scene
@@ -15,10 +25,11 @@ def GeraModeloFotoSMVSDef(self, context):
 
     homeall = expanduser("~")
     
+    if scn.my_tool.path == "":
+        ERROTermFoto()        
+        bpy.context.window_manager.popup_menu(ERROruntimeFotosDef, title="Attention!", icon='INFO')
 
-
-    try:
-
+    else:
         if platform.system() == "Linux":
             SMVSPath = homeall+"/Programs/OrtogOnBlender/SMVS/"
             subprocess.call(['rm', '-rf', tmpdir+'/scene'])
@@ -74,7 +85,3 @@ def GeraModeloFotoSMVSDef(self, context):
             bpy.data.objects['scene_dense_mesh_texture2'].select = True
             bpy.ops.view3d.view_all(center=False)
             bpy.ops.file.pack_all()
-
-
-    except RuntimeError:
-        bpy.context.window_manager.popup_menu(ERROruntimeFotosDef, title="Atenção!", icon='INFO')

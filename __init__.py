@@ -412,12 +412,6 @@ def ERROruntimeDef(self, context):
 def ERROcmDef(self, context):
     self.layout.label("Você não configurou o Ramo da Mandíbula!")
     
-def ERROruntimeDICOMDef(self, context):
-    self.layout.label("Você não indicou a pasta com os DICOMS!")
-
-def ERROruntimeFotosDef(self, context):
-    self.layout.label("Você não indicou a pasta com as fotos!")
-    
 def ERROruntimePontosDef(self, context):
     self.layout.label("Você não selecionou os três pontos!")
     
