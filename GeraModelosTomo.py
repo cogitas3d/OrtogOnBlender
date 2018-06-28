@@ -17,61 +17,21 @@ def GeraModelosTomoDef(self, context):
 
     homeall = expanduser("~")
 
+    interesseOssos = bpy.context.scene.interesse_ossos
+    interesseMole = bpy.context.scene.interesse_mole
+    interesseDentes = bpy.context.scene.interesse_dentes
+
     try:
 
 
         if platform.system() == "Linux":
 
             dicom2DtlPath = homeall+'/Programs/OrtogOnBlender/Dicom2Mesh/dicom2mesh'
-#            dicom2DtlPath = get_dicom2stl_filepath(context)
-
-
-            interesseOssos = bpy.context.scene.interesse_ossos
-            interesseMole = bpy.context.scene.interesse_mole
-            interesseDentes = bpy.context.scene.interesse_dentes
-
-
-            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseOssos, '-o', tmpSTLossos])   
-
-            bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory=tmpdir)
-		
-            bpy.ops.view3d.view_all(center=False)
-
-            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseMole, '-o', tmpSTLmole])
-
-            bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
-
-
-            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.6', '-s', '-t', interesseDentes, '-o', tmpSTLdentes])
-
-            bpy.ops.import_mesh.stl(filepath=tmpSTLdentes, filter_glob="*.stl",  files=[{"name":"dentes.stl", "name":"dentes.stl"}], directory=tmpdir)
 
 
         if platform.system() == "Windows":
 
             dicom2DtlPath = 'C:/OrtogOnBlender/DicomToMeshWin/dicom2mesh.exe'
-
-            interesseOssos = bpy.context.scene.interesse_ossos
-            interesseMole = bpy.context.scene.interesse_mole
-            interesseDentes = bpy.context.scene.interesse_dentes
-
-
-            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseOssos, '-o', tmpSTLossos])
-	      
-
-            bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory=tmpdir)
-		
-            bpy.ops.view3d.view_all(center=False)
-	      
-
-            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseMole, '-o', tmpSTLmole])
-
-            bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
-
-
-            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseDentes, '-o', tmpSTLdentes])
-
-            bpy.ops.import_mesh.stl(filepath=tmpSTLdentes, filter_glob="*.stl",  files=[{"name":"dentes.stl", "name":"dentes.stl"}], directory=tmpdir)
 
 
         if platform.system() == "Darwin":
@@ -79,29 +39,21 @@ def GeraModelosTomoDef(self, context):
 
             dicom2DtlPath = '/OrtogOnBlender/DicomToMeshMAC/dicom2mesh'
 
-            interesseOssos = bpy.context.scene.interesse_ossos
-            interesseMole = bpy.context.scene.interesse_mole
-            interesseDentes = bpy.context.scene.interesse_dentes
 
-#            dicom2DtlPath = get_dicom2stl_filepath(context)
+        subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseOssos, '-o', tmpSTLossos])   
 
-
-            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseOssos, '-o', tmpSTLossos])
-	      
-
-            bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory=tmpdir)
+        bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory=tmpdir)
 		
-            bpy.ops.view3d.view_all(center=False)
-	      
+        bpy.ops.view3d.view_all(center=False)
 
-            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseMole, '-o', tmpSTLmole])
+        subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseMole, '-o', tmpSTLmole])
 
-            bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
+        bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
 
-            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseDentes, '-o', tmpSTLdentes])
 
-            bpy.ops.import_mesh.stl(filepath=tmpSTLdentes, filter_glob="*.stl",  files=[{"name":"dentes.stl", "name":"dentes.stl"}], directory=tmpdir)
+        subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.6', '-s', '-t', interesseDentes, '-o', tmpSTLdentes])
 
+        bpy.ops.import_mesh.stl(filepath=tmpSTLdentes, filter_glob="*.stl",  files=[{"name":"dentes.stl", "name":"dentes.stl"}], directory=tmpdir)
 
         a = bpy.data.objects['Ossos']
         b = bpy.data.objects['Mole']
