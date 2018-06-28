@@ -53,7 +53,7 @@ def GeraModelosTomoDef(self, context):
 
             interesseOssos = bpy.context.scene.interesse_ossos
             interesseMole = bpy.context.scene.interesse_mole
-            interesseMole = bpy.context.scene.interesse_dentes
+            interesseDentes = bpy.context.scene.interesse_dentes
 
 
             subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseOssos, '-o', tmpSTLossos])
@@ -81,7 +81,7 @@ def GeraModelosTomoDef(self, context):
 
             interesseOssos = bpy.context.scene.interesse_ossos
             interesseMole = bpy.context.scene.interesse_mole
-            interesseMole = bpy.context.scene.interesse_dentes
+            interesseDentes = bpy.context.scene.interesse_dentes
 
 #            dicom2DtlPath = get_dicom2stl_filepath(context)
 
