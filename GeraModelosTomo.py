@@ -2,7 +2,16 @@ import bpy
 import platform
 import tempfile
 from os.path import expanduser
-import subprocess
+
+# ERROS
+
+def ERROruntimeDICOMDef(self, context):
+    self.layout.label("Doesn't have DICOM path!")
+
+def ERROTermDICOM():
+     CRED = '\033[91m'
+     CEND = '\033[0m'
+     print(CRED + "Doesn't have DICOM path!" + CEND)
 
 # GERA MODELO CABEÇA
 
@@ -21,7 +30,14 @@ def GeraModelosTomoDef(self, context):
     interesseMole = bpy.context.scene.interesse_mole
     interesseDentes = bpy.context.scene.interesse_dentes
 
-    try:
+
+
+
+    if scn.my_tool.path == "":
+        ERROTermDICOM()        
+        bpy.context.window_manager.popup_menu(ERROruntimeDICOMDef, title="Attention!", icon='INFO')
+
+    else:
 
 
         if platform.system() == "Linux":
@@ -96,8 +112,8 @@ def GeraModelosTomoDef(self, context):
 
         bpy.ops.view3d.view_all(center=False)
 
-    except RuntimeError:
-        bpy.context.window_manager.popup_menu(ERROruntimeDICOMDef, title="Atenção!", icon='INFO')
+#    except RuntimeError:
+#        bpy.context.window_manager.popup_menu(ERROruntimeDICOMDef, title="Atenção!", icon='INFO')
 
 # GERA MODELO ARCADA
 
@@ -110,21 +126,19 @@ def GeraModelosTomoArcDef(self, context):
 
     homeall = expanduser("~")
 
-    try:
+
+    if scn.my_tool.path == "":
+        ERROTermDICOM()
+        bpy.context.window_manager.popup_menu(ERROruntimeDICOMDef, title="Attention!", icon='INFO')
+
+    else:
 
 
         if platform.system() == "Linux":
 
 
             dicom2DtlPath = homeall+'/Programs/OrtogOnBlender/Dicom2Mesh/dicom2mesh'
-#            dicom2DtlPath = get_dicom2stl_filepath(context)
-
-
-            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.5', '-s', '-t', '226', '-o', tmpSTLarcada])
-	      
-
-            bpy.ops.import_mesh.stl(filepath=tmpSTLarcada, filter_glob="*.stl",  files=[{"name":"Arcada.stl", "name":"Arcada.stl"}], directory=tmpdir)
-      
+    
 
 
         if platform.system() == "Windows":
@@ -132,28 +146,17 @@ def GeraModelosTomoArcDef(self, context):
             dicom2DtlPath = 'C:/OrtogOnBlender/DicomToMeshWin/dicom2mesh.exe'
 
 
-            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.5', '-s', '-t', '226', '-o', tmpSTLarcada])
-	      
-
-            bpy.ops.import_mesh.stl(filepath=tmpSTLarcada, filter_glob="*.stl",  files=[{"name":"Arcada.stl", "name":"Arcada.stl"}], directory=tmpdir)
-
 
         if platform.system() == "Darwin":
 
-
             dicom2DtlPath = '/OrtogOnBlender/DicomToMeshMAC/dicom2mesh'
 
-#            dicom2DtlPath = get_dicom2stl_filepath(context)
 
-
-            subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.5', '-s', '-t', '226', '-o', tmpSTLarcada])
-	      
-
-            bpy.ops.import_mesh.stl(filepath=tmpSTLarcada, filter_glob="*.stl",  files=[{"name":"Arcada.stl", "name":"Arcada.stl"}], directory=tmpdir)
-
+        subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.5', '-s', '-t', '226', '-o', tmpSTLarcada])
+        bpy.ops.import_mesh.stl(filepath=tmpSTLarcada, filter_glob="*.stl",  files=[{"name":"Arcada.stl", "name":"Arcada.stl"}], directory=tmpdir)
   
         bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
         bpy.ops.view3d.view_all(center=False)
 
-    except RuntimeError:
-        bpy.context.window_manager.popup_menu(ERROruntimeDICOMDef, title="Atenção!", icon='INFO')
+#    except RuntimeError:
+#        bpy.context.window_manager.popup_menu(ERROruntimeDICOMDef, title="Atenção!", icon='INFO')
