@@ -1,36 +1,71 @@
 import bpy
 from math import sqrt
 
+
+# ERROS
+
+def ERROmodoDef(self, context):
+    self.layout.label("Put it in Edit Mode!")
+
+def ERROTermModo():
+     CRED = '\033[91m'
+     CEND = '\033[0m'
+     print(CRED + "Put it in Edit Mode!" + CEND)
+
+
+def ERROnumPontosDef(self, context):
+    self.layout.label("Select correctly the THREE vertices!")
+
+def ERROTermNumPontos():
+     CRED = '\033[91m'
+     CEND = '\033[0m'
+     print(CRED + "Select correctly the THREE vertices!" + CEND)
+
+
+
 def AlinhaRostoDef(self, context):
     
     context = bpy.context
     obj = context.active_object
     scn = context.scene
 
-    try:
+    if context.active_object.mode != 'EDIT':
+        ERROTermModo()        
+        bpy.context.window_manager.popup_menu(ERROmodoDef, title="Attention!", icon='INFO')
+
+    else:
+        ob = bpy.context.object
+        ob.update_from_editmode()
+        verts_sel = len([v for v in ob.data.vertices if v.select])
+
+        if verts_sel != 3:
+            ERROTermNumPontos()     
+            bpy.context.window_manager.popup_menu(ERROnumPontosDef, title="Attention!", icon='INFO')
+
+        else:
         
-        bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
+            bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
 
-        bpy.context.object.name = "Rosto"
-        bpy.ops.mesh.edge_face_add() # cria face nos pontos selecionados
-        bpy.ops.mesh.normals_make_consistent(inside=False)
+            bpy.context.object.name = "Rosto"
+            bpy.ops.mesh.edge_face_add() # cria face nos pontos selecionados
+            bpy.ops.mesh.normals_make_consistent(inside=False)
 
-        bpy.ops.mesh.separate(type='SELECTED') # separa triângulo
-        bpy.ops.object.editmode_toggle() #sai do modo de edição
-        bpy.ops.object.select_all(action='DESELECT')
-        bpy.data.objects['Rosto.001'].select = True
-        bpy.context.scene.objects.active = bpy.data.objects['Rosto.001']
-        bpy.ops.object.editmode_toggle() #entra modo edição
-        bpy.ops.mesh.select_all(action='TOGGLE') #seleciona tudo
+            bpy.ops.mesh.separate(type='SELECTED') # separa triângulo
+            bpy.ops.object.editmode_toggle() #sai do modo de edição
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.data.objects['Rosto.001'].select = True
+            bpy.context.scene.objects.active = bpy.data.objects['Rosto.001']
+            bpy.ops.object.editmode_toggle() #entra modo edição
+            bpy.ops.mesh.select_all(action='TOGGLE') #seleciona tudo
 
-    #    bpy.ops.mesh.flip_normals() # inverte os normals
-    #    bpy.ops.mesh.normals_make_consistent(inside=False) # Força normals para fora
-        bpy.ops.view3d.viewnumpad(type='TOP', align_active=True) # alinha a vista com a face selecionada
+        #    bpy.ops.mesh.flip_normals() # inverte os normals
+        #    bpy.ops.mesh.normals_make_consistent(inside=False) # Força normals para fora
+            bpy.ops.view3d.viewnumpad(type='TOP', align_active=True) # alinha a vista com a face selecionada
 
-        bpy.ops.object.editmode_toggle() #sai edit mode
-    
-    except RuntimeError:
-        bpy.context.window_manager.popup_menu(ERROruntimePontosDef, title="Atenção!", icon='INFO')    
+            bpy.ops.object.editmode_toggle() #sai edit mode
+        
+    #    except RuntimeError:
+    #        bpy.context.window_manager.popup_menu(ERROruntimePontosDef, title="Atenção!", icon='INFO')    
     
 
 # FATOR DE ESCALA
