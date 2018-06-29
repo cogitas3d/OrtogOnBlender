@@ -1,5 +1,24 @@
 import bpy
 
+# ERROS
+
+def ERROselCorteDef(self, context):
+    self.layout.label("Select correctly the TWO objects!")
+
+def ERROTermSelCorte():
+     CRED = '\033[91m'
+     CEND = '\033[0m'
+     print(CRED + "Select correctly the TWO objects!" + CEND)
+
+
+def ERROselTipoDef(self, context):
+    self.layout.label("Select only MESH or CURVE objects!")
+
+def ERROTermSelTipo():
+     CRED = '\033[91m'
+     CEND = '\033[0m'
+     print(CRED + "Select only MESH or CURVE objects!" + CEND)
+
 # CÍRCULO DE CORTE
 
 def CriaCirculoCorteDef(self, context):
@@ -19,24 +38,42 @@ def CortaFaceDef(self, context):
     context = bpy.context
     obj = context.active_object
 
-    try:
+    sel=bpy.context.selected_objects
 
-        bpy.context.object.name = "FaceMalha"
-        bpy.ops.object.mode_set(mode='EDIT')
-        bpy.ops.mesh.knife_project(cut_through=True)
-        bpy.ops.mesh.select_mode(use_extend=False, use_expand=False, type='FACE')
-        bpy.ops.mesh.separate(type='SELECTED')
-        bpy.ops.object.mode_set(mode='OBJECT')
-        bpy.ops.object.select_all(action='DESELECT')
-        bpy.data.objects['FaceMalha.001'].select = False
-        bpy.data.objects['FaceMalha'].select = True
-        bpy.ops.object.delete()
-        bpy.data.objects['Circle'].select = True
-        bpy.ops.object.delete()
+    
+    if len(sel) != 2:
+        ERROTermSelCorte()     
+        bpy.context.window_manager.popup_menu(ERROselCorteDef, title="Attention!", icon='INFO')
+
+    if len(sel) == 2:  
+        obj0 = sel[0].data
+        obj1 = sel[1].data 
+        ObjDel = sel[0]    
+
+        if type(obj0) != bpy.types.Mesh and type(obj0) != bpy.types.Curve:
+            ERROTermSelTipo()     
+            bpy.context.window_manager.popup_menu(ERROselTipoDef, title="Attention!", icon='INFO')
+
+        if type(obj1) != bpy.types.Mesh and type(obj1) != bpy.types.Curve:
+            ERROTermSelTipo()     
+            bpy.context.window_manager.popup_menu(ERROselTipoDef, title="Attention!", icon='INFO')
+
+        else:
+            bpy.context.object.name = "FaceMalha"
+            bpy.ops.object.mode_set(mode='EDIT')
+            bpy.ops.mesh.knife_project(cut_through=True)
+            bpy.ops.mesh.select_mode(use_extend=False, use_expand=False, type='FACE')
+            bpy.ops.mesh.separate(type='SELECTED')
+            bpy.ops.object.mode_set(mode='OBJECT')
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.data.objects['FaceMalha.001'].select = False
+            bpy.data.objects['FaceMalha'].select = True
+            bpy.ops.object.delete()
+            ObjDel.select = True
+#            bpy.data.objects['Circle'].select = True
+            bpy.ops.object.delete()
         
-    except RuntimeError:
-        bpy.context.object.name = "Circle"        
-        bpy.context.window_manager.popup_menu(ERROruntimeCorteDef, title="Atenção!", icon='INFO')
+ 
 
 # CÍRCULO DE CORTE DA ARCADA
 
@@ -119,4 +156,3 @@ def FechaBuracosDef(self, context):
 
     bpy.ops.object.modifier_add(type='DECIMATE')
     bpy.context.object.modifiers["Decimate"].ratio = 0.1
-
