@@ -101,21 +101,41 @@ def  CortaArcadaDef(self, context):
     context = bpy.context
     obj = context.active_object
 
+    sel=bpy.context.selected_objects
 
-    bpy.context.object.name = "ArcadaCut"
-    bpy.ops.object.mode_set(mode='EDIT')
-    bpy.ops.mesh.knife_project(cut_through=True)
-    bpy.ops.mesh.select_mode(use_extend=False, use_expand=False, type='FACE')
-    bpy.ops.mesh.separate(type='SELECTED')
-    bpy.ops.object.mode_set(mode='OBJECT')
-    bpy.ops.object.select_all(action='DESELECT')
-    bpy.data.objects['ArcadaCut.001'].select = False
-    bpy.data.objects['ArcadaCut'].select = True
-    bpy.ops.object.delete()
-    bpy.ops.object.select_all(action='DESELECT')
-    bpy.data.objects['ArcadaCut.001'].select = True
-    bpy.context.scene.objects.active = bpy.data.objects['ArcadaCut.001']
-    bpy.context.object.name = "ArcadaPronta"
+    if len(sel) != 2:
+        ERROTermSelCorte()     
+        bpy.context.window_manager.popup_menu(ERROselCorteDef, title="Attention!", icon='INFO')
+
+    if len(sel) == 2:  
+        obj0 = sel[0].data
+        obj1 = sel[1].data 
+        ObjDel = sel[0]    
+
+        if type(obj0) != bpy.types.Mesh and type(obj0) != bpy.types.Curve:
+            ERROTermSelTipo()     
+            bpy.context.window_manager.popup_menu(ERROselTipoDef, title="Attention!", icon='INFO')
+
+        if type(obj1) != bpy.types.Mesh and type(obj1) != bpy.types.Curve:
+            ERROTermSelTipo()     
+            bpy.context.window_manager.popup_menu(ERROselTipoDef, title="Attention!", icon='INFO')
+
+        
+        else:
+            bpy.context.object.name = "ArcadaCut"
+            bpy.ops.object.mode_set(mode='EDIT')
+            bpy.ops.mesh.knife_project(cut_through=True)
+            bpy.ops.mesh.select_mode(use_extend=False, use_expand=False, type='FACE')
+            bpy.ops.mesh.separate(type='SELECTED')
+            bpy.ops.object.mode_set(mode='OBJECT')
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.data.objects['ArcadaCut.001'].select = False
+            bpy.data.objects['ArcadaCut'].select = True
+            bpy.ops.object.delete()
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.data.objects['ArcadaCut.001'].select = True
+            bpy.context.scene.objects.active = bpy.data.objects['ArcadaCut.001']
+            bpy.context.object.name = "ArcadaPronta"
 
 # CORTA OSSOS - SOBRA FORA
 
@@ -124,22 +144,42 @@ def  CortaOssosDef(self, context):
     context = bpy.context
     obj = context.active_object
 
+    sel=bpy.context.selected_objects
 
-    bpy.context.object.name = "OssoCut"
-    bpy.ops.object.mode_set(mode='EDIT')
-    bpy.ops.mesh.knife_project(cut_through=True)
-    bpy.ops.mesh.select_mode(use_extend=False, use_expand=False, type='FACE')
-    bpy.ops.mesh.select_all(action='INVERT')
-    bpy.ops.mesh.separate(type='SELECTED')
-    bpy.ops.object.mode_set(mode='OBJECT')
-    bpy.ops.object.select_all(action='DESELECT')
-    bpy.data.objects['OssoCut.001'].select = False
-    bpy.data.objects['OssoCut'].select = True
-    bpy.ops.object.delete()
-    bpy.ops.object.select_all(action='DESELECT')
-    bpy.data.objects['OssoCut.001'].select = True
-    bpy.context.scene.objects.active = bpy.data.objects['OssoCut.001']
-    bpy.context.object.name = "OssoPronto"
+    if len(sel) != 2:
+        ERROTermSelCorte()     
+        bpy.context.window_manager.popup_menu(ERROselCorteDef, title="Attention!", icon='INFO')
+
+    if len(sel) == 2:  
+        obj0 = sel[0].data
+        obj1 = sel[1].data 
+        ObjDel = sel[0]    
+
+        if type(obj0) != bpy.types.Mesh and type(obj0) != bpy.types.Curve:
+            ERROTermSelTipo()     
+            bpy.context.window_manager.popup_menu(ERROselTipoDef, title="Attention!", icon='INFO')
+
+        if type(obj1) != bpy.types.Mesh and type(obj1) != bpy.types.Curve:
+            ERROTermSelTipo()     
+            bpy.context.window_manager.popup_menu(ERROselTipoDef, title="Attention!", icon='INFO')
+
+        
+        else:
+            bpy.context.object.name = "OssoCut"
+            bpy.ops.object.mode_set(mode='EDIT')
+            bpy.ops.mesh.knife_project(cut_through=True)
+            bpy.ops.mesh.select_mode(use_extend=False, use_expand=False, type='FACE')
+            bpy.ops.mesh.select_all(action='INVERT')
+            bpy.ops.mesh.separate(type='SELECTED')
+            bpy.ops.object.mode_set(mode='OBJECT')
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.data.objects['OssoCut.001'].select = False
+            bpy.data.objects['OssoCut'].select = True
+            bpy.ops.object.delete()
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.data.objects['OssoCut.001'].select = True
+            bpy.context.scene.objects.active = bpy.data.objects['OssoCut.001']
+            bpy.context.object.name = "OssoPronto"
 
 # FECHA BURACOS
 
