@@ -60,7 +60,8 @@ def GeraModeloFotoDef(self, context):
 
         if platform.system() == "Windows":
             camDatabase = "C:/OrtogOnBlender/openMVGWIN/sensor_width_camera_database.txt"
-            print("EH WINDOWS")
+
+
 
         infile = open(camDatabase, "r")
 
@@ -96,6 +97,8 @@ def GeraModeloFotoDef(self, context):
                 file.write("\n")
                 file.writelines(inputCam) # Escreve o modelo de camera no arquivo
 
+
+
         # GERA FOTOGRAMETRIA
 
     #    try:
@@ -109,109 +112,110 @@ def GeraModeloFotoDef(self, context):
         OpenMVGtmpDir = tmpdir+'/OpenMVG'
         tmpOBJface = tmpdir+'/MVS/scene_dense_mesh_texture2.obj'
 
-            
+                
         if platform.system() == "Linux":
             OpenMVGPath = homeall+'/Programs/OrtogOnBlender/openMVG/software/SfM/SfM_SequentialPipeline.py'
             OpenMVSPath = homeall+'/Programs/OrtogOnBlender/openMVS/OpenMVS'
-                
+            print("É Linux")
+                    
         if platform.system() == "Windows":
             OpenMVGPath = 'C:/OrtogOnBlender/openMVGWin/software/SfM/SfM_SequentialPipeline.py' 
             OpenMVSPath = 'C:/OrtogOnBlender/openMVSWin/OpenMVS.bat' 
 
         if platform.system() == "Darwin":
-       #         if platform.release() == '15.6.0':
-    #                OpenMVGPath = '/OrtogOnBlender/openMVGMACelcap/SfM_SequentialPipeline.py' 
-    #                OpenMVSPath = '/OrtogOnBlender/openMVSMACelcap/openMVSMAC.sh' 
-    #            if platform.release() == '17.5.0':
-    #                OpenMVGPath = '/OrtogOnBlender/openMVGMACelcap/SfM_SequentialPipeline.py' 
-    #                OpenMVSPath = '/OrtogOnBlender/openMVSMACelcap/openMVSMAC.sh'                       
-    #            else:
-    #                OpenMVGPath = '/OrtogOnBlender/openMVGMAC/SfM_SequentialPipeline.py' 
-    #                OpenMVSPath = '/OrtogOnBlender/openMVSMAC/openMVSMAC.sh'
+           #         if platform.release() == '15.6.0':
+        #                OpenMVGPath = '/OrtogOnBlender/openMVGMACelcap/SfM_SequentialPipeline.py' 
+        #                OpenMVSPath = '/OrtogOnBlender/openMVSMACelcap/openMVSMAC.sh' 
+        #            if platform.release() == '17.5.0':
+        #                OpenMVGPath = '/OrtogOnBlender/openMVGMACelcap/SfM_SequentialPipeline.py' 
+        #                OpenMVSPath = '/OrtogOnBlender/openMVSMACelcap/openMVSMAC.sh'                       
+        #            else:
+        #                OpenMVGPath = '/OrtogOnBlender/openMVGMAC/SfM_SequentialPipeline.py' 
+        #                OpenMVSPath = '/OrtogOnBlender/openMVSMAC/openMVSMAC.sh'
             OpenMVGPath = '/OrtogOnBlender/openMVGMACelcap/SfM_SequentialPipeline.py' 
             OpenMVSPath = '/OrtogOnBlender/openMVSMACelcap/openMVSMAC.sh'
 
             shutil.rmtree(tmpdir+'/OpenMVG', ignore_errors=True)
             shutil.rmtree(tmpdir+'/MVS', ignore_errors=True)
 
-        #    if os.name=='posix':
-        #    	shutil.rmtree(tmpdir+'/OpenMVG')
-        #    	shutil.rmtree(tmpdir+'/MVS')
+            #    if os.name=='posix':
+            #    	shutil.rmtree(tmpdir+'/OpenMVG')
+            #    	shutil.rmtree(tmpdir+'/MVS')
 
-        #    if os.name=='nt':
-        #    	subprocess.call(['rmdir', '/Q', '/S', tmpdir+'/OpenMVG'])
-        #    	subprocess.call(['rmdir', '/Q', '/S', tmpdir+'/MVS'])
+            #    if os.name=='nt':
+            #    	subprocess.call(['rmdir', '/Q', '/S', tmpdir+'/OpenMVG'])
+            #    	subprocess.call(['rmdir', '/Q', '/S', tmpdir+'/MVS'])
 
 
-            if platform.system() == "Linux":
-                subprocess.call(['python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
+        if platform.system() == "Linux":
+            subprocess.call(['python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
+
+                    
+        if platform.system() == "Windows":
+            subprocess.call(['C:/OrtogOnBlender/Python27/python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
+
+        if platform.system() == "Darwin":
+            subprocess.call(['python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
+
+
+        subprocess.call(OpenMVSPath ,  shell=True)
+
+            #    subprocess.call([ 'meshlabserver', '-i', tmpdir+'scene_dense_mesh_texture.ply', '-o', tmpdir+'scene_dense_mesh_texture2.obj', '-om', 'vn', 'wt' ])
+
+
+
+        bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
+
+        scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
+
+        bpy.ops.object.select_all(action='DESELECT')
+        bpy.context.scene.objects.active = scene_dense_mesh_texture2
+        bpy.data.objects['scene_dense_mesh_texture2'].select = True
+
+
+        bpy.context.object.data.use_auto_smooth = False
+        bpy.context.object.active_material.specular_hardness = 60
+        bpy.context.object.active_material.diffuse_intensity = 0.6
+        bpy.context.object.active_material.specular_intensity = 0.3
+        bpy.context.object.active_material.specular_color = (0.233015, 0.233015, 0.233015)
+            #    bpy.ops.object.modifier_add(type='SMOOTH')
+            #    bpy.context.object.modifiers["Smooth"].factor = 2
+            #    bpy.context.object.modifiers["Smooth"].iterations = 3
+            #    bpy.ops.object.convert(target='MESH')
+            #    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Smooth")    
+            
+        bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
+        bpy.ops.view3d.view_all(center=False)
+        bpy.ops.file.pack_all()
                 
-            if platform.system() == "Windows":
-                subprocess.call(['C:/OrtogOnBlender/Python27/python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
+        bpy.ops.object.modifier_add(type='SMOOTH')
+        bpy.context.object.modifiers["Smooth"].factor = 2
+        bpy.context.object.modifiers["Smooth"].iterations = 3
+        bpy.context.object.modifiers["Smooth"].show_viewport = False
 
-            if platform.system() == "Darwin":
-                subprocess.call(['python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
+                #bpy.ops.object.convert(target='MESH')
 
-            subprocess.call(OpenMVSPath ,  shell=True)
+                # MutRes
+        bpy.ops.object.modifier_add(type='MULTIRES')
+        bpy.context.object.modifiers["Multires"].show_viewport = False
+        bpy.ops.object.multires_subdivide(modifier="Multires")
 
-        #    subprocess.call([ 'meshlabserver', '-i', tmpdir+'scene_dense_mesh_texture.ply', '-o', tmpdir+'scene_dense_mesh_texture2.obj', '-om', 'vn', 'wt' ])
+        context = bpy.context
+        obj = context.active_object
 
+        heightTex = bpy.data.textures.new('Texture name', type='IMAGE')
+        heightTex.image = bpy.data.images['scene_dense_mesh_texture2_material_0_map_Kd.jpg']
+        dispMod = obj.modifiers.new("Displace", type='DISPLACE')
+        dispMod.texture = heightTex
+        bpy.context.object.modifiers["Displace"].texture_coords = 'UV'
+        bpy.context.object.modifiers["Displace"].strength = 1.7
+        bpy.context.object.modifiers["Displace"].mid_level = 0.5
+        bpy.context.object.modifiers["Displace"].show_viewport = False
 
+                #Comprime modificadores
+        bpy.context.object.modifiers["Smooth"].show_expanded = False
+        bpy.context.object.modifiers["Multires"].show_expanded = False
+        bpy.context.object.modifiers["Displace"].show_expanded = False
 
-            bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
+        bpy.ops.object.shade_smooth()
 
-            scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
-
-            bpy.ops.object.select_all(action='DESELECT')
-            bpy.context.scene.objects.active = scene_dense_mesh_texture2
-            bpy.data.objects['scene_dense_mesh_texture2'].select = True
-
-
-            bpy.context.object.data.use_auto_smooth = False
-            bpy.context.object.active_material.specular_hardness = 60
-            bpy.context.object.active_material.diffuse_intensity = 0.6
-            bpy.context.object.active_material.specular_intensity = 0.3
-            bpy.context.object.active_material.specular_color = (0.233015, 0.233015, 0.233015)
-        #    bpy.ops.object.modifier_add(type='SMOOTH')
-        #    bpy.context.object.modifiers["Smooth"].factor = 2
-        #    bpy.context.object.modifiers["Smooth"].iterations = 3
-        #    bpy.ops.object.convert(target='MESH')
-        #    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Smooth")    
-        
-            bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
-            bpy.ops.view3d.view_all(center=False)
-            bpy.ops.file.pack_all()
-            
-            bpy.ops.object.modifier_add(type='SMOOTH')
-            bpy.context.object.modifiers["Smooth"].factor = 2
-            bpy.context.object.modifiers["Smooth"].iterations = 3
-            bpy.context.object.modifiers["Smooth"].show_viewport = False
-
-            #bpy.ops.object.convert(target='MESH')
-
-            # MutRes
-            bpy.ops.object.modifier_add(type='MULTIRES')
-            bpy.context.object.modifiers["Multires"].show_viewport = False
-            bpy.ops.object.multires_subdivide(modifier="Multires")
-
-            context = bpy.context
-            obj = context.active_object
-
-            heightTex = bpy.data.textures.new('Texture name', type='IMAGE')
-            heightTex.image = bpy.data.images['scene_dense_mesh_texture2_material_0_map_Kd.jpg']
-            dispMod = obj.modifiers.new("Displace", type='DISPLACE')
-            dispMod.texture = heightTex
-            bpy.context.object.modifiers["Displace"].texture_coords = 'UV'
-            bpy.context.object.modifiers["Displace"].strength = 1.7
-            bpy.context.object.modifiers["Displace"].mid_level = 0.5
-            bpy.context.object.modifiers["Displace"].show_viewport = False
-
-            #Comprime modificadores
-            bpy.context.object.modifiers["Smooth"].show_expanded = False
-            bpy.context.object.modifiers["Multires"].show_expanded = False
-            bpy.context.object.modifiers["Displace"].show_expanded = False
-
-            bpy.ops.object.shade_smooth()
-            
-    #    except RuntimeError:
-    #        bpy.context.window_manager.popup_menu(ERROruntimeFotosDef, title="Atenção!", icon='INFO')
