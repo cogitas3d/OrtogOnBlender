@@ -1,6 +1,7 @@
 import bpy
 import platform
 import tempfile
+import subprocess
 from os.path import expanduser
 
 # ERROS
