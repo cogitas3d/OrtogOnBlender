@@ -62,7 +62,8 @@ def GeraModeloFotoDef(self, context):
                 os.system('cd '+mypath+' && /OrtogOnBlender/openMVGMACelcap/ExifTool.sh')
 
             if platform.system() == "Windows":
-                print("Ainda não implementado")
+                print(mypath)
+                subprocess.call(['C:\OrtogOnBlender\ExitTool\exiftool.exe', '-overwrite_original', '-Model="Z00AD"', '-FocalLength=4', mypath+'*']) # Solução colocando o 4 sem as aspas duplas!
 
             print("Resolvido!")
 
