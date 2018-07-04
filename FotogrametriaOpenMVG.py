@@ -8,6 +8,8 @@ from os import listdir
 from os.path import isfile, join
 import exifread
 
+import os
+
 # ERROS
 
 def ERROruntimeFotosDef(self, context):
@@ -38,16 +40,38 @@ def GeraModeloFotoDef(self, context):
 
 
         mypath = scn.my_tool.path  # Tem que ter o / no final
+ #       mypathFotos = mypath+'*'
+ #       print("Caminho:"+mypathFotos)
 
         onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
         FotoTeste = onlyfiles[0]
+        try:
+            with open(mypath + FotoTeste, 'rb') as f_jpg:
+                tags = exifread.process_file(f_jpg, details=True)
+                print (tags['Image Model'])
+                CamModel = str(tags['Image Model'])
+            #print("CamModel:", CamModel)
+        except:
+            print("Não rolou!")
+#                subprocess.call([os.system('cd'+mypath), '&&', homeall+'/Programs/OrtogOnBlender/openMVG/ExifTool.sh'])
+            if platform.system() == "Linux":
+                os.system('cd '+mypath+' && '+homeall+'/Programs/OrtogOnBlender/openMVG/ExifTool.sh')
+
+            if platform.system() == "Darwin":
+                print("Ainda não implementado")
+
+            if platform.system() == "Windows":
+                print("Ainda não implementado")
+
+            print("Resolvido!")
 
         with open(mypath + FotoTeste, 'rb') as f_jpg:
             tags = exifread.process_file(f_jpg, details=True)
             print (tags['Image Model'])
             CamModel = str(tags['Image Model'])
-        #   print("CamModel:", CamModel)
+
+
 
         # TESTA MODELO CAMERA
 
