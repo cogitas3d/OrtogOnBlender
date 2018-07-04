@@ -59,7 +59,7 @@ def GeraModeloFotoDef(self, context):
                 os.system('cd '+mypath+' && '+homeall+'/Programs/OrtogOnBlender/openMVG/ExifTool.sh')
 
             if platform.system() == "Darwin":
-                print("Ainda não implementado")
+                os.system('cd '+mypath+' && /OrtogOnBlender/openMVGMACelcap/ExifTool.sh')
 
             if platform.system() == "Windows":
                 print("Ainda não implementado")
