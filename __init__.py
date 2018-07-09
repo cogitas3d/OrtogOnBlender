@@ -1515,8 +1515,6 @@ def register():
         default = "0"
       )
     bpy.utils.register_class(AlinhaRosto2)
-    bpy.utils.register_class(ModalTimerOperator)
-    bpy.utils.register_class(AlinhamentoClick)
     bpy.utils.register_class(AnimaLocRot)
     bpy.utils.register_class(TomoHeli)
     bpy.utils.register_class(TomoCone)
@@ -1574,7 +1572,9 @@ def register():
         description = "Real size distance between eyes",
         default = "1"
       )
-    bpy.utils.register_class(CalcAlinhaMandibula)  
+    bpy.utils.register_class(CalcAlinhaMandibula)
+    bpy.utils.register_class(ModalTimerOperator)
+    bpy.utils.register_class(AlinhamentoClick)  
     bpy.utils.register_class(OOB_import_obj)
     bpy.utils.register_class(ImportaCefalometria)
     bpy.utils.register_class(Osteotomia)
