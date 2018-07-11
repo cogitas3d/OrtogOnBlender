@@ -27,6 +27,7 @@ else:
     from .CriaSplint import *
     from .FerramentasRefeMedidas import *
     from .FerramentasCorte import *
+    from .AlinhaPontos import *
 #    from . import mycube, mysphere, mycylinder
     print("Imported multifiles")
 
@@ -38,6 +39,7 @@ import tempfile
 import bmesh
 import shutil
 import platform
+
 
 from bpy_extras.object_utils import AddObjectHelper, object_data_add
 
@@ -61,6 +63,62 @@ from os import listdir
 from os.path import isfile, join
 import exifread
 
+# ALINHAMENTO POR PONTOS
+
+class ModalTimerOperator(bpy.types.Operator):
+    """Operator which runs its self from a timer"""
+    bl_idname = "wm.modal_timer_operator"
+    bl_label = "Click on 3 points"
+
+    _timer = None
+
+    def modal(self, context, event):
+    
+
+        if event.type in {'RIGHTMOUSE', 'ESC'}:
+            self.cancel(context)
+            return {'CANCELLED'}
+
+#        bpy.ops.object.select_pattern(pattern="Cub*") # Seleciona objetos com esse padrão
+	        
+      
+
+        if event.type == 'LEFTMOUSE' and event.value == 'RELEASE':
+
+
+            if context.area.type == 'VIEW_3D':
+                region = context.region
+                r3d = context.space_data.region_3d
+
+#                bpy.ops.object.empty_add(type='PLAIN_AXES', radius=1, location=(0,0,0))
+
+                bpy.ops.mesh.primitive_uv_sphere_add(size=.1, location=(0,0,0)) #Atrasa também
+                bpy.ops.transform.translate(value=(bpy.context.scene.cursor_location))
+                bpy.context.object.name = "PT_Alinha"
+
+
+        return {'PASS_THROUGH'}
+
+    def execute(self, context):
+        if context.area.type != 'VIEW_3D':
+            print("Must use in a 3d region")
+            return {'CANCELLED'}
+
+        wm = context.window_manager
+        wm.modal_handler_add(self)
+        return {'RUNNING_MODAL'}
+
+    def cancel(self, context):
+        wm = context.window_manager
+
+class CalcAlinhaMandibula(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.calcalinhamand"
+    bl_label = "Cálculo de Alinhamento da Mandíbula"
+    
+    def execute(self, context):
+        CalcAlinhaMandibulaDef(self, context)
+        return {'FINISHED'}
 
 # IMPORTA TOMO MOLDES
 
@@ -472,6 +530,17 @@ class CortaOssos(bpy.types.Operator):
     
     def execute(self, context):
         CortaOssosDef(self, context)
+        return {'FINISHED'}
+
+# SEGMENTA DESENHO
+
+class SegmentaDesenho(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.segmenta_desenho"
+    bl_label = "Segmenta Desenho"
+    
+    def execute(self, context):
+        SegmentaDesenhoDef(self, context)
         return {'FINISHED'}
 
 # FECHA BURACOS
@@ -924,8 +993,18 @@ class ImportaTomo(bpy.types.Panel):
         linha.rotation=(1.5708,0,0)
 
         row = layout.row()
-        row.label(text="Jaw Segmentation:")
+        row.label(text="Segmentation:")
+
+        row = layout.row()
         
+        row = layout.row()
+        row.operator("gpencil.draw", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+
+        row = layout.row()
+        linha=row.operator("object.segmenta_desenho", text="Cut Draw!", icon="FCURVE")
+
+        row = layout.row()
+
         row = layout.row()
         linha=row.operator("mesh.select_more", text="Sel. More", icon="ZOOMIN")
         
@@ -1138,6 +1217,30 @@ class AlinhaFaces(bpy.types.Panel):
         row = layout.row()
         row.operator("object.align_icp", text="Align by ICP", icon="PARTICLE_PATH")
     
+
+# ALINHA FACE PONTOS
+
+class AlinhamentoClick(bpy.types.Panel):
+    """Alinhamento 3 Pontos"""
+    bl_label = "Clicking Alignment"
+    bl_idname = "Click Alignment"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
+    bl_category = "Ortog"
+
+    def draw(self, context):
+        layout = self.layout
+
+        obj = context.object
+
+        row = layout.row()
+        row.operator("wm.modal_timer_operator", text="Click on 3 Points", icon="OUTLINER_DATA_MESH")
+
+        col = self.layout.column(align = True)
+        col.prop(context.scene, "medida_real2")  
+
+        row = layout.row()
+        row.operator("object.calcalinhamand", text="Select, Align and Resize", icon="FILE_TICK")
 
 # OSTEOTOMIA
 
@@ -1440,6 +1543,7 @@ def register():
     bpy.utils.register_class(CriaCirculoCorteArc)
     bpy.utils.register_class(CortaArcada)
     bpy.utils.register_class(CortaOssos)
+    bpy.utils.register_class(SegmentaDesenho)
     bpy.utils.register_class(FechaBuracos)
     bpy.utils.register_class(CriaEspessura)
     bpy.utils.register_class(PreparaImpressao)
@@ -1481,6 +1585,15 @@ def register():
 #    bpy.utils.register_class(ZoomCena)
     bpy.utils.register_class(CriaFotogrametria)
     bpy.utils.register_class(AlinhaFaces)
+    bpy.types.Scene.medida_real2 = bpy.props.StringProperty \
+      (
+        name = "Real Size",
+        description = "Real size distance between eyes",
+        default = "1"
+      )
+    bpy.utils.register_class(CalcAlinhaMandibula)
+    bpy.utils.register_class(ModalTimerOperator)
+    bpy.utils.register_class(AlinhamentoClick)  
     bpy.utils.register_class(OOB_import_obj)
     bpy.utils.register_class(ImportaCefalometria)
     bpy.utils.register_class(Osteotomia)
@@ -1520,6 +1633,9 @@ def unregister():
 #    bpy.utils.register_class(MedidaReal)
     del bpy.types.Scene.medida_real
     bpy.utils.unregister_class(AlinhaRosto2)
+    del bpy.types.Scene.medida_real2
+    bpy.utils.unregister_class(ModalTimerOperator)
+    bpy.utils.unregister_class(AlinhamentoClick)
     bpy.utils.unregister_class(AnimaLocRot)
     bpy.utils.unregister_class(TomoHeli)
     bpy.utils.unregister_class(TomoCone)
@@ -1531,6 +1647,7 @@ def unregister():
     bpy.utils.unregister_class(CortaArcada)
     bpy.utils.unregister_class(CortaOssos)
     bpy.utils.unregister_class(FechaBuracos)
+    bpy.utils.unregister_class(SegmentaDesenho)
     bpy.utils.unregister_class(CriaEspessura)
     bpy.utils.unregister_class(CriaMento)
     bpy.types.INFO_MT_mesh_add.remove(add_object_button)

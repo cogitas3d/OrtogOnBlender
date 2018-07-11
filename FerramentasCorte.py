@@ -1,4 +1,5 @@
 import bpy
+import bmesh
 
 # ERROS
 
@@ -196,3 +197,44 @@ def FechaBuracosDef(self, context):
 
     bpy.ops.object.modifier_add(type='DECIMATE')
     bpy.context.object.modifiers["Decimate"].ratio = 0.1
+
+# SEGMENTA DESENHO
+
+def SegmentaDesenhoDef(self, context):
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.gpencil.convert(type='POLY')
+    bpy.ops.gpencil.layer_remove()
+#    bpy.ops.object.editmode_toggle()
+    bpy.ops.object.mode_set(mode='EDIT')
+#    bpy.ops.object.editmode_toggle()
+    mesh=bmesh.from_edit_mesh(bpy.context.object.data)
+#    for v in mesh.verts:
+    for v in mesh.verts and mesh.faces:
+        #print(v)
+        v.select = True
+#        v.select = True
+    bpy.context.scene.objects.active = bpy.context.scene.objects.active # Atualiza viewport
+   
+#    bpy.ops.mesh.flip_normals() # Inverter para funcionar o Knife fora a fora
+    bpy.ops.mesh.select_all(action = 'DESELECT')
+
+    bpy.ops.mesh.select_mode(type='FACE')
+    bpy.ops.mesh.knife_project(cut_through=True) # CUIDADO! Seleciona apenas a parte de trás
+    bpy.context.scene.objects.active = bpy.context.scene.objects.active
+    bpy.ops.mesh.select_all(action='INVERT')
+    bpy.ops.mesh.separate(type='SELECTED')
+#    bpy.ops.mesh.delete(type='FACE')
+    bpy.ops.mesh.select_all(action = 'SELECT')
+#    bpy.ops.mesh.flip_normals()
+    bpy.ops.object.editmode_toggle()
+
+
+#    bpy.ops.object.select_all(action='DESELECT')
+#    a = bpy.data.objects['GP_Layer']
+#    a.select = True
+#    bpy.context.scene.objects.active = a
+#    bpy.ops.object.delete(use_global=False)
