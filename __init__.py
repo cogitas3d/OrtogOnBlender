@@ -28,6 +28,7 @@ else:
     from .FerramentasRefeMedidas import *
     from .FerramentasCorte import *
     from .AlinhaPontos import *
+    from .CefaloMedidas import *
 #    from . import mycube, mysphere, mycylinder
     print("Imported multifiles")
 
@@ -1515,6 +1516,93 @@ class FerrZoom(bpy.types.Header):
         row.operator("view3d.view_persportho", text="Persp/Ortho")
         row.operator("view3d.view_all", text="Center Zoom", icon="VIEWZOOM").center=False    
 
+# Cefalometria Medidas
+
+class CefaloTeste(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.cefalodel"
+    bl_label = "Objeto Teste" # Tem que ter nome diferente
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = "ortog"
+    
+    def execute(self, context):
+        testeDef(self, context)
+        return {'FINISHED'}
+
+class CefaloCalculaTudo(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.cefalo_calc_tudo"
+    bl_label = "Cefalo Calcula Tudo" # Tem que ter nome diferente
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = "ortog"
+    
+    def execute(self, context):
+        CefaloCalculaTudoDef(self, context)
+        return {'FINISHED'}
+
+
+class CefaloTeste1(bpy.types.Panel):
+    """Apenas um teste 1"""
+    bl_label = "Cephalometry"
+    bl_idname = "cefalo_but"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = "ortog"
+
+    def draw(self, context):
+        layout = self.layout
+
+        obj = context.object
+
+#        row = layout.row()
+#        row.operator("mesh.primitive_monkey_add", text="Add monkey", icon="MESH_MONKEY")
+
+#        row = layout.row()
+#        row.operator("object.teste", text="Modificadores", icon="MOD_SUBSURF")
+
+        row = layout.row()
+        row.operator("object.cefalo_calc_tudo", text="Calculate All!", icon="SCRIPTWIN")
+
+#        col = self.layout.column(align = True)
+        row = layout.row(align = True)
+#        split = row.split(percentage=0.5)
+        row.prop(context.scene, "angulo_SNA")
+        row.label(text="80º - 84º")
+
+
+        row = layout.row(align = True)
+        row.prop(context.scene, "angulo_SNB")
+        row.label(text="78º - 82º")  
+
+        row = layout.row(align = True)
+        row.prop(context.scene, "angulo_ANB")
+        row.label(text="0º - 4º")
+
+        row = layout.row(align = True)
+        row.prop(context.scene, "angulo_Y_Cresc")
+        row.label(text="65º - 69º") 
+
+        row = layout.row(align = True)
+        row.prop(context.scene, "angulo_SNPlO")
+        row.label(text="12º - 16º")
+
+        row = layout.row(align = True)
+        row.prop(context.scene, "angulo_FMA")
+        row.label(text="23º - 27º")
+
+        row = layout.row(align = True)
+        row.prop(context.scene, "angulo_FMIA")
+        row.label(text="66º - 70º")
+
+        row = layout.row(align = True)
+        row.prop(context.scene, "angulo_IMPA")
+        row.label(text="85º - 89º")
+
+        row = layout.row(align = True)
+        row.prop(context.scene, "angulo_NS")
+        row.label(text="101º - 105º")
 
 
 def register():
@@ -1621,6 +1709,64 @@ def register():
     bpy.utils.register_class(CriaSplintPanel)
     bpy.utils.register_class(ConfSplint)
     bpy.utils.register_class(FerrZoom)
+    bpy.utils.register_class(CefaloTeste)
+    bpy.utils.register_class(CefaloTeste1)
+    bpy.types.Scene.angulo_SNA = bpy.props.StringProperty \
+      (
+        name = "SNA",
+        description = "Ângulo SNA",
+        default = "NONE"
+      )
+    bpy.types.Scene.angulo_SNB = bpy.props.StringProperty \
+      (
+        name = "SNB",
+        description = "Ângulo SNB",
+        default = "NONE"
+      )
+
+    bpy.types.Scene.angulo_ANB = bpy.props.StringProperty \
+      (
+        name = "ANB",
+        description = "Ângulo ANB",
+        default = "NONE"
+      )
+    bpy.types.Scene.angulo_Y_Cresc = bpy.props.StringProperty \
+      (
+        name = "Y Growing",
+        description = "Ângulo Y de Screscimento",
+        default = "NONE"
+      )
+    bpy.types.Scene.angulo_SNPlO = bpy.props.StringProperty \
+      (
+        name = "SNPlO",
+        description = "ANgulo SN Molares",
+        default = "NONE"
+      )
+    bpy.types.Scene.angulo_FMA = bpy.props.StringProperty \
+      (
+        name = "FMA",
+        description = "Ângulo FMA",
+        default = "NONE"
+      )
+    bpy.types.Scene.angulo_FMIA = bpy.props.StringProperty \
+      (
+        name = "FMIA",
+        description = "Ângulo FMA",
+        default = "NONE"
+      )
+    bpy.types.Scene.angulo_IMPA = bpy.props.StringProperty \
+      (
+        name = "IMPA",
+        description = "Ângulo IMPA",
+        default = "NONE"
+      )
+    bpy.types.Scene.angulo_NS = bpy.props.StringProperty \
+      (
+        name = "1NS",
+        description = "Ângulo 1NS",
+        default = "NONE"
+      )
+    bpy.utils.register_class(CefaloCalculaTudo)
 
 
 def unregister():
@@ -1701,6 +1847,10 @@ def unregister():
     bpy.utils.unregister_class(ConfSplint)
     bpy.utils.unregister_class(MedidasVerDentes)
     bpy.utils.unregister_class(FerrZoom)
+    bpy.utils.unregister_class(CefaloTeste)
+    bpy.utils.unregister_class(CefaloTeste1)
+    del bpy.types.Scene.angulo_SNA
+    bpy.utils.unregister_class(CefaloCalculaTudo)
 
 if __name__ == "__main__":
     register()
