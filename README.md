@@ -35,6 +35,21 @@ Organizado em um painel na parte esquerda da 3D View, o addon tem em sua estrutu
 
 * **Criação do Splint**: Configuração dos estados do planejamento digital e criação dos splints cirúrgicos, para posterior impressão 3D
 
+<h2>Como Instalar (Geral)</h2>
+
+* Baixe o arquivo em “Clone or download”
+* No Blender vá em: `File` → `User Preferences` → `Addons` → `Install from file` Procure o arquivo OrtogOnBlender-master.zip, clique sobre ele e em seguida no botão: `Install from file`
+* Ativar a opção `ortog:OrtogOnBlender` e configure os caminhos dos scripts expandindo a setinha do lado esquerdo.
+* Para manter o addon ativo clique em: `Save User Settings`.
+
+<h2>Como Instalar (Detalhado)</h2>
+
+* Tutorial de instalação no Windows: http://www.ciceromoraes.com.br/doc/pt_br/OrtogOnBlender/Instalacao_Windows.html
+
+* Tutorial de instalação no Mac OS X: http://www.ciceromoraes.com.br/doc/pt_br/OrtogOnBlender/Instalacao_MacOSX.html
+
+* Tutorial de instalação no Linux: http://www.ciceromoraes.com.br/doc/pt_br/OrtogOnBlender/Instalacao_Linux.html
+
 <h2>Dependências</h2>
 
 O OrtogOnBlender utiliza uma série de addons e bibliotecas/programas, alguns nativos e outros externos em relação ao Blender 3D, são eles:
@@ -55,30 +70,6 @@ O OrtogOnBlender utiliza uma série de addons e bibliotecas/programas, alguns na
 * OpenMVS (código-fonte) - http://cdcseacave.github.io/openMVS/
 * MVE/SMVS (código-fonte) - https://github.com/flanggut/smvs
 * Dicom2Mesh (código-fonte) - https://github.com/AOT-AG/DicomToMesh
-
-* Binários para o Ubuntu
-	* OpenMVG, OpenMVS, MVE/SMVS e Dicom2Mesh: https://goo.gl/Rqf1T4
-	* Meshlab: use o comando ```sudo apt-get install meshlab```
-
-* Binários para o Windows
-	* Instalador do OrtogOnBlender com todos os programas e addons necessários: https://goo.gl/jMQbRH
-
-* Binários para o Mac OS X
-	* Arquivos e scripts compilados para o Mac OS X: https://goo.gl/W5rMu3
-
-<h2>Como Instalar (Geral)</h2>
-
-* Baixe o arquivo em “Clone or download”
-* No Blender vá em: `File` → `User Preferences` → `Addons` → `Install from file` Procure o arquivo OrtogOnBlender-master.zip, clique sobre ele e em seguida no botão: `Install from file`
-* Ativar a opção `ortog:OrtogOnBlender` e configure os caminhos dos scripts expandindo a setinha do lado esquerdo.
-* Para manter o addon ativo clique em: `Save User Settings`.
-
-<h2>Como Instalar (Detalhado)</h2>
-
-* Tutorial de instalação no Windows: https://goo.gl/xobPsq
-
-* Tutorial de instalação no Mac OS X: https://goo.gl/CNTjrB
-
 
 <h3>Agradecimentos</h3>
 
