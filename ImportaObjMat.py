@@ -31,7 +31,7 @@ def ImportaMaterial(impMaterial, SelObj):
         directory=directory)
 
 
-    bpy.context.scene.render.engine = 'CYCLES' # Troca tipo renderização
+#    bpy.context.scene.render.engine = 'CYCLES' # Troca tipo renderização
 
     # Etapa de importação de material
 
@@ -55,6 +55,7 @@ def ImportaMaterial(impMaterial, SelObj):
     mensagem = "Beleza!"
 
     return mensagem
+
 
 def ImportaLampXRay():
 
@@ -92,6 +93,7 @@ def ImportaLampXRay():
 #SelObj = 'Cube'
 
 #ImportaMaterial(impMaterial, SelObj)
+
 
 def ImportaCefalo():
 

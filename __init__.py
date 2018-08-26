@@ -929,6 +929,26 @@ class MedidasVerDentes(bpy.types.Operator):
         MedidasVerDentesDef(self, context)
         return {'FINISHED'}
 
+
+class ChangeSolidXRay(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.change_solid_xray"
+    bl_label = "Change Solid/X-Ray"
+    
+    def execute(self, context):
+        ChangeSolidXRayDef(self, context)
+        return {'FINISHED'}
+
+class ConfiguraCefalo(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.configura_cefalo"
+    bl_label = "Configura Cefalometria"
+    
+    def execute(self, context):
+        ConfiguraCefaloDef(self, context)
+        return {'FINISHED'}  
+
+
 # IMPORTA TOMO
 
 class CapturaLocal(PropertyGroup):
@@ -974,7 +994,16 @@ class ImportaTomo(bpy.types.Panel):
 
         row = layout.row()
         row.operator("object.gera_modelos_tomo", text="Convert DICOM to 3D", icon="SNAP_FACE")
+
+        row = layout.row()
+        row.label(text="Cephalometry & X-Ray:")
         
+        row = layout.row()
+        row.operator("object.change_solid_xray", text="Change Solid/X-Ray", icon="MOD_WIREFRAME")
+        
+        row = layout.row()
+        row.operator("object.configura_cefalo", text="Setup Cephalometry", icon="SETTINGS")
+                
 
         row = layout.row()
         row.label(text="Graphic References:")
@@ -1690,6 +1719,8 @@ def register():
     bpy.utils.register_class(FerramentasRefMedidas)
     bpy.utils.register_class(CriaSplint)
     bpy.utils.register_class(MedidasVerDentes)
+    bpy.utils.register_class(ChangeSolidXRay)
+    bpy.utils.register_class(ConfiguraCefalo)
     bpy.utils.register_class(CapturaLocal)
     bpy.types.Scene.my_tool = PointerProperty(type=CapturaLocal)
     bpy.utils.register_class(ImportaSplint)
@@ -1846,6 +1877,8 @@ def unregister():
     bpy.utils.unregister_class(CriaSplintPanel)
     bpy.utils.unregister_class(ConfSplint)
     bpy.utils.unregister_class(MedidasVerDentes)
+    bpy.utils.unregister_class(ChangeSolidXRay)
+    bpy.utils.unregister_class(ConfiguraCefalo)
     bpy.utils.unregister_class(FerrZoom)
     bpy.utils.unregister_class(CefaloTeste)
     bpy.utils.unregister_class(CefaloTeste1)

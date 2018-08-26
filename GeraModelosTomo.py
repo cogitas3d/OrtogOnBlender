@@ -127,39 +127,47 @@ def GeraModelosTomoDef(self, context):
         SelObj = 'Dentes'
         ImportaMaterial(impMaterial, SelObj)
 
-        ImportaLampXRay()
+# CONFIGURAÇÃO CEFALOMETRIA E CYCLES
 
-        bpy.context.scene.cycles.transparent_max_bounces = 32 # Não permite áreas escuras na renderização!
-        bpy.context.scene.world.horizon_color = (0, 0, 0)
-        bpy.context.scene.cycles.preview_samples = 5
-        bpy.context.scene.cycles.samples = 5
-        bpy.context.space_data.show_relationship_lines = False
+def ConfiguraCefaloDef(self, context):
+    
+    scn = context.scene
+
+    ImportaLampXRay()
+
+    bpy.context.scene.render.engine = 'CYCLES' # Troca tipo renderização
+
+    bpy.context.scene.cycles.transparent_max_bounces = 32 # Não permite áreas escuras na renderização!
+    bpy.context.scene.world.horizon_color = (0, 0, 0)
+    bpy.context.scene.cycles.preview_samples = 5
+    bpy.context.scene.cycles.samples = 5
+    bpy.context.space_data.show_relationship_lines = False
 #        bpy.context.space_data.display_mode = 'GROUPS' # Erro
-        ImportaCefalo()
-        ImportaCamXray()
-        bpy.context.scene.render.resolution_y = 1920
-        bpy.context.scene.render.resolution_percentage = 100
+    ImportaCefalo()
+    ImportaCamXray()
+    bpy.context.scene.render.resolution_y = 1920
+    bpy.context.scene.render.resolution_percentage = 100
 
 # Cria grupo de linhas
 
-        bpy.ops.object.select_all(action='DESELECT')
+    bpy.ops.object.select_all(action='DESELECT')
 
-        listaGrupoLinhas = [bpy.data.objects['Line_Occlusal'], bpy.data.objects['Line_Insisor_lower'], bpy.data.objects['Line_Insisor_upper'], bpy.data.objects['Line_Me_Go'], bpy.data.objects['Line_N_A'], bpy.data.objects['Line_N_B'], bpy.data.objects['Line_Pg_Ls'], bpy.data.objects['Line_Or_Po'], bpy.data.objects['Line_NS']]
+    listaGrupoLinhas = [bpy.data.objects['Line_Occlusal'], bpy.data.objects['Line_Insisor_lower'], bpy.data.objects['Line_Insisor_upper'], bpy.data.objects['Line_Me_Go'], bpy.data.objects['Line_N_A'], bpy.data.objects['Line_N_B'], bpy.data.objects['Line_Pg_Ls'], bpy.data.objects['Line_Or_Po'], bpy.data.objects['Line_NS']]
 
-        a = 0
+    a = 0
 
-        NumObj = len(listaGrupoLinhas)
+    NumObj = len(listaGrupoLinhas)
 
-        while a < NumObj:
-            b = listaGrupoLinhas[a].select = True
-            a += 1
+    while a < NumObj:
+        b = listaGrupoLinhas[a].select = True
+        a += 1
 
-        bpy.context.scene.objects.active = listaGrupoLinhas[0]
-        bpy.ops.group.create(name="2D_cephalometry_lines")
+    bpy.context.scene.objects.active = listaGrupoLinhas[0]
+    bpy.ops.group.create(name="2D_cephalometry_lines")
 
-        bpy.ops.object.select_all(action='DESELECT')
+    bpy.ops.object.select_all(action='DESELECT')
 
-        SplitAreaTrabalho()
+#    SplitAreaTrabalho()
 
 #    except RuntimeError:
 #        bpy.context.window_manager.popup_menu(ERROruntimeDICOMDef, title="Atenção!", icon='INFO')
@@ -210,3 +218,14 @@ def GeraModelosTomoArcDef(self, context):
 #    except RuntimeError:
 #        bpy.context.window_manager.popup_menu(ERROruntimeDICOMDef, title="Atenção!", icon='INFO')
 
+def ChangeSolidXRayDef(self, context):
+    
+    scn = context.scene
+
+    if bpy.context.scene.render.engine == 'BLENDER_RENDER':
+        bpy.context.scene.render.engine = 'CYCLES'
+#        print("Está Blender")
+    
+    elif bpy.context.scene.render.engine == 'CYCLES':
+        bpy.context.scene.render.engine = 'BLENDER_RENDER'
+#        print("Está Cycles")
