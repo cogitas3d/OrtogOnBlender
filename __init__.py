@@ -132,6 +132,26 @@ class GeraModelosTomoArc(bpy.types.Operator):
         GeraModelosTomoArcDef(self, context)
         return {'FINISHED'}
 
+#PONTO VISTA RAIO-X
+class CameraXRayView(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.camera_xray_view"
+    bl_label = "Visualiza Camera Raio-X"
+    
+    def execute(self, context):
+        CameraXRayViewDef(self, context)
+        return {'FINISHED'}
+
+#PONTO VISTA PANORAMICA
+class CameraPanoramic(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.camera_panoramic"
+    bl_label = "Visualiza Camera Raio-X"
+    
+    def execute(self, context):
+        CameraPanoramicDef(self, context)
+        return {'FINISHED'}
+
 # CONFIGURA EXECUTÁVEIS E SCRIPTS
 
 class ortogPreferences(bpy.types.AddonPreferences):
@@ -939,6 +959,16 @@ class ChangeSolidXRay(bpy.types.Operator):
         ChangeSolidXRayDef(self, context)
         return {'FINISHED'}
 
+class ChangeRenderEngine(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.change_engine_render"
+    bl_label = "Change Engine Render"
+    
+    def execute(self, context):
+        ChangeRenderEngineDef(self, context)
+        return {'FINISHED'}
+
+
 class ConfiguraCefalo(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.configura_cefalo"
@@ -1003,8 +1033,20 @@ class ImportaTomo(bpy.types.Panel):
         
         row = layout.row()
         row.operator("object.configura_cefalo", text="Setup Cephalometry", icon="SETTINGS")
-                
+        
+        row = layout.row()
+        row.operator("object.change_engine_render", text="Change Render Engine", icon="SCENE")
+        
+        row = layout.row()
+        row.label(text="Viewpoint Cameras:")
 
+        row = layout.row()
+        row.operator("object.camera_xray_view", text="Cephalometry View", icon="RESTRICT_VIEW_OFF")
+
+
+        row = layout.row()
+        row.operator("object.camera_panoramic", text="Panoramic View", icon="RESTRICT_VIEW_OFF") 
+        
         row = layout.row()
         row.label(text="Graphic References:")
 
@@ -1655,6 +1697,8 @@ def register():
     bpy.utils.register_class(TomoCone)
     bpy.utils.register_class(rotacionaZ)
     bpy.utils.register_class(GeraModelosTomoArc)
+    bpy.utils.register_class(CameraXRayView)
+    bpy.utils.register_class(CameraPanoramic)
     bpy.utils.register_class(LinhaBase)
     bpy.utils.register_class(ImportaArmature)
     bpy.utils.register_class(CriaCirculoCorteArc)
@@ -1720,6 +1764,7 @@ def register():
     bpy.utils.register_class(CriaSplint)
     bpy.utils.register_class(MedidasVerDentes)
     bpy.utils.register_class(ChangeSolidXRay)
+    bpy.utils.register_class(ChangeRenderEngine)
     bpy.utils.register_class(ConfiguraCefalo)
     bpy.utils.register_class(CapturaLocal)
     bpy.types.Scene.my_tool = PointerProperty(type=CapturaLocal)
@@ -1818,6 +1863,8 @@ def unregister():
     bpy.utils.unregister_class(TomoCone)
     bpy.utils.unregister_class(rotacionaZ)
     bpy.utils.unregister_class(GeraModelosTomoArc)
+    bpy.utils.unregister_class(CameraXRayView)
+    bpy.utils.unregister_class(CameraPanoramic)
     bpy.utils.unregister_class(LinhaBase)
     bpy.utils.unregister_class(ImportaArmature)
     bpy.utils.unregister_class(CriaCirculoCorteArc)
@@ -1878,6 +1925,7 @@ def unregister():
     bpy.utils.unregister_class(ConfSplint)
     bpy.utils.unregister_class(MedidasVerDentes)
     bpy.utils.unregister_class(ChangeSolidXRay)
+    bpy.utils.unregister_class(ChangeRenderEngine)
     bpy.utils.unregister_class(ConfiguraCefalo)
     bpy.utils.unregister_class(FerrZoom)
     bpy.utils.unregister_class(CefaloTeste)

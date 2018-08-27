@@ -184,3 +184,41 @@ def SplitAreaTrabalho():
         if area not in start_areas:
                 area.type = 'VIEW_3D'
     return {'FINISHED'}
+
+# Seleciona camera Raio-X
+
+def CameraXRayViewDef(self, context):
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    a = bpy.data.objects['Camera_X_Ray_Right']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.view3d.object_as_camera()
+    #bpy.context.space_data.viewport_shade = 'RENDERED'
+    bpy.ops.object.select_all(action='DESELECT')
+
+# Seleciona camera Panoramica
+
+def CameraPanoramicDef(self, context):
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    a = bpy.data.objects['Camera_X_Ray_Panoramic']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.view3d.object_as_camera()
+    #bpy.context.space_data.viewport_shade = 'RENDERED'
+    bpy.ops.object.select_all(action='DESELECT')

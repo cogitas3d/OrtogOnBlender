@@ -229,3 +229,20 @@ def ChangeSolidXRayDef(self, context):
     elif bpy.context.scene.render.engine == 'CYCLES':
         bpy.context.scene.render.engine = 'BLENDER_RENDER'
 #        print("Está Cycles")
+
+def ChangeRenderEngineDef(self, context):
+    
+    scn = context.scene
+
+    if bpy.context.scene.render.engine == 'BLENDER_RENDER':
+        bpy.context.scene.render.engine = 'CYCLES'
+        bpy.context.space_data.viewport_shade = 'RENDERED'
+        print("Blender render")
+
+#        print("Está Blender")
+    
+    elif bpy.context.scene.render.engine == 'CYCLES':
+        bpy.context.scene.render.engine = 'BLENDER_RENDER'
+        bpy.context.space_data.viewport_shade = 'SOLID'
+        print("Renderizado")
+#        print("Está Cycles")
