@@ -1,0 +1,209 @@
+import os
+import os.path
+import json
+import re
+import shutil
+from datetime import datetime
+import tempfile
+import os
+import platform
+import subprocess
+import pydicom as dicom
+import pyexifinfo as p
+
+def AjustaTomoDef(self, context):
+
+
+    scn = context.scene
+
+    #Cria diretorios temporarios e copia o conteudo para um deles
+    #os.chdir('DEL')
+
+    tmpdirCopy = tempfile.mkdtemp()
+
+    tmpdirTomo = tempfile.mkdtemp()
+
+    shutil.copytree(scn.my_tool.path, tmpdirCopy+'COPY')
+
+    # Lista os arquivos e salva arquivo de texto
+
+    # Testa se existe e remove
+    if os.path.exists('ListaArquivos.txt'):
+        os.remove('ListaArquivos.txt')
+
+
+    #for dirname, dirnames, filenames in os.walk('.'):
+    for dirname, dirnames, filenames in os.walk(tmpdirCopy+'COPY'):
+        # print path to all subdirectories first.
+    #    for subdirname in dirnames:
+    #        print(os.path.join(dirname, subdirname))
+
+        for filename in filenames:
+            #print(os.path.join(dirname, filename))
+            ArquivosListados = os.path.join(dirname, filename)+'\n'
+
+            with open("ListaArquivos.txt", "a") as arq:
+                arq.write(ArquivosListados)
+                arq.close()
+
+
+    # Conta linhas do arquivo
+
+    def obter_n_linhas (nomeDoArquivo):
+        arquivo = open(nomeDoArquivo, "r")
+        n_linhas = sum(1 for linha in arquivo)
+        arquivo.close()
+        return n_linhas
+
+
+    NumeroLinhas = obter_n_linhas ('ListaArquivos.txt')
+
+    #-----------------------------------------------------------
+
+    # Le arquivo e cria pastas
+
+    #ContadorLinhas = 0
+
+    with open('ListaArquivos.txt','r') as f:
+            ListaArquivos=f.readlines()
+            print("Criado Lista Arquivo1")
+
+    for x in range(NumeroLinhas):
+        ArquivoAtual = ListaArquivos[x].strip('\n') # mostra linha 1 sem o caractere de quebra de linha
+    #	print(ArquivoAtual)
+
+        os.chdir(tmpdirTomo)
+        shutil.copy(ArquivoAtual, str(datetime.now()).replace(":","").replace(".","").replace(" ","").replace("-",""))
+        print("Copiado de: ", ArquivoAtual, " Para: ", str(datetime.now()).replace(":","").replace(".","").replace(" ","").replace("-",""))
+    #	os.chdir('..')
+
+
+    # Lista os arquivos e salva arquivo de texto
+
+    # Testa se existe e remove
+    if os.path.exists('ListaArquivos.txt'):
+        os.remove('ListaArquivos.txt')
+        print("Apagado ListaArquivo")
+
+
+
+    #for dirname, dirnames, filenames in os.walk('.'):
+    for dirname, dirnames, filenames in os.walk(tmpdirTomo):
+        # print path to all subdirectories first.
+    #    for subdirname in dirnames:
+    #        print(os.path.join(dirname, subdirname))
+
+        for filename in filenames:
+            #print(os.path.join(dirname, filename))
+            ArquivosListados = os.path.join(dirname, filename)+'\n'
+
+            with open('ListaArquivos.txt', "a") as arq:
+                print("Criado ListaArquivo 2")
+                arq.write(ArquivosListados)
+                arq.close()
+
+
+    # Conta linhas do arquivo
+
+    def obter_n_linhas (nomeDoArquivo):
+        arquivo = open(nomeDoArquivo, "r")
+        n_linhas = sum(1 for linha in arquivo)
+        arquivo.close()
+        return n_linhas
+
+
+    NumeroLinhas = obter_n_linhas ('ListaArquivos.txt')
+
+
+    # Le arquivo e cria pastas
+
+    #ContadorLinhas = 0
+
+    with open('ListaArquivos.txt','r') as f:
+            ListaArquivos=f.readlines()
+
+# PYEXIFINFO
+
+    if platform.system() == "Darwin" or platform.system() == "Linux":
+        print("EH MAC E LIN")
+        for x in range(NumeroLinhas):
+            ArquivoAtual = ListaArquivos[x].strip('\n') # mostra linha 1 sem o caractere de quebra de linha
+    #	print(ArquivoAtual)
+
+            data = p.get_json(ArquivoAtual)
+
+            data2 = json.dumps(data, sort_keys=True, indent=4, separators=(',', ': '))
+
+            with open("deletar.txt", "a") as arq:
+                arq.write(data2)
+                arq.close()
+
+                palavra = "SeriesNumber"
+                    
+                for line in open("deletar.txt"):
+                    if palavra in line:
+                        SeriesRaw = line
+                        SeriesLimpa1 = SeriesRaw.strip('"DICOM:SeriesNumber": "')
+                        SeriesLimpo = SeriesLimpa1.strip('",'+'\n')
+                        print("SERIES", SeriesLimpo)
+
+                        if not os.path.exists(SeriesLimpo):
+                            os.mkdir(SeriesLimpo)
+
+                        shutil.copy(ArquivoAtual, SeriesLimpo)
+                        print("Copiado de: ", ArquivoAtual, " Para: ", SeriesLimpo)
+                        os.remove(ArquivoAtual)
+
+
+                os.remove('deletar.txt')
+
+# PYTHON DICOM
+
+    if platform.system() == "Windows":
+        print("EH WIN")
+        for x in range(NumeroLinhas):
+            ArquivoAtual = ListaArquivos[x].strip('\n') # mostra linha 1 sem o caractere de quebra de linha
+    #	print(ArquivoAtual)
+
+            ds = dicom.dcmread(ArquivoAtual)
+
+            series_number = ds.data_element("SeriesNumber")
+
+            SeriesLimpa1 = str(series_number).strip('(0020, 0011) Series Number IS:')
+            SeriesLimpo = SeriesLimpa1.strip('"')
+
+            if not os.path.exists(SeriesLimpo):
+                os.mkdir(SeriesLimpo)
+                   # print("Diretorio criado")
+
+                #os.chdir(tmpdirTomo)
+                shutil.copy(ArquivoAtual, SeriesLimpo)
+                print("Copiado de: ", ArquivoAtual, " Para: ", SeriesLimpo)
+                os.remove(ArquivoAtual)
+
+        #os.remove('deletar.txt')
+#        os.remove('deletar.txt')
+    shutil.rmtree(tmpdirCopy+'COPY')
+    shutil.rmtree(tmpdirCopy)
+
+    print("CT-SCAN ready!")
+
+#    abrir_tomo(tmpdirTomo+'_CT-SCAN')
+    abrir_diretorio(tmpdirTomo)
+
+    scn.my_tool.path = tmpdirTomo
+	
+def abrir_diretorio(path):
+    if platform.system() == "Windows":
+        os.startfile(path)
+    elif platform.system() == "Darwin":
+        subprocess.Popen(["open", path])
+    else:
+        subprocess.Popen(["xdg-open", path])
+	
+def AbreTMPDef(self, context):
+    
+    scn = context.scene
+        
+    tmpdir = tempfile.gettempdir()
+    abrir_diretorio(tmpdir)

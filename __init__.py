@@ -29,6 +29,7 @@ else:
     from .FerramentasCorte import *
     from .AlinhaPontos import *
     from .CefaloMedidas import *
+    from .AjustaTomo import *
 #    from . import mycube, mysphere, mycylinder
     print("Imported multifiles")
 
@@ -63,6 +64,28 @@ import math
 from os import listdir
 from os.path import isfile, join
 import exifread
+
+#ABRE TEMPORARIO
+
+class AbreTMP(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.abre_tmp"
+    bl_label = "Abre TMP"
+
+    def execute(self, context):
+        AbreTMPDef(self, context)
+        return {'FINISHED'}
+
+# AJUSTA TOMO
+
+class AjustaTomo(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.ajusta_tomo"
+    bl_label = "Ajusta Tomo"
+
+    def execute(self, context):
+        AjustaTomoDef(self, context)
+        return {'FINISHED'}
 
 # ALINHAMENTO POR PONTOS
 
@@ -1002,7 +1025,20 @@ class ImportaTomo(bpy.types.Panel):
         layout = self.layout
         scn = context.scene
         obj = context.object 
-        
+
+        row = layout.row()
+        row.label(text="CT-Scan Preparing:")
+
+        col = layout.column(align=True)
+        col.prop(scn.my_tool, "path", text="")
+
+        if platform.system() == "Windows":
+            row = layout.row()
+            row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
+		
+        row = layout.row()
+        row.operator("object.ajusta_tomo", text="Organize", icon="NODETREE")
+
         row = layout.row()
         row.label(text="CT-Scan Reconstruction:")
 
@@ -1021,6 +1057,10 @@ class ImportaTomo(bpy.types.Panel):
 
         col = self.layout.column(align = True)
         col.prop(context.scene, "interesse_dentes")
+
+        if platform.system() == "Windows":
+            row = layout.row()
+            row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
 
         row = layout.row()
         row.operator("object.gera_modelos_tomo", text="Convert DICOM to 3D", icon="SNAP_FACE")
@@ -1178,7 +1218,7 @@ class ZoomCena(bpy.types.Panel):
 
 class CriaFotogrametria(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
-    bl_label = "Creates photogrammetry"
+    bl_label = "Create Photogrammetry"
     bl_idname = "cria_fotogrametria"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
@@ -1189,10 +1229,17 @@ class CriaFotogrametria(bpy.types.Panel):
         layout = self.layout
         scn = context.scene
         obj = context.object 
-        
+
+        row = layout.row()
+        row.operator("object.abre_tmp", text="Open Temporary Dir?", icon="FILESEL")
+
         col = layout.column(align=True)
         col.prop(scn.my_tool, "path", text="")
- 
+
+        if platform.system() == "Windows":
+            row = layout.row()
+            row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
+
         row = layout.row()
         row.operator("object.gera_modelo_foto", text="Start Photogrammetry!", icon="IMAGE_DATA")
 
@@ -1679,6 +1726,8 @@ class CefaloTeste1(bpy.types.Panel):
 def register():
     bpy.utils.register_class(ortogPreferences)
 #    bpy.utils.register_class(ortogPreferences2)
+    bpy.utils.register_class(AbreTMP)
+    bpy.utils.register_class(AjustaTomo)
     bpy.utils.register_class(CriaMento)
     bpy.types.INFO_MT_mesh_add.append(add_object_button)
     bpy.utils.register_class(CortaFace)
@@ -1847,6 +1896,8 @@ def register():
 
 def unregister():
     del bpy.types.Scene.medida_real
+    bpy.utils.unregister_class(AbreTMP)
+    bpy.utils.unregister_class(AjustaTomo)
     bpy.utils.unregister_class(ortogPreferences)
 #    bpy.utils.unregister_class(ortogPreferences2)
     bpy.utils.unregister_class(CortaFace)
