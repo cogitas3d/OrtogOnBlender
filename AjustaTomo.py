@@ -9,7 +9,9 @@ import os
 import platform
 import subprocess
 import pydicom as dicom
-import pyexifinfo as p
+
+if platform.system() == "Darwin" or platform.system() == "Linux":
+    import pyexifinfo as p
 
 def AjustaTomoDef(self, context):
 
