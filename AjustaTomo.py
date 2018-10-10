@@ -216,7 +216,10 @@ def CorrigeDicomDef(self, context):
 
     os.chdir(scn.my_tool.path)
     os.makedirs("FIXED")
-    os.system("dicomtodicom -o FIXED *")
+    if platform.system() == "Linux":
+        os.system("dicomtodicom -o FIXED *")
+    if platform.system() == "Darwin":
+        os.system("/OrtogOnBlender/vtk-dicom/./dicomtodicom -o FIXED *")
     print("DICOM FIXED")
     scn.my_tool.path = os.getcwd()+"/FIXED"
 
