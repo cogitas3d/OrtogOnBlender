@@ -209,3 +209,14 @@ def AbreTMPDef(self, context):
         
     tmpdir = tempfile.gettempdir()
     abrir_diretorio(tmpdir)
+
+def CorrigeDicomDef(self, context):
+
+    scn = context.scene
+
+    os.chdir(scn.my_tool.path)
+    os.makedirs("FIXED")
+    os.system("dicomtodicom -o FIXED *")
+    print("DICOM FIXED")
+    scn.my_tool.path = os.getcwd()+"/FIXED"
+

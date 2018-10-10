@@ -76,6 +76,17 @@ class AbreTMP(bpy.types.Operator):
         AbreTMPDef(self, context)
         return {'FINISHED'}
 
+#CORRIGE DICOM
+
+class CorrigeDicom(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.corrige_dicom"
+    bl_label = "Corrige DICOM"
+
+    def execute(self, context):
+        CorrigeDicomDef(self, context)
+        return {'FINISHED'}
+
 # AJUSTA TOMO
 
 class AjustaTomo(bpy.types.Operator):
@@ -1039,6 +1050,18 @@ class ImportaTomo(bpy.types.Panel):
         row = layout.row()
         row.operator("object.ajusta_tomo", text="Organize", icon="NODETREE")
 
+
+        row = layout.row()
+        row.label(text="CT-Scan Fix:")
+
+        col = layout.column(align=True)
+        col.prop(scn.my_tool, "path", text="")
+
+
+        row = layout.row()
+        row.operator("object.corrige_dicom", text="Fix it!", icon="FILE_TICK")
+
+
         row = layout.row()
         row.label(text="CT-Scan Reconstruction:")
 
@@ -1726,6 +1749,7 @@ class CefaloTeste1(bpy.types.Panel):
 def register():
     bpy.utils.register_class(ortogPreferences)
 #    bpy.utils.register_class(ortogPreferences2)
+    bpy.utils.register_class(CorrigeDicom)
     bpy.utils.register_class(AbreTMP)
     bpy.utils.register_class(AjustaTomo)
     bpy.utils.register_class(CriaMento)
@@ -1896,6 +1920,7 @@ def register():
 
 def unregister():
     del bpy.types.Scene.medida_real
+    bpy.utils.unregister_class(CorrigeDicom)
     bpy.utils.unregister_class(AbreTMP)
     bpy.utils.unregister_class(AjustaTomo)
     bpy.utils.unregister_class(ortogPreferences)
