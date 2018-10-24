@@ -134,6 +134,101 @@ def EMP26Def(self, context):
     bpy.ops.object.select_all(action='DESELECT')
 
 
+def EMPPalatineDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPPalatine"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['ma']
+    b = bpy.data.objects['EMPPalatine']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+def EMPUpperIncisorDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPUpperIncisor"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['ma']
+    b = bpy.data.objects['EMPUpperIncisor']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+def EMPNasalSpineDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPNasalSpine"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['ma']
+    b = bpy.data.objects['EMPNasalSpine']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+def EMPPterygoidLDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPPterygoidL"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['ma']
+    b = bpy.data.objects['EMPPterygoidL']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+def EMPPterygoidRDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPPterygoidR"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['ma']
+    b = bpy.data.objects['EMPPterygoidR']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
 # PONTOS NOS DENTES INFERIORES
 
 def EMP31Def(self, context):
@@ -263,6 +358,104 @@ def EMP46Def(self, context):
     bpy.ops.object.select_all(action='DESELECT')
     a.select = True
     b.select = True 
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+
+def EMPBpointDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPBpoint"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['cm']
+    b = bpy.data.objects['EMPBpoint']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+# MENTO
+
+def EMPPogonionDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPPogonion"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['me']
+    b = bpy.data.objects['EMPPogonion']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+def EMPMentonDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPMenton"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['me']
+    b = bpy.data.objects['EMPMenton']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+def EMPMentonLDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPMentonL"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['me']
+    b = bpy.data.objects['EMPMentonL']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+def EMPMentonRDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPMentonR"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['me']
+    b = bpy.data.objects['EMPMentonR']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')

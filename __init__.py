@@ -30,8 +30,9 @@ else:
     from .AlinhaPontos import *
     from .CefaloMedidas import *
     from .AjustaTomo import *
+    from .CalculaPontos import *
 #    from . import mycube, mysphere, mycylinder
-    print("Imported multifiles")
+    print("Imported all OrtogOnBlender modules")
 
 import bpy
 import os
@@ -64,6 +65,37 @@ import math
 from os import listdir
 from os.path import isfile, join
 import exifread
+
+# Calcula Pontos
+
+class capturaINItodos(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.captura_ini_todos"
+    bl_label = "Captura todos objetos inicio"
+
+    def execute(self, context):
+        capturaINItodosDef(self, context)
+        return {'FINISHED'}
+
+
+class capturaFINtodos(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.captura_fin_todos"
+    bl_label = "Captura todos objetos final"
+
+    def execute(self, context):
+        capturaFINtodosDef(self, context)
+        return {'FINISHED'}
+
+
+class geraDeslocamentoTODOS(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_deslocamento_todos"
+    bl_label = "Gera deslocamento de todos"
+
+    def execute(self, context):
+        geraDeslocamentoTODOSDef(self, context)
+        return {'FINISHED'}
 
 #ABRE TEMPORARIO
 
@@ -901,6 +933,89 @@ class EMP26(bpy.types.Operator):
         EMP26Def(self, context)
         return {'FINISHED'}
 
+
+class EMPPterygoidL(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.pterygoidl"
+    bl_label = "EMPPterygoidL"
+
+    def execute(self, context):
+        EMPPterygoidLDef(self, context)
+        return {'FINISHED'}
+
+class EMPPterygoidR(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.pterygoidr"
+    bl_label = "EMPPterygoidR"
+
+    def execute(self, context):
+        EMPPterygoidRDef(self, context)
+        return {'FINISHED'}
+
+class EMPPalatine(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.palatine"
+    bl_label = "EMPPalatine"
+
+    def execute(self, context):
+        EMPPalatineDef(self, context)
+        return {'FINISHED'}
+
+
+class EMPUpperIncisor(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.upperincisor"
+    bl_label = "EMPUpperIncisor"
+
+    def execute(self, context):
+        EMPUpperIncisorDef(self, context)
+        return {'FINISHED'}
+
+class EMPNasalSpine(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.nasalspine"
+    bl_label = "EMPNasalSpine"
+
+    def execute(self, context):
+        EMPNasalSpineDef(self, context)
+        return {'FINISHED'}
+
+class EMPPogonion(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.pogonion"
+    bl_label = "EMPPogonion"
+
+    def execute(self, context):
+        EMPPogonionDef(self, context)
+        return {'FINISHED'}
+
+class EMPMenton(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.menton"
+    bl_label = "EMPMenton"
+
+    def execute(self, context):
+        EMPMentonDef(self, context)
+        return {'FINISHED'}
+
+class EMPMentonL(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.mentonl"
+    bl_label = "EMPMentonL"
+
+    def execute(self, context):
+        EMPMentonLDef(self, context)
+        return {'FINISHED'}
+
+class EMPMentonR(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.mentonr"
+    bl_label = "EMPMentonR"
+
+    def execute(self, context):
+        EMPMentonRDef(self, context)
+        return {'FINISHED'}
+
 # PONTOS NOS DENTES INFERIORES
 
 class EMP31(bpy.types.Operator):
@@ -958,6 +1073,16 @@ class EMP46(bpy.types.Operator):
     
     def execute(self, context):
         EMP46Def(self, context)
+        return {'FINISHED'}
+
+
+class EMPBpoint(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.bpoint"
+    bl_label = "EMPBpoint"
+
+    def execute(self, context):
+        EMPBpointDef(self, context)
         return {'FINISHED'}
     
 # CRIA EMPTIES INTERMEDIÁRIOS
@@ -1494,7 +1619,7 @@ class PontosAnatomicos(bpy.types.Panel):
         obj = context.object
 
         row = layout.row()        
-        row.label(text="Upper Arch:")
+        row.label(text="Maxilla:")
 
         row = layout.row()
         row.operator("object.emp11", text="Tooth 8 (11)", icon="X")
@@ -1513,9 +1638,24 @@ class PontosAnatomicos(bpy.types.Panel):
         
         row = layout.row()
         row.operator("object.emp26", text="Tooth 14 (26)", icon="X")
-        
+
+        row = layout.row()
+        row.operator("object.palatine", text="Palatine", icon="X")
+
+        row = layout.row()
+        row.operator("object.upperincisor", text="Upper Incisor", icon="X")
+
+        row = layout.row()
+        row.operator("object.nasalspine", text="Nasal Spine", icon="X")
+
+        row = layout.row()
+        row.operator("object.pterygoidl", text="Pterygoid Process (L)", icon="X")
+
+        row = layout.row()
+        row.operator("object.pterygoidr", text="Pterygoid Process (R)", icon="X")
+
         row = layout.row()        
-        row.label(text="Lower Arch:") 
+        row.label(text="Mandible Body:")
 
         row = layout.row()
         row.operator("object.emp31", text="Tooth 24 (31)", icon="X")
@@ -1534,6 +1674,24 @@ class PontosAnatomicos(bpy.types.Panel):
         
         row = layout.row()
         row.operator("object.emp46", text="Tooth 30 (46)", icon="X")
+
+        row = layout.row()
+        row.operator("object.bpoint", text="B Point", icon="X")
+
+        row = layout.row()
+        row.label(text="Chin:")
+
+        row = layout.row()
+        row.operator("object.pogonion", text="Pogonion or Up", icon="X")
+
+        row = layout.row()
+        row.operator("object.menton", text="Menton", icon="X")
+
+        row = layout.row()
+        row.operator("object.mentonl", text="Menton Left", icon="X")
+
+        row = layout.row()
+        row.operator("object.mentonr", text="Menton Right", icon="X")
 
 # FERRAMENTAS DE MEDIDAS
 
@@ -1573,13 +1731,26 @@ class CinematicaPanel(bpy.types.Panel):
         layout = self.layout
         
         obj = context.object
-        
+
+        row = layout.row()
+        row.label(text="Controllers:")
+
         row = layout.row()
         row.operator("screen.frame_jump", text="Start", icon="REW").end=False
         row.operator("screen.animation_play", text="", icon="PLAY_REVERSE").reverse=True
         row.operator("anim.animalocrot", text="", icon="CLIP")
         row.operator("screen.animation_play", text="", icon="PLAY")
         row.operator("screen.frame_jump", text="End", icon="FF").end=True
+
+        row = layout.row()
+        row.label(text="Capturing:")
+
+        row = layout.row()
+        row.operator("object.captura_ini_todos", text="Start Cap", icon="TRIA_LEFT_BAR")
+        row.operator("object.captura_fin_todos", text="End Cap", icon="TRIA_RIGHT_BAR")
+
+        row = layout.row()
+        row.operator("object.gera_deslocamento_todos", text="Generate Data Action", icon="FULLSCREEN_ENTER")
 
 # SPLINT
 
@@ -1752,6 +1923,9 @@ def register():
     bpy.utils.register_class(ortogPreferences)
 #    bpy.utils.register_class(ortogPreferences2)
     bpy.utils.register_class(CorrigeDicom)
+    bpy.utils.register_class(capturaINItodos)
+    bpy.utils.register_class(capturaFINtodos)
+    bpy.utils.register_class(geraDeslocamentoTODOS)
     bpy.utils.register_class(AbreTMP)
     bpy.utils.register_class(AjustaTomo)
     bpy.utils.register_class(CriaMento)
@@ -1850,12 +2024,22 @@ def register():
     bpy.utils.register_class(EMP23)
     bpy.utils.register_class(EMP16)
     bpy.utils.register_class(EMP26)
+    bpy.utils.register_class(EMPUpperIncisor)
+    bpy.utils.register_class(EMPPalatine)
+    bpy.utils.register_class(EMPNasalSpine)
+    bpy.utils.register_class(EMPPterygoidL)
+    bpy.utils.register_class(EMPPterygoidR)
     bpy.utils.register_class(EMP31)
     bpy.utils.register_class(EMP41)
     bpy.utils.register_class(EMP33)
     bpy.utils.register_class(EMP43)
     bpy.utils.register_class(EMP36)
     bpy.utils.register_class(EMP46)
+    bpy.utils.register_class(EMPBpoint)
+    bpy.utils.register_class(EMPMenton)
+    bpy.utils.register_class(EMPPogonion)
+    bpy.utils.register_class(EMPMentonL)
+    bpy.utils.register_class(EMPMentonR)
     bpy.utils.register_class(CinematicaPanel)
     bpy.utils.register_class(CriaSplintPanel)
     bpy.utils.register_class(ConfSplint)
@@ -1923,6 +2107,9 @@ def register():
 def unregister():
     del bpy.types.Scene.medida_real
     bpy.utils.unregister_class(CorrigeDicom)
+    bpy.utils.unregister_class(capturaINItodos)
+    bpy.utils.unregister_class(capturaFINtodos)
+    bpy.utils.unregister_class(geraDeslocamentoTODOS)
     bpy.utils.unregister_class(AbreTMP)
     bpy.utils.unregister_class(AjustaTomo)
     bpy.utils.unregister_class(ortogPreferences)
@@ -1992,12 +2179,22 @@ def unregister():
     bpy.utils.unregister_class(EMP23)
     bpy.utils.unregister_class(EMP16)
     bpy.utils.unregister_class(EMP26)
+    bpy.utils.unregister_class(EMPPalatine)
+    bpy.utils.unregister_class(EMPUpperIncisor)
+    bpy.utils.unregister_class(EMPNasalSpine)
+    bpy.utils.unregister_class(EMPPterygoidL)
+    bpy.utils.unregister_class(EMPPterygoidR)
     bpy.utils.unregister_class(EMP31)
     bpy.utils.unregister_class(EMP41)
     bpy.utils.unregister_class(EMP33)
     bpy.utils.unregister_class(EMP43)
     bpy.utils.unregister_class(EMP36)
     bpy.utils.unregister_class(EMP46)
+    bpy.utils.unregister_class(EMPBpoint)
+    bpy.utils.unregister_class(EMPMenton)
+    bpy.utils.unregister_class(EMPPogonion)
+    bpy.utils.unregister_class(EMPMentonL)
+    bpy.utils.unregister_class(EMPMentonR)
     bpy.utils.unregister_class(CinematicaPanel)
     bpy.utils.unregister_class(CriaSplintPanel)
     bpy.utils.unregister_class(ConfSplint)
