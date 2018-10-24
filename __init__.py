@@ -1161,10 +1161,11 @@ class ImportaTomo(bpy.types.Panel):
         row.label(text="Archs Lines")
         
         row = layout.row()
-        row.operator("object.align_picked_points", text="Align by Points", icon="PARTICLE_TIP")
+        row.label(text="ALIGN ON MISC!")
+    #    row.operator("object.align_picked_points", text="Align by Points", icon="PARTICLE_TIP")
 
-        row = layout.row()
-        row.operator("object.align_icp", text="Align by ICP", icon="PARTICLE_PATH")
+    #    row = layout.row()
+    #    row.operator("object.align_icp", text="Align by ICP", icon="PARTICLE_PATH")
 
         row = layout.row()
         row.label(text="Archs/Skull Targeting:")
@@ -1354,10 +1355,11 @@ class AlinhaFaces(bpy.types.Panel):
         row.label(text="Align by Points:")
 
         row = layout.row()
-        row.operator("object.align_picked_points", text="Align by Points", icon="PARTICLE_TIP")
+        row.label(text="ALIGN ON MISC!")
+#        row.operator("object.align_picked_points", text="Align by Points", icon="PARTICLE_TIP")
 
-        row = layout.row()
-        row.operator("object.align_icp", text="Align by ICP", icon="PARTICLE_PATH")
+#        row = layout.row()
+#        row.operator("object.align_icp", text="Align by ICP", icon="PARTICLE_PATH")
     
 
 # ALINHA FACE PONTOS
