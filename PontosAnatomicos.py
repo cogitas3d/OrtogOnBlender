@@ -159,11 +159,11 @@ def EMPUpperIncisorDef(self, context):
     scn = context.scene
 
     bpy.ops.object.empty_add(type='PLAIN_AXES')
-    bpy.context.object.name = "EMPUpperIncisor"
+    bpy.context.object.name = "EMPApoint"
     bpy.context.object.empty_draw_size = 3
 
     a = bpy.data.objects['ma']
-    b = bpy.data.objects['EMPUpperIncisor']
+    b = bpy.data.objects['EMPApoint']
 
     bpy.ops.object.select_all(action='DESELECT')
     a.select = True
