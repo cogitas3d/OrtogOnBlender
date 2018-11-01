@@ -460,4 +460,56 @@ def EMPMentonRDef(self, context):
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
 
+def EMPLSpointDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
 
+
+    bpy.ops.view3d.snap_cursor_to_selected()
+    bpy.ops.object.editmode_toggle()
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPLSpoint"
+    bpy.context.object.empty_draw_size = 3
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    a = bpy.data.objects['FaceMalha.001']
+    b = bpy.data.objects['EMPLSpoint']
+
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+
+    bpy.ops.object.editmode_toggle()
+
+    bpy.ops.object.vertex_parent_set()
+
+    bpy.ops.object.editmode_toggle()
+
+def EMPPGpointDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+
+    bpy.ops.view3d.snap_cursor_to_selected()
+    bpy.ops.object.editmode_toggle()
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPPGpoint"
+    bpy.context.object.empty_draw_size = 3
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    a = bpy.data.objects['FaceMalha.001']
+    b = bpy.data.objects['EMPPGpoint']
+
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+
+    bpy.ops.object.editmode_toggle()
+
+    bpy.ops.object.vertex_parent_set()
+
+    bpy.ops.object.editmode_toggle()

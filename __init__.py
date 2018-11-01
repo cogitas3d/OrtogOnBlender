@@ -1084,6 +1084,26 @@ class EMPBpoint(bpy.types.Operator):
     def execute(self, context):
         EMPBpointDef(self, context)
         return {'FINISHED'}
+
+# EMPTIES MOLES
+
+class EMPLSpoint(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.lspoint"
+    bl_label = "EMPLSpoint"
+    
+    def execute(self, context):
+        EMPLSpointDef(self, context)
+        return {'FINISHED'}
+
+class EMPPGpoint(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.pgpoint"
+    bl_label = "EMPPGpoint"
+    
+    def execute(self, context):
+        EMPPGpointDef(self, context)
+        return {'FINISHED'}
     
 # CRIA EMPTIES INTERMEDIÁRIOS
 
@@ -1693,6 +1713,15 @@ class PontosAnatomicos(bpy.types.Panel):
         row = layout.row()
         row.operator("object.mentonr", text="Menton Right", icon="X")
 
+        row = layout.row()
+        row.label(text="Soft Tissue:")
+
+        row = layout.row()
+        row.operator("object.lspoint", text="Ls Point (Edit)", icon="X")
+
+        row = layout.row()
+        row.operator("object.pgpoint", text="Pg Point (Edit)", icon="X")
+
 # FERRAMENTAS DE MEDIDAS
 
 class FerramentasRefMedidas(bpy.types.Panel):
@@ -2040,6 +2069,8 @@ def register():
     bpy.utils.register_class(EMPPogonion)
     bpy.utils.register_class(EMPMentonL)
     bpy.utils.register_class(EMPMentonR)
+    bpy.utils.register_class(EMPLSpoint)
+    bpy.utils.register_class(EMPPGpoint)
     bpy.utils.register_class(CinematicaPanel)
     bpy.utils.register_class(CriaSplintPanel)
     bpy.utils.register_class(ConfSplint)
@@ -2195,6 +2226,8 @@ def unregister():
     bpy.utils.unregister_class(EMPPogonion)
     bpy.utils.unregister_class(EMPMentonL)
     bpy.utils.unregister_class(EMPMentonR)
+    bpy.utils.unregister_class(EMPLSpoint)
+    bpy.utils.unregister_class(EMPPGpoint)
     bpy.utils.unregister_class(CinematicaPanel)
     bpy.utils.unregister_class(CriaSplintPanel)
     bpy.utils.unregister_class(ConfSplint)
