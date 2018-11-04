@@ -27,7 +27,6 @@ else:
     from .CriaSplint import *
     from .FerramentasRefeMedidas import *
     from .FerramentasCorte import *
-    from .AlinhaPontos import *
     from .CefaloMedidas import *
     from .AjustaTomo import *
     from .CalculaPontos import *
@@ -130,62 +129,7 @@ class AjustaTomo(bpy.types.Operator):
         AjustaTomoDef(self, context)
         return {'FINISHED'}
 
-# ALINHAMENTO POR PONTOS
 
-class ModalTimerOperator(bpy.types.Operator):
-    """Operator which runs its self from a timer"""
-    bl_idname = "wm.modal_timer_operator"
-    bl_label = "Click on 3 points"
-
-    _timer = None
-
-    def modal(self, context, event):
-    
-
-        if event.type in {'RIGHTMOUSE', 'ESC'}:
-            self.cancel(context)
-            return {'CANCELLED'}
-
-#        bpy.ops.object.select_pattern(pattern="Cub*") # Seleciona objetos com esse padrão
-	        
-      
-
-        if event.type == 'LEFTMOUSE' and event.value == 'RELEASE':
-
-
-            if context.area.type == 'VIEW_3D':
-                region = context.region
-                r3d = context.space_data.region_3d
-
-#                bpy.ops.object.empty_add(type='PLAIN_AXES', radius=1, location=(0,0,0))
-
-                bpy.ops.mesh.primitive_uv_sphere_add(size=.1, location=(0,0,0)) #Atrasa também
-                bpy.ops.transform.translate(value=(bpy.context.scene.cursor_location))
-                bpy.context.object.name = "PT_Alinha"
-
-
-        return {'PASS_THROUGH'}
-
-    def execute(self, context):
-        if context.area.type != 'VIEW_3D':
-            print("Must use in a 3d region")
-            return {'CANCELLED'}
-
-        wm = context.window_manager
-        wm.modal_handler_add(self)
-        return {'RUNNING_MODAL'}
-
-    def cancel(self, context):
-        wm = context.window_manager
-
-class CalcAlinhaMandibula(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.calcalinhamand"
-    bl_label = "Cálculo de Alinhamento da Mandíbula"
-    
-    def execute(self, context):
-        CalcAlinhaMandibulaDef(self, context)
-        return {'FINISHED'}
 
 # IMPORTA TOMO MOLDES
 
@@ -747,19 +691,6 @@ class ConfiguraMento(bpy.types.Operator):
         ConfiguraMentoDef(self, context)
         return {'FINISHED'}
 
-    def end_ui(self, context):            
-        context.area.header_text_set()
-        context.window.cursor_modal_restore()
-        
-    def cleanup(self, context, cleantype=''):
-        '''
-        remove temporary object
-        '''
-        if cleantype == 'commit':
-            pass
-
-        elif cleantype == 'cancel':
-            pass
 
 class ConfiguraCorpoMand(bpy.types.Operator):
     """Tooltip"""
@@ -1507,29 +1438,6 @@ class AlinhaFaces(bpy.types.Panel):
 #        row.operator("object.align_icp", text="Align by ICP", icon="PARTICLE_PATH")
     
 
-# ALINHA FACE PONTOS
-
-class AlinhamentoClick(bpy.types.Panel):
-    """Alinhamento 3 Pontos"""
-    bl_label = "Clicking Alignment"
-    bl_idname = "Click Alignment"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'TOOLS'
-    bl_category = "Ortog"
-
-    def draw(self, context):
-        layout = self.layout
-
-        obj = context.object
-
-        row = layout.row()
-        row.operator("wm.modal_timer_operator", text="Click on 3 Points", icon="OUTLINER_DATA_MESH")
-
-        col = self.layout.column(align = True)
-        col.prop(context.scene, "medida_real2")  
-
-        row = layout.row()
-        row.operator("object.calcalinhamand", text="Select, Align and Resize", icon="FILE_TICK")
 
 # OSTEOTOMIA
 
@@ -1551,11 +1459,11 @@ class Osteotomia(bpy.types.Panel):
         circle.location=(0,-35,-81)
         
         row = layout.row()
-        circle=row.operator("mesh.add_ramo", text="Right Ramus Plane", icon="TRIA_RIGHT")
+        circle=row.operator("mesh.add_ramo", text="Left Ramus Plane", icon="TRIA_RIGHT")
         circle.location=(36, -4, -45)
         
         row = layout.row()
-        circle=row.operator("mesh.add_ramo", text="Left Ramus Plane", icon="TRIA_LEFT")
+        circle=row.operator("mesh.add_ramo", text="Right Ramus Plane", icon="TRIA_LEFT")
         circle.location=(-36, -4, -45)
         
         row = layout.row()
@@ -2024,15 +1932,6 @@ def register():
 #    bpy.utils.register_class(ZoomCena)
     bpy.utils.register_class(CriaFotogrametria)
     bpy.utils.register_class(AlinhaFaces)
-    bpy.types.Scene.medida_real2 = bpy.props.StringProperty \
-      (
-        name = "Real Size",
-        description = "Real size distance between eyes",
-        default = "1"
-      )
-    bpy.utils.register_class(CalcAlinhaMandibula)
-    bpy.utils.register_class(ModalTimerOperator)
-    bpy.utils.register_class(AlinhamentoClick)  
     bpy.utils.register_class(OOB_import_obj)
     bpy.utils.register_class(ImportaCefalometria)
     bpy.utils.register_class(Osteotomia)
@@ -2151,9 +2050,6 @@ def unregister():
 #    bpy.utils.register_class(MedidaReal)
     del bpy.types.Scene.medida_real
     bpy.utils.unregister_class(AlinhaRosto2)
-    del bpy.types.Scene.medida_real2
-    bpy.utils.unregister_class(ModalTimerOperator)
-    bpy.utils.unregister_class(AlinhamentoClick)
     bpy.utils.unregister_class(AnimaLocRot)
     bpy.utils.unregister_class(TomoHeli)
     bpy.utils.unregister_class(TomoCone)
