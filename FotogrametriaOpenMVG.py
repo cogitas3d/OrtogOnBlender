@@ -229,7 +229,8 @@ def GeraModeloFotoDef(self, context):
         obj = context.active_object
 
         heightTex = bpy.data.textures.new('Texture name', type='IMAGE')
-        heightTex.image = bpy.data.images['scene_dense_mesh_texture2_material_0_map_Kd.jpg']
+       # heightTex.image = bpy.data.images['scene_dense_mesh_texture2_material_0_map_Kd.jpg']
+        heightTex.image = bpy.data.images['scene_dense_mesh_texture.png']
         dispMod = obj.modifiers.new("Displace", type='DISPLACE')
         dispMod.texture = heightTex
         bpy.context.object.modifiers["Displace"].texture_coords = 'UV'
