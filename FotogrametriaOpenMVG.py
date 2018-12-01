@@ -26,7 +26,13 @@ def GeraModeloFotoDef(self, context):
     
     scn = context.scene
     
-    tmpdir = tempfile.gettempdir()
+    
+    #CRIA OU SETA DIETÓRIO TEMPORÁRIO
+    if platform.system() == "Linux":
+        tmpdir = tempfile.mkdtemp()
+    else:
+        tmpdir = tempfile.gettempdir()
+
 
     homeall = expanduser("~")
 
@@ -134,6 +140,7 @@ def GeraModeloFotoDef(self, context):
 
     #    else:
 
+    
         OpenMVGtmpDir = tmpdir+'/OpenMVG'
         tmpOBJface = tmpdir+'/MVS/scene_dense_mesh_texture2.obj'
 
@@ -183,9 +190,14 @@ def GeraModeloFotoDef(self, context):
             subprocess.call(['python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
 
 
-        subprocess.call(OpenMVSPath ,  shell=True)
+        #subprocess.call(OpenMVSPath ,  shell=True)
 
-            #    subprocess.call([ 'meshlabserver', '-i', tmpdir+'scene_dense_mesh_texture.ply', '-o', tmpdir+'scene_dense_mesh_texture2.obj', '-om', 'vn', 'wt' ])
+        if platform.system() == "Linux":
+
+            subprocess.call('cd '+tmpdir+' && mkdir MVS && ~/Programs/OrtogOnBlender/openMVG/./openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && ~/Programs/OrtogOnBlender/openMVS/./DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && ~/Programs/OrtogOnBlender/openMVS/./ReconstructMesh -d 16 --smooth 6 '+tmpdir+'/MVS/scene_dense.mvs && ~/Programs/OrtogOnBlender/openMVS/./TextureMesh '+tmpdir+'/MVS/scene_dense_mesh.mvs && meshlabserver -i '+tmpdir+'/MVS/scene_dense_mesh_texture.ply -o '+tmpdir+'/MVS/scene_dense_mesh_texture2.obj -om vn wt', shell=True)
+
+        else:
+            subprocess.call([ 'meshlabserver', '-i', tmpdir+'scene_dense_mesh_texture.ply', '-o', tmpdir+'scene_dense_mesh_texture2.obj', '-om', 'vn', 'wt' ])
 
 
 
