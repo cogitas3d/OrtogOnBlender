@@ -28,10 +28,10 @@ def GeraModeloFotoDef(self, context):
     
     
     #CRIA OU SETA DIETÓRIO TEMPORÁRIO
-    if platform.system() == "Linux":
-        tmpdir = tempfile.mkdtemp()
-    else:
-        tmpdir = tempfile.gettempdir()
+#    if platform.system() == "Linux":
+    tmpdir = tempfile.mkdtemp()
+#    else:
+#        tmpdir = tempfile.gettempdir()
 
 
     homeall = expanduser("~")
@@ -142,7 +142,7 @@ def GeraModeloFotoDef(self, context):
 
     
         OpenMVGtmpDir = tmpdir+'/OpenMVG'
-        tmpOBJface = tmpdir+'/MVS/scene_dense_mesh_texture2.obj'
+        tmpOBJface = tmpdir+'/MVS/scene_dense_mesh_texture.obj'
 
                 
         if platform.system() == "Linux":
@@ -194,20 +194,29 @@ def GeraModeloFotoDef(self, context):
 
         if platform.system() == "Linux":
 
-            subprocess.call('cd '+tmpdir+' && mkdir MVS && ~/Programs/OrtogOnBlender/openMVG/./openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && ~/Programs/OrtogOnBlender/openMVS/./DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && ~/Programs/OrtogOnBlender/openMVS/./ReconstructMesh -d 16 --smooth 6 '+tmpdir+'/MVS/scene_dense.mvs && ~/Programs/OrtogOnBlender/openMVS/./TextureMesh '+tmpdir+'/MVS/scene_dense_mesh.mvs && meshlabserver -i '+tmpdir+'/MVS/scene_dense_mesh_texture.ply -o '+tmpdir+'/MVS/scene_dense_mesh_texture2.obj -om vn wt', shell=True)
+            subprocess.call('cd '+tmpdir+' && mkdir MVS && ~/Programs/OrtogOnBlender/openMVG/./openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && ~/Programs/OrtogOnBlender/openMVS/./DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && ~/Programs/OrtogOnBlender/openMVS/./ReconstructMesh -d 16 --smooth 6 '+tmpdir+'/MVS/scene_dense.mvs && ~/Programs/OrtogOnBlender/openMVS/./TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
 
-        else:
-            subprocess.call([ 'meshlabserver', '-i', tmpdir+'scene_dense_mesh_texture.ply', '-o', tmpdir+'scene_dense_mesh_texture2.obj', '-om', 'vn', 'wt' ])
+        if platform.system() == "Darwin":
+
+            subprocess.call('cd '+tmpdir+' && mkdir MVS && /OrtogOnBlender/openMVGMACelcap/openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && /OrtogOnBlender/openMVSMACelcap/./DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && /OrtogOnBlender/openMVSMACelcap/./ReconstructMesh -d 16 --smooth 6 '+tmpdir+'/MVS/scene_dense.mvs && /OrtogOnBlender/openMVSMACelcap/./TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
+
+        if platform.system() == "Windows":
+
+            subprocess.call('cd '+tmpdir+' && mkdir MVS && C:\OrtogOnBlender\openMVGWin\openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && C:\OrtogOnBlender\openMVSWin\DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && C:\OrtogOnBlender\openMVSWin\ReconstructMesh -d 16 --smooth 6 '+tmpdir+'/MVS/scene_dense.mvs && C:\OrtogOnBlender\openMVSWin\TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
+
+#        else:
+#            subprocess.call(OpenMVSPath ,  shell=True)            
+            #subprocess.call([ 'meshlabserver', '-i', tmpdir+'scene_dense_mesh_texture.ply', '-o', tmpdir+'scene_dense_mesh_texture.obj', '-om', 'vn', 'wt' ])
 
 
 
         bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
 
-        scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
+        scene_dense_mesh_texture = bpy.data.objects['scene_dense_mesh_texture']
 
         bpy.ops.object.select_all(action='DESELECT')
-        bpy.context.scene.objects.active = scene_dense_mesh_texture2
-        bpy.data.objects['scene_dense_mesh_texture2'].select = True
+        bpy.context.scene.objects.active = scene_dense_mesh_texture
+        bpy.data.objects['scene_dense_mesh_texture'].select = True
 
 
         bpy.context.object.data.use_auto_smooth = False
@@ -241,8 +250,8 @@ def GeraModeloFotoDef(self, context):
         obj = context.active_object
 
         heightTex = bpy.data.textures.new('Texture name', type='IMAGE')
-       # heightTex.image = bpy.data.images['scene_dense_mesh_texture2_material_0_map_Kd.jpg']
-        heightTex.image = bpy.data.images['scene_dense_mesh_texture.png']
+       # heightTex.image = bpy.data.images['scene_dense_mesh_texture_material_0_map_Kd.jpg']
+        heightTex.image = bpy.data.images['scene_dense_mesh_texture_material_0_map_Kd.jpg']
         dispMod = obj.modifiers.new("Displace", type='DISPLACE')
         dispMod.texture = heightTex
         bpy.context.object.modifiers["Displace"].texture_coords = 'UV'
