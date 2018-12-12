@@ -30,6 +30,7 @@ else:
     from .CefaloMedidas import *
     from .AjustaTomo import *
     from .CalculaPontos import *
+    from .AtualizaScript import *
 #    from . import mycube, mysphere, mycylinder
     print("Imported all OrtogOnBlender modules")
 
@@ -64,6 +65,17 @@ import math
 from os import listdir
 from os.path import isfile, join
 import exifread
+
+# Atualiza Scripts
+
+class AtualizaScript(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.atualiza_script"
+    bl_label = "Atualiza Script"
+
+    def execute(self, context):
+        AtualizaScriptDef(self, context)
+        return {'FINISHED'}
 
 # Calcula Pontos
 
@@ -1100,6 +1112,30 @@ class CapturaLocal(PropertyGroup):
         maxlen=1024,
         subtype='DIR_PATH')
 
+#ATUALIZA VERSAO
+class PainelAtualiza(bpy.types.Panel):
+    """Planejamento de cirurgia ortognática no Blender"""
+    bl_label = "Upgrade OrtogOnBlender"
+    bl_idname = "painel_atualiza"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
+    bl_category = "Ortog"
+
+    def draw(self, context):
+        layout = self.layout
+        scn = context.scene
+        obj = context.object 
+		
+        row = layout.row()
+        row.label(text="VERSION: 20181212")
+
+        row = layout.row()
+        row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
+		
+        row = layout.row()
+        row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
+		
+# IMPORTA TOMO
 class ImportaTomo(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
     bl_label = "Import CT-Scan"
@@ -1712,7 +1748,7 @@ class CriaSplintPanel(bpy.types.Panel):
         row.operator("object.cria_splint", text="Create Splint", icon="OUTLINER_OB_CURVE")
 
         row = layout.row()
-        row.operator("object.conf_splint", text="Prepare Boolean", icon="RECOVER_AUTO")        
+        row.operator("object.conf_splint", text="Prepare Boolean", icon="RECOVER_AUTO")
         
         row = layout.row()
         circle=row.operator("view3d.cork_mesh_slicer", text="Boolean Cuts", icon="MOD_BOOLEAN")
@@ -1859,6 +1895,7 @@ class CefaloTeste1(bpy.types.Panel):
 def register():
     bpy.utils.register_class(ortogPreferences)
 #    bpy.utils.register_class(ortogPreferences2)
+    bpy.utils.register_class(AtualizaScript)
     bpy.utils.register_class(CorrigeDicom)
     bpy.utils.register_class(capturaINItodos)
     bpy.utils.register_class(capturaFINtodos)
@@ -1928,6 +1965,7 @@ def register():
     bpy.utils.register_class(GeraModeloFoto)
     bpy.utils.register_class(GeraModeloFotoSMVS)
     bpy.utils.register_class(ConfiguraDinamicaMole)
+    bpy.utils.register_class(PainelAtualiza)
     bpy.utils.register_class(ImportaTomo)
 #    bpy.utils.register_class(ZoomCena)
     bpy.utils.register_class(CriaFotogrametria)
@@ -2036,6 +2074,7 @@ def register():
 
 def unregister():
     del bpy.types.Scene.medida_real
+    bpy.utils.unregister_class(AtualizaScript)
     bpy.utils.unregister_class(CorrigeDicom)
     bpy.utils.unregister_class(capturaINItodos)
     bpy.utils.unregister_class(capturaFINtodos)
@@ -2088,6 +2127,7 @@ def unregister():
     del bpy.types.Scene.interesse_mole
     del bpy.types.Scene.interesse_dentes
     bpy.utils.unregister_class(ImportaTomo)
+    bpy.utils.unregister_class(PainelAtualiza)
 #    bpy.utils.unregister_class(ZoomCena)
     bpy.utils.unregister_class(CriaFotogrametria)
     bpy.utils.unregister_class(AlinhaFaces)
