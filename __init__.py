@@ -1129,11 +1129,13 @@ class PainelAtualiza(bpy.types.Panel):
         row = layout.row()
         row.label(text="VERSION: 20181212")
 
-        row = layout.row()
-        row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
+        if platform.system() == "Windows":
+            row = layout.row()
+            row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
 		
-        row = layout.row()
-        row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
+        if platform.system() == "Windows":
+            row = layout.row()
+            row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
 		
 # IMPORTA TOMO
 class ImportaTomo(bpy.types.Panel):
