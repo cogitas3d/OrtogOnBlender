@@ -31,3 +31,18 @@ cp -Rv OrtogOnBlender-master $HOME/.config/blender/2.78/scripts/addons/""")
 		arquivo.close()
 
 		subprocess.call('chmod +x Programs/OrtogOnBlender/atualiza_ortog.sh && Programs/OrtogOnBlender/atualiza_ortog.sh', shell=True)
+        
+
+	if platform.system() == "Darwin":
+
+		arquivo = open('atualiza_ortog.sh', 'w+')
+		arquivo.writelines("""cd $HOME/Downloads && rm -Rfv OrtogOnBlender-master* && \
+if [ -f "master.zip" ]; then echo "tem arquivo" && rm master.zi*; fi && \
+wget https://github.com/cogitas3d/OrtogOnBlender/archive/master.zip && \
+rm -Rfv $HOME/Library/Application\ Support/Blender/2.78/scripts/addons/OrtogOnBlender-master && \
+unzip master.zip && \
+mv OrtogOnBlender-master $HOME/Library/Application\ Support/Blender/2.78/scripts/addons/""")
+
+		arquivo.close()
+
+		subprocess.call('chmod +x atualiza_ortog.sh && atualiza_ortog.sh', shell=True)

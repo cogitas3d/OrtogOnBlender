@@ -1129,9 +1129,8 @@ class PainelAtualiza(bpy.types.Panel):
         row = layout.row()
         row.label(text="VERSION: 20181212")
 
-        if platform.system() == "Windows" or platform.system() == "Linux":
-            row = layout.row()
-            row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
+        row = layout.row()
+        row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
 		
         if platform.system() == "Windows":
             row = layout.row()
