@@ -45,4 +45,4 @@ mv OrtogOnBlender-master $HOME/Library/Application\ Support/Blender/2.78/scripts
 
 		arquivo.close()
 
-		subprocess.call('chmod +x atualiza_ortog.sh && atualiza_ortog.sh', shell=True)
+		subprocess.call('chmod +x atualiza_ortog.sh && ./atualiza_ortog.sh', shell=True)
