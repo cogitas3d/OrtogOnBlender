@@ -20,7 +20,7 @@ def GeraModeloFotoSMVSDef(self, context):
 
     scn = context.scene
         
-    tmpdir = tempfile.gettempdir()
+    tmpdir = tempfile.mkdtemp()
     tmpOBJface = tmpdir+'/scene/scene_dense_mesh_texture2.obj'
 #    subprocess.call(['rm /tmp/DIRETORIO_FOTOS.txt'],  shell=True)
 
