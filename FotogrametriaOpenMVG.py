@@ -241,7 +241,7 @@ def GeraModeloFotoDef(self, context):
 
                 #bpy.ops.object.convert(target='MESH')
 
-                # MutRes
+                # MultRes
         bpy.ops.object.modifier_add(type='MULTIRES')
         bpy.context.object.modifiers["Multires"].show_viewport = False
         bpy.ops.object.multires_subdivide(modifier="Multires")

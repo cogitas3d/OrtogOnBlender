@@ -4,6 +4,7 @@ import platform
 from os.path import expanduser
 import shutil
 import tempfile
+import bmesh
 
 # ERROS
 
@@ -85,3 +86,104 @@ def GeraModeloFotoSMVSDef(self, context):
             bpy.data.objects['scene_dense_mesh_texture2'].select = True
             bpy.ops.view3d.view_all(center=False)
             bpy.ops.file.pack_all()
+
+# Simplifica, gera UVMap único e Displacement
+def DisplaceSMVSDef(self, context):
+
+    scn = context.scene
+
+    photogrammetry_original = bpy.context.active_object
+
+    #bpy.ops.object.duplicate()
+
+    bpy.ops.object.duplicate_move()
+
+    photogrammetry_original.select=True
+    photogrammetry_copy = bpy.context.active_object
+
+    print(photogrammetry_original)
+    print(photogrammetry_copy)
+
+    bpy.ops.object.modifier_add(type='DECIMATE')
+    #bpy.context.object.modifiers["Decimate"].ratio = 0.25
+    bpy.context.object.modifiers["Decimate"].ratio = 0.50
+    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Decimate")
+
+
+    # Entra em modo de edição e seleciona todos os vértices
+    ob   = bpy.context.active_object
+    bpy.ops.object.mode_set(mode = 'EDIT')
+    mesh = bmesh.from_edit_mesh(ob.data)
+    for v in mesh.verts:
+        v.select = True
+
+    # Cria UV map com espaço entre os grupos    
+    bpy.ops.uv.smart_project(island_margin=0.3)
+
+
+    # Faz o bake	
+    #bpy.context.scene.render.use_bake_selected_to_active = True
+    #bpy.context.scene.render.bake_type = 'TEXTURE'
+    #bpy.context.scene.render.bake_margin = 4
+    #bpy.ops.object.bake_image()
+
+    #Cria imagem
+    bpy.ops.image.new(name='UV_FACE', width=4096, height=4096, color=(0.5, 0.5, 0.5, 1), alpha=True, generated_type='BLANK', float=False, gen_context='NONE', use_stereo_3d=False)
+
+    # BAKE
+    bpy.context.scene.render.bake_margin = 2
+    bpy.context.scene.render.use_bake_selected_to_active = True
+
+    ob.data.uv_textures['UVMap'].active = True
+
+    bpy.data.scenes["Scene"].render.bake_type = "TEXTURE"
+
+    bpy.ops.object.mode_set(mode='OBJECT')
+
+    for d in ob.data.uv_textures['UVMap'].data:
+        d.image = bpy.data.images['UV_FACE']
+
+    bpy.ops.object.mode_set(mode='EDIT')
+
+    bpy.ops.mesh.select_all(action='SELECT')
+
+    bpy.ops.object.bake_image()
+
+    bpy.ops.object.mode_set(mode='OBJECT')
+
+    # Oculta original
+    photogrammetry_original.hide=True
+
+    # MODIFICADORES
+
+    # Smooth
+    bpy.ops.object.modifier_add(type='SMOOTH')
+    bpy.context.object.modifiers["Smooth"].factor = 2
+    bpy.context.object.modifiers["Smooth"].iterations = 3
+    bpy.context.object.modifiers["Smooth"].show_viewport = False
+
+    # MultRes
+    bpy.ops.object.modifier_add(type='MULTIRES')
+    bpy.context.object.modifiers["Multires"].show_viewport = False
+    bpy.ops.object.multires_subdivide(modifier="Multires")
+
+    context = bpy.context
+    obj = context.active_object
+
+    heightTex = bpy.data.textures.new('Texture name', type='IMAGE')
+    heightTex.image = bpy.data.images['UV_FACE']
+    dispMod = obj.modifiers.new("Displace", type='DISPLACE')
+    dispMod.texture = heightTex
+    bpy.context.object.modifiers["Displace"].texture_coords = 'UV'
+    bpy.context.object.modifiers["Displace"].strength = 1.7
+    bpy.context.object.modifiers["Displace"].mid_level = 0.5
+    bpy.context.object.modifiers["Displace"].show_viewport = False
+
+    #Comprime modificadores
+    bpy.context.object.modifiers["Smooth"].show_expanded = False
+    bpy.context.object.modifiers["Multires"].show_expanded = False
+    bpy.context.object.modifiers["Displace"].show_expanded = False
+
+    bpy.ops.object.shade_smooth()
+
+    bpy.ops.file.pack_all()

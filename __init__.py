@@ -794,6 +794,15 @@ class GeraModeloFotoSMVS(bpy.types.Operator):
         GeraModeloFotoSMVSDef(self, context)
         return {'FINISHED'}
 
+class DisplaceSMVS(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.displace_smvs"
+    bl_label = "Displace SMVS"
+    
+    def execute(self, context):
+        DisplaceSMVSDef(self, context)
+        return {'FINISHED'}
+
 class ConfiguraDinamicaMole(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.configura_dinamica_mole"
@@ -1127,7 +1136,7 @@ class PainelAtualiza(bpy.types.Panel):
         obj = context.object 
 		
         row = layout.row()
-        row.label(text="VERSION: 20181212")
+        row.label(text="VERSION: 20181213")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1381,8 +1390,13 @@ class CriaFotogrametria(bpy.types.Panel):
         row.operator("object.gera_modelo_foto", text="Start Photogrammetry!", icon="IMAGE_DATA")
 
         row = layout.row()
+        row = layout.row()
+
+        row = layout.row()
         row.operator("object.gera_modelo_foto_smvs", text="SMVS+Meshlab", icon="IMAGE_DATA")
 
+        row = layout.row()
+        row.operator("object.displace_smvs", text="Fix SMVS!", icon="FILE_TICK")
         
 #       print (scn.my_tool.path)
  
@@ -1965,6 +1979,7 @@ def register():
     bpy.utils.register_class(GeraModelosTomo)
     bpy.utils.register_class(GeraModeloFoto)
     bpy.utils.register_class(GeraModeloFotoSMVS)
+    bpy.utils.register_class(DisplaceSMVS)
     bpy.utils.register_class(ConfiguraDinamicaMole)
     bpy.utils.register_class(PainelAtualiza)
     bpy.utils.register_class(ImportaTomo)
@@ -2124,6 +2139,7 @@ def unregister():
     bpy.utils.unregister_class(GeraModelosTomo)
     bpy.utils.unregister_class(GeraModeloFoto)
     bpy.utils.unregister_class(GeraModeloFotoSMVS)
+    bpy.utils.unregister_class(DisplaceSMVS)
     del bpy.types.Scene.interesse_ossos
     del bpy.types.Scene.interesse_mole
     del bpy.types.Scene.interesse_dentes
