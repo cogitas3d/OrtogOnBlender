@@ -118,7 +118,8 @@ def DisplaceSMVSDef(self, context):
         v.select = True
 
     # Cria UV map com espaço entre os grupos    
-    bpy.ops.uv.smart_project(island_margin=0.3)
+    bpy.ops.uv.smart_project(island_margin=0.03)
+#    bpy.ops.uv.smart_project(island_margin=0.3)
 
 
     # Faz o bake	
