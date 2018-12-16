@@ -1404,9 +1404,9 @@ class CriaFotogrametria(bpy.types.Panel):
         row = layout.row()
         row = layout.row()
 
-        if platform.system() == "Linux":
+        if platform.system() == "Linux" and platform.system() == "Windows":
             row = layout.row()
-            row.operator("object.importa_cameras", text="OpenMVG+SMVS with Cameras", icon="CAMERA_DATA")
+            row.operator("object.importa_cameras", text="OpenMVG+MVS with Cameras", icon="CAMERA_DATA")
 
         row = layout.row()
         row = layout.row()
