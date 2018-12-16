@@ -1405,11 +1405,11 @@ class CriaFotogrametria(bpy.types.Panel):
         row = layout.row()
 
         if platform.system() == "Linux":
-		row = layout.row()
-		row.operator("object.importa_cameras", text="OpenMVG+SMVS with Cameras", icon="CAMERA_DATA")
+            row = layout.row()
+            row.operator("object.importa_cameras", text="OpenMVG+SMVS with Cameras", icon="CAMERA_DATA")
 
-		row = layout.row()
-		row = layout.row()
+        row = layout.row()
+        row = layout.row()
 
         row = layout.row()
         row.operator("object.gera_modelo_foto_smvs", text="SMVS+Meshlab", icon="IMAGE_DATA")
