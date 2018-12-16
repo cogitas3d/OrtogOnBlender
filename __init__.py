@@ -22,6 +22,7 @@ else:
     from .DinamicaMole import *
     from .ConfiguraOsteotomias import *
     from .FotogrametriaOpenMVG import *
+    from .FotogrametriaOpenMVGCam import *
     from .FotogrametriaSMVS import *
     from .PontosAnatomicos import *
     from .CriaSplint import *
@@ -65,6 +66,17 @@ import math
 from os import listdir
 from os.path import isfile, join
 import exifread
+
+# Importa cameras
+
+class ImportaCameras(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.importa_cameras"
+    bl_label = "Atualiza Script"
+
+    def execute(self, context):
+        ImportaCamerasDef(self, context)
+        return {'FINISHED'}
 
 # Atualiza Scripts
 
@@ -1136,7 +1148,7 @@ class PainelAtualiza(bpy.types.Panel):
         obj = context.object 
 		
         row = layout.row()
-        row.label(text="VERSION: 20181213")
+        row.label(text="VERSION: 20181216")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1392,11 +1404,21 @@ class CriaFotogrametria(bpy.types.Panel):
         row = layout.row()
         row = layout.row()
 
+        if platform.system() == "Linux":
+		row = layout.row()
+		row.operator("object.importa_cameras", text="OpenMVG+SMVS with Cameras", icon="CAMERA_DATA")
+
+		row = layout.row()
+		row = layout.row()
+
         row = layout.row()
         row.operator("object.gera_modelo_foto_smvs", text="SMVS+Meshlab", icon="IMAGE_DATA")
 
         row = layout.row()
-        row.operator("object.displace_smvs", text="Fix SMVS!", icon="FILE_TICK")
+        row = layout.row()
+
+        row = layout.row()
+        row.operator("object.displace_smvs", text="Fix Model and UVMap!", icon="FILE_TICK")
         
 #       print (scn.my_tool.path)
  
@@ -1910,6 +1932,7 @@ class CefaloTeste1(bpy.types.Panel):
 def register():
     bpy.utils.register_class(ortogPreferences)
 #    bpy.utils.register_class(ortogPreferences2)
+    bpy.utils.register_class(ImportaCameras)
     bpy.utils.register_class(AtualizaScript)
     bpy.utils.register_class(CorrigeDicom)
     bpy.utils.register_class(capturaINItodos)
@@ -2090,6 +2113,7 @@ def register():
 
 def unregister():
     del bpy.types.Scene.medida_real
+    bpy.utils.unregister_class(ImportaCameras)
     bpy.utils.unregister_class(AtualizaScript)
     bpy.utils.unregister_class(CorrigeDicom)
     bpy.utils.unregister_class(capturaINItodos)
