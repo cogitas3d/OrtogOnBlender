@@ -271,7 +271,7 @@ def ImportaCamerasDef(self, context):
         if platform.system() == "Linux":
                 subprocess.call('~/Programs/OrtogOnBlender/openMVG/./openMVG_main_openMVG2PMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/ && mkdir '+tmpdir+'/PMVS/bundle && cp '+tmpdir+'/PMVS/bundle.rd.out '+tmpdir+'/PMVS/bundle/bundle.out && cp -v '+mypath+'/* '+tmpdir+'/PMVS/', shell=True)
 
-        bpy.ops.bundle.out(filepath=tmpdir+"/PMVS/bundle/bundle.out", filter_glob="bundle.out")
+                bpy.ops.bundle.out(filepath=tmpdir+"/PMVS/bundle/bundle.out", filter_glob="bundle.out")
 
 
 
@@ -280,7 +280,11 @@ def ImportaCamerasDef(self, context):
 
                 bpy.ops.bundle.out(filepath=tmpdir+"\\PMVS\\bundle\\bundle.out", filter_glob="bundle.out")
         
-#        bpy.ops.bundle.out(filepath=tmpdir+"/PMVS/bundle/bundle.out", files=[], directory="", filter_glob="bundle.out")
+
+        if platform.system() == "Darwin":
+                subprocess.call('/OrtogOnBlender/openMVGMAC/./openMVG_main_openMVG2PMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+' && mkdir '+tmpdir+'/PMVS/bundle && cp '+tmpdir+'/PMVS/bundle.rd.out '+tmpdir+'/PMVS/bundle/bundle.out && cp -v '+mypath+'/* '+tmpdir+'/PMVS/', shell=True)
+
+                bpy.ops.bundle.out(filepath=tmpdir+"/PMVS/bundle/bundle.out", filter_glob="bundle.out")
 
         bpy.ops.object.select_all(action='SELECT')
         bpy.context.scene.objects.active = scene_dense_mesh_texture
