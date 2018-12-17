@@ -32,6 +32,7 @@ else:
     from .AjustaTomo import *
     from .CalculaPontos import *
     from .AtualizaScript import *
+    from .FotogrametriaComposta import *
 #    from . import mycube, mysphere, mycylinder
     print("Imported all OrtogOnBlender modules")
 
@@ -66,6 +67,18 @@ import math
 from os import listdir
 from os.path import isfile, join
 import exifread
+
+
+# Fotogrametria composta
+
+class FotogrametriaComposta(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.fotogrametria_composta"
+    bl_label = "Fotogrametria Composta"
+
+    def execute(self, context):
+        FotogrametriaCompostaDef(self, context)
+        return {'FINISHED'}
 
 # Importa cameras
 
@@ -1148,7 +1161,7 @@ class PainelAtualiza(bpy.types.Panel):
         obj = context.object 
 		
         row = layout.row()
-        row.label(text="VERSION: 20181216")
+        row.label(text="VERSION: 20181217a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1412,6 +1425,13 @@ class CriaFotogrametria(bpy.types.Panel):
 
         row = layout.row()
         row.operator("object.gera_modelo_foto_smvs", text="SMVS+Meshlab", icon="IMAGE_DATA")
+
+        row = layout.row()
+        row = layout.row()
+
+        if platform.system() == "Linux":
+            row = layout.row()
+            row.operator("object.fotogrametria_composta", text="Compose Photogrammetry", icon="FULLSCREEN_EXIT")
 
         row = layout.row()
         row = layout.row()
@@ -1929,6 +1949,7 @@ class CefaloTeste1(bpy.types.Panel):
 
 
 def register():
+    bpy.utils.register_class(FotogrametriaComposta)
     bpy.utils.register_class(ortogPreferences)
 #    bpy.utils.register_class(ortogPreferences2)
     bpy.utils.register_class(ImportaCameras)
@@ -2112,6 +2133,7 @@ def register():
 
 def unregister():
     del bpy.types.Scene.medida_real
+    bpy.utils.unregister_class(FotogrametriaComposta)
     bpy.utils.unregister_class(ImportaCameras)
     bpy.utils.unregister_class(AtualizaScript)
     bpy.utils.unregister_class(CorrigeDicom)
