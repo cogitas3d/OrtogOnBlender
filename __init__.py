@@ -16,6 +16,7 @@ if "bpy" in locals():
 #    imp.reload(GeraModelosTomo)
     print("Reloaded multifiles")
 else:
+    from .DesenhaGuia import *
     from .ImportaArmature import *
     from .GeraModelosTomo import *
     from .AlinhaRedimFotogrametria import *
@@ -68,6 +69,50 @@ from os import listdir
 from os.path import isfile, join
 import exifread
 
+
+# Desenha Guia
+
+class DesenhaGuia(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.teste"
+    bl_label = "Teste"
+    
+    def execute(self, context):
+        DesenhaGuiaDef(self, context)
+        return {'FINISHED'}
+
+# Corte de acabamento
+
+class Acabamento(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.acabamento"
+    bl_label = "Acabamento"
+    
+    def execute(self, context):
+        AcabamentoDef(self, context)
+        return {'FINISHED'} 
+
+# Acabamento
+
+class Acabamento(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.acabamento"
+    bl_label = "Acabamento"
+    
+    def execute(self, context):
+        AcabamentoDef(self, context)
+        return {'FINISHED'} 
+
+# Fecha Buraco
+
+class FechaBuraco(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.fecha_buraco"
+    bl_label = "Fecha Buraco"
+    
+    def execute(self, context):
+        FechaBuracoDef(self, context)
+        return {'FINISHED'}  
 
 # Fotogrametria composta
 
@@ -1796,6 +1841,8 @@ class CriaSplintPanel(bpy.types.Panel):
         
         obj = context.object
         
+        row = layout.row()
+        row.label(text="Automatic Splint Creation:")
     
 #        row = layout.row()        
 #        row.label(text="Configuração do Splint:") 
@@ -1819,6 +1866,69 @@ class CriaSplintPanel(bpy.types.Panel):
         row = layout.row()
         row.operator("export_mesh.stl", text="Export STL", icon="EXPORT")
 
+# Botões desenhar splint
+
+        row = layout.row()
+        row.label(text="Manual Draw Splint:")
+
+        if context.space_data.type == 'VIEW_3D':
+                propname = "gpencil_stroke_placement_view3d"
+        elif context.space_data.type == 'SEQUENCE_EDITOR':
+                propname = "gpencil_stroke_placement_sequencer_preview"
+        elif context.space_data.type == 'IMAGE_EDITOR':
+                propname = "gpencil_stroke_placement_image_editor"
+        else:
+                propname = "gpencil_stroke_placement_view2d"
+
+        ts = context.tool_settings
+
+        col = layout.column(align=True)
+
+        col.label(text="Stroke Placement:")
+
+        row = col.row(align=True)
+        row.prop_enum(ts, propname, 'VIEW')
+        row.prop_enum(ts, propname, 'CURSOR')
+
+        if context.space_data.type == 'VIEW_3D':
+            row = col.row(align=True)
+            row.prop_enum(ts, propname, 'SURFACE')
+            row.prop_enum(ts, propname, 'STROKE')
+
+            row = col.row(align=False)
+            row.active = getattr(ts, propname) in {'SURFACE', 'STROKE'}
+            row.prop(ts, "use_gpencil_stroke_endpoints")        
+
+# -------------------------------------
+        row = layout.row()
+        row.label(text="Create Solid:")
+
+        row = layout.row()
+        row.operator("object.teste", text="DO SOLID!", icon="SURFACE_NCYLINDER")
+        
+        row = layout.row()
+        row.operator("btool.direct_union", text="Union - ALL", icon="SEQ_SEQUENCER") 
+             
+        row = layout.row()
+        row.operator("gpencil.draw", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+
+        row = layout.row()
+        row.operator("object.acabamento", icon='MOD_MULTIRES', text="Cut Line!")
+
+        row = layout.row()
+        row.operator("object.fecha_buraco", icon='FACESEL', text="Fill Hole")
+
+# Botões boolean
+        row = layout.row()
+        row.label(text="Boolean Opetations:")
+        col = layout.column()
+        col.operator("view3d.cork_mesh_slicer", text="Union").method="UNION"
+        col.operator("view3d.cork_mesh_slicer", text="Difference").method="DIFF"
+        col.operator("view3d.cork_mesh_slicer", text="Intersect").method="INTERSECT"
+        col.operator("view3d.cork_mesh_slicer", text="XOR").method="XOR"
+        col.operator("view3d.cork_mesh_slicer", text="Resolve").method="RESOLVE"
+        col.separator()
+        col.operator("view3d.cork_mesh_slicer", text="", icon='QUESTION', emboss=False).show_help = True
 
 class FerrZoom(bpy.types.Header):
     """Planejamento de cirurgia ortognática no Blender"""
@@ -1858,6 +1968,7 @@ class FerrZoom(bpy.types.Header):
         row = layout.row()
         row.operator("view3d.view_persportho", text="Persp/Ortho")
         row.operator("view3d.view_all", text="Center Zoom", icon="VIEWZOOM").center=False    
+
 
 # Cefalometria Medidas
 
@@ -1949,6 +2060,9 @@ class CefaloTeste1(bpy.types.Panel):
 
 
 def register():
+    bpy.utils.register_class(DesenhaGuia)
+    bpy.utils.register_class(Acabamento)
+    bpy.utils.register_class(FechaBuraco)
     bpy.utils.register_class(FotogrametriaComposta)
     bpy.utils.register_class(ortogPreferences)
 #    bpy.utils.register_class(ortogPreferences2)
@@ -2133,6 +2247,9 @@ def register():
 
 def unregister():
     del bpy.types.Scene.medida_real
+    bpy.utils.unregister_class(DesenhaGuia)
+    bpy.utils.unregister_class(Acabamento)
+    bpy.utils.unregister_class(FechaBuraco)
     bpy.utils.unregister_class(FotogrametriaComposta)
     bpy.utils.unregister_class(ImportaCameras)
     bpy.utils.unregister_class(AtualizaScript)
