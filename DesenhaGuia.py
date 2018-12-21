@@ -106,6 +106,8 @@ def AcabamentoDef(self, context):
     bpy.ops.mesh.select_mode(type="EDGE")
     
     bpy.ops.mesh.select_non_manifold()
+    bpy.ops.mesh.select_non_manifold(use_non_contiguous=False)
+
 
 #    bpy.ops.object.triangle_fill(res_mode='MAX')
         
