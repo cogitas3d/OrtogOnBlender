@@ -16,28 +16,22 @@ def ERROTermDICOM():
      CEND = '\033[0m'
      print(CRED + "Doesn't have DICOM path!" + CEND)
 
-# GERA MODELO CABEÇA
+# FUNÇÃO RECONSTRUÇÃO
 
-def GeraModelosTomoDef(self, context):
-    
+def ReconTomo(pathdir, interes, saida, simplif):
+
+    context = bpy.context
+    obj = context.object
     scn = context.scene
     
     tmpdir = tempfile.gettempdir()
-    tmpSTLossos = tmpdir+'/ossos.stl'
-    tmpSTLmole = tmpdir+'/mole.stl'
-    tmpSTLdentes = tmpdir+'/dentes.stl'
+    tmpSTL = tmpdir+'/'+saida+'.stl'
 
     homeall = expanduser("~")
 
-    interesseOssos = bpy.context.scene.interesse_ossos
-    interesseMole = bpy.context.scene.interesse_mole
-    interesseDentes = bpy.context.scene.interesse_dentes
-
-
-
 
     if scn.my_tool.path == "":
-        ERROTermDICOM()        
+        ERROTermDICOM()
         bpy.context.window_manager.popup_menu(ERROruntimeDICOMDef, title="Attention!", icon='INFO')
 
     else:
@@ -45,7 +39,9 @@ def GeraModelosTomoDef(self, context):
 
         if platform.system() == "Linux":
 
+
             dicom2DtlPath = homeall+'/Programs/OrtogOnBlender/Dicom2Mesh/dicom2mesh'
+    
 
 
         if platform.system() == "Windows":
@@ -53,82 +49,95 @@ def GeraModelosTomoDef(self, context):
             dicom2DtlPath = 'C:/OrtogOnBlender/DicomToMeshWin/dicom2mesh.exe'
 
 
-        if platform.system() == "Darwin":
 
+        if platform.system() == "Darwin":
 
             dicom2DtlPath = '/OrtogOnBlender/DicomToMeshMAC/dicom2mesh'
 
 
-        subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseOssos, '-o', tmpSTLossos])   
-
-        bpy.ops.import_mesh.stl(filepath=tmpSTLossos, filter_glob="*.stl",  files=[{"name":"ossos.stl", "name":"ossos.stl"}], directory=tmpdir)
-		
+        subprocess.call([dicom2DtlPath, '-i',  pathdir, '-r', simplif, '-s', '-t', interes, '-o', tmpSTL])
+        bpy.ops.import_mesh.stl(filepath=tmpSTL, filter_glob="*.stl",  files=[{"name":saida+".stl", "name":saida+".stl"}], directory=tmpdir)
+  
+        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
         bpy.ops.view3d.view_all(center=False)
 
-        subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.9', '-s', '-t', interesseMole, '-o', tmpSTLmole])
+# GERA MODELO CABEÇA
 
-        bpy.ops.import_mesh.stl(filepath=tmpSTLmole, filter_glob="*.stl",  files=[{"name":"mole.stl", "name":"mole.stl"}], directory=tmpdir)
+def GeraModelosTomoDef(self, context):
 
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
 
-        subprocess.call([dicom2DtlPath, '-i',  scn.my_tool.path, '-r', '0.6', '-s', '-t', interesseDentes, '-o', tmpSTLdentes])
+    interesseOssos = bpy.context.scene.interesse_ossos
+    interesseMole = bpy.context.scene.interesse_mole
+    interesseDentes = bpy.context.scene.interesse_dentes
 
-        bpy.ops.import_mesh.stl(filepath=tmpSTLdentes, filter_glob="*.stl",  files=[{"name":"dentes.stl", "name":"dentes.stl"}], directory=tmpdir)
-
-        a = bpy.data.objects['Ossos']
-        b = bpy.data.objects['Mole']
-        c = bpy.data.objects['Dentes']
-
-        bpy.ops.object.select_all(action='DESELECT')
-        a.select = True
-        bpy.context.scene.objects.active = a
-        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
-
-        bpy.ops.object.select_all(action='DESELECT')
-        b.select = True
-        bpy.context.scene.objects.active = b
-        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+    ReconTomo(scn.my_tool.path, interesseOssos, 'ossos','0.90')
+    ReconTomo(scn.my_tool.path, interesseMole, 'mole','0.90')
+    ReconTomo(scn.my_tool.path, interesseDentes, 'dentes','0.90')
 
 
-        bpy.ops.object.select_all(action='DESELECT')
-        c.select = True
-        bpy.context.scene.objects.active = c
-        bpy.ops.object.shade_smooth()
-        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+    a = bpy.data.objects['Ossos']
+    b = bpy.data.objects['Mole']
+    c = bpy.data.objects['Dentes']
 
-        bpy.ops.object.select_all(action='DESELECT')
-        a.select = True
-        b.select = True 
-        c.select = True
-        bpy.context.scene.objects.active = a
-        bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
-        bpy.ops.transform.rotate(value=3.14159, axis=(0, 1, 0), constraint_axis=(False, True, False),
+    bpy.ops.object.select_all(action='DESELECT')
+    b.select = True
+    bpy.context.scene.objects.active = b
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+
+
+    bpy.ops.object.select_all(action='DESELECT')
+    c.select = True
+    bpy.context.scene.objects.active = c
+    bpy.ops.object.shade_smooth()
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True 
+    c.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+
+    bpy.ops.transform.rotate(value=3.14159, axis=(0, 1, 0), constraint_axis=(False, True, False),
                                  constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED',
                                  proportional_edit_falloff='SMOOTH', proportional_size=1)
-        bpy.ops.transform.rotate(value=3.14159, axis=(0, 0, 1), constraint_axis=(False, False, True),
+    bpy.ops.transform.rotate(value=3.14159, axis=(0, 0, 1), constraint_axis=(False, False, True),
                                  constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED',
                                  proportional_edit_falloff='SMOOTH', proportional_size=1)
                                  
-        bpy.context.object.location[0] = 0
-        bpy.context.object.location[1] = 0
-        bpy.context.object.location[2] = 0
+    bpy.context.object.location[0] = 0
+    bpy.context.object.location[1] = 0
+    bpy.context.object.location[2] = 0
 
-        bpy.ops.view3d.view_all(center=False)
+    bpy.ops.view3d.view_all(center=False)
 
-        impMaterial = 'SCATTER_bone'
-        SelObj = 'Ossos'
-        ImportaMaterial(impMaterial, SelObj)
+    impMaterial = 'SCATTER_bone'
+    SelObj = 'Ossos'
+    ImportaMaterial(impMaterial, SelObj)
 
-        impMaterial = 'SCATTER_skin'
-        SelObj = 'Mole'
-        ImportaMaterial(impMaterial, SelObj)
+    impMaterial = 'SCATTER_skin'
+    SelObj = 'Mole'
+    ImportaMaterial(impMaterial, SelObj)
 
-        impMaterial = 'SCATTER_teeth'
-        SelObj = 'Dentes'
-        ImportaMaterial(impMaterial, SelObj)
+    impMaterial = 'SCATTER_teeth'
+    SelObj = 'Dentes'
+    ImportaMaterial(impMaterial, SelObj)
 
-# CONFIGURAÇÃO CEFALOMETRIA E CYCLES
 
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    bpy.context.scene.objects.active = a
+
+
+# CEFALOMETRIA
 def ConfiguraCefaloDef(self, context):
     
     scn = context.scene
