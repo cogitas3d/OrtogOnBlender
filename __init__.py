@@ -16,6 +16,7 @@ if "bpy" in locals():
 #    imp.reload(GeraModelosTomo)
     print("Reloaded multifiles")
 else:
+    from .CefaloInterativa import *
     from .DesenhaGuia import *
     from .ImportaArmature import *
     from .GeraModelosTomo import *
@@ -1008,7 +1009,7 @@ class EMPPogonion(bpy.types.Operator):
     bl_label = "EMPPogonion"
 
     def execute(self, context):
-        EMPPogonionDef(self, context)
+        EMPPogonionref(self, context)
         return {'FINISHED'}
 
 class EMPMenton(bpy.types.Operator):
@@ -1036,6 +1037,24 @@ class EMPMentonR(bpy.types.Operator):
 
     def execute(self, context):
         EMPMentonRDef(self, context)
+        return {'FINISHED'}
+
+class EMPMeatusR(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.meatusr"
+    bl_label = "EMPMeatusR"
+
+    def execute(self, context):
+        EMPMeatusRDef(self, context)
+        return {'FINISHED'}
+
+class EMPMeatusL(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.meatusl"
+    bl_label = "EMPMeatusL"
+
+    def execute(self, context):
+        EMPMeatusLDef(self, context)
         return {'FINISHED'}
 
 # PONTOS NOS DENTES INFERIORES
@@ -1126,6 +1145,79 @@ class EMPPGpoint(bpy.types.Operator):
     def execute(self, context):
         EMPPGpointDef(self, context)
         return {'FINISHED'}
+
+class EMPGonionR(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gonionr"
+    bl_label = "EMPGonionR"
+    
+    def execute(self, context):
+        EMPGonionRDef(self, context)
+        return {'FINISHED'}
+
+class EMPGonionL(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gonionl"
+    bl_label = "EMPGonionL"
+    
+    def execute(self, context):
+        EMPGonionLDef(self, context)
+        return {'FINISHED'}
+
+class EMPEyeR(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.eyer"
+    bl_label = "EMPEyeR"
+    
+    def execute(self, context):
+        EMPEyeRDef(self, context)
+        return {'FINISHED'}
+
+class EMPEyeL(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.eyel"
+    bl_label = "EMPEyeL"
+    
+    def execute(self, context):
+        EMPEyeLDef(self, context)
+        return {'FINISHED'}
+
+class EMPNasion(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.nasion"
+    bl_label = "EMPNasion"
+    
+    def execute(self, context):
+        EMPNasionDef(self, context)
+        return {'FINISHED'}
+
+class EMPApoint(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.apoint"
+    bl_label = "EMPApoint"
+    
+    def execute(self, context):
+        EMPApointDef(self, context)
+        return {'FINISHED'}
+
+class EMPSellaTurcica(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.sella"
+    bl_label = "SellaTurcica"
+    
+    def execute(self, context):
+        EMPSellaTurcicaDef(self, context)
+        return {'FINISHED'}
+
+
+class CefaloInterativa(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.cefalo_interativa"
+    bl_label = "Cefalo Interativa"
+    
+    def execute(self, context):
+        CefaloInterativaDef(self, context)
+        return {'FINISHED'}
     
 # CRIA EMPTIES INTERMEDIÁRIOS
 
@@ -1206,7 +1298,7 @@ class PainelAtualiza(bpy.types.Panel):
         obj = context.object 
 		
         row = layout.row()
-        row.label(text="VERSION: 20181225a")
+        row.label(text="VERSION: 20181228a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1280,28 +1372,7 @@ class ImportaTomo(bpy.types.Panel):
         row = layout.row()
         row.operator("object.gera_modelos_tomo", text="Convert DICOM to 3D", icon="SNAP_FACE")
 
-        row = layout.row()
-        row.label(text="Cephalometry & X-Ray:")
-        
-        row = layout.row()
-        row.operator("object.change_solid_xray", text="Change Solid/X-Ray", icon="MOD_WIREFRAME")
-        
-        row = layout.row()
-        row.operator("object.configura_cefalo", text="Setup Cephalometry", icon="SETTINGS")
-        
-        row = layout.row()
-        row.operator("object.change_engine_render", text="Change Render Engine", icon="SCENE")
-        
-        row = layout.row()
-        row.label(text="Viewpoint Cameras:")
-
-        row = layout.row()
-        row.operator("object.camera_xray_view", text="Cephalometry View", icon="RESTRICT_VIEW_OFF")
-
-
-        row = layout.row()
-        row.operator("object.camera_panoramic", text="Panoramic View", icon="RESTRICT_VIEW_OFF") 
-        
+      
         row = layout.row()
         row.label(text="Graphic References:")
 
@@ -1767,6 +1838,66 @@ class PontosAnatomicos(bpy.types.Panel):
         row = layout.row()
         row.operator("object.pgpoint", text="Pg Point (Edit)", icon="X")
 
+        row = layout.row()
+        row.label(text="Others:")
+
+        row = layout.row()
+        row.operator("object.nasion", text="Nasion", icon="X")
+
+        row = layout.row()
+        row.operator("object.eyer", text="Orbit Right", icon="X")
+
+        row = layout.row()
+        row.operator("object.eyel", text="Orbit Left", icon="X")
+
+        row = layout.row()
+        row.operator("object.meatusr", text="Meatus Right", icon="X")
+
+        row = layout.row()
+        row.operator("object.meatusl", text="Meatus Left", icon="X")
+
+        row = layout.row()
+        row.operator("object.sella", text="Sella Turcica", icon="X")
+
+        row = layout.row()
+        row.operator("object.apoint", text="A Point", icon="X")
+
+        row = layout.row()
+        row.operator("object.gonionr", text="Gonion Right", icon="X")
+
+        row = layout.row()
+        row.operator("object.gonionl", text="Gonion Left", icon="X")
+
+        row = layout.row()
+        row.label(text="Cephalometry:")
+
+        row = layout.row()
+        row.operator("object.configura_cefalo", text="Setup Cephalometry", icon="SETTINGS")
+
+        row = layout.row()
+        row.operator("object.cefalo_interativa", text="Interactive Cephalometry", icon="LAMP_POINT")
+        
+
+        row = layout.row()
+        row.label(text="Render:")
+
+        row = layout.row()
+        row.operator("object.change_solid_xray", text="Change Solid/X-Ray", icon="MOD_WIREFRAME")
+
+        row = layout.row()
+        row.operator("object.change_engine_render", text="Change Render Engine", icon="SCENE")
+        
+        row = layout.row()
+        row.label(text="Viewpoint Cameras:")
+
+        row = layout.row()
+        row.operator("object.camera_xray_view", text="Cephalometry View", icon="RESTRICT_VIEW_OFF")
+
+
+        row = layout.row()
+        row.operator("object.camera_panoramic", text="Panoramic View", icon="RESTRICT_VIEW_OFF") 
+
+
 # FERRAMENTAS DE MEDIDAS
 
 class FerramentasRefMedidas(bpy.types.Panel):
@@ -2181,6 +2312,16 @@ def register():
     bpy.utils.register_class(EMPMentonR)
     bpy.utils.register_class(EMPLSpoint)
     bpy.utils.register_class(EMPPGpoint)
+    bpy.utils.register_class(EMPGonionR)
+    bpy.utils.register_class(EMPGonionL)
+    bpy.utils.register_class(EMPEyeR)
+    bpy.utils.register_class(EMPEyeL)
+    bpy.utils.register_class(EMPMeatusR)
+    bpy.utils.register_class(EMPMeatusL)
+    bpy.utils.register_class(EMPNasion)
+    bpy.utils.register_class(EMPApoint)
+    bpy.utils.register_class(EMPSellaTurcica)
+    bpy.utils.register_class(CefaloInterativa)
     bpy.utils.register_class(CinematicaPanel)
     bpy.utils.register_class(CriaSplintPanel)
     bpy.utils.register_class(ConfSplint)
@@ -2343,6 +2484,17 @@ def unregister():
     bpy.utils.unregister_class(EMPMentonR)
     bpy.utils.unregister_class(EMPLSpoint)
     bpy.utils.unregister_class(EMPPGpoint)
+    bpy.utils.unregister_class(EMPGonionR)
+    bpy.utils.unregister_class(EMPGonionL)
+    bpy.utils.unregister_class(EMPGonionR)
+    bpy.utils.unregister_class(EMPEyeR)
+    bpy.utils.unregister_class(EMPEyeL)
+    bpy.utils.unregister_class(EMPMeatusR)
+    bpy.utils.unregister_class(EMPMeatusL)
+    bpy.utils.unregister_class(EMPNasion)
+    bpy.utils.unregister_class(EMPApoint)
+    bpy.utils.unregister_class(EMPSellaTurcica)
+    bpy.utils.unregister_class(CefaloInterativa)
     bpy.utils.unregister_class(CinematicaPanel)
     bpy.utils.unregister_class(CriaSplintPanel)
     bpy.utils.unregister_class(ConfSplint)

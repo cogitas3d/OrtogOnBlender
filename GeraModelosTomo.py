@@ -138,6 +138,7 @@ def GeraModelosTomoDef(self, context):
 
 
 # CEFALOMETRIA
+
 def ConfiguraCefaloDef(self, context):
     
     scn = context.scene
@@ -158,7 +159,7 @@ def ConfiguraCefaloDef(self, context):
     bpy.context.scene.render.resolution_percentage = 100
 
 # Cria grupo de linhas
-
+'''
     bpy.ops.object.select_all(action='DESELECT')
 
     listaGrupoLinhas = [bpy.data.objects['Line_Occlusal'], bpy.data.objects['Line_Insisor_lower'], bpy.data.objects['Line_Insisor_upper'], bpy.data.objects['Line_Me_Go'], bpy.data.objects['Line_N_A'], bpy.data.objects['Line_N_B'], bpy.data.objects['Line_Pg_Ls'], bpy.data.objects['Line_Or_Po'], bpy.data.objects['Line_NS']]
@@ -180,6 +181,8 @@ def ConfiguraCefaloDef(self, context):
 
 #    except RuntimeError:
 #        bpy.context.window_manager.popup_menu(ERROruntimeDICOMDef, title="Atenção!", icon='INFO')
+
+'''
 
 # GERA MODELO ARCADA
 

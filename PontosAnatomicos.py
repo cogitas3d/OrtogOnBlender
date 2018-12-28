@@ -513,3 +513,175 @@ def EMPPGpointDef(self, context):
     bpy.ops.object.vertex_parent_set()
 
     bpy.ops.object.editmode_toggle()
+
+
+def EMPGonionRDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPGonionR"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['rd']
+    b = bpy.data.objects['EMPGonionR']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+def EMPGonionLDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPGonionL"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['re']
+    b = bpy.data.objects['EMPGonionL']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+def EMPEyeRDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPEyeR"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['ca']
+    b = bpy.data.objects['EMPEyeR']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+def EMPEyeLDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPEyeL"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['ca']
+    b = bpy.data.objects['EMPEyeL']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+def EMPMeatusRDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPMeatusR"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['ca']
+    b = bpy.data.objects['EMPMeatusR']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+def EMPMeatusLDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPMeatusL"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['ca']
+    b = bpy.data.objects['EMPMeatusL']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+def EMPNasionDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPNasion"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['ca']
+    b = bpy.data.objects['EMPNasion']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+def EMPApointDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPApoint"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['ma']
+    b = bpy.data.objects['EMPApoint']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+def EMPSellaTurcicaDef(self, context):
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPSellaTurcica"
+    bpy.context.object.empty_draw_size = 3
+
+    a = bpy.data.objects['ca']
+    b = bpy.data.objects['EMPSellaTurcica']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    a.select = True
+    b.select = True
+    bpy.context.scene.objects.active = a
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
