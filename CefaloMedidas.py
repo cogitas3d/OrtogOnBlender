@@ -1,6 +1,8 @@
 import bpy
 import math
 
+from .CalculaPontos import *
+
 def testeDef(self, context):
     
     context = bpy.context
@@ -33,27 +35,64 @@ def CalculaAnguloFalta(Angulo1, Angulo2):
     Lado_3 = float(round(math.degrees(math.acos(-1)),2)) - Lado_1 - Lado_2
     return Lado_3
 
+def CriaCopiaPonto(objeto):
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.select_all(action='DESELECT')
+    selecionado = bpy.data.objects[objeto]
+    selecionado.select = True
+    bpy.context.scene.objects.active = selecionado
+    bpy.ops.view3d.snap_cursor_to_selected()
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = objeto+".INI"
+    bpy.context.object.empty_draw_size = 3
+#    bpy.ops.object.duplicate()
+#    bpy.context.object.name = objeto+".INI"
+#    bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+
+
+
+
 def CefaloCalculaTudoDef(self, context):
 
     context = bpy.context
     obj = context.active_object
     scn = context.scene
     
-    PT_N = bpy.data.objects['PT_N']
-    PT_S = bpy.data.objects['PT_S']
-    PT_A = bpy.data.objects['PT_A']
-    PT_B = bpy.data.objects['PT_B']
-    PT_Gn = bpy.data.objects['PT_Gn']
-    PT_1st_Mol = bpy.data.objects['PT_1st_Mol']
-    PT_2nd_Mol = bpy.data.objects['PT_2nd_Mol']
-    PT_Or = bpy.data.objects['PT_Or']
-    PT_Po = bpy.data.objects['PT_Po']
-    PT_Go = bpy.data.objects['PT_Go']
-    PT_Me = bpy.data.objects['PT_Me']
-    PT_Incisor_low_up = bpy.data.objects['PT_Incisor_low_up']
-    PT_Incisor_low_low = bpy.data.objects['PT_Incisor_low_low']
-    PT_Incisor_up_up = bpy.data.objects['PT_Incisor_up_up']
-    PT_Incisor_up_low = bpy.data.objects['PT_Incisor_up_low']
+    CriaCopiaPonto('PT_N')
+    CriaCopiaPonto('PT_S')
+    CriaCopiaPonto('PT_A')
+    CriaCopiaPonto('PT_B')
+    CriaCopiaPonto('PT_Gn')
+    CriaCopiaPonto('PT_1st_Mol')
+    CriaCopiaPonto('PT_2nd_Mol')
+    CriaCopiaPonto('PT_Or')
+    CriaCopiaPonto('PT_Po')
+    CriaCopiaPonto('PT_Go')
+    CriaCopiaPonto('PT_Me')
+    CriaCopiaPonto('PT_Incisor_low_up')
+    CriaCopiaPonto('PT_Incisor_low_low')
+    CriaCopiaPonto('PT_Incisor_up_up')
+    CriaCopiaPonto('PT_Incisor_up_low')
+
+    PT_N = bpy.data.objects['PT_N.INI']
+    PT_S = bpy.data.objects['PT_S.INI']
+    PT_A = bpy.data.objects['PT_A.INI']
+    PT_B = bpy.data.objects['PT_B.INI']
+    PT_Gn = bpy.data.objects['PT_Gn.INI']
+    PT_1st_Mol = bpy.data.objects['PT_1st_Mol.INI']
+    PT_2nd_Mol = bpy.data.objects['PT_2nd_Mol.INI']
+    PT_Or = bpy.data.objects['PT_Or.INI']
+    PT_Po = bpy.data.objects['PT_Po.INI']
+    PT_Go = bpy.data.objects['PT_Go.INI']
+    PT_Me = bpy.data.objects['PT_Me.INI']
+    PT_Incisor_low_up = bpy.data.objects['PT_Incisor_low_up.INI']
+    PT_Incisor_low_low = bpy.data.objects['PT_Incisor_low_low.INI']
+    PT_Incisor_up_up = bpy.data.objects['PT_Incisor_up_up.INI']
+    PT_Incisor_up_low = bpy.data.objects['PT_Incisor_up_low.INI']
 
     dist_N_S = CalculaDist(PT_N, PT_S)
 
@@ -200,3 +239,19 @@ def CefaloCalculaTudoDef(self, context):
         description = "Ângulo 1NS",
         default = str(int(NS_lado_3)+float(str(NS_lado_3-int(NS_lado_3))[1:4]))
       )
+
+    apagaObjeto('PT_N.INI')
+    apagaObjeto('PT_S.INI')
+    apagaObjeto('PT_A.INI')
+    apagaObjeto('PT_B.INI')
+    apagaObjeto('PT_Gn.INI')
+    apagaObjeto('PT_1st_Mol.INI')
+    apagaObjeto('PT_2nd_Mol.INI')
+    apagaObjeto('PT_Or.INI')
+    apagaObjeto('PT_Po.INI')
+    apagaObjeto('PT_Go.INI')
+    apagaObjeto('PT_Me.INI')
+    apagaObjeto('PT_Incisor_low_up.INI')
+    apagaObjeto('PT_Incisor_low_low.INI')
+    apagaObjeto('PT_Incisor_up_up.INI')
+    apagaObjeto('PT_Incisor_up_low.INI')
