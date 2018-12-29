@@ -118,3 +118,12 @@ def CefaloInterativaDef (self, context):
 
     CopiaRotacao('PT_Incisor_up_low', 'ma')
     CopiaRotacao('PT_Incisor_low_up', 'cm')
+
+class CefaloInterativa(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.cefalo_interativa"
+    bl_label = "Cefalo Interativa"
+    
+    def execute(self, context):
+        CefaloInterativaDef(self, context)
+        return {'FINISHED'}
