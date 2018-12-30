@@ -148,37 +148,6 @@ class AtualizaScript(bpy.types.Operator):
         AtualizaScriptDef(self, context)
         return {'FINISHED'}
 
-# Calcula Pontos
-
-class capturaINItodos(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.captura_ini_todos"
-    bl_label = "Captura todos objetos inicio"
-
-    def execute(self, context):
-        capturaINItodosDef(self, context)
-        return {'FINISHED'}
-
-
-class capturaFINtodos(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.captura_fin_todos"
-    bl_label = "Captura todos objetos final"
-
-    def execute(self, context):
-        capturaFINtodosDef(self, context)
-        return {'FINISHED'}
-
-
-class geraDeslocamentoTODOS(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.gera_deslocamento_todos"
-    bl_label = "Gera deslocamento de todos"
-
-    def execute(self, context):
-        geraDeslocamentoTODOSDef(self, context)
-        return {'FINISHED'}
-
 #ABRE TEMPORARIO
 
 class AbreTMP(bpy.types.Operator):
@@ -1627,9 +1596,9 @@ class CinematicaPanel(bpy.types.Panel):
         row = layout.row()
         row.label(text="Capturing:")
 
-        row = layout.row()
-        row.operator("object.captura_ini_todos", text="Start Cap", icon="TRIA_LEFT_BAR")
-        row.operator("object.captura_fin_todos", text="End Cap", icon="TRIA_RIGHT_BAR")
+ #       row = layout.row()
+ #       row.operator("object.captura_ini_todos", text="Start Cap", icon="TRIA_LEFT_BAR")
+ #       row.operator("object.captura_fin_todos", text="End Cap", icon="TRIA_RIGHT_BAR")
 
         row = layout.row()
         row.operator("object.gera_deslocamento_todos", text="Generate Data Action", icon="FULLSCREEN_ENTER")
@@ -1877,8 +1846,8 @@ def register():
     bpy.utils.register_class(ImportaCameras)
     bpy.utils.register_class(AtualizaScript)
     bpy.utils.register_class(CorrigeDicom)
-    bpy.utils.register_class(capturaINItodos)
-    bpy.utils.register_class(capturaFINtodos)
+#    bpy.utils.register_class(capturaINItodos)
+#    bpy.utils.register_class(capturaFINtodos)
     bpy.utils.register_class(geraDeslocamentoTODOS)
     bpy.utils.register_class(AbreTMP)
     bpy.utils.register_class(AjustaTomo)
@@ -2072,8 +2041,8 @@ def unregister():
     bpy.utils.unregister_class(ImportaCameras)
     bpy.utils.unregister_class(AtualizaScript)
     bpy.utils.unregister_class(CorrigeDicom)
-    bpy.utils.unregister_class(capturaINItodos)
-    bpy.utils.unregister_class(capturaFINtodos)
+#    bpy.utils.unregister_class(capturaINItodos)
+#    bpy.utils.unregister_class(capturaFINtodos)
     bpy.utils.unregister_class(geraDeslocamentoTODOS)
     bpy.utils.unregister_class(AbreTMP)
     bpy.utils.unregister_class(AjustaTomo)

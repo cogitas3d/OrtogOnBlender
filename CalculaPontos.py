@@ -28,7 +28,7 @@ def apagaObjeto(ObjSelecionado):
 
   
     
-def capturaINItodosDef(self, context):
+def capturaINItodosDef():
     capturaINI('EMP11')
     capturaINI('EMP21')
     capturaINI('EMP13')
@@ -52,7 +52,7 @@ def capturaINItodosDef(self, context):
     capturaINI('EMPMentonL')
     capturaINI('EMPMentonR')
     
-def capturaFINtodosDef(self, context):
+def capturaFINtodosDef():
     capturaFIN('EMP11')
     capturaFIN('EMP21')
     capturaFIN('EMP13')
@@ -98,11 +98,32 @@ def calculaDeslocamento(obj, obj1, obj2):
     print(a)
     
 
+def obj_pre(frame):
+    bpy.context.scene.frame_set(frame)
+    print("frame:", frame)
+    capturaINItodosDef()
+        
+def obj_pos(frame):
+    bpy.context.scene.frame_set(frame)
+    print("frame:", frame)
+    capturaFINtodosDef()
+
 def geraDeslocamentoTODOSDef(self, context):
     
     context = bpy.context
     obj = context.active_object
     scn = context.scene
+
+# Mostra resultados
+
+    frame1 = bpy.data.scenes["Scene"].frame_start
+
+    obj_pre(frame1)
+
+
+    frame2 = bpy.data.scenes["Scene"].frame_end
+
+    obj_pos(frame2)
 
     SYEL = '\33[45m'
     BOLD = '\033[1m'
@@ -180,4 +201,32 @@ def geraDeslocamentoTODOSDef(self, context):
     apagaObjeto('EMPMentonR.INI')
     apagaObjeto('EMPMentonR.FIN')
 
+# Calcula Pontos
+'''
+class capturaINItodos(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.captura_ini_todos"
+    bl_label = "Captura todos objetos inicio"
 
+    def execute(self, context):
+        capturaINItodosDef(self, context)
+        return {'FINISHED'}
+
+
+class capturaFINtodos(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.captura_fin_todos"
+    bl_label = "Captura todos objetos final"
+
+    def execute(self, context):
+        capturaFINtodosDef(self, context)
+        return {'FINISHED'}
+'''
+class geraDeslocamentoTODOS(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_deslocamento_todos"
+    bl_label = "Gera deslocamento de todos"
+
+    def execute(self, context):
+        geraDeslocamentoTODOSDef(self, context)
+        return {'FINISHED'}
