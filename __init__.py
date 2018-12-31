@@ -1425,7 +1425,10 @@ class PontosAnatomicos(bpy.types.Panel):
         row.operator("object.palatine", text="Palatine", icon="X")
 
         row = layout.row()
-        row.operator("object.upperincisor", text="A Point (Subspinale)", icon="X")
+        row.operator("object.apoint", text="A Point (Subspinale)", icon="X")
+
+#        row = layout.row()
+#        row.operator("object.upperincisor", text="A Point (Subspinale)", icon="X")
 
         row = layout.row()
         row.operator("object.nasalspine", text="Nasal Spine", icon="X")
@@ -1506,9 +1509,6 @@ class PontosAnatomicos(bpy.types.Panel):
         row.operator("object.sella", text="Sella Turcica", icon="X")
 
         row = layout.row()
-        row.operator("object.apoint", text="A Point", icon="X")
-
-        row = layout.row()
         row.operator("object.gonionr", text="Gonion Right", icon="X")
 
         row = layout.row()
@@ -1566,7 +1566,7 @@ class FerramentasRefMedidas(bpy.types.Panel):
         row.operator("object.medver", text="Create Vertical Measurements", icon="LAMP_SUN")
 
         row = layout.row()
-        row.operator("measureit.runopenglbutton", text="Show/Hide measurements", icon="GHOST_ENABLED")
+        row.operator("measureit.runopenglbutton", text="Show/Hide Measurements", icon="GHOST_ENABLED")
 
 # ANIMAÇÃO
 
