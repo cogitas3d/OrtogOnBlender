@@ -944,7 +944,7 @@ class PainelAtualiza(bpy.types.Panel):
         obj = context.object 
 		
         row = layout.row()
-        row.label(text="VERSION: 20181228a")
+        row.label(text="VERSION: 20181231a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1425,7 +1425,7 @@ class PontosAnatomicos(bpy.types.Panel):
         row.operator("object.palatine", text="Palatine", icon="X")
 
         row = layout.row()
-        row.operator("object.upperincisor", text="Upper Incisor", icon="X")
+        row.operator("object.upperincisor", text="A Point (subspinale)", icon="X")
 
         row = layout.row()
         row.operator("object.nasalspine", text="Nasal Spine", icon="X")
