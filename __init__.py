@@ -1359,7 +1359,7 @@ class Osteotomia(bpy.types.Panel):
         row.operator("object.configura_ramo_esq", text="Setup Left Ramus")
 
         row = layout.row()
-        row.operator("object.configura_corpo_mand", text="Configure Mandible Body")
+        row.operator("object.configura_corpo_mand", text="Setup Mandible Body")
 
         row = layout.row()
         row.operator("object.configura_mento", text="Setup Chin")
@@ -1425,7 +1425,7 @@ class PontosAnatomicos(bpy.types.Panel):
         row.operator("object.palatine", text="Palatine", icon="X")
 
         row = layout.row()
-        row.operator("object.upperincisor", text="A Point (subspinale)", icon="X")
+        row.operator("object.upperincisor", text="A Point (Subspinale)", icon="X")
 
         row = layout.row()
         row.operator("object.nasalspine", text="Nasal Spine", icon="X")
