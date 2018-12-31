@@ -1276,7 +1276,7 @@ class AlinhaFaces(bpy.types.Panel):
         layout.operator("object.alinha_rosto", text="1 - Align with the Camera", icon="MANIPUL")
         col = self.layout.column(align = True)
         col.prop(context.scene, "medida_real")  
-        layout.operator("object.alinha_rosto2", text="3 - Align and resize", icon="LAMP_POINT")
+        layout.operator("object.alinha_rosto2", text="3 - Align and Resize", icon="LAMP_POINT")
         
         row = layout.row()
         row.operator("object.rotaciona_z", text="Flip Z", icon="FORCE_MAGNETIC")
