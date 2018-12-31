@@ -1209,7 +1209,7 @@ class CriaFotogrametria(bpy.types.Panel):
    
 class OOB_import_obj(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
-    bl_label = "Import Photogrammetry"
+    bl_label = "Import/Cut Photogrammetry"
     bl_idname = "import_obj"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
