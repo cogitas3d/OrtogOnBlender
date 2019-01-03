@@ -16,6 +16,7 @@ if "bpy" in locals():
 #    imp.reload(GeraModelosTomo)
     print("Reloaded multifiles")
 else:
+    from .AlinhaTresPontos import *
     from .CefaloInterativa import *
     from .DesenhaGuia import *
     from .ImportaArmature import *
@@ -944,7 +945,7 @@ class PainelAtualiza(bpy.types.Panel):
         obj = context.object 
 		
         row = layout.row()
-        row.label(text="VERSION: 20181231a")
+        row.label(text="VERSION: 20190103a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1272,6 +1273,9 @@ class AlinhaFaces(bpy.types.Panel):
         obj = context.object
 
         row = layout.row()        
+        row.label(text="CLASSICAL:")
+
+        row = layout.row()        
         row.label(text="Align and Resize:")
         layout.operator("object.alinha_rosto", text="1 - Align with the Camera", icon="MANIPUL")
         col = self.layout.column(align = True)
@@ -1280,6 +1284,18 @@ class AlinhaFaces(bpy.types.Panel):
         
         row = layout.row()
         row.operator("object.rotaciona_z", text="Flip Z", icon="FORCE_MAGNETIC")
+
+        row = layout.row()        
+        row.label(text="NEW:")
+    
+        row = layout.row()
+        row.operator("object.cria_tres_pontos", text="3 Points Click", icon="OUTLINER_OB_MESH")
+
+        col = self.layout.column(align = True)
+        col.prop(context.scene, "medida_real2")  
+
+        row = layout.row()
+        row.operator("object.alinha_forca", text="Align and Resize!", icon="LAMP_POINT")
 
         row = layout.row()
         row.label(text="Align by Points:")
@@ -1290,8 +1306,6 @@ class AlinhaFaces(bpy.types.Panel):
 
 #        row = layout.row()
 #        row.operator("object.align_icp", text="Align by ICP", icon="PARTICLE_PATH")
-    
-
 
 # OSTEOTOMIA
 
@@ -1837,6 +1851,15 @@ class CefaloTeste1(bpy.types.Panel):
 
 
 def register():
+    bpy.utils.register_class(ModalTimerOperator)
+    bpy.utils.register_class(CriaTresPontosBtn)
+    bpy.types.Scene.medida_real2 = bpy.props.StringProperty \
+      (
+        name = "Real Size",
+        description = "Real size distance between eyes",
+        default = "1"
+      )
+    bpy.utils.register_class(AlinhaForcaBtn)
     bpy.utils.register_class(DesenhaGuia)
     bpy.utils.register_class(Acabamento)
     bpy.utils.register_class(FechaBuraco)
@@ -2033,6 +2056,10 @@ def register():
 
 
 def unregister():
+    bpy.utils.unregister_class(ModalTimerOperator)
+    del bpy.types.Scene.medida_real2
+    bpy.utils.register_class(AlinhaForcaBtn)
+    bpy.utils.unregister_class(CriaTresPontosBtn)
     del bpy.types.Scene.medida_real
     bpy.utils.unregister_class(DesenhaGuia)
     bpy.utils.unregister_class(Acabamento)
