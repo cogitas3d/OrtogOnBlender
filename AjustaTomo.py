@@ -58,6 +58,17 @@ def AjustaTomoDef(self, context):
         return n_linhas
 
 
+    def InstanceNumber(Arquivo):
+
+        ds = dicom.dcmread(Arquivo) # Diretório e arquivo concatenados
+
+
+        instance_number = ds.data_element("InstanceNumber")
+        instanceLimpa1 = str(instance_number).split('IS: ')
+        instanceLimpa2 = str(instanceLimpa1[1]).strip('"')
+
+        return instanceLimpa2
+
     NumeroLinhas = obter_n_linhas ('ListaArquivos.txt')
 
     #-----------------------------------------------------------
@@ -70,15 +81,20 @@ def AjustaTomoDef(self, context):
             ListaArquivos=f.readlines()
             print("Criado Lista Arquivo1")
 
+    DCMNum = 0
+
     for x in range(NumeroLinhas):
         ArquivoAtual = ListaArquivos[x].strip('\n') # mostra linha 1 sem o caractere de quebra de linha
     #	print(ArquivoAtual)
-
+        DCMInstanceNumber = InstanceNumber(ArquivoAtual)
         os.chdir(tmpdirTomo)
-        shutil.copy(ArquivoAtual, str(datetime.now()).replace(":","").replace(".","").replace(" ","").replace("-",""))
-        print("Copiado de: ", ArquivoAtual, " Para: ", str(datetime.now()).replace(":","").replace(".","").replace(" ","").replace("-",""))
-    #	os.chdir('..')
 
+        shutil.copy(ArquivoAtual, "Copy-"+DCMInstanceNumber.zfill(5)+"-"+str(DCMNum))
+        print("Copiado de: ", ArquivoAtual, " Para: ", "Copy-"+DCMInstanceNumber+"-"+str(DCMNum))
+#        shutil.copy(ArquivoAtual, str(datetime.now()).replace(":","").replace(".","").replace(" ","").replace("-",""))
+#        print("Copiado de: ", ArquivoAtual, " Para: ", str(datetime.now()).replace(":","").replace(".","").replace(" ","").replace("-",""))
+    #	os.chdir('..')
+        DCMNum += 1
 
     # Lista os arquivos e salva arquivo de texto
 
@@ -146,7 +162,8 @@ def AjustaTomoDef(self, context):
                     if palavra in line:
                         SeriesRaw = line
                         SeriesLimpa1 = SeriesRaw.strip('"DICOM:SeriesNumber": "')
-                        SeriesLimpo = SeriesLimpa1.strip('",'+'\n')
+                        SeriesLimpa2 = SeriesLimpa1.strip('",'+'\n')
+                        SeriesLimpo = SeriesLimpa2.strip(" ")
                         print("SERIES", SeriesLimpo)
 
                         if not os.path.exists(SeriesLimpo):

@@ -16,6 +16,7 @@ if "bpy" in locals():
 #    imp.reload(GeraModelosTomo)
     print("Reloaded multifiles")
 else:
+    from .ImportaFatiasTomo import *
     from .AlinhaTresPontos import *
     from .CefaloInterativa import *
     from .DesenhaGuia import *
@@ -1019,6 +1020,10 @@ class ImportaTomo(bpy.types.Panel):
         row = layout.row()
         row.operator("object.gera_modelos_tomo", text="Convert DICOM to 3D", icon="SNAP_FACE")
 
+        row = layout.row()
+        row = layout.row()
+        row.operator("object.importa_fatias_dcm", text="Import DICOM Slices", icon="COLLAPSEMENU")
+
       
         row = layout.row()
         row.label(text="Graphic References:")
@@ -1851,6 +1856,7 @@ class CefaloTeste1(bpy.types.Panel):
 
 
 def register():
+    bpy.utils.register_class(ImportaFatias)
     bpy.utils.register_class(ModalTimerOperator)
     bpy.utils.register_class(CriaTresPontosBtn)
     bpy.types.Scene.medida_real2 = bpy.props.StringProperty \
@@ -2056,6 +2062,7 @@ def register():
 
 
 def unregister():
+    bpy.utils.unregister_class(ImportaFatias)
     bpy.utils.unregister_class(ModalTimerOperator)
     del bpy.types.Scene.medida_real2
     bpy.utils.register_class(AlinhaForcaBtn)
