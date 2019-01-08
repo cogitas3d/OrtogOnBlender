@@ -1021,19 +1021,18 @@ class ImportaTomo(bpy.types.Panel):
         row.operator("object.gera_modelos_tomo", text="Convert DICOM to 3D", icon="SNAP_FACE")
 
 
-        if platform.system() == "Linux" or platform.system() == "Darwin":
-		        row = layout.row()
-		        row = layout.row()
-		        row.operator("object.importa_fatias_dcm", text="Import DICOM Slices", icon="COLLAPSEMENU")
+        row = layout.row()
+        row = layout.row()
+        row.operator("object.importa_fatias_dcm", text="Import DICOM Slices", icon="COLLAPSEMENU")
 
-		        userpref = context.user_preferences
-		        system = userpref.system
+        userpref = context.user_preferences
+        system = userpref.system
 
-		        row = layout.row()
-		        row.label(text="OpenGL:")
+        row = layout.row()
+        row.label(text="OpenGL:")
 
-		        row = layout.row()
-		        row.prop(system, "gl_clip_alpha", slider=True)
+        row = layout.row()
+        row.prop(system, "gl_clip_alpha", slider=True)
 
 #        col = colsplit.column()
 #        col.label(text="OpenGL:")
