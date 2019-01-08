@@ -174,6 +174,7 @@ def ImportaFatiasDef():
 
     bpy.ops.view3d.view_all(center=False)
     bpy.context.space_data.viewport_shade = 'MATERIAL'
+    bpy.ops.file.autopack_toggle()
 
 
 class ImportaFatias(bpy.types.Operator):
