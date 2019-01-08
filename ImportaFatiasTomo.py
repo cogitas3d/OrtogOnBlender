@@ -61,8 +61,12 @@ def ExtraiDadosTomo():
 
 def ConverteDCMparaPNG():
 
-    if platform.system() == "Linux" or platform.system() == "Darwin":
+    if platform.system() == "Linux":
         subprocess.call('cd '+DiretorioDCM+' && for i in *; do mogrify -verbose -format png $i; done && mv *.png '+TmpDirPNG, shell=True)
+        print("DICOMs convertidos em PNG")
+        
+    if platform.system() == "Darwin":
+        subprocess.call('cd '+DiretorioDCM+' && for i in *; do magick $i -auto-level -verbose $i "${i%.dcm}".png; done && mv *.png '+TmpDirPNG, shell=True)
         print("DICOMs convertidos em PNG")
 
     if platform.system() == "Windows":
