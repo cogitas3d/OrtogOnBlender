@@ -192,14 +192,18 @@ def AjustaTomoDef(self, context):
             ArquivoAtual = ListaArquivos[x].strip('\n') # mostra linha 1 sem o caractere de quebra de linha
             print("AQUIVO ATUAL: "+ArquivoAtual)
 
-            ds = dicom.dcmread(ArquivoAtual)
+            try:
+                ds = dicom.dcmread(ArquivoAtual)
 
-            series_number = ds.data_element("SeriesNumber")
+                series_number = ds.data_element("SeriesNumber")
 
-            SeriesLimpa1 = str(series_number).strip('(0020, 0011) Series Number IS:')
-            SeriesLimpo2 = SeriesLimpa1.strip('"')
-            SeriesLimpo = SeriesLimpo2.strip(" ")
+                SeriesLimpa1 = str(series_number).strip('(0020, 0011) Series Number IS:')
+                SeriesLimpo2 = SeriesLimpa1.strip('"')
+                SeriesLimpo = SeriesLimpo2.strip(" ")
 
+        except:
+            print("Não rolou leitura do DICOM!")
+            SeriesLimpo = "Error"
 
 
             if not os.path.exists(SeriesLimpo):
