@@ -182,24 +182,29 @@ def AjustaTomoDef(self, context):
         print("EH WIN")
         for x in range(NumeroLinhas):
             ArquivoAtual = ListaArquivos[x].strip('\n') # mostra linha 1 sem o caractere de quebra de linha
-    #	print(ArquivoAtual)
+            print("AQUIVO ATUAL: "+ArquivoAtual)
 
             ds = dicom.dcmread(ArquivoAtual)
 
             series_number = ds.data_element("SeriesNumber")
 
             SeriesLimpa1 = str(series_number).strip('(0020, 0011) Series Number IS:')
-            SeriesLimpo = SeriesLimpa1.strip('"')
+            SeriesLimpo2 = SeriesLimpa1.strip('"')
+            SeriesLimpo = SeriesLimpo2.strip(" ")
+
+
 
             if not os.path.exists(SeriesLimpo):
                 os.mkdir(SeriesLimpo)
-                   # print("Diretorio criado")
+                print("Diretorio "+SeriesLimpo+" criado")
 
-                #os.chdir(tmpdirTomo)
-                shutil.copy(ArquivoAtual, SeriesLimpo)
-                print("Copiado de: ", ArquivoAtual, " Para: ", SeriesLimpo)
-                os.remove(ArquivoAtual)
+            #os.chdir(tmpdirTomo)
+            shutil.copy(ArquivoAtual, SeriesLimpo)
+            print("Copiado de: ", ArquivoAtual, " Para: ", SeriesLimpo)
+            os.remove(ArquivoAtual)
 
+
+				
         #os.remove('deletar.txt')
 #        os.remove('deletar.txt')
     shutil.rmtree(tmpdirCopy+'COPY')
@@ -237,8 +242,15 @@ def CorrigeDicomDef(self, context):
         os.system("dicomtodicom -o FIXED *")
 #        os.system("for i in *; do gdcmconv -X $i FIXED/$i; done")
 #        print("TOMO AJUSTADA PELO GDCM")
+
     if platform.system() == "Darwin":
-        os.system("/OrtogOnBlender/vtk-dicom/./dicomtodicom -o FIXED *")
+        os.system("/OrtogOnBlender/vtk-dicom/./dicomtodicom --verbose -o FIXED *")
     print("DICOM FIXED")
+	
+    if platform.system() == "Windows":
+        os.system("C:\OrtogOnBlender\dicomtools\dicomtodicom --verbose -o FIXED *")
+    print("DICOM FIXED")
+	
     scn.my_tool.path = os.getcwd()+"/FIXED"
+
 

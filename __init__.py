@@ -986,12 +986,12 @@ class ImportaTomo(bpy.types.Panel):
         row = layout.row()
         row.label(text="CT-Scan Fix:")
 
-        if platform.system() == "Linux" or platform.system() == "Darwin":
-            col = layout.column(align=True)
-            col.prop(scn.my_tool, "path", text="")
 
-            row = layout.row()
-            row.operator("object.corrige_dicom", text="Fix it!", icon="FILE_TICK")
+        col = layout.column(align=True)
+        col.prop(scn.my_tool, "path", text="")
+
+        row = layout.row()
+        row.operator("object.corrige_dicom", text="Fix it!", icon="FILE_TICK")
 
 
         row = layout.row()
