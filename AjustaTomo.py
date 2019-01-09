@@ -60,12 +60,20 @@ def AjustaTomoDef(self, context):
 
     def InstanceNumber(Arquivo):
 
-        ds = dicom.dcmread(Arquivo) # Diretório e arquivo concatenados
+
+        try:        
+            ds = dicom.dcmread(Arquivo, force=True) # Diretório e arquivo concatenados
+            #ds = dicom.dcmread(Arquivo, force=True) # Diretório e arquivo concatenados
 
 
-        instance_number = ds.data_element("InstanceNumber")
-        instanceLimpa1 = str(instance_number).split('IS: ')
-        instanceLimpa2 = str(instanceLimpa1[1]).strip('"')
+            instance_number = ds.data_element("InstanceNumber")
+            instanceLimpa1 = str(instance_number).split('IS: ')
+            instanceLimpa2 = str(instanceLimpa1[1]).strip('"')
+
+
+        except:
+            print("Não rolou leitura do DICOM!")
+            instanceLimpa2 = "Error"
 
         return instanceLimpa2
 
