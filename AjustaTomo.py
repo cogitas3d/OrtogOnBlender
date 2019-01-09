@@ -201,9 +201,9 @@ def AjustaTomoDef(self, context):
                 SeriesLimpo2 = SeriesLimpa1.strip('"')
                 SeriesLimpo = SeriesLimpo2.strip(" ")
 
-        except:
-            print("Não rolou leitura do DICOM!")
-            SeriesLimpo = "Error"
+            except:
+                print("Não rolou leitura do DICOM!")
+                SeriesLimpo = "Error"
 
 
             if not os.path.exists(SeriesLimpo):
