@@ -72,8 +72,10 @@ def ConverteDCMparaPNG():
         print("DICOMs convertidos em PNG")
 
     if platform.system() == "Windows":
-        subprocess.call('cd '+DiretorioDCM+' & for %f in (*) do C:\OrtogOnBlender\ImageMagick\mogrify -verbose -format png %f & move *.png '+TmpDirPNG, shell=True)
+        subprocess.call('cd '+DiretorioDCM+' & for %f in (*) do C:\OrtogOnBlender\ImageMagick\magick %f -auto-level -verbose %f.png & move *.png '+TmpDirPNG, shell=True)
         print("DICOMs convertidos em PNG")
+#        subprocess.call('cd '+DiretorioDCM+' & for %f in (*) do C:\OrtogOnBlender\ImageMagick\mogrify -verbose -format png %f & move *.png '+TmpDirPNG, shell=True)
+#        print("DICOMs convertidos em PNG")
 
 
 		
