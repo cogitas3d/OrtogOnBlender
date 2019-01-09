@@ -234,9 +234,9 @@ def CorrigeDicomDef(self, context):
     os.chdir(scn.my_tool.path)
     os.makedirs("FIXED")
     if platform.system() == "Linux":
-#        os.system("dicomtodicom -o FIXED *")
-        os.system("for i in *; do gdcmconv -X $i FIXED/$i; done")
-        print("TOMO AJUSTADA PELO GDCM")
+        os.system("dicomtodicom -o FIXED *")
+#        os.system("for i in *; do gdcmconv -X $i FIXED/$i; done")
+#        print("TOMO AJUSTADA PELO GDCM")
     if platform.system() == "Darwin":
         os.system("/OrtogOnBlender/vtk-dicom/./dicomtodicom -o FIXED *")
     print("DICOM FIXED")
