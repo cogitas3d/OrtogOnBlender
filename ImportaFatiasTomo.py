@@ -179,6 +179,7 @@ def ImportaFatiasDef():
     ListaArquivos = sorted(os.listdir(TmpDirPNG))
 #    ListaArquivos = sorted(os.listdir(TmpDirPNG))
 
+
     DistanciaZ = 0
 
     EscalaX = DimensaoLateralX * RowsPixels
@@ -234,7 +235,10 @@ def ImportaFatiasDef():
 
     bpy.ops.view3d.view_all(center=False)
     bpy.context.space_data.viewport_shade = 'MATERIAL'
-    bpy.ops.file.autopack_toggle()
+#    bpy.ops.file.autopack_toggle()
+
+    bpy.context.scene.frame_end = int(len(ListaArquivos))+1
+
 
     bpy.types.Scene.IMGPathSeq = bpy.props.StringProperty \
       (
