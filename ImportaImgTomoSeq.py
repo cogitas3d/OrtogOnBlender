@@ -22,6 +22,9 @@ def ImportaSeqTomoDef(self, context):
     bpy.ops.image.open(directory=IMGDir, files=listaIMG, relative_path=True, show_multiview=False)
     bpy.data.images[str(ListaArquivos[0])].source = 'SEQUENCE'
 
+    space = context.space_data
+    space.image_user.use_auto_refresh = True
+
 
 #    bpy.data.screens["Default"]..use_auto_refresh = True 
  
