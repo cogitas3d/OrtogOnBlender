@@ -263,6 +263,6 @@ def CorrigeDicomDef(self, context):
         os.system("C:\OrtogOnBlender\dicomtools\dicomtodicom --verbose -o FIXED *")
     print("DICOM FIXED")
 	
-    scn.my_tool.path = os.getcwd()+"/FIXED"
+    scn.my_tool.path = os.getcwd()+"/FIXED/"
 
 
