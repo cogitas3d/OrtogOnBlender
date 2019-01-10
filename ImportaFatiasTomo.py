@@ -34,6 +34,15 @@ def ExtraiDadosTomo():
 #    sliceLimpa2 = sliceLimpa1.strip('"')
     EspacoSlices = float(sliceLimpa2)
 
+
+    bpy.types.Scene.SliceThickness = bpy.props.StringProperty \
+      (
+        name = "SliceThickness",
+        description = "Slice Thickness",
+        default = str(EspacoSlices)
+      )
+
+
     # Dimensões laterais
 
     pixel_spacing = ds.data_element("PixelSpacing")
@@ -44,8 +53,25 @@ def ExtraiDadosTomo():
 
     DimensoesLaterais = pixelLimpa3.split(",")
 
+
     DimensaoLateralX = float(DimensoesLaterais[0].strip("'"))
+
+    bpy.types.Scene.PixelSpacingX = bpy.props.StringProperty \
+      (
+        name = "PixelSpacingX",
+        description = "Pixel SpacingX",
+        default = str(DimensaoLateralX)
+      )
+
     DimensaoLateralY = float(DimensoesLaterais[1].strip("'").strip(" '"))
+
+    bpy.types.Scene.PixelSpacingY = bpy.props.StringProperty \
+      (
+        name = "PixelSpacingY",
+        description = "Pixel SpacingY",
+        default = str(DimensaoLateralY)
+      )
+
 
     # Pixels
 
@@ -53,9 +79,24 @@ def ExtraiDadosTomo():
     rowsLimpa1 = str(rows).split('US: ')
     RowsPixels = float(rowsLimpa1[1])
 
+    bpy.types.Scene.IMGDimX = bpy.props.StringProperty \
+      (
+        name = "IMGDimX",
+        description = "IMGDimX",
+        default = str(RowsPixels)
+      )
+
+
     columns = ds.data_element("Columns")
     columnsLimpa1 = str(rows).split('US: ')
     ColumnsPixels = float(rowsLimpa1[1])
+
+    bpy.types.Scene.IMGDimY = bpy.props.StringProperty \
+      (
+        name = "IMGDimY",
+        description = "IMGDimY",
+        default = str(ColumnsPixels)
+      )
 
 # Conversão de DICOM para PNG
 
@@ -125,6 +166,10 @@ class Material:
 
 def ImportaFatiasDef():
 
+    context = bpy.context
+#    obj = context.active_object
+    scn = context.scene
+
     ExtraiDadosTomo()
     ConverteDCMparaPNG()
 
@@ -191,6 +236,12 @@ def ImportaFatiasDef():
     bpy.context.space_data.viewport_shade = 'MATERIAL'
     bpy.ops.file.autopack_toggle()
 
+    bpy.types.Scene.IMGPathSeq = bpy.props.StringProperty \
+      (
+        name = "IMGPathSeq",
+        description = "IMGPathSeq",
+        default = str(TmpDirPNG)
+      )
 
 class ImportaFatias(bpy.types.Operator):
     """Tooltip"""

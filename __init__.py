@@ -16,6 +16,7 @@ if "bpy" in locals():
 #    imp.reload(GeraModelosTomo)
     print("Reloaded multifiles")
 else:
+    from .ImportaImgTomoSeq import *
     from .ImportaFatiasTomo import *
     from .AlinhaTresPontos import *
     from .CefaloInterativa import *
@@ -1868,6 +1869,49 @@ class CefaloTeste1(bpy.types.Panel):
         row.prop(context.scene, "angulo_NS")
         row.label(text="101º - 105º")
 
+class importaImgBotoes(bpy.types.Panel):
+    """Apenas um teste"""
+    bl_label = "Import IMG CT-Scan"
+    bl_idname = "Import IMG CT-Scan"
+    bl_space_type = 'IMAGE_EDITOR'
+    bl_region_type = 'UI'
+    bl_category = "Ortog"
+
+    
+    def draw(self, context):
+        layout = self.layout
+        scn = context.scene
+        obj = context.object 
+
+
+        row = layout.row()
+
+        row.label(text="CT-Scan IMG Slices:")
+
+#        row = layout.row()
+#        row = layout.column(align=True)
+#        row.prop(scn.my_tool, "path", text="")
+
+        row = layout.row()
+        row.operator("object.importa_img_tomo", text="Import CT-Scan IMG Slices", icon="SURFACE_NCYLINDER")
+        
+        row = layout.row(align = True)
+        row.prop(context.scene, "IMGPathSeq")
+
+        row = layout.row(align = True)
+        row.prop(context.scene, "SliceThickness")
+
+        row = layout.row(align = True)
+        row.prop(context.scene, "PixelSpacingX")
+        
+        row = layout.row(align = True)
+        row.prop(context.scene, "PixelSpacingY")
+        
+        row = layout.row(align = True)
+        row.prop(context.scene, "IMGDimX")
+        
+        row = layout.row(align = True)
+        row.prop(context.scene, "IMGDimY")
 
 def register():
     bpy.utils.register_class(ImportaFatias)
@@ -2073,6 +2117,49 @@ def register():
         default = "NONE"
       )
     bpy.utils.register_class(CefaloCalculaTudo)
+# Importa Sequencia Tomo
+    bpy.utils.register_class(ImportaSeqTomo)
+    bpy.utils.register_class(importaImgBotoes)
+    bpy.types.Scene.IMGPathSeq = bpy.props.StringProperty \
+      (
+        name = "IMGPathSeq",
+        description = "IMGPathSeq",
+        default = "NONE"
+      )
+    bpy.types.Scene.SliceThickness = bpy.props.StringProperty \
+      (
+        name = "SliceThickness",
+        description = "Slice Thickness",
+        default = "NONE"
+      )
+      
+    bpy.types.Scene.PixelSpacingX = bpy.props.StringProperty \
+      (
+        name = "PixelSpacingX",
+        description = "Pixel SpacingX",
+        default = "NONE"
+      )
+
+    bpy.types.Scene.PixelSpacingY = bpy.props.StringProperty \
+      (
+        name = "PixelSpacingY",
+        description = "Pixel SpacingY",
+        default = "NONE"
+      )
+      
+    bpy.types.Scene.IMGDimX = bpy.props.StringProperty \
+      (
+        name = "IMGDimX",
+        description = "IMGDimX",
+        default = "NONE"
+      )
+      
+    bpy.types.Scene.IMGDimY = bpy.props.StringProperty \
+      (
+        name = "IMGDimY",
+        description = "IMGDimY",
+        default = "NONE"
+      )
 
 
 def unregister():
@@ -2201,6 +2288,8 @@ def unregister():
     bpy.utils.unregister_class(CefaloTeste1)
     del bpy.types.Scene.angulo_SNA
     bpy.utils.unregister_class(CefaloCalculaTudo)
+    bpy.utils.unregister_class(ImportaSeqTomo)
+    bpy.utils.unregister_class(importaImgBotoes)
 
 if __name__ == "__main__":
     register()
