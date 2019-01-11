@@ -3,6 +3,7 @@ import os
 import subprocess
 import tempfile
 import platform
+#import pydicom as dicom
 
 def ImportaSeqTomoDef(self, context):
 
@@ -59,8 +60,22 @@ def ExportaSeqTomoDef(self, context):
     if platform.system() == "Linux":    
 
         subprocess.call('cd '+IMGDir+' && mkdir GREY && for i in *.png; do convert $i -type Grayscale -depth 8 GREY/$i; done', shell=True)
+        print("PNGs GERADOS!!!")
 
         subprocess.call('python ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -i '+IMGDir+'/GREY/ -o '+DirDcmExp+' -s '+PixelSpacingX+' '+PixelSpacingY+' '+SliceThickness+' -t png', shell=True)
+        print("DICOM BASE GERADO!!!")
+
+#        ListaArquivos = sorted(os.listdir(DirDcmExp))
+       # ListaArquivos = sorted(os.listdir(IMGDir+'/GREY/'))
+
+#        subprocess.call('cd '+DirDcmExp, shell=True)
+
+#        for fatia in range(len(ListaArquivos)):
+#            ds = dicom.dcmread(ListaArquivos[fatia])
+#            ds.ImagePositionPatient[2] = int(fatia)*float(SliceThickness)
+#            print("Fatia", ListaArquivos[fatia], "Slice", int(fatia)*float(SliceThickness))
+#            ds.save_as(ListaArquivos[fatia])
+#        print("LOOP FINALIZADO")
 
         scn.my_tool.path = DirDcmExp
   
