@@ -1893,7 +1893,7 @@ class importaImgBotoes(bpy.types.Panel):
 #        row.prop(scn.my_tool, "path", text="")
 
         row = layout.row()
-        row.operator("object.importa_img_tomo", text="Import CT-Scan IMG Slices", icon="SURFACE_NCYLINDER")
+        row.operator("object.importa_img_tomo", text="Import CT-Scan IMG Slices", icon="IMPORT")
         
         row = layout.row(align = True)
         row.prop(context.scene, "IMGPathSeq")
@@ -1912,6 +1912,11 @@ class importaImgBotoes(bpy.types.Panel):
         
         row = layout.row(align = True)
         row.prop(context.scene, "IMGDimY")
+
+        row = layout.row()
+        row = layout.row()
+        row.operator("object.exporta_img_tomo", text="Export DICOM Slices", icon="EXPORT")
+
 
 def register():
     bpy.utils.register_class(ImportaFatias)
@@ -2119,6 +2124,7 @@ def register():
     bpy.utils.register_class(CefaloCalculaTudo)
 # Importa Sequencia Tomo
     bpy.utils.register_class(ImportaSeqTomo)
+    bpy.utils.register_class(ExportaSeqTomo)
     bpy.utils.register_class(importaImgBotoes)
     bpy.types.Scene.IMGPathSeq = bpy.props.StringProperty \
       (
@@ -2289,6 +2295,7 @@ def unregister():
     del bpy.types.Scene.angulo_SNA
     bpy.utils.unregister_class(CefaloCalculaTudo)
     bpy.utils.unregister_class(ImportaSeqTomo)
+    bpy.utils.unregister_class(ExportaSeqTomo)
     bpy.utils.unregister_class(importaImgBotoes)
 
 if __name__ == "__main__":

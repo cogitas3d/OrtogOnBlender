@@ -1,6 +1,8 @@
 import bpy
 import os
-
+import subprocess
+import tempfile
+import platform
 
 def ImportaSeqTomoDef(self, context):
 
@@ -36,5 +38,38 @@ class ImportaSeqTomo(bpy.types.Operator):
     def execute(self, context):
         ImportaSeqTomoDef(self, context)
         return {'FINISHED'}
-       
 
+
+def ExportaSeqTomoDef(self, context):
+
+    layout = self.layout
+    scn = context.scene
+    obj = context.object
+
+    IMGDir = str(bpy.types.Scene.IMGPathSeq[1]['default'])
+
+    SliceThickness = str(bpy.types.Scene.SliceThickness[1]['default'])
+
+    PixelSpacingX = str(bpy.types.Scene.PixelSpacingX[1]['default'])
+
+    PixelSpacingY = str(bpy.types.Scene.PixelSpacingY[1]['default'])
+
+    DirDcmExp = tempfile.mkdtemp()
+
+    if platform.system() == "Linux":    
+
+        subprocess.call('cd '+IMGDir+' && mkdir GREY && for i in *.png; do convert $i -type Grayscale -depth 8 GREY/$i; done', shell=True)
+
+        subprocess.call('python ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -i '+IMGDir+'/GREY/ -o '+DirDcmExp+' -s '+PixelSpacingX+' '+PixelSpacingY+' '+SliceThickness+' -t png', shell=True)
+
+        scn.my_tool.path = DirDcmExp
+  
+
+class ExportaSeqTomo(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.exporta_img_tomo"
+    bl_label = "Teste"
+    
+    def execute(self, context):
+        ExportaSeqTomoDef(self, context)
+        return {'FINISHED'}
