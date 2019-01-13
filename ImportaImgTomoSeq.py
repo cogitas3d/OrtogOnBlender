@@ -77,7 +77,7 @@ def ExportaSeqTomoDef(self, context):
 #            ds.save_as(ListaArquivos[fatia])
 #        print("LOOP FINALIZADO")
 
-        scn.my_tool.path = DirDcmExp
+        scn.my_tool.path = DirDcmExp+"/"
   
 
 class ExportaSeqTomo(bpy.types.Operator):
