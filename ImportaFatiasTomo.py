@@ -22,7 +22,7 @@ def ExtraiDadosTomo():
 
     TmpDirPNG = tempfile.mkdtemp()
 
-    ds = dicom.dcmread(DiretorioDCM+ListaArquivos[0]) # Diretório e arquivo concatenados
+    ds = dicom.dcmread(DiretorioDCM+ListaArquivos[0], force = True) # Diretório e arquivo concatenados
 
 
     # Distância da altura dos slices
