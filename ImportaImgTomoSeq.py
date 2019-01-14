@@ -3,7 +3,7 @@ import os
 import subprocess
 import tempfile
 import platform
-#import pydicom as dicom
+import pydicom as dicom
 
 def ImportaSeqTomoDef(self, context):
 
