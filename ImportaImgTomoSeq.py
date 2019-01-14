@@ -89,9 +89,9 @@ def ExportaSeqTomoDef(self, context):
         subprocess.call('cd '+IMGDir+' && mkdir GREY && for i in *.png; do convert $i -type Grayscale -depth 8 -quality 100 GREY/${i%.png}.jpg; done', shell=True)
         print("JPEGs GERADOS!!!")
 
-        ListaArquivos = sorted(os.listdir(IMGDir+"GREY/"))
+        ListaArquivos = sorted(os.listdir(IMGDir+"/GREY/"))
 
-        os.chdir(IMGDir+"GREY/")
+        os.chdir(IMGDir+"/GREY/")
 
         for fatia in range(len(ListaArquivos)):
             ds = dicom.dcmread(str(ListaArquivos[fatia]), force=True)
