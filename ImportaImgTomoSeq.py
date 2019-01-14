@@ -100,7 +100,7 @@ def ExportaSeqTomoDef(self, context):
             ds.AccessionNumber = "1"
             ds.Modality = "CT"
         #    ds.MediaStorageSOPInstanceUID[0] = ""
-            ds.ImagePositionPatient = "0\\0\\"+str((fatia)*SliceThickness) # Valor do SliceThickness
+            ds.ImagePositionPatient = "0\\0\\"+str((fatia)*float(SliceThickness)) # Valor do SliceThickness
             ds.PatientID = "OrtogOnBlender"
             ds.InstanceNumber = str(int(fatia)-1)
             ds.SliceThickness = SliceThickness
