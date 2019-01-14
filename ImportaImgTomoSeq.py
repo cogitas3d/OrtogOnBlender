@@ -55,6 +55,10 @@ def ExportaSeqTomoDef(self, context):
 
     PixelSpacingY = str(bpy.types.Scene.PixelSpacingY[1]['default'])
 
+    DimPixelX = str(bpy.types.Scene.IMGDimX[1]['default'])
+
+    DimPixelY = str(bpy.types.Scene.IMGDimY[1]['default'])
+
     DirDcmExp = tempfile.mkdtemp()
 
     if platform.system() == "Linux":    
@@ -76,6 +80,36 @@ def ExportaSeqTomoDef(self, context):
 #            print("Fatia", ListaArquivos[fatia], "Slice", int(fatia)*float(SliceThickness))
 #            ds.save_as(ListaArquivos[fatia])
 #        print("LOOP FINALIZADO")
+
+        scn.my_tool.path = DirDcmExp+"/"
+
+
+    if platform.system() == "Darwin":
+
+        subprocess.call('cd '+IMGDir+' && mkdir GREY && for i in *.png; do convert $i -type Grayscale -depth 8 -quality 100 GREY/${i%.png}.jpg; done', shell=True)
+        print("JPEGs GERADOS!!!")
+
+        ListaArquivos = sorted(os.listdir(IMGDir+"GREY/"))
+
+        os.chdir(IMGDir+"GREY/")
+
+        for fatia in range(len(ListaArquivos)):
+            ds = dicom.dcmread(str(ListaArquivos[fatia]), force=True)
+        #    ds.FileMetaInformationGroupLength = str(len(ListaArquivos))
+            ds.SeriesNumber = "1"
+            ds.AccessionNumber = "1"
+            ds.Modality = "CT"
+        #    ds.MediaStorageSOPInstanceUID[0] = ""
+            ds.ImagePositionPatient = "0\\0\\"+str((fatia)*SliceThickness) # Valor do SliceThickness
+            ds.PatientID = "OrtogOnBlender"
+            ds.InstanceNumber = str(int(fatia)-1)
+            ds.SliceThickness = SliceThickness
+            ds.PixelSpacing = PixelSpacingX+"\\"+PixelSpacingY
+            ds.StudyID = "TESTEID"
+            ds.PatientName = "Teste"
+            ds.Rows = int(DimPixelX)
+            ds.Columns = int(DimPixelY)
+            ds.save_as(str(ListaArquivos[fatia]))
 
         scn.my_tool.path = DirDcmExp+"/"
   
