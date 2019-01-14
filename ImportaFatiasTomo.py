@@ -109,7 +109,7 @@ def ConverteDCMparaPNG():
 #        print("DICOMs convertidos em PNG")
         
     if platform.system() == "Darwin":
-        subprocess.call('cd '+DiretorioDCM+' && for i in *; do magick $i -auto-level -verbose $i "${i%.dcm}".png; done && mv *.png '+TmpDirPNG, shell=True)
+        subprocess.call('cd '+DiretorioDCM+' && for i in *; do magick $i -auto-level -verbose "${i%.dcm}".png; done && mv *.png '+TmpDirPNG, shell=True)
         print("DICOMs convertidos em PNG")
 
     if platform.system() == "Windows":

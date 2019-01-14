@@ -86,20 +86,24 @@ def ExportaSeqTomoDef(self, context):
 
     if platform.system() == "Darwin":
 
+
+# Converte slices em PNGs e depois o PNGs em JPGs monocromaticos
         subprocess.call('cd '+IMGDir+' && mkdir GREY && for i in *.png; do convert $i -type Grayscale -depth 8 -quality 100 GREY/${i%.png}.jpg; done', shell=True)
         print("JPEGs GERADOS!!!")
 
+        
+        subprocess.call('cd '+IMGDir+'/GREY/ && for i in *.jpg; do img2dcm $i ${i%.jpg}.dcm; done && rm *.jpg', shell=True)
+
+# Ajusta os DICOMs nos campos que dao erro
         ListaArquivos = sorted(os.listdir(IMGDir+"/GREY/"))
 
         os.chdir(IMGDir+"/GREY/")
 
         for fatia in range(len(ListaArquivos)):
             ds = dicom.dcmread(str(ListaArquivos[fatia]), force=True)
-        #    ds.FileMetaInformationGroupLength = str(len(ListaArquivos))
             ds.SeriesNumber = "1"
             ds.AccessionNumber = "1"
             ds.Modality = "CT"
-        #    ds.MediaStorageSOPInstanceUID[0] = ""
             ds.ImagePositionPatient = "0\\0\\"+str((fatia)*float(SliceThickness)) # Valor do SliceThickness
             ds.PatientID = "OrtogOnBlender"
             ds.InstanceNumber = str(int(fatia)-1)
@@ -110,8 +114,36 @@ def ExportaSeqTomoDef(self, context):
             ds.Rows = int(float(DimPixelX))
             ds.Columns = int(float(DimPixelY))
             ds.save_as(str(ListaArquivos[fatia]))
+            
+            scn.my_tool.path = IMGDir+"/GREY/"
 
-        scn.my_tool.path = DirDcmExp+"/"
+# Ajusta com o dicomtodicom e corrige os pontos que dao erro na importacao
+        
+        bpy.ops.object.corrige_dicom()
+
+        ListaArquivos = sorted(os.listdir(IMGDir+"/GREY/FIXED/"))
+
+        os.chdir(IMGDir+"/GREY/FIXED/")
+
+        for fatia in range(len(ListaArquivos)):
+            ds = dicom.dcmread(str(ListaArquivos[fatia]), force=True)
+            ds.SeriesNumber = "1"
+            ds.AccessionNumber = "1"
+            ds.Modality = "CT"
+            ds.ImagePositionPatient = "0\\0\\"+str((fatia)*float(SliceThickness)) # Valor do SliceThickness
+            ds.PatientID = "OrtogOnBlender"
+            ds.InstanceNumber = str(int(fatia)-1)
+            ds.SliceThickness = SliceThickness
+            ds.PixelSpacing = PixelSpacingX+"\\"+PixelSpacingY
+            ds.StudyID = "TESTEID"
+            ds.PatientName = "Teste"
+            ds.Rows = int(float(DimPixelX))
+            ds.Columns = int(float(DimPixelY))
+            ds.save_as(str(ListaArquivos[fatia]))
+        
+        
+        scn.my_tool.path = IMGDir+"/GREY/FIXED/"
+        #scn.my_tool.path = DirDcmExp+"/"
   
 
 class ExportaSeqTomo(bpy.types.Operator):
