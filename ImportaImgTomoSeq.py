@@ -107,8 +107,8 @@ def ExportaSeqTomoDef(self, context):
             ds.PixelSpacing = PixelSpacingX+"\\"+PixelSpacingY
             ds.StudyID = "TESTEID"
             ds.PatientName = "Teste"
-            ds.Rows = int(DimPixelX)
-            ds.Columns = int(DimPixelY)
+            ds.Rows = int(float(DimPixelX))
+            ds.Columns = int(float(DimPixelY))
             ds.save_as(str(ListaArquivos[fatia]))
 
         scn.my_tool.path = DirDcmExp+"/"
