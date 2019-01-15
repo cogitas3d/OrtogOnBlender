@@ -116,14 +116,41 @@ def ExportaSeqTomoDef(self, context):
             ds.save_as(str(ListaArquivos[fatia]))
             
             scn.my_tool.path = IMGDir+"/GREY/"
+			
+			
+    if platform.system() == "Windows":
 
-# Ajusta com o dicomtodicom e corrige os pontos que dao erro na importacao
+	
+        DirGrayDcm = tempfile.mkdtemp()
+	
+        os.chdir(IMGDir)
+
+# Converte slices em PNGs e depois o PNGs em JPGs monocromaticos
+#        subprocess.call('for %f in (*); do C:\OrtogOnBlender\ImageMagick\magick %f -type Grayscale -depth 8 -quality 100 %f.jpg; done && mkdir GREY && move *.jpg GREY', shell=True)
+		
+        subprocess.call('C:\OrtogOnBlender\ImageMagick\mogrify -format jpg *.png && mkdir GREY && move *.jpg GREY', shell=True)
+
+        print("JPEGs GERADOS!!!")
+        scn.my_tool.path = IMGDir
+
+#        subprocess.call('cd '+IMGDir+'/GREY & mkdir DCM', shell=True)
         
-        bpy.ops.object.corrige_dicom()
+#        subprocess.call('cd '+IMGDir+'/GREY & for %f in *.jpg do C:\OrtogOnBlender\dcmtk\img2dcm %f %f.dcm', shell=True)
 
-        ListaArquivos = sorted(os.listdir(IMGDir+"/GREY/FIXED/"))
+        ListaArquivos = sorted(os.listdir(IMGDir+"/GREY/"))
 
-        os.chdir(IMGDir+"/GREY/FIXED/")
+        os.chdir(IMGDir+"/GREY/")
+		
+        for arquivo in ListaArquivos:
+            subprocess.call('C:\OrtogOnBlender\dcmtk\img2dcm '+arquivo+' '+DirGrayDcm+'\\'+arquivo+'.dcm', shell=True)
+            print("Arquivo "+arquivo+" gerado!")
+
+#            scn.my_tool.path = DirGrayDcm
+
+# Ajusta os DICOMs nos campos que dao erro
+        ListaArquivos = sorted(os.listdir(DirGrayDcm))
+
+        os.chdir(DirGrayDcm)
 
         for fatia in range(len(ListaArquivos)):
             ds = dicom.dcmread(str(ListaArquivos[fatia]), force=True)
@@ -140,11 +167,38 @@ def ExportaSeqTomoDef(self, context):
             ds.Rows = int(float(DimPixelX))
             ds.Columns = int(float(DimPixelY))
             ds.save_as(str(ListaArquivos[fatia]))
+            print("Ajustados parâmetros de "+str(fatia))
+            
+            scn.my_tool.path = DirGrayDcm
+
+# Ajusta com o dicomtodicom e corrige os pontos que dao erro na importacao
+        
+        bpy.ops.object.corrige_dicom()
+
+        ListaArquivos = sorted(os.listdir(DirGrayDcm+"/FIXED/"))
+
+        os.chdir(DirGrayDcm+"/FIXED/")
+
+        for fatia in range(len(ListaArquivos)):
+            ds = dicom.dcmread(str(ListaArquivos[fatia]), force=True)
+            ds.SeriesNumber = "1"
+            ds.AccessionNumber = "1"
+            ds.Modality = "CT"
+            ds.ImagePositionPatient = "0\\0\\"+str((fatia)*float(SliceThickness)) # Valor do SliceThickness
+            ds.PatientID = "OrtogOnBlender"
+            ds.InstanceNumber = str(int(fatia)-1)
+            ds.SliceThickness = SliceThickness
+            ds.PixelSpacing = PixelSpacingX+"\\"+PixelSpacingY
+            ds.StudyID = "TESTEID"
+            ds.PatientName = "Teste"
+            ds.Rows = int(float(DimPixelX))
+            ds.Columns = int(float(DimPixelY))
+            ds.save_as(str(ListaArquivos[fatia]))
+            print("Ajustados FIXED de "+str(fatia))
         
         
-        scn.my_tool.path = IMGDir+"/GREY/FIXED/"
-        #scn.my_tool.path = DirDcmExp+"/"
-  
+            scn.my_tool.path = DirGrayDcm+"/FIXED/"
+
 
 class ExportaSeqTomo(bpy.types.Operator):
     """Tooltip"""
