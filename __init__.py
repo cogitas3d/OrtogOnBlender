@@ -309,7 +309,7 @@ def TomoHeliDef(self, context):
 
     bpy.context.scene.interesse_ossos = "200"
     bpy.context.scene.interesse_mole = "-300"
-    bpy.context.scene.interesse_dentes = "1760"
+    bpy.context.scene.interesse_dentes = "1430"
 
 class TomoHeli(bpy.types.Operator):
     """Tooltip"""
@@ -2000,7 +2000,7 @@ def register():
       (
         name = "Teeth Factor",
         description = "Fatos interesse dentes",
-        default = "1760"
+        default = "1430"
       )
     bpy.utils.register_class(GeraModelosTomo)
     bpy.utils.register_class(GeraModeloFoto)
