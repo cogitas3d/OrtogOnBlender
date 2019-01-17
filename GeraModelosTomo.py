@@ -24,7 +24,10 @@ def ReconTomo(pathdir, interes, saida, simplif):
     obj = context.object
     scn = context.scene
     
-    tmpdir = tempfile.gettempdir()
+#    tmpdir = tempfile.gettempdir()
+
+    tmpdir = tempfile.mkdtemp()
+
     tmpSTL = tmpdir+'/'+saida+'.stl'
 
     homeall = expanduser("~")
