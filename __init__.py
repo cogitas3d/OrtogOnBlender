@@ -810,15 +810,6 @@ class CriaAreasDeformacao(bpy.types.Operator):
         CriaAreasDeformacaoDef(self, context)
         return {'FINISHED'}
 
-class GeraModelosTomo(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.gera_modelos_tomo"
-    bl_label = "Prepara Impressao"
-    
-    def execute(self, context):
-        GeraModelosTomoDef(self, context)
-        return {'FINISHED'}
-
 class GeraModeloFoto(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.gera_modelo_foto"

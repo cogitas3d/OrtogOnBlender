@@ -73,14 +73,14 @@ def GeraModelosTomoDef(self, context):
     interesseMole = bpy.context.scene.interesse_mole
     interesseDentes = bpy.context.scene.interesse_dentes
 
-    ReconTomo(scn.my_tool.path, interesseOssos, 'ossos','0.90')
-    ReconTomo(scn.my_tool.path, interesseMole, 'mole','0.90')
-    ReconTomo(scn.my_tool.path, interesseDentes, 'dentes','0.90')
+    ReconTomo(scn.my_tool.path, interesseOssos, 'Bones','0.90')
+    ReconTomo(scn.my_tool.path, interesseMole, 'SoftTissue','0.90')
+    ReconTomo(scn.my_tool.path, interesseDentes, 'Teeth','0.90')
 
 
-    a = bpy.data.objects['Ossos']
-    b = bpy.data.objects['Mole']
-    c = bpy.data.objects['Dentes']
+    a = bpy.data.objects['Bones']
+    b = bpy.data.objects['SoftTissue']
+    c = bpy.data.objects['Teeth']
 
     bpy.ops.object.select_all(action='DESELECT')
     a.select = True
@@ -120,22 +120,29 @@ def GeraModelosTomoDef(self, context):
     bpy.ops.view3d.view_all(center=False)
 
     impMaterial = 'SCATTER_bone'
-    SelObj = 'Ossos'
+    SelObj = 'Bones'
     ImportaMaterial(impMaterial, SelObj)
 
     impMaterial = 'SCATTER_skin'
-    SelObj = 'Mole'
+    SelObj = 'SoftTissue'
     ImportaMaterial(impMaterial, SelObj)
 
     impMaterial = 'SCATTER_teeth'
-    SelObj = 'Dentes'
+    SelObj = 'Teeth'
     ImportaMaterial(impMaterial, SelObj)
-
 
     bpy.ops.object.select_all(action='DESELECT')
     a.select = True
     bpy.context.scene.objects.active = a
 
+class GeraModelosTomo(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_modelos_tomo"
+    bl_label = "Prepara Impressao"
+    
+    def execute(self, context):
+        GeraModelosTomoDef(self, context)
+        return {'FINISHED'}
 
 # CEFALOMETRIA
 
