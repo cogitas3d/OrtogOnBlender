@@ -16,6 +16,7 @@ if "bpy" in locals():
 #    imp.reload(GeraModelosTomo)
     print("Reloaded multifiles")
 else:
+    from .GeraRelatorio import *
     from .ImportaImgTomoSeq import *
     from .ImportaFatiasTomo import *
     from .AlinhaTresPontos import *
@@ -1628,6 +1629,12 @@ class CinematicaPanel(bpy.types.Panel):
         row = layout.row()
         row.operator("object.gera_deslocamento_todos", text="Generate Data Action", icon="FULLSCREEN_ENTER")
 
+        row = layout.row()
+        row.label(text="Spreadsheet:")
+
+        row = layout.row()
+        row.operator("object.gera_relatorio", text="GENERATE REPORT", icon="SHORTDISPLAY")
+
 # SPLINT
 
 class CriaSplintPanel(bpy.types.Panel):
@@ -1910,6 +1917,7 @@ class importaImgBotoes(bpy.types.Panel):
 
 
 def register():
+    bpy.utils.register_class(GeraRelatorio)
     bpy.utils.register_class(ImportaFatias)
     bpy.utils.register_class(ModalTimerOperator)
     bpy.utils.register_class(CriaTresPontosBtn)
@@ -2160,6 +2168,7 @@ def register():
 
 
 def unregister():
+    bpy.utils.unregister_class(GeraRelatorio)
     bpy.utils.unregister_class(ImportaFatias)
     bpy.utils.unregister_class(ModalTimerOperator)
     del bpy.types.Scene.medida_real2
