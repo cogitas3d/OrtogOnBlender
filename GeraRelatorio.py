@@ -195,6 +195,11 @@ def GeraRelatorioDef(self, context):
     if platform.system() == "Windows":
         abrir_diretorio(tmpdir)
         subprocess.Popen('cd "C:/Program Files/LibreOffice/program/" & dir & soffice.bin '+tmpdir+"/Report_OrtogOnBlender.xlsx", shell=True)
+        
+    if platform.system() == "Darwin":
+        abrir_diretorio(tmpdir)
+        subprocess.Popen('/Applications/LibreOffice.app/Contents/MacOS/soffice '+tmpdir+"/Report_OrtogOnBlender.xlsx", shell=True)    
+    
 
 		# APAGANDO
 
