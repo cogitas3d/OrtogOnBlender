@@ -3,12 +3,14 @@ import csv
 import tempfile
 import subprocess
 import openpyxl
+import platform
 from string import ascii_uppercase
 from openpyxl import Workbook
 from openpyxl.styles import Font, Fill
 from openpyxl.styles import Border, Side, PatternFill, Font, GradientFill, Alignment
 
 from .CalculaPontos import *
+from .AjustaTomo import *
 
 def DeslocamentoINIFIN(obj, obj1, obj2):
     objini = bpy.data.objects[obj1]
@@ -172,19 +174,6 @@ def GeraRelatorioDef(self, context):
         c.font = Font(bold=True, name="Calibri")
 
 
-
-
-    #my_cell = ws['B2']
-    #my_cell.value = "My Cell"
-    #thin = Side(border_style="thin", color="000000")
-    #double = Side(border_style="double", color="ff0000")
-
-    #border = Border(top=double, left=thin, right=thin, bottom=double)
-    #fill = PatternFill("solid", fgColor="DDDDDD")
-    #fill = GradientFill(stop=("000000", "FFFFFF"))
-    #font = Font(b=True, color="FF0000")
-    #al = Alignment(horizontal="center", vertical="center")
-
     ListaCor1 = ['A3','B3','C3','D3','A16','B16','C16','D16','A26','B26','C26','D26','A34','B34','C34','D34']
 
     for i in ListaCor1:
@@ -197,16 +186,17 @@ def GeraRelatorioDef(self, context):
         d = worksheet[i]
         d.fill = PatternFill("solid", fgColor="fff9ae")
 
-
     wb.save(newFile)
 
 
+    if platform.system() == "Linux":
+        subprocess.Popen("libreoffice "+tmpdir+"/Report_OrtogOnBlender.xlsx", shell=True)
 
-    subprocess.Popen("libreoffice "+tmpdir+"/Report_OrtogOnBlender.xlsx", shell=True)
+    if platform.system() == "Windows":
+        abrir_diretorio(tmpdir)
+        subprocess.Popen('cd "C:/Program Files/LibreOffice/program/" & dir & soffice.bin '+tmpdir+"/Report_OrtogOnBlender.xlsx", shell=True)
 
-
-    
-    # APAGANDO
+		# APAGANDO
 
     apagaObjeto('EMP11.INI')
     apagaObjeto('EMP11.FIN')
