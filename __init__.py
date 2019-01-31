@@ -16,6 +16,7 @@ if "bpy" in locals():
 #    imp.reload(GeraModelosTomo)
     print("Reloaded multifiles")
 else:
+    from .BooleanaOsteo import *
     from .GeraRelatorio import *
     from .ImportaImgTomoSeq import *
     from .ImportaFatiasTomo import *
@@ -939,7 +940,7 @@ class PainelAtualiza(bpy.types.Panel):
         obj = context.object 
 		
         row = layout.row()
-        row.label(text="VERSION: 20190114a")
+        row.label(text="VERSION: 20190131a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1358,8 +1359,9 @@ class Osteotomia(bpy.types.Panel):
         circle=row.operator("object.cria_espessura", text="Create Thickness", icon="MOD_SOLIDIFY")
                
         row = layout.row()
-        circle=row.operator("view3d.cork_mesh_slicer", text="Cut Boolean", icon="MOD_BOOLEAN")
-        circle.method='DIFF'
+        circle=row.operator("object.booleana_osteo", text="Cut Boolean", icon="MOD_BOOLEAN")
+#        circle=row.operator("view3d.cork_mesh_slicer", text="Cut Boolean", icon="MOD_BOOLEAN")
+#        circle.method='DIFF'
         
         # Não é necessário estar em Object Mode
         row = layout.row()
@@ -1663,8 +1665,9 @@ class CriaSplintPanel(bpy.types.Panel):
         row.operator("object.conf_splint", text="Prepare Boolean", icon="RECOVER_AUTO")
         
         row = layout.row()
-        circle=row.operator("view3d.cork_mesh_slicer", text="Boolean Cuts", icon="MOD_BOOLEAN")
-        circle.method='DIFF'    
+        circle=row.operator("object.booleana_osteo", text="Cut Boolean", icon="MOD_BOOLEAN")
+#        circle=row.operator("view3d.cork_mesh_slicer", text="Boolean Cuts", icon="MOD_BOOLEAN")
+#        circle.method='DIFF'    
 
 #        row = layout.row()
 #        circle=row.operator("object.convert", text="Aplica Deformação", icon="FILE_TICK").target='MESH'
@@ -1917,6 +1920,7 @@ class importaImgBotoes(bpy.types.Panel):
 
 
 def register():
+    bpy.utils.register_class(BooleanaOsteo)
     bpy.utils.register_class(GeraRelatorio)
     bpy.utils.register_class(ImportaFatias)
     bpy.utils.register_class(ModalTimerOperator)
@@ -2168,6 +2172,7 @@ def register():
 
 
 def unregister():
+    bpy.utils.unregister_class(BooleanaOsteo)
     bpy.utils.unregister_class(GeraRelatorio)
     bpy.utils.unregister_class(ImportaFatias)
     bpy.utils.unregister_class(ModalTimerOperator)
