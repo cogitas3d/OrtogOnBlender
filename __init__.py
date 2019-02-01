@@ -16,6 +16,7 @@ if "bpy" in locals():
 #    imp.reload(GeraModelosTomo)
     print("Reloaded multifiles")
 else:
+    from .ConfOsteotomiaAuto import *
     from .BooleanaOsteo import *
     from .GeraRelatorio import *
     from .ImportaImgTomoSeq import *
@@ -1372,6 +1373,12 @@ class Osteotomia(bpy.types.Panel):
         circle=row.operator("object.importa_armature", text="Setup Armature", icon="GROUP_BONE")        
 
         row = layout.row()        
+        row.label(text="Automatic Setup Pieces:")
+
+        row = layout.row()
+        row.operator("object.conf_osteo_auto", text="Setup Osteotomy Auto", icon="FILE_TICK")
+
+        row = layout.row()        
         row.label(text="Setup Pieces:")
 
         row = layout.row()
@@ -1920,6 +1927,7 @@ class importaImgBotoes(bpy.types.Panel):
 
 
 def register():
+    bpy.utils.register_class(ConfOsteotomiaAuto)
     bpy.utils.register_class(BooleanaOsteo)
     bpy.utils.register_class(GeraRelatorio)
     bpy.utils.register_class(ImportaFatias)
@@ -2172,6 +2180,7 @@ def register():
 
 
 def unregister():
+    bpy.utils.unregister_class(ConfOsteotomiaAuto)
     bpy.utils.unregister_class(BooleanaOsteo)
     bpy.utils.unregister_class(GeraRelatorio)
     bpy.utils.unregister_class(ImportaFatias)
