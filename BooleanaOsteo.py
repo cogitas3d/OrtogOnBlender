@@ -14,8 +14,8 @@ def BooleanaOsteoDef(self, context):
 
     objetos_selecionados = [ o for o in bpy.context.scene.objects if o.select ]
 
-    A = objetos_selecionados[0]
-    B = objetos_selecionados[1]
+    A = objetos_selecionados[1]
+    B = objetos_selecionados[0]
 
     # Cria objeto A
     bpy.ops.object.select_all(action='DESELECT')
@@ -41,19 +41,31 @@ def BooleanaOsteoDef(self, context):
 
     # Booleana
     if platform.system() == "Linux":
-        subprocess.call('~/Programs/OrtogOnBlender/Cork/./cork -isct '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
+        subprocess.call('~/Programs/OrtogOnBlender/Cork/./cork -diff '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
         bpy.ops.import_mesh.off(filepath=tmpdir+"/Result.off")
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
     if platform.system() == "Windows":
-        subprocess.call('C:\OrtogOnBlender\Cork\wincork.exe -isct '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
+        subprocess.call('C:\OrtogOnBlender\Cork\wincork.exe -diff '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
         bpy.ops.import_mesh.off(filepath=tmpdir+"/Result.off")
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
     if platform.system() == "Darwin":
-        subprocess.call('/OrtogOnBlender/Cork/./cork -isct '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
+        subprocess.call('/OrtogOnBlender/Cork/./cork -diff '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
         bpy.ops.import_mesh.off(filepath=tmpdir+"/Result.off")
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+
+
+    bpy.ops.mesh.separate(type='LOOSE')
+
+    objetos_selecionados = [ o for o in bpy.context.scene.objects if o.select ]
+
+    for i in objetos_selecionados:
+        bpy.ops.object.select_all(action='DESELECT')
+        i.select = True
+        bpy.context.scene.objects.active = i
+        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+
 
 class BooleanaOsteo(bpy.types.Operator):
     """Tooltip"""
