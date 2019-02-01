@@ -45,6 +45,16 @@ def BooleanaOsteoDef(self, context):
         bpy.ops.import_mesh.off(filepath=tmpdir+"/Result.off")
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
+    if platform.system() == "Windows":
+        subprocess.call('C:\OrtogOnBlender\Cork\wincork.exe -isct '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
+        bpy.ops.import_mesh.off(filepath=tmpdir+"/Result.off")
+        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+
+    if platform.system() == "Darwin":
+        subprocess.call('/OrtogOnBlender/Cork/./cork -isct '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
+        bpy.ops.import_mesh.off(filepath=tmpdir+"/Result.off")
+        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+
 class BooleanaOsteo(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.booleana_osteo"
