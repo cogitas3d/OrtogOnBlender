@@ -1550,6 +1550,16 @@ class PontosAnatomicos(bpy.types.Panel):
         row.operator("object.gonionl", text="Gonion Left", icon="X")
 
         row = layout.row()
+        row.label(text="Parent Anatomy Points:")
+
+        row = layout.row()
+        row.operator("object.testa_pontos", text="Check Poins", icon="SAVE_AS")
+
+        row = layout.row()
+        row.operator("object.parenteia_emp", text="Parent Points", icon="NODETREE")
+
+
+        row = layout.row()
         row.label(text="Cephalometry:")
 
         row = layout.row()
@@ -1927,6 +1937,8 @@ class importaImgBotoes(bpy.types.Panel):
 
 
 def register():
+    bpy.utils.register_class(testaPontos)
+    bpy.utils.register_class(ParenteiaEMP)
     bpy.utils.register_class(ConfOsteotomiaAuto)
     bpy.utils.register_class(BooleanaOsteo)
     bpy.utils.register_class(GeraRelatorio)
@@ -2180,6 +2192,8 @@ def register():
 
 
 def unregister():
+    bpy.utils.unregister_class(testaPontos)
+    bpy.utils.unregister_class(ParenteiaEMP)
     bpy.utils.unregister_class(ConfOsteotomiaAuto)
     bpy.utils.unregister_class(BooleanaOsteo)
     bpy.utils.unregister_class(GeraRelatorio)

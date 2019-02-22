@@ -1,4 +1,6 @@
 import bpy
+import bmesh
+from math import sqrt
 
 # PONTOS NOS DENTES SUPERIORES
 
@@ -12,7 +14,7 @@ def EMP11Def(self, context):
     bpy.context.object.name = "EMP11"
     bpy.context.object.empty_draw_size = 3
     
-    
+'''    
     a = bpy.data.objects['ma']
     b = bpy.data.objects['EMP11']
 
@@ -22,7 +24,7 @@ def EMP11Def(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
-    
+'''    
 
 def EMP21Def(self, context):
     
@@ -34,7 +36,7 @@ def EMP21Def(self, context):
     bpy.context.object.name = "EMP21"
     bpy.context.object.empty_draw_size = 3
     
-    
+'''    
     a = bpy.data.objects['ma']
     b = bpy.data.objects['EMP21']
 
@@ -44,7 +46,7 @@ def EMP21Def(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
-
+'''
 
 def EMP13Def(self, context):
     
@@ -56,7 +58,7 @@ def EMP13Def(self, context):
     bpy.context.object.name = "EMP13"
     bpy.context.object.empty_draw_size = 3
     
-    
+'''    
     a = bpy.data.objects['ma']
     b = bpy.data.objects['EMP13']
 
@@ -66,7 +68,7 @@ def EMP13Def(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
-
+'''
 
 def EMP23Def(self, context):
     
@@ -78,7 +80,7 @@ def EMP23Def(self, context):
     bpy.context.object.name = "EMP23"
     bpy.context.object.empty_draw_size = 3
     
-    
+'''    
     a = bpy.data.objects['ma']
     b = bpy.data.objects['EMP23']
 
@@ -88,7 +90,7 @@ def EMP23Def(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
-
+'''
 
 def EMP16Def(self, context):
     
@@ -100,7 +102,7 @@ def EMP16Def(self, context):
     bpy.context.object.name = "EMP16"
     bpy.context.object.empty_draw_size = 3
     
-    
+'''    
     a = bpy.data.objects['ma']
     b = bpy.data.objects['EMP16']
 
@@ -110,7 +112,7 @@ def EMP16Def(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
-
+'''
 
 def EMP26Def(self, context):
     
@@ -122,7 +124,7 @@ def EMP26Def(self, context):
     bpy.context.object.name = "EMP26"
     bpy.context.object.empty_draw_size = 3
     
-    
+'''    
     a = bpy.data.objects['ma']
     b = bpy.data.objects['EMP26']
 
@@ -132,7 +134,7 @@ def EMP26Def(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
-
+'''
 
 def EMPPalatineDef(self, context):
     context = bpy.context
@@ -143,6 +145,7 @@ def EMPPalatineDef(self, context):
     bpy.context.object.name = "EMPPalatine"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['ma']
     b = bpy.data.objects['EMPPalatine']
 
@@ -152,6 +155,7 @@ def EMPPalatineDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 def EMPUpperIncisorDef(self, context):
     context = bpy.context
@@ -162,6 +166,7 @@ def EMPUpperIncisorDef(self, context):
     bpy.context.object.name = "EMPApoint"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['ma']
     b = bpy.data.objects['EMPApoint']
 
@@ -171,6 +176,7 @@ def EMPUpperIncisorDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 def EMPNasalSpineDef(self, context):
     context = bpy.context
@@ -181,6 +187,7 @@ def EMPNasalSpineDef(self, context):
     bpy.context.object.name = "EMPNasalSpine"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['ma']
     b = bpy.data.objects['EMPNasalSpine']
 
@@ -190,6 +197,7 @@ def EMPNasalSpineDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 def EMPPterygoidLDef(self, context):
     context = bpy.context
@@ -200,6 +208,7 @@ def EMPPterygoidLDef(self, context):
     bpy.context.object.name = "EMPPterygoidL"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['ma']
     b = bpy.data.objects['EMPPterygoidL']
 
@@ -209,6 +218,7 @@ def EMPPterygoidLDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 def EMPPterygoidRDef(self, context):
     context = bpy.context
@@ -219,6 +229,7 @@ def EMPPterygoidRDef(self, context):
     bpy.context.object.name = "EMPPterygoidR"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['ma']
     b = bpy.data.objects['EMPPterygoidR']
 
@@ -228,6 +239,7 @@ def EMPPterygoidRDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 # PONTOS NOS DENTES INFERIORES
 
@@ -241,7 +253,7 @@ def EMP31Def(self, context):
     bpy.context.object.name = "EMP31"
     bpy.context.object.empty_draw_size = 3
     
-    
+'''    
     a = bpy.data.objects['cm']
     b = bpy.data.objects['EMP31']
 
@@ -251,7 +263,7 @@ def EMP31Def(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
-
+'''
 
 def EMP41Def(self, context):
     
@@ -263,7 +275,7 @@ def EMP41Def(self, context):
     bpy.context.object.name = "EMP41"
     bpy.context.object.empty_draw_size = 3
     
-    
+'''    
     a = bpy.data.objects['cm']
     b = bpy.data.objects['EMP41']
 
@@ -273,7 +285,7 @@ def EMP41Def(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
-
+'''
 
 def EMP33Def(self, context):
     
@@ -285,7 +297,7 @@ def EMP33Def(self, context):
     bpy.context.object.name = "EMP33"
     bpy.context.object.empty_draw_size = 3
     
-    
+'''    
     a = bpy.data.objects['cm']
     b = bpy.data.objects['EMP33']
 
@@ -295,7 +307,7 @@ def EMP33Def(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
-
+'''
 
 def EMP43Def(self, context):
     
@@ -307,7 +319,7 @@ def EMP43Def(self, context):
     bpy.context.object.name = "EMP43"
     bpy.context.object.empty_draw_size = 3
     
-    
+'''    
     a = bpy.data.objects['cm']
     b = bpy.data.objects['EMP43']
 
@@ -317,7 +329,7 @@ def EMP43Def(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
-
+'''
 
 def EMP36Def(self, context):
     
@@ -329,7 +341,7 @@ def EMP36Def(self, context):
     bpy.context.object.name = "EMP36"
     bpy.context.object.empty_draw_size = 3
     
-    
+'''    
     a = bpy.data.objects['cm']
     b = bpy.data.objects['EMP36']
 
@@ -339,7 +351,7 @@ def EMP36Def(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
-
+'''
 
 def EMP46Def(self, context):
     
@@ -351,7 +363,7 @@ def EMP46Def(self, context):
     bpy.context.object.name = "EMP46"
     bpy.context.object.empty_draw_size = 3
     
-    
+'''    
     a = bpy.data.objects['cm']
     b = bpy.data.objects['EMP46']
 
@@ -361,7 +373,7 @@ def EMP46Def(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
-
+'''
 
 def EMPBpointDef(self, context):
     context = bpy.context
@@ -372,6 +384,7 @@ def EMPBpointDef(self, context):
     bpy.context.object.name = "EMPBpoint"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['cm']
     b = bpy.data.objects['EMPBpoint']
 
@@ -381,6 +394,7 @@ def EMPBpointDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 # MENTO
 
@@ -393,6 +407,7 @@ def EMPPogonionDef(self, context):
     bpy.context.object.name = "EMPPogonion"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['me']
     b = bpy.data.objects['EMPPogonion']
 
@@ -402,6 +417,7 @@ def EMPPogonionDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 def EMPMentonDef(self, context):
     context = bpy.context
@@ -412,6 +428,7 @@ def EMPMentonDef(self, context):
     bpy.context.object.name = "EMPMenton"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['me']
     b = bpy.data.objects['EMPMenton']
 
@@ -421,6 +438,7 @@ def EMPMentonDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 def EMPMentonLDef(self, context):
     context = bpy.context
@@ -431,6 +449,7 @@ def EMPMentonLDef(self, context):
     bpy.context.object.name = "EMPMentonL"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['me']
     b = bpy.data.objects['EMPMentonL']
 
@@ -440,6 +459,7 @@ def EMPMentonLDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 def EMPMentonRDef(self, context):
     context = bpy.context
@@ -450,6 +470,7 @@ def EMPMentonRDef(self, context):
     bpy.context.object.name = "EMPMentonR"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['me']
     b = bpy.data.objects['EMPMentonR']
 
@@ -459,6 +480,7 @@ def EMPMentonRDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 def EMPLSpointDef(self, context):
     context = bpy.context
@@ -474,6 +496,7 @@ def EMPLSpointDef(self, context):
 
     bpy.ops.object.select_all(action='DESELECT')
 
+
     a = bpy.data.objects['FaceMalha.001']
     b = bpy.data.objects['EMPLSpoint']
 
@@ -486,6 +509,7 @@ def EMPLSpointDef(self, context):
     bpy.ops.object.vertex_parent_set()
 
     bpy.ops.object.editmode_toggle()
+
 
 def EMPPGpointDef(self, context):
     context = bpy.context
@@ -524,6 +548,7 @@ def EMPGonionRDef(self, context):
     bpy.context.object.name = "EMPGonionR"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['rd']
     b = bpy.data.objects['EMPGonionR']
 
@@ -533,6 +558,7 @@ def EMPGonionRDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 def EMPGonionLDef(self, context):
     context = bpy.context
@@ -543,6 +569,7 @@ def EMPGonionLDef(self, context):
     bpy.context.object.name = "EMPGonionL"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['re']
     b = bpy.data.objects['EMPGonionL']
 
@@ -552,6 +579,7 @@ def EMPGonionLDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 def EMPEyeRDef(self, context):
     context = bpy.context
@@ -562,6 +590,7 @@ def EMPEyeRDef(self, context):
     bpy.context.object.name = "EMPEyeR"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['ca']
     b = bpy.data.objects['EMPEyeR']
 
@@ -571,6 +600,7 @@ def EMPEyeRDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 def EMPEyeLDef(self, context):
     context = bpy.context
@@ -581,6 +611,7 @@ def EMPEyeLDef(self, context):
     bpy.context.object.name = "EMPEyeL"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['ca']
     b = bpy.data.objects['EMPEyeL']
 
@@ -590,6 +621,7 @@ def EMPEyeLDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 def EMPMeatusRDef(self, context):
     context = bpy.context
@@ -600,6 +632,7 @@ def EMPMeatusRDef(self, context):
     bpy.context.object.name = "EMPMeatusR"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['ca']
     b = bpy.data.objects['EMPMeatusR']
 
@@ -609,6 +642,7 @@ def EMPMeatusRDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 def EMPMeatusLDef(self, context):
     context = bpy.context
@@ -619,6 +653,7 @@ def EMPMeatusLDef(self, context):
     bpy.context.object.name = "EMPMeatusL"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['ca']
     b = bpy.data.objects['EMPMeatusL']
 
@@ -628,6 +663,7 @@ def EMPMeatusLDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 def EMPNasionDef(self, context):
     context = bpy.context
@@ -638,6 +674,7 @@ def EMPNasionDef(self, context):
     bpy.context.object.name = "EMPNasion"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['ca']
     b = bpy.data.objects['EMPNasion']
 
@@ -647,6 +684,7 @@ def EMPNasionDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 def EMPApointDef(self, context):
     context = bpy.context
@@ -657,6 +695,7 @@ def EMPApointDef(self, context):
     bpy.context.object.name = "EMPApoint"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['ma']
     b = bpy.data.objects['EMPApoint']
 
@@ -666,6 +705,7 @@ def EMPApointDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+'''
 
 def EMPSellaTurcicaDef(self, context):
     context = bpy.context
@@ -676,6 +716,7 @@ def EMPSellaTurcicaDef(self, context):
     bpy.context.object.name = "EMPSellaTurcica"
     bpy.context.object.empty_draw_size = 3
 
+'''
     a = bpy.data.objects['ca']
     b = bpy.data.objects['EMPSellaTurcica']
 
@@ -685,7 +726,7 @@ def EMPSellaTurcicaDef(self, context):
     bpy.context.scene.objects.active = a
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
-
+'''
 
 # PONTOS NOS DENTES SUPERIORES
 
@@ -999,4 +1040,154 @@ class EMPSellaTurcica(bpy.types.Operator):
     
     def execute(self, context):
         EMPSellaTurcicaDef(self, context)
+        return {'FINISHED'}
+
+# Funcao parenteia pontos
+ 
+def ParenteiaPonto(ponto):
+
+    listaDist = []
+
+    osteotomias = [bpy.data.objects["ca"], bpy.data.objects["ma"], bpy.data.objects["cm"], bpy.data.objects["me"], bpy.data.objects["rd"], bpy.data.objects["re"]]
+
+#    for item in bpy.data.objects:
+    for item in osteotomias:
+#        if item.hide == False and item.type == 'MESH':
+
+            obj = bpy.data.objects[item.name]
+            # print("OBJETO ATUAL", obj)
+
+            # Lista os vértices do objeto
+            if obj.mode == 'EDIT':
+                bm = bmesh.from_edit_mesh(obj.data)
+                vertices = bm.verts
+
+            else:
+                vertices = obj.data.vertices
+
+            # Todos os vértices por vetor
+            verts = [obj.matrix_world * vert.co for vert in vertices] 
+
+            # Captura vetor do objeto
+
+            referencia = bpy.data.objects[ponto].location
+
+
+
+            # Calcula distância pontos
+
+            def DistanciaObjs(obj1, obj2):
+
+                objA = bpy.data.objects[obj1].location
+                objB = obj2
+                
+                distancia = sqrt( (objB[0] - objA[0])**2 + (objB[1] - objA[1])**2 + (objB[2] - objA[2])**2 )
+                
+                return distancia
+                
+
+
+            for i in range(len(verts)):
+
+                vertAtual = verts[i]
+
+                distanciaVert = DistanciaObjs(ponto, vertAtual)
+
+                listaDist.append([distanciaVert, obj.name])
+                
+                
+
+    listaFin = sorted(listaDist)
+    print("MAIS PRÓXIMO!", listaFin[0])
+
+    bpy.ops.object.select_all(action='DESELECT')
+    ObjPai = bpy.data.objects[listaFin[0][1]]
+    ObjFilho = bpy.data.objects[ponto]
+    ObjPai.select = True
+    ObjFilho.select = True
+    bpy.context.scene.objects.active = ObjPai
+    bpy.ops.object.parent_set()
+    bpy.ops.object.select_all(action='DESELECT')
+
+def testaPontosDef(self, context):
+		def ERROPonto(self, context):
+			self.layout.label("Doesn't have the point above!")
+			
+		def OKPonto(self, context):
+			self.layout.label("All points OK!!!")
+
+		def TestaPontos(ponto):
+			try:
+				ob_act = bpy.data.objects[ponto]
+			except:
+				bpy.context.window_manager.popup_menu(ERROPonto, title="--> "+ponto+" <--", icon='INFO')
+	
+
+		pontosAnat = ["EMP11", "EMP21","EMP13","EMP23","EMP16","EMP26","EMPPalatine","EMPApoint","EMPNasalSpine","EMPPterygoidR","EMPPterygoidL","EMP31","EMP41","EMP33","EMP43","EMP36","EMP46","EMPBpoint","EMPPogonion","EMPMenton","EMPMentonR","EMPMentonL","EMPNasion","EMPEyeR","EMPEyeL","EMPMeatusR","EMPMeatusL","EMPSellaTurcica","EMPGonionR","EMPGonionL", "EMPLSpoint", "EMPPGpoint" ]
+
+		for i in pontosAnat:
+			TestaPontos(i)
+		bpy.context.window_manager.popup_menu(OKPonto, title="Great!", icon='INFO')
+		
+
+class testaPontos(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.testa_pontos"
+    bl_label = "TestaPontos"
+    
+    def execute(self, context):
+        testaPontosDef(self, context)
+        return {'FINISHED'}
+
+    
+def ParenteiaEMPDef(self, context):
+
+	# Maxilla
+	ParenteiaPonto("EMP11")
+	ParenteiaPonto("EMP21")
+	ParenteiaPonto("EMP13")
+	ParenteiaPonto("EMP23")
+	ParenteiaPonto("EMP16")
+	ParenteiaPonto("EMP26")
+	ParenteiaPonto("EMPPalatine")
+	ParenteiaPonto("EMPApoint")
+	ParenteiaPonto("EMPNasalSpine")
+	ParenteiaPonto("EMPPterygoidR")
+	ParenteiaPonto("EMPPterygoidL")
+
+		# Mandible body
+	ParenteiaPonto("EMP31")
+	ParenteiaPonto("EMP41")
+	ParenteiaPonto("EMP33")
+	ParenteiaPonto("EMP43")
+	ParenteiaPonto("EMP36")
+	ParenteiaPonto("EMP46")
+	ParenteiaPonto("EMPBpoint")
+
+		# Chin
+	ParenteiaPonto("EMPPogonion")
+	ParenteiaPonto("EMPMenton")
+	ParenteiaPonto("EMPMentonR")
+	ParenteiaPonto("EMPMentonL")
+
+		# Soft Tissue
+
+		# Others
+	ParenteiaPonto("EMPNasion")
+	ParenteiaPonto("EMPEyeR")
+	ParenteiaPonto("EMPEyeL")
+	ParenteiaPonto("EMPMeatusR")
+	ParenteiaPonto("EMPMeatusL")
+	ParenteiaPonto("EMPSellaTurcica")
+	ParenteiaPonto("EMPGonionR")
+	ParenteiaPonto("EMPGonionL")
+
+	
+class ParenteiaEMP(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.parenteia_emp"
+    bl_label = "ParenteiaEMP"
+    
+    def execute(self, context):
+        ParenteiaEMPDef(self, context)
         return {'FINISHED'}
