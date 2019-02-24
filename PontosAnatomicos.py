@@ -488,6 +488,10 @@ def EMPLSpointDef(self, context):
     scn = context.scene
 
 
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPLSpoint"
+    bpy.context.object.empty_draw_size = 3
+'''
     bpy.ops.view3d.snap_cursor_to_selected()
     bpy.ops.object.editmode_toggle()
     bpy.ops.object.empty_add(type='PLAIN_AXES')
@@ -509,14 +513,18 @@ def EMPLSpointDef(self, context):
     bpy.ops.object.vertex_parent_set()
 
     bpy.ops.object.editmode_toggle()
-
+'''
 
 def EMPPGpointDef(self, context):
     context = bpy.context
     obj = context.active_object
     scn = context.scene
 
+    bpy.ops.object.empty_add(type='PLAIN_AXES')
+    bpy.context.object.name = "EMPPGpoint"
+    bpy.context.object.empty_draw_size = 3
 
+'''
     bpy.ops.view3d.snap_cursor_to_selected()
     bpy.ops.object.editmode_toggle()
     bpy.ops.object.empty_add(type='PLAIN_AXES')
@@ -537,7 +545,7 @@ def EMPPGpointDef(self, context):
     bpy.ops.object.vertex_parent_set()
 
     bpy.ops.object.editmode_toggle()
-
+'''
 
 def EMPGonionRDef(self, context):
     context = bpy.context
@@ -1111,7 +1119,7 @@ def ParenteiaPonto(ponto):
 
 def testaPontosDef(self, context):
 		def ERROPonto(self, context):
-			self.layout.label("Doesn't have the point above!")
+			self.layout.label("Doesn't have the object above!")
 			
 		def OKPonto(self, context):
 			self.layout.label("All points OK!!!")
@@ -1123,12 +1131,86 @@ def testaPontosDef(self, context):
 				bpy.context.window_manager.popup_menu(ERROPonto, title="--> "+ponto+" <--", icon='INFO')
 	
 
-		pontosAnat = ["EMP11", "EMP21","EMP13","EMP23","EMP16","EMP26","EMPPalatine","EMPApoint","EMPNasalSpine","EMPPterygoidR","EMPPterygoidL","EMP31","EMP41","EMP33","EMP43","EMP36","EMP46","EMPBpoint","EMPPogonion","EMPMenton","EMPMentonR","EMPMentonL","EMPNasion","EMPEyeR","EMPEyeL","EMPMeatusR","EMPMeatusL","EMPSellaTurcica","EMPGonionR","EMPGonionL", "EMPLSpoint", "EMPPGpoint" ]
+		pontosAnat = ["EMP11", "EMP21","EMP13","EMP23","EMP16","EMP26","EMPPalatine","EMPApoint","EMPNasalSpine","EMPPterygoidR","EMPPterygoidL","EMP31","EMP41","EMP33","EMP43","EMP36","EMP46","EMPBpoint","EMPPogonion","EMPMenton","EMPMentonR","EMPMentonL","EMPNasion","EMPEyeR","EMPEyeL","EMPMeatusR","EMPMeatusL","EMPSellaTurcica","EMPGonionR","EMPGonionL", "EMPLSpoint", "EMPPGpoint","FaceMalha.001" ]
 
 		for i in pontosAnat:
 			TestaPontos(i)
-		bpy.context.window_manager.popup_menu(OKPonto, title="Great!", icon='INFO')
+		#bpy.context.window_manager.popup_menu(OKPonto, title="Great!", icon='INFO')
 		
+# PARENTEIA PONTO MOLE
+
+def ParenteiaPontoMole(ponto):
+
+    listaDist = []
+
+    obj = bpy.data.objects["FaceMalha.001"]
+            # print("OBJETO ATUAL", obj)
+
+            # Lista os vértices do objeto
+    if obj.mode == 'EDIT':
+        bm = bmesh.from_edit_mesh(obj.data)
+        vertices = bm.verts
+
+    else:
+        vertices = obj.data.vertices
+
+            # Todos os vértices por vetor
+    verts = [obj.matrix_world * vert.co for vert in vertices] 
+
+            # Captura vetor do objeto
+
+    referencia = bpy.data.objects[ponto].location
+    
+            # Calcula distância pontos
+
+    def DistanciaObjs(obj1, obj2):
+        objA = bpy.data.objects[obj1].location
+        objB = obj2
+                
+        distancia = sqrt( (objB[0] - objA[0])**2 + (objB[1] - objA[1])**2 + (objB[2] - objA[2])**2 )
+                
+        return distancia
+                
+
+    for i in range(len(verts)):
+
+        vertAtual = verts[i]
+            
+        distanciaVert = DistanciaObjs(ponto, vertAtual)
+
+        listaDist.append([distanciaVert, i])
+                
+                
+
+    listaFin = sorted(listaDist)
+    print("MAIS PRÓXIMO!", listaFin[0])
+    
+
+
+    bpy.ops.object.select_all(action='DESELECT')
+    obj.select = True
+    bpy.context.scene.objects.active = obj
+
+    bpy.ops.object.mode_set(mode = 'EDIT') 
+    bpy.ops.mesh.select_mode(type="VERT")
+    bpy.ops.mesh.select_all(action = 'DESELECT')
+    bpy.ops.object.mode_set(mode = 'OBJECT')
+    obj.data.vertices[listaFin[0][1]].select = True
+    bpy.ops.object.mode_set(mode = 'EDIT')
+    
+    bpy.ops.object.mode_set(mode = 'OBJECT')            
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    b = bpy.data.objects[ponto]
+
+    obj.select = True
+    b.select = True
+    bpy.context.scene.objects.active = obj
+
+    bpy.ops.object.editmode_toggle()
+    bpy.ops.object.vertex_parent_set()
+    bpy.ops.object.editmode_toggle()  
 
 class testaPontos(bpy.types.Operator):
     """Tooltip"""
@@ -1171,6 +1253,9 @@ def ParenteiaEMPDef(self, context):
 	ParenteiaPonto("EMPMentonL")
 
 		# Soft Tissue
+
+	ParenteiaPontoMole("EMPLSpoint")
+	ParenteiaPontoMole("EMPPGpoint")
 
 		# Others
 	ParenteiaPonto("EMPNasion")

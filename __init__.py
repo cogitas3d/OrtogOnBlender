@@ -941,7 +941,7 @@ class PainelAtualiza(bpy.types.Panel):
         obj = context.object 
 		
         row = layout.row()
-        row.label(text="VERSION: 20190222a")
+        row.label(text="VERSION: 20190223a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1517,10 +1517,10 @@ class PontosAnatomicos(bpy.types.Panel):
         row.label(text="Soft Tissue:")
 
         row = layout.row()
-        row.operator("object.lspoint", text="Ls Point (Edit)", icon="X")
+        row.operator("object.lspoint", text="Ls Point", icon="X")
 
         row = layout.row()
-        row.operator("object.pgpoint", text="Pg Point (Edit)", icon="X")
+        row.operator("object.pgpoint", text="Pg Point", icon="X")
 
         row = layout.row()
         row.label(text="Others:")
@@ -1553,7 +1553,7 @@ class PontosAnatomicos(bpy.types.Panel):
         row.label(text="Parent Anatomy Points:")
 
         row = layout.row()
-        row.operator("object.testa_pontos", text="Check Poins", icon="SAVE_AS")
+        row.operator("object.testa_pontos", text="Check Objects", icon="SAVE_AS")
 
         row = layout.row()
         row.operator("object.parenteia_emp", text="Parent Points", icon="NODETREE")
