@@ -941,7 +941,7 @@ class PainelAtualiza(bpy.types.Panel):
         obj = context.object 
 		
         row = layout.row()
-        row.label(text="VERSION: 20190223a")
+        row.label(text="VERSION: 20190225a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1056,6 +1056,32 @@ class ImportaTomo(bpy.types.Panel):
 
         row = layout.row()
         
+        row = layout.row()
+        row.operator("object.segmenta_linked", icon='OUTLINER_DATA_CURVE', text="Separate Linked")
+
+        row = layout.row()
+        row.operator("object.liber_weight_1", text="Weight Paint 1", icon="COLOR_RED")
+
+        row = layout.row()
+        row.operator("object.liber_weight_0", text="Weight Paint 0", icon="COLOR_BLUE")
+
+        row = layout.row()
+
+        row = layout.row()
+        linha=row.operator("object.mantem_pintado", text="Delete Blue", icon="COLORSET_04_VEC")
+
+        row = layout.row()
+        linha=row.operator("object.apaga_pintado", text="Delete Red", icon="COLORSET_01_VEC")
+
+
+        row = layout.row()
+        linha=row.operator("object.booleana_mandib", text="Separate Skull-Mandible", icon="FULLSCREEN_ENTER")
+
+
+	# Boolean separa
+
+        row = layout.row()
+
         row = layout.row()
         row.operator("gpencil.draw", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
 
@@ -1937,6 +1963,10 @@ class importaImgBotoes(bpy.types.Panel):
 
 
 def register():
+    bpy.utils.register_class(BooleanaMand)
+    bpy.utils.register_class(MantemPintado)
+    bpy.utils.register_class(ApagaPintado)
+    bpy.utils.register_class(SegmentaLinked)
     bpy.utils.register_class(testaPontos)
     bpy.utils.register_class(ParenteiaEMP)
     bpy.utils.register_class(ConfOsteotomiaAuto)
@@ -2192,6 +2222,10 @@ def register():
 
 
 def unregister():
+    bpy.utils.unregister_class(BooleanaMand)
+    bpy.utils.unregister_class(MantemPintado)
+    bpy.utils.unregister_class(ApagaPintado)
+    bpy.utils.unregister_class(SegmentaLinked)
     bpy.utils.unregister_class(testaPontos)
     bpy.utils.unregister_class(ParenteiaEMP)
     bpy.utils.unregister_class(ConfOsteotomiaAuto)
