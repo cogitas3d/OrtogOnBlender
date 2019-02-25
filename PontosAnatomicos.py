@@ -1276,3 +1276,180 @@ class ParenteiaEMP(bpy.types.Operator):
     def execute(self, context):
         ParenteiaEMPDef(self, context)
         return {'FINISHED'}
+
+# Separa lincados
+
+def SegmentaLinkedDef(self, context):
+
+    listaDist = []
+
+    ponto = bpy.context.scene.cursor_location
+
+    obj = bpy.context.scene.objects.active
+    
+    # Duplica objeto
+    bpy.ops.object.duplicate()
+    
+    # Joga outro layer
+    bpy.ops.object.move_to_layer(layers=(False, False, False, False, False, False, False, False, False, True, False, False, False, False, False, False, False, False, False, False))
+
+    bpy.ops.object.select_all(action='DESELECT')
+    obj.select = True
+    bpy.context.scene.objects.active = obj
+
+            # Lista os vértices do objeto
+    if obj.mode == 'EDIT':
+        bm = bmesh.from_edit_mesh(obj.data)
+        vertices = bm.verts
+
+    else:
+        vertices = obj.data.vertices
+
+            # Todos os vértices por vetor
+    verts = [obj.matrix_world * vert.co for vert in vertices] 
+
+            # Captura vetor do objeto
+
+    referencia = bpy.context.scene.cursor_location
+    
+            # Calcula distância pontos
+
+    def DistanciaObjs(obj1, obj2):
+        objA = referencia
+        objB = obj2
+                
+        distancia = sqrt( (objB[0] - objA[0])**2 + (objB[1] - objA[1])**2 + (objB[2] - objA[2])**2 )
+                
+        return distancia
+                
+
+    for i in range(len(verts)):
+
+        vertAtual = verts[i]
+            
+        distanciaVert = DistanciaObjs(ponto, vertAtual)
+
+        listaDist.append([distanciaVert, i])
+                
+                
+
+    listaFin = sorted(listaDist)
+    print("MAIS PRÓXIMO!", listaFin[0])
+    
+
+
+    bpy.ops.object.select_all(action='DESELECT')
+    obj.select = True
+    bpy.context.scene.objects.active = obj
+
+    bpy.ops.object.mode_set(mode = 'EDIT') 
+    bpy.ops.mesh.select_mode(type="VERT")
+    bpy.ops.mesh.select_all(action = 'DESELECT')
+    bpy.ops.object.mode_set(mode = 'OBJECT')
+    obj.data.vertices[listaFin[0][1]].select = True
+    bpy.ops.object.mode_set(mode = 'EDIT')
+    
+    bpy.ops.mesh.select_linked()
+    
+    bpy.ops.mesh.select_all(action='INVERT')
+
+    bpy.ops.mesh.delete(type='VERT')
+
+    bpy.ops.object.mode_set(mode = 'OBJECT')
+
+
+class SegmentaLinked(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.segmenta_linked"
+    bl_label = "SegmentaLinked"
+    
+    def execute(self, context):
+        SegmentaLinkedDef(self, context)
+        return {'FINISHED'}
+
+
+# Segmentação por pintura - Apaga Azul
+
+def MantemPintadoDef(self, context):
+    bpy.ops.object.mode_set(mode = 'OBJECT')
+
+    bpy.context.object.name = "ObjSplint"
+
+    # Seleciona área interesse
+
+    # Which group to find?
+    groupName = 'Group'
+
+    # Use the active object
+    obj = bpy.context.active_object
+
+    # Make sure you're in edit mode
+    bpy.ops.object.mode_set(mode='EDIT')
+
+    # Deselect all verts
+    bpy.ops.mesh.select_all(action='DESELECT')
+
+    # Make sure the active group is the one we want
+    bpy.ops.object.vertex_group_set_active(group=groupName)
+
+    # Select the verts
+    bpy.ops.object.vertex_group_select()
+
+
+    bpy.ops.object.vertex_group_assign()
+    bpy.ops.mesh.select_all(action='INVERT')
+
+    bpy.ops.mesh.delete(type='VERT')
+    bpy.ops.object.mode_set(mode = 'OBJECT')
+
+class MantemPintado(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.mantem_pintado"
+    bl_label = "MantemPintado"
+    
+    def execute(self, context):
+        MantemPintadoDef(self, context)
+        return {'FINISHED'}
+
+# Segmentação por pintura - Apaga Vermelho
+
+def ApagaPintadoDef(self, context):
+    bpy.ops.object.mode_set(mode = 'OBJECT')
+
+    bpy.context.object.name = "ObjSplint"
+
+    # Seleciona área interesse
+
+    # Which group to find?
+    groupName = 'Group'
+
+    # Use the active object
+    obj = bpy.context.active_object
+
+    # Make sure you're in edit mode
+    bpy.ops.object.mode_set(mode='EDIT')
+
+    # Deselect all verts
+    bpy.ops.mesh.select_all(action='DESELECT')
+
+    # Make sure the active group is the one we want
+    bpy.ops.object.vertex_group_set_active(group=groupName)
+
+    # Select the verts
+    bpy.ops.object.vertex_group_select()
+
+
+    bpy.ops.object.vertex_group_assign()
+#    bpy.ops.mesh.select_all(action='INVERT')
+
+    bpy.ops.mesh.delete(type='VERT')
+    bpy.ops.object.mode_set(mode = 'OBJECT')
+
+class ApagaPintado(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.apaga_pintado"
+    bl_label = "ApagaPintado"
+    
+    def execute(self, context):
+        ApagaPintadoDef(self, context)
+        return {'FINISHED'}
