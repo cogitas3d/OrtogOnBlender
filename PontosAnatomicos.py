@@ -738,161 +738,360 @@ def EMPSellaTurcicaDef(self, context):
 
 # PONTOS NOS DENTES SUPERIORES
 
+# Dente 11
 class EMP11(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp11"
     bl_label = "EMP11"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMP11' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
     
     def execute(self, context):
         EMP11Def(self, context)
         return {'FINISHED'}
 
-  
+# Dente 21  
 class EMP21(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp21"
     bl_label = "EMP21"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMP21' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMP21Def(self, context)
         return {'FINISHED'}
     
-   
+
+# Dente 13   
 class EMP13(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp13"
     bl_label = "EMP1"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMP13' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMP13Def(self, context)
         return {'FINISHED'}
     
- 
+# Dente 23 
 class EMP23(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp23"
     bl_label = "EMP23"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMP23' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMP23Def(self, context)
         return {'FINISHED'}
     
-
+# Dente 16
 class EMP16(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp16"
     bl_label = "EMP16"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMP16' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMP16Def(self, context)
         return {'FINISHED'}
     
-   
+# Dente 26   
 class EMP26(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp26"
     bl_label = "EMP26"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMP26' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMP26Def(self, context)
         return {'FINISHED'}
 
-
+# Terigoide L
 class EMPPterygoidL(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.pterygoidl"
     bl_label = "EMPPterygoidL"
 
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPPterygoidL' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
     def execute(self, context):
         EMPPterygoidLDef(self, context)
         return {'FINISHED'}
 
+# Perigoide R
 class EMPPterygoidR(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.pterygoidr"
     bl_label = "EMPPterygoidR"
 
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPPterygoidR' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
     def execute(self, context):
         EMPPterygoidRDef(self, context)
         return {'FINISHED'}
 
+# Palatina
 class EMPPalatine(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.palatine"
     bl_label = "EMPPalatine"
 
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPPalatine' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
     def execute(self, context):
         EMPPalatineDef(self, context)
         return {'FINISHED'}
 
-
+# Incisivo Superior
 class EMPUpperIncisor(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.upperincisor"
     bl_label = "EMPUpperIncisor"
 
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPUpperIncisor' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
     def execute(self, context):
         EMPUpperIncisorDef(self, context)
         return {'FINISHED'}
 
+# Espinha Nasal
 class EMPNasalSpine(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.nasalspine"
     bl_label = "EMPNasalSpine"
 
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPNasalSpine' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
     def execute(self, context):
         EMPNasalSpineDef(self, context)
         return {'FINISHED'}
 
+# Pogonion
 class EMPPogonion(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.pogonion"
     bl_label = "EMPPogonion"
 
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPPogonion' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
     def execute(self, context):
         EMPPogonionDef(self, context)
         return {'FINISHED'}
 
+# Mento
 class EMPMenton(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.menton"
     bl_label = "EMPMenton"
 
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPMenton' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
     def execute(self, context):
         EMPMentonDef(self, context)
         return {'FINISHED'}
 
+# Mento L
 class EMPMentonL(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.mentonl"
     bl_label = "EMPMentonL"
 
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPMentonL' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
     def execute(self, context):
         EMPMentonLDef(self, context)
         return {'FINISHED'}
 
+# Mento R
 class EMPMentonR(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.mentonr"
     bl_label = "EMPMentonR"
 
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPMentonR' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
     def execute(self, context):
         EMPMentonRDef(self, context)
         return {'FINISHED'}
 
+# Meato R
 class EMPMeatusR(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.meatusr"
     bl_label = "EMPMeatusR"
 
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPMeatusR' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
     def execute(self, context):
         EMPMeatusRDef(self, context)
         return {'FINISHED'}
 
+#Meato L
 class EMPMeatusL(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.meatusl"
     bl_label = "EMPMeatusL"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPMeatusL' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
 
     def execute(self, context):
         EMPMeatusLDef(self, context)
@@ -900,68 +1099,148 @@ class EMPMeatusL(bpy.types.Operator):
 
 # PONTOS NOS DENTES INFERIORES
 
+# Dente 31
 class EMP31(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp31"
     bl_label = "EMP31"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMP31' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMP31Def(self, context)
         return {'FINISHED'}
 
-
+# Dente 41
 class EMP41(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp41"
     bl_label = "EMP41"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMP41' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMP41Def(self, context)
         return {'FINISHED'}
-    
+
+# Dente 33    
 class EMP33(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp33"
     bl_label = "EMP33"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMP33' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMP33Def(self, context)
         return {'FINISHED'}
-    
+
+# Dente 43    
 class EMP43(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp43"
     bl_label = "EMP43"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMP43' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMP43Def(self, context)
         return {'FINISHED'}
     
-
+# Dente 36
 class EMP36(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp36"
     bl_label = "EMP36"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMP36' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMP36Def(self, context)
         return {'FINISHED'}
     
-
+# Dente 46
 class EMP46(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp46"
     bl_label = "EMP46"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMP46' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMP46Def(self, context)
         return {'FINISHED'}
 
-
+# Ponto B
 class EMPBpoint(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.bpoint"
     bl_label = "EMPBpoint"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPBpoint' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
 
     def execute(self, context):
         EMPBpointDef(self, context)
@@ -969,82 +1248,191 @@ class EMPBpoint(bpy.types.Operator):
 
 # EMPTIES MOLES
 
+
+# Ponto LS
 class EMPLSpoint(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.lspoint"
     bl_label = "EMPLSpoint"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPLSpoint' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMPLSpointDef(self, context)
         return {'FINISHED'}
 
+# Ponto PG
 class EMPPGpoint(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.pgpoint"
     bl_label = "EMPPGpoint"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPPGpoint' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMPPGpointDef(self, context)
         return {'FINISHED'}
 
+# Gonio R
 class EMPGonionR(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.gonionr"
     bl_label = "EMPGonionR"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPGonionR' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMPGonionRDef(self, context)
         return {'FINISHED'}
 
+# Gonio L
 class EMPGonionL(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.gonionl"
     bl_label = "EMPGonionL"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPGonionL' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMPGonionLDef(self, context)
         return {'FINISHED'}
 
+# Olho R
 class EMPEyeR(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.eyer"
     bl_label = "EMPEyeR"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPEyeR' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMPEyeRDef(self, context)
         return {'FINISHED'}
 
+# Olho L
 class EMPEyeL(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.eyel"
     bl_label = "EMPEyeL"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPEyeL' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMPEyeLDef(self, context)
         return {'FINISHED'}
 
+# Nasio
 class EMPNasion(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.nasion"
     bl_label = "EMPNasion"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPNasion' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMPNasionDef(self, context)
         return {'FINISHED'}
 
+# Ponto A
 class EMPApoint(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.apoint"
     bl_label = "EMPApoint"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPApoint' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMPApointDef(self, context)
         return {'FINISHED'}
 
+# Sela Turcica
 class EMPSellaTurcica(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.sella"
-    bl_label = "SellaTurcica"
+    bl_label = "EMPSellaTurcica"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'EMPSellaTurcica' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
     
     def execute(self, context):
         EMPSellaTurcicaDef(self, context)

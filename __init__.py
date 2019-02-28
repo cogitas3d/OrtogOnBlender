@@ -460,38 +460,7 @@ class AnimaLocRot(bpy.types.Operator):
         return {'FINISHED'}
 
 #-------------------------------------
-
-
-class AlinhaRosto(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.alinha_rosto"
-    bl_label = "Prepara Impressao"
-    
-    def execute(self, context):
-        AlinhaRostoDef(self, context)
-        return {'FINISHED'}
-
-class MedidaReal(bpy.types.Panel):
-    
-    bl_idname = "ActiveObject"
-    bl_label = "Object Info ..."
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'TOOLS'
-    bl_category = "Ortog"
-
-    def draw(self, context) :
-        col = self.layout.column(align = True)
-        col.prop(context.scene, "medida_real")        
-
-class AlinhaRosto2(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.alinha_rosto2"
-    bl_label = "Prepara Impressao"
-    
-    def execute(self, context):
-        AlinhaRostoDef2(self, context)
-        return {'FINISHED'}        
-
+  
 
 def PreparaImpressaoDef(self, context):
     
@@ -941,7 +910,7 @@ class PainelAtualiza(bpy.types.Panel):
         obj = context.object 
 		
         row = layout.row()
-        row.label(text="VERSION: 20190225a")
+        row.label(text="VERSION: 20190228a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")

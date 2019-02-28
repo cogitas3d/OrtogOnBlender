@@ -83,7 +83,52 @@ def AlinhaRostoDef(self, context):
             
         #    except RuntimeError:
         #        bpy.context.window_manager.popup_menu(ERROruntimePontosDef, title="Atenção!", icon='INFO')    
+
+
+class AlinhaRosto(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.alinha_rosto"
+    bl_label = "Prepara Impressao"
+
+    @classmethod
+    def poll(cls, context):
+        o = context.object
+        if o is None:
+            return False
+        else:
+            if o.type == "MESH":
+                if bpy.context.mode == 'EDIT_MESH':
+                    return True
+                else:
+                    return False
+            else:
+                return False
+
     
+    def execute(self, context):
+        AlinhaRostoDef(self, context)
+        return {'FINISHED'}
+
+class MedidaReal(bpy.types.Panel):
+    
+    bl_idname = "ActiveObject"
+    bl_label = "Object Info ..."
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
+    bl_category = "Ortog"
+
+    def draw(self, context) :
+        col = self.layout.column(align = True)
+        col.prop(context.scene, "medida_real")  
+    
+class AlinhaRosto2(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.alinha_rosto2"
+    bl_label = "Prepara Impressao"
+    
+    def execute(self, context):
+        AlinhaRostoDef2(self, context)
+        return {'FINISHED'} 
 
 # FATOR DE ESCALA
 
