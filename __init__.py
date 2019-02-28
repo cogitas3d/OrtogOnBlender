@@ -910,7 +910,7 @@ class PainelAtualiza(bpy.types.Panel):
         obj = context.object 
 		
         row = layout.row()
-        row.label(text="VERSION: 20190228a")
+        row.label(text="VERSION: 20190228b")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1327,10 +1327,57 @@ class Osteotomia(bpy.types.Panel):
     bl_category = "Ortog"
 
     def draw(self, context):
+
         layout = self.layout
         
         obj = context.object
-       
+
+# Botões desenhar corte
+
+        row = layout.row()
+        row.label(text="Draw Osteotomy:")
+
+        if context.space_data.type == 'VIEW_3D':
+                propname = "gpencil_stroke_placement_view3d"
+        elif context.space_data.type == 'SEQUENCE_EDITOR':
+                propname = "gpencil_stroke_placement_sequencer_preview"
+        elif context.space_data.type == 'IMAGE_EDITOR':
+                propname = "gpencil_stroke_placement_image_editor"
+        else:
+                propname = "gpencil_stroke_placement_view2d"
+
+        ts = context.tool_settings
+
+        col = layout.column(align=True)
+
+        col.label(text="Stroke Placement:")
+
+        row = col.row(align=True)
+        row.prop_enum(ts, propname, 'VIEW')
+        row.prop_enum(ts, propname, 'CURSOR')
+
+        if context.space_data.type == 'VIEW_3D':
+            row = col.row(align=True)
+            row.prop_enum(ts, propname, 'SURFACE')
+            row.prop_enum(ts, propname, 'STROKE')
+
+            row = col.row(align=False)
+            row.active = getattr(ts, propname) in {'SURFACE', 'STROKE'}
+            row.prop(ts, "use_gpencil_stroke_endpoints")        
+
+# -------------------------------------
+
+        row = layout.row()
+        row.operator("gpencil.draw", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+
+        row = layout.row()
+        circle=row.operator("object.desenha_linha_corte", text="Cut Line!", icon="SCULPTMODE_HLT")
+
+
+
+        row = layout.row()
+        row.label(text="Cut Planes:")
+      
         row = layout.row()
         circle=row.operator("mesh.add_mento", text="Chin Plane", icon="TRIA_DOWN")
         circle.location=(0,-35,-81)
@@ -1932,6 +1979,7 @@ class importaImgBotoes(bpy.types.Panel):
 
 
 def register():
+    bpy.utils.register_class(DesenhaLinhaCorte)
     bpy.utils.register_class(BooleanaMand)
     bpy.utils.register_class(MantemPintado)
     bpy.utils.register_class(ApagaPintado)
@@ -2191,6 +2239,7 @@ def register():
 
 
 def unregister():
+    bpy.utils.unregister_class(DesenhaLinhaCorte)
     bpy.utils.unregister_class(BooleanaMand)
     bpy.utils.unregister_class(MantemPintado)
     bpy.utils.unregister_class(ApagaPintado)
