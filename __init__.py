@@ -910,7 +910,7 @@ class PainelAtualiza(bpy.types.Panel):
         obj = context.object 
 		
         row = layout.row()
-        row.label(text="VERSION: 20190228b")
+        row.label(text="VERSION: 20190301b")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1373,7 +1373,17 @@ class Osteotomia(bpy.types.Panel):
         row = layout.row()
         circle=row.operator("object.desenha_linha_corte", text="Cut Line!", icon="SCULPTMODE_HLT")
 
+        row = layout.row()
+        row.label(text="Advanced Draw Cut:")
 
+        row = layout.row()
+        row.operator("gpencil.draw", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+
+        row = layout.row()
+        circle=row.operator("object.desenha_linha_vertex", text="View Cut Line", icon="RESTRICT_VIEW_OFF")
+
+        row = layout.row()
+        circle=row.operator("object.desenha_linha_vertex_fin", text="Cut Visible Line", icon="SCULPTMODE_HLT")
 
         row = layout.row()
         row.label(text="Cut Planes:")
@@ -1979,6 +1989,8 @@ class importaImgBotoes(bpy.types.Panel):
 
 
 def register():
+    bpy.utils.register_class(DesenhaLinhaVertex)
+    bpy.utils.register_class(DesenhaLinhaVertexFin)
     bpy.utils.register_class(DesenhaLinhaCorte)
     bpy.utils.register_class(BooleanaMand)
     bpy.utils.register_class(MantemPintado)
@@ -2239,6 +2251,8 @@ def register():
 
 
 def unregister():
+    bpy.utils.register_class(DesenhaLinhaVertex)
+    bpy.utils.register_class(DesenhaLinhaVertexFin)
     bpy.utils.unregister_class(DesenhaLinhaCorte)
     bpy.utils.unregister_class(BooleanaMand)
     bpy.utils.unregister_class(MantemPintado)
