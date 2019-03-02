@@ -218,14 +218,29 @@ class DesenhaLinhaCorte(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.desenha_linha_corte"
     bl_label = "Desenha Linha Corte"
+
+    # ------------------------------
+    # Poll
+    # ------------------------------
+    @classmethod
+    def poll(cls, context):
+        o = context.object
+        if o is None:
+            return False
+        else:
+            if o.type == "MESH":
+                if bpy.context.mode == 'OBJECT':
+                    return True
+                else:
+                    return False
+            else:
+                return False
     
     def execute(self, context):
         DesenhaLinhaCorteDef(self, context)
         return {'FINISHED'}
 
 def DesenhaLinhaVertexDef(self, context):
-
-    global Osso
 
     context = bpy.context
     obj = context.active_object
@@ -302,6 +317,23 @@ class DesenhaLinhaVertex(bpy.types.Operator):
     bl_idname = "object.desenha_linha_vertex"
     bl_label = "Desenha Linha Corte"
     
+    # ------------------------------
+    # Poll
+    # ------------------------------
+    @classmethod
+    def poll(cls, context):
+        o = context.object
+        if o is None:
+            return False
+        else:
+            if o.type == "MESH":
+                if bpy.context.mode == 'OBJECT':
+                    return True
+                else:
+                    return False
+            else:
+                return False
+
     def execute(self, context):
         DesenhaLinhaVertexDef(self, context)
         return {'FINISHED'}
@@ -357,4 +389,40 @@ class DesenhaLinhaVertexFin(bpy.types.Operator):
     
     def execute(self, context):
         DesenhaLinhaVertexFinDef(self, context)
+        return {'FINISHED'}
+
+def LinhaCorteDef(self, context):
+
+    context = bpy.context
+    scn = context.scene
+
+    bpy.context.scene.tool_settings.gpencil_stroke_placement_view3d = 'SURFACE'
+#    bpy.ops.gpencil.convert(type='POLY', timing_mode='LINEAR', use_timing_data=False)
+    bpy.ops.gpencil.draw('INVOKE_DEFAULT', mode="DRAW_POLY")
+
+
+class LinhaCorte(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.linha_corte"
+    bl_label = "Desenha Linha Corte"
+
+    # ------------------------------
+    # Poll
+    # ------------------------------
+    @classmethod
+    def poll(cls, context):
+        o = context.object
+        if o is None:
+            return False
+        else:
+            if o.type == "MESH":
+                if bpy.context.mode == 'OBJECT':
+                    return True
+                else:
+                    return False
+            else:
+                return False
+
+    def execute(self, context):
+        LinhaCorteDef(self, context)
         return {'FINISHED'}

@@ -910,7 +910,7 @@ class PainelAtualiza(bpy.types.Panel):
         obj = context.object 
 		
         row = layout.row()
-        row.label(text="VERSION: 20190301b")
+        row.label(text="VERSION: 20190302a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1333,7 +1333,7 @@ class Osteotomia(bpy.types.Panel):
         obj = context.object
 
 # Botões desenhar corte
-
+        '''
         row = layout.row()
         row.label(text="Draw Osteotomy:")
 
@@ -1364,11 +1364,11 @@ class Osteotomia(bpy.types.Panel):
             row = col.row(align=False)
             row.active = getattr(ts, propname) in {'SURFACE', 'STROKE'}
             row.prop(ts, "use_gpencil_stroke_endpoints")        
-
+        '''
 # -------------------------------------
 
         row = layout.row()
-        row.operator("gpencil.draw", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+        row.operator("object.linha_corte", icon='LINE_DATA', text="Draw Surface Line")
 
         row = layout.row()
         circle=row.operator("object.desenha_linha_corte", text="Cut Line!", icon="SCULPTMODE_HLT")
@@ -1377,7 +1377,7 @@ class Osteotomia(bpy.types.Panel):
         row.label(text="Advanced Draw Cut:")
 
         row = layout.row()
-        row.operator("gpencil.draw", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+        row.operator("object.linha_corte", icon='LINE_DATA', text="Draw Surface Line")
 
         row = layout.row()
         circle=row.operator("object.desenha_linha_vertex", text="View Cut Line", icon="RESTRICT_VIEW_OFF")
@@ -1989,6 +1989,7 @@ class importaImgBotoes(bpy.types.Panel):
 
 
 def register():
+    bpy.utils.register_class(LinhaCorte)
     bpy.utils.register_class(DesenhaLinhaVertex)
     bpy.utils.register_class(DesenhaLinhaVertexFin)
     bpy.utils.register_class(DesenhaLinhaCorte)
@@ -2251,8 +2252,9 @@ def register():
 
 
 def unregister():
-    bpy.utils.register_class(DesenhaLinhaVertex)
-    bpy.utils.register_class(DesenhaLinhaVertexFin)
+    bpy.utils.unregister_class(LinhaCorte)
+    bpy.utils.unregister_class(DesenhaLinhaVertex)
+    bpy.utils.unregister_class(DesenhaLinhaVertexFin)
     bpy.utils.unregister_class(DesenhaLinhaCorte)
     bpy.utils.unregister_class(BooleanaMand)
     bpy.utils.unregister_class(MantemPintado)
