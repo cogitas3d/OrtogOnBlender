@@ -2,6 +2,7 @@ import bpy
 import platform
 import tempfile
 import subprocess
+import multiprocessing
 from os.path import expanduser
 
 from .ImportaObjMat import *
@@ -76,9 +77,25 @@ def GeraModelosTomoDef(self, context):
     interesseMole = bpy.context.scene.interesse_mole
     interesseDentes = bpy.context.scene.interesse_dentes
 
-    ReconTomo(scn.my_tool.path, interesseOssos, 'Bones','0.90')
-    ReconTomo(scn.my_tool.path, interesseMole, 'SoftTissue','0.90')
-    ReconTomo(scn.my_tool.path, interesseDentes, 'Teeth','0.90')
+    # Calcula número de CPUs
+
+    CpuNum = multiprocessing.cpu_count()
+
+    if CpuNum >= 8:
+        DecimFactor = '0.90'
+
+    if CpuNum == 4:
+        DecimFactor = '0.95'
+
+    if CpuNum == 2:
+        DecimFactor = '0.98'
+
+    if CpuNum == 1:
+        DecimFactor = '0.99'
+
+    ReconTomo(scn.my_tool.path, interesseOssos, 'Bones', DecimFactor)
+    ReconTomo(scn.my_tool.path, interesseMole, 'SoftTissue', DecimFactor)
+    ReconTomo(scn.my_tool.path, interesseDentes, 'Teeth', DecimFactor)
 
 
     a = bpy.data.objects['Bones']
