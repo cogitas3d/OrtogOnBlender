@@ -1,6 +1,7 @@
 import bpy
 import fnmatch
 import bmesh
+import time
 
 def DesenhaGuiaDef(self, context):
     
@@ -129,7 +130,6 @@ def DesenhaLinhaCorteDef(self, context):
 
     Osso = bpy.context.active_object
 
-
 # Lista todos os layers
 
     LayerOriginal = []
@@ -247,7 +247,10 @@ def DesenhaLinhaVertexDef(self, context):
     scn = context.scene
 
     Osso = bpy.context.active_object
-
+# Renomeia para não dar erro
+    OssoNome = Osso.name
+    Osso.name = OssoNome+time.strftime("%Y%m%d%H%M%S")
+    print("NOMEDADO")
 
 # Lista todos os layers
 
@@ -364,6 +367,10 @@ def DesenhaLinhaVertexFinDef(self, context):
 #    Linha = bpy.data.objects['Corte']
 
     Osso = bpy.data.objects[str(Linha.name.strip("Linha_"))]
+
+#    OssoNome = Osso.name
+#    Osso.name = OssoNome+time.strftime("%Y%m%d%H%M%S")
+#    print("NOMEDADO")
 
     bpy.ops.object.select_all(action='DESELECT')
     Linha.select = True
