@@ -21,9 +21,9 @@ del master.zip""")
 
 	if platform.system() == "Linux":
 
-        home = expanduser("~")
-        arquivo = open(home+'Programs/OrtogOnBlender/atualiza_ortog.sh', 'w+')
-        arquivo.writelines("""cd $HOME/Downloads && rm -Rfv OrtogOnBlender-master* && \
+		home = expanduser("~")
+		arquivo = open(home+'Programs/OrtogOnBlender/atualiza_ortog.sh', 'w+')
+		arquivo.writelines("""cd $HOME/Downloads && rm -Rfv OrtogOnBlender-master* && \
 if [ -f "master.zip" ]; then echo "tem arquivo" && rm master.zi*; fi && \
 wget https://github.com/cogitas3d/OrtogOnBlender/archive/master.zip && \
 rm -Rfv $HOME/.config/blender/2.78/scripts/addons/OrtogOnBlender-master && \
