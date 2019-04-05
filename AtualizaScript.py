@@ -1,6 +1,7 @@
 import bpy
 import subprocess
 import platform
+from os.path import expanduser
 
 def AtualizaScriptDef(self, context):
 
@@ -20,7 +21,8 @@ del master.zip""")
 
 	if platform.system() == "Linux":
 
-		arquivo = open('Programs/OrtogOnBlender/atualiza_ortog.sh', 'w+')
+	    home = expanduser("~")
+		arquivo = open(home+'Programs/OrtogOnBlender/atualiza_ortog.sh', 'w+')
 		arquivo.writelines("""cd $HOME/Downloads && rm -Rfv OrtogOnBlender-master* && \
 if [ -f "master.zip" ]; then echo "tem arquivo" && rm master.zi*; fi && \
 wget https://github.com/cogitas3d/OrtogOnBlender/archive/master.zip && \
