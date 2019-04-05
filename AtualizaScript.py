@@ -21,7 +21,7 @@ del master.zip""")
 
 	if platform.system() == "Linux":
 
-	    home = expanduser("~")
+        home = expanduser("~")
         arquivo = open(home+'Programs/OrtogOnBlender/atualiza_ortog.sh', 'w+')
         arquivo.writelines("""cd $HOME/Downloads && rm -Rfv OrtogOnBlender-master* && \
 if [ -f "master.zip" ]; then echo "tem arquivo" && rm master.zi*; fi && \
