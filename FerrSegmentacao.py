@@ -594,8 +594,7 @@ def ImportaSeparaMandibulaDef(self, context):
     if platform.system() == "Darwin":
 
         dirScript = bpy.utils.user_resource('SCRIPTS')
-
-        blendfile = "/OrtogOnBlender/Blender/blender.app/Contents/Resources/2.78/scripts/addons/OrtogOnBlender-master/objetos.blend"
+        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
         section   = "\\Collection\\"
         object    = "Separa_Mandibula"
         
@@ -753,3 +752,20 @@ class SeparaMandibulaCranio(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(SeparaMandibulaCranio)
+
+
+class PreparaImpressao3D(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.prepara_impressao_3d"
+    bl_label = "Prepara Impressão 3D"
+    
+    def execute(self, context):
+        bpy.ops.object.modifier_add(type='REMESH')
+        bpy.context.object.modifiers["Remesh"].mode = 'SMOOTH'
+        bpy.context.object.modifiers["Remesh"].octree_depth = 8
+        bpy.context.object.modifiers["Remesh"].scale = 0.99
+        return {'FINISHED'}
+
+bpy.utils.register_class(PreparaImpressao3D)
+
+

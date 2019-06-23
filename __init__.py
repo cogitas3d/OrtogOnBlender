@@ -71,7 +71,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190621a_mac")
+        row.label(text="VERSION: 20190623a_3D")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1596,6 +1596,9 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
         row = layout.row()
         row.operator("object.cria_splint", text="Create Splint", icon="OUTLINER_OB_CURVE")
 
+        row = layout.row()
+        row = layout.row()
+        row.operator("object.prepara_impressao_3d", text="Prepares 3D Printing", icon="META_CUBE")
       
 def register():
     bpy.utils.register_class(EMP1a)
