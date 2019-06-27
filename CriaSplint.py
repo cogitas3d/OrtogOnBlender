@@ -297,6 +297,25 @@ class CriaSplint(bpy.types.Operator):
     
     def execute(self, context):
         CriaSplintDef(self, context)
+
+        bpy.ops.object.select_all(action='DESELECT')
+        splint = bpy.data.objects['SPLINT']
+        splint.select_set(True)
+        context.view_layer.objects.active = splint	
+
+        bpy.ops.object.convert(target='MESH')
+        bpy.context.object.name = "SPLINT_pronto"
+        bpy.ops.object.select_all(action='DESELECT')
+
+        objetos = ["Armature", "EMPbone1646", "EMPbone1343", "EMPbone1141", "EMPbone2131", "EMPbone2333", "EMPbone2636", "EMP1646", "EMP1343", "EMP1141", "EMP2131", "EMP2333", "EMP2636"]
+
+        for item in objetos:
+            bpy.ops.object.select_all(action='DESELECT')
+            ObjAtual = bpy.data.objects[item]
+            ObjAtual.select_set(True)
+            context.view_layer.objects.active = ObjAtual
+            bpy.ops.object.delete(use_global=False)
+    
         return {'FINISHED'}
 
 bpy.utils.register_class(CriaSplint)
