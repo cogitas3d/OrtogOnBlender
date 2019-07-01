@@ -274,6 +274,7 @@ def BooleanaOsteoDef(self, context):
 
 #    obj = context.active_object
 
+
     bpy.ops.mesh.separate(type='LOOSE')
 
     objetos_selecionados = [ o for o in bpy.context.scene.objects if o.select_set ]
@@ -316,6 +317,23 @@ def BooleanaOsteoGeralDef(self, context):
 
 #    B = bpy.data.objects['Corte']
 #    A = context.active_object #objetos_selecionados[0]
+
+    # Remover vértices duplos
+    bpy.ops.object.select_all(action='DESELECT')
+    A.select_set(True)
+    bpy.context.view_layer.objects.active = A
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='SELECT')
+    bpy.ops.mesh.remove_doubles()
+    bpy.ops.object.mode_set(mode='OBJECT')
+    bpy.ops.object.select_all(action='DESELECT')
+    B.select_set(True)
+    bpy.context.view_layer.objects.active = B
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='SELECT')
+    bpy.ops.mesh.remove_doubles()
+    bpy.ops.object.mode_set(mode='OBJECT')
+
 
     # Cria objeto A
     bpy.ops.object.select_all(action='DESELECT')
@@ -465,6 +483,22 @@ def BooleanaOsteoUnionDef(self, context):
 
 #    B = bpy.data.objects['Corte']
 #    A = context.active_object #objetos_selecionados[0]
+
+    # Remover vértices duplos
+    bpy.ops.object.select_all(action='DESELECT')
+    A.select_set(True)
+    bpy.context.view_layer.objects.active = A
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='SELECT')
+    bpy.ops.mesh.remove_doubles()
+    bpy.ops.object.mode_set(mode='OBJECT')
+    bpy.ops.object.select_all(action='DESELECT')
+    B.select_set(True)
+    bpy.context.view_layer.objects.active = B
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='SELECT')
+    bpy.ops.mesh.remove_doubles()
+    bpy.ops.object.mode_set(mode='OBJECT')
 
     # Cria objeto A
     bpy.ops.object.select_all(action='DESELECT')
@@ -617,6 +651,22 @@ def BooleanaOsteoInterDef(self, context):
 #    B = bpy.data.objects['Corte']
 #    A = context.active_object #objetos_selecionados[0]
 
+    # Remover vértices duplos
+    bpy.ops.object.select_all(action='DESELECT')
+    A.select_set(True)
+    bpy.context.view_layer.objects.active = A
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='SELECT')
+    bpy.ops.mesh.remove_doubles()
+    bpy.ops.object.mode_set(mode='OBJECT')
+    bpy.ops.object.select_all(action='DESELECT')
+    B.select_set(True)
+    bpy.context.view_layer.objects.active = B
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='SELECT')
+    bpy.ops.mesh.remove_doubles()
+    bpy.ops.object.mode_set(mode='OBJECT')
+
     # Cria objeto A
     bpy.ops.object.select_all(action='DESELECT')
     A.select_set(True)
@@ -765,6 +815,23 @@ def BooleanaUnionSimplesDef(self, context):
 
 #    B = bpy.data.objects['Corte']
 #    A = context.active_object #objetos_selecionados[0]
+
+    # Remover vértices duplos
+    bpy.ops.object.select_all(action='DESELECT')
+    A.select_set(True)
+    bpy.context.view_layer.objects.active = A
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='SELECT')
+    bpy.ops.mesh.remove_doubles()
+    bpy.ops.object.mode_set(mode='OBJECT')
+    bpy.ops.object.select_all(action='DESELECT')
+    B.select_set(True)
+    bpy.context.view_layer.objects.active = B
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='SELECT')
+    bpy.ops.mesh.remove_doubles()
+    bpy.ops.object.mode_set(mode='OBJECT')
+
 
     # Cria objeto A
     bpy.ops.object.select_all(action='DESELECT')
