@@ -768,4 +768,23 @@ class PreparaImpressao3D(bpy.types.Operator):
 
 bpy.utils.register_class(PreparaImpressao3D)
 
+def FecharBuracosTodosDef():
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_mode(type="VERT")
+    bpy.ops.mesh.select_non_manifold()
+    bpy.ops.mesh.remove_doubles(threshold=0.2)
+    bpy.ops.mesh.edge_face_add()
+    bpy.ops.object.mode_set(mode='OBJECT')
+
+class FecharBuracosTodos(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.fecha_buraco_todos"
+    bl_label = "Prepara Impressão 3D"
+    
+    def execute(self, context):
+        FecharBuracosTodosDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(FecharBuracosTodos)
+
 

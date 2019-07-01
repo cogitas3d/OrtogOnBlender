@@ -71,7 +71,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190627a")
+        row.label(text="VERSION: 20190701a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -413,6 +413,40 @@ class ORTOG_PT_Segmentation(bpy.types.Panel):
 
         row = layout.row()
         row.operator("object.segmenta_linked", icon='OUTLINER_DATA_CURVE', text="Separate Linked")
+
+        row = layout.row()
+        row = layout.row()
+        row.operator("object.fecha_buraco_todos", icon='MOD_TRIANGULATE', text="Close All Holes")
+
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Boolean Segmentation:")
+
+        row = layout.row()
+        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+
+        row = layout.row()
+        row = layout.row()
+        circle=row.operator("object.desenha_booleana_dentro", text="Subtract IN", icon="LIGHTPROBE_CUBEMAP")
+
+        row = layout.row()
+        circle=row.operator("object.desenha_booleana_fora", text="Subtract OUT", icon="MESH_CUBE")
+
+        row = layout.row()
+        row.label(text="Boolean:")
+
+        row = layout.row()
+        circle=row.operator("object.booleana_osteo_geral", text="Difference", icon="MOD_BOOLEAN")
+
+        row = layout.row()
+        circle=row.operator("object.booleana_osteo_union", text="Union", icon="MOD_CAST")
+
+        row = layout.row()
+        circle=row.operator("object.booleana_osteo_inter", text="Intersect", icon="MOD_MASK")
+
+        row = layout.row()
+        row = layout.row()
+        circle=row.operator("object.booleana_union_multipla", text="MULTIPLE UNION", icon="STICKY_UVS_LOC")
 
         row = layout.row()
         row.label(text="Separated Teeth:")
