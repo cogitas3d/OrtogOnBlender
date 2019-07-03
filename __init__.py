@@ -36,6 +36,7 @@ else:
     from .DesenhaGuia import *
     from .RelatorioAnimacao import *
     from .Poisson import *
+    from .FerrImgTomo import *
     from .Cefalometria import *
     from .GeraRelatorio import *
     from .CriaSplint import *
@@ -180,6 +181,41 @@ class ORTOG_PT_CTScanOrgFIX(bpy.types.Panel):
         col.prop(scn.my_tool, "path", text="")
         row = layout.row()
         row.operator("object.corrige_dicom", text="Fix it!", icon="FILE_TICK")
+
+class ORTOG_PT_CTScanFerrImg(bpy.types.Panel):
+    bl_label = "CT-Scan Voxel Tools"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Ortog"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+        
+#        scene = context.scene
+#        rd = scene.render
+
+        row = layout.row()
+        row.label(text="CT-Scan Voxel Importing:")
+        col = layout.column(align=True)
+        col.prop(scn.my_tool, "path", text="")
+#        layout.prop(rd, "filepath", text="")
+
+        if platform.system() == "Windows":
+            row = layout.row()
+            row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
+
+        row = layout.row()
+        row.operator("object.importa_fatias_dcm", text="Import DICOM Slices", icon="LIGHTPROBE_CUBEMAP")
+
+#        row = layout.row()
+#        prefs = context.preferences
+#        system = prefs.system
+#        row.prop(system, "gl_clip_alpha", slider=True)
 
 class ORTOG_PT_CTScanRec(bpy.types.Panel):
     bl_label = "CT-Scan Reconstruction"
@@ -1751,6 +1787,7 @@ def register():
     bpy.utils.register_class(CorrigeDicom)
     bpy.utils.register_class(AjustaTomo)
     bpy.utils.register_class(GeraModelosTomo)
+    bpy.utils.register_class(ORTOG_PT_CTScanFerrImg)
     bpy.utils.register_class(ORTOG_PT_CTScanRec)
     bpy.types.Scene.interesse_ossos = bpy.props.StringProperty \
       (
@@ -1884,6 +1921,7 @@ def unregister():
     bpy.utils.unregister_class(CorrigeDicom)
     bpy.utils.unregister_class(AjustaTomo)
     bpy.utils.unregister_class(GeraModelosTomo)
+    bpy.utils.unregister_class(ORTOG_PT_CTScanFerrImg)
     bpy.utils.unregister_class(CTScanRec)
     bpy.utils.unregister_class(ORTOG_PT_ImportaArc)
     bpy.utils.unregister_class(ORTOG_UI_CapturaLocal)
