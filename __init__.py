@@ -28,6 +28,7 @@ else:
 #    from .AlinhaTresPontosNovo import *
     from .AlinhaRedimensiona import *
     from .DesenhaObjetos import *
+    from .FerrFisica import *
     from .ConfOsteotomiaAuto import *
     from .DinamicaMole import *
     from .AtualizaScript import *
@@ -71,7 +72,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190701b")
+        row.label(text="VERSION: 20190702a_colisao")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -277,6 +278,12 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+        row = layout.row()
+        row.label(text="Archs Collision:")
+
+        row = layout.row()
+        linha=row.operator("object.colisao_arcos", text="Solve Collision", icon="STYLUS_PRESSURE")
 
         row = layout.row()
         row = layout.row()
