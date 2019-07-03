@@ -72,7 +72,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190702a_colisao")
+        row.label(text="VERSION: 20190703a_colisao")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -284,6 +284,17 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("object.colisao_arcos", text="Solve Collision", icon="STYLUS_PRESSURE")
+
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.aplica_anima_cor", text="Contact Color", icon="COLORSET_01_VEC")
+
+        row = layout.row()
+        row.label(text="Press ESC to enable Apply!")
+
+        row = layout.row()
+        linha=row.operator("object.trava_arco", text="Apply!", icon="FREEZE")
+
 
         row = layout.row()
         row = layout.row()

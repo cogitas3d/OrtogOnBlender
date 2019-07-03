@@ -5,6 +5,8 @@ def ColisaoArcosDef():
     context = bpy.context
     scn = context.scene
 
+    bpy.context.scene.frame_end = 110
+
     if len(bpy.context.selected_objects) != 2:
 	    print("Selecione dois objetos!")
 	    # Substituir por mensagem de erro!
@@ -126,8 +128,6 @@ class ColisaoArcos(bpy.types.Operator):
     @classmethod
     def poll(cls, context):
 
-        found = 'Tooth 8' in bpy.data.objects
-
         if len(bpy.context.selected_objects) == 2:
             return True
         else:
@@ -139,3 +139,94 @@ class ColisaoArcos(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(ColisaoArcos)
+
+def AplicaAnimCorDef():
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.screen.animation_cancel()
+
+
+    override = {'scene': bpy.context.scene,
+	            'point_cache': bpy.context.scene.rigidbody_world.point_cache}
+    bpy.ops.ptcache.bake(override, bake=True)
+    bpy.context.scene.update()
+    bpy.ops.rigidbody.bake_to_keyframes(frame_start=1, frame_end=110)
+
+    bpy.context.scene.frame_current = 110
+
+    bpy.ops.object.mode_set(mode='WEIGHT_PAINT')
+
+    bpy.ops.screen.animation_play()
+
+class AplicaAnimCor(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.aplica_anima_cor"
+    bl_label = "Apply Color and Animation"
+
+    @classmethod
+    def poll(cls, context):
+
+        if len(bpy.context.selected_objects) == 1:
+            return True
+        else:
+            if len(bpy.context.selected_objects) != 1:
+                return False
+    
+    def execute(self, context):
+        AplicaAnimCorDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(AplicaAnimCor)
+
+def TravaArcoDef():
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+#    bpy.ops.screen.animation_cancel()
+    bpy.ops.object.mode_set(mode='OBJECT')
+#    bpy.context.scene.frame_current = 110
+    obj.animation_data_clear()
+
+    '''
+    try:
+        bpy.ops.object.vertex_group_remove(all=False, all_unlocked=False)
+        bpy.ops.rigidbody.object_remove()
+        ArcadaSup.animation_data_clear()
+        print("APAGADOS o grupo e o modificador.")
+    except:
+        print("Não foi criado grupo e modificador.")
+    '''  
+     
+
+class TravaArco(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.trava_arco"
+    bl_label = "Arch Stop"
+
+
+
+    # Programação diferente para funcionar!!!
+    
+    @classmethod
+    def poll(cls, context):
+
+        scene = context.scene
+        tool_settings = context.tool_settings
+        screen = context.screen
+
+        if not screen.is_animation_playing:
+            return True
+        if screen.is_animation_playing:
+            return False
+
+    def execute(self, context):
+        bpy.ops.screen.animation_cancel() 
+        TravaArcoDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(TravaArco)
