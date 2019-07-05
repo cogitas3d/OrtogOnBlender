@@ -1691,7 +1691,50 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
         row = layout.row()
         row.operator("export_mesh.stl", text="Export STL", icon="TRACKING_REFINE_FORWARDS").use_selection=True.use_mesh_modifiers=True
 
-#bpy.ops.export_mesh.stl(filepath="", check_existing=True, filter_glob="*.stl", use_selection=False, global_scale=1, use_scene_unit=False, ascii=False, use_mesh_modifiers=True, batch_mode='OFF', axis_forward='Y', axis_up='Z')
+
+class ORTOG_PT_ImportTomoImg(bpy.types.Panel):
+    bl_label = "Importing & Editing CT-Scan"
+    bl_space_type = 'IMAGE_EDITOR'
+    bl_region_type = 'UI'
+    bl_category = "Ortog"
+#    bl_category = "Image"
+
+    def draw(self, context):
+        layout = self.layout
+#        layout.use_property_split = True
+
+#        row = layout.row()
+#        row.label(text="Free Draw Solid:")
+
+        row = layout.row()
+        row.operator("object.importa_img_tomo", text="Import CT-Scan IMG Slices", icon="IMAGE_DATA")
+
+        row = layout.row(align = True)
+        row.prop(context.scene, "IMGPathSeq")
+
+        row = layout.row(align = True)
+        row.prop(context.scene, "SliceThickness")
+
+        row = layout.row(align = True)
+        row.prop(context.scene, "PixelSpacingX")
+        
+        row = layout.row(align = True)
+        row.prop(context.scene, "PixelSpacingY")
+        
+        row = layout.row(align = True)
+        row.prop(context.scene, "IMGDimX")
+        
+        row = layout.row(align = True)
+        row.prop(context.scene, "IMGDimY")
+
+        row = layout.row()
+        row = layout.row()
+        row.operator("image.save_sequence", text="Save Sequence", icon="EXPORT")
+
+        row = layout.row()
+        row.operator("object.exporta_img_tomo", text="Export DICOM Slices", icon="EXPORT")
+
+
       
 def register():
     bpy.utils.register_class(EMP1a)
@@ -1838,6 +1881,47 @@ def register():
     bpy.utils.register_class(ORTOG_PT_MeasuringTools)
     bpy.utils.register_class(ORTOG_PT_CinematicaPanel)
     bpy.utils.register_class(ORTOG_PT_GuideCreation)
+    bpy.utils.register_class(ORTOG_PT_ImportTomoImg)
+    bpy.types.Scene.IMGPathSeq = bpy.props.StringProperty \
+      (
+        name = "IMGPathSeq",
+        description = "IMGPathSeq",
+        default = "NONE"
+      )
+    bpy.types.Scene.SliceThickness = bpy.props.StringProperty \
+      (
+        name = "SliceThickness",
+        description = "Slice Thickness",
+        default = "NONE"
+      )
+      
+    bpy.types.Scene.PixelSpacingX = bpy.props.StringProperty \
+      (
+        name = "PixelSpacingX",
+        description = "Pixel SpacingX",
+        default = "NONE"
+      )
+
+    bpy.types.Scene.PixelSpacingY = bpy.props.StringProperty \
+      (
+        name = "PixelSpacingY",
+        description = "Pixel SpacingY",
+        default = "NONE"
+      )
+      
+    bpy.types.Scene.IMGDimX = bpy.props.StringProperty \
+      (
+        name = "IMGDimX",
+        description = "IMGDimX",
+        default = "NONE"
+      )
+      
+    bpy.types.Scene.IMGDimY = bpy.props.StringProperty \
+      (
+        name = "IMGDimY",
+        description = "IMGDimY",
+        default = "NONE"
+      )
 
 
   
@@ -1954,6 +2038,7 @@ def unregister():
     bpy.utils.unregister_class(ORTOG_PT_MeasuringTools)
     bpy.utils.unregister_class(ORTOG_PT_CinematicaPanel)
     bpy.utils.unregister_class(ORTOG_PT_GuideCreation)
+    bpy.utils.unregister_class(ORTOG_PT_ImportTomoImg)
 
         
 if __name__ == "__main__":
