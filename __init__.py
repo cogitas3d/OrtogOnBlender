@@ -73,7 +73,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190705a")
+        row.label(text="VERSION: 20190705b")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1687,6 +1687,11 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
         row = layout.row()
         row = layout.row()
         row.operator("object.prepara_impressao_3d", text="Prepares 3D Printing", icon="META_CUBE")
+
+        row = layout.row()
+        row.operator("export_mesh.stl", text="Export STL", icon="TRACKING_REFINE_FORWARDS").use_selection=True.use_mesh_modifiers=True
+
+#bpy.ops.export_mesh.stl(filepath="", check_existing=True, filter_glob="*.stl", use_selection=False, global_scale=1, use_scene_unit=False, ascii=False, use_mesh_modifiers=True, batch_mode='OFF', axis_forward='Y', axis_up='Z')
       
 def register():
     bpy.utils.register_class(EMP1a)
