@@ -73,7 +73,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190705b")
+        row.label(text="VERSION: 20190705c")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1492,6 +1492,21 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
 
         row = layout.row()
         circle=row.operator("object.desenha_linha_vertex_fin", text="Cut Visible Line", icon="SCULPTMODE_HLT")
+
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Boolean Osteotomy:")
+
+        row = layout.row()
+        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+
+        row = layout.row()
+        row = layout.row()
+        circle=row.operator("object.desenha_booleana_dentro", text="Subtract IN", icon="LIGHTPROBE_CUBEMAP")
+
+        row = layout.row()
+        circle=row.operator("object.desenha_booleana_fora", text="Subtract OUT", icon="MESH_CUBE")
+
 
         row = layout.row()
         row.label(text="Surface Cut:")

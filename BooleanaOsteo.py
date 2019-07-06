@@ -270,7 +270,11 @@ def BooleanaOsteoDef(self, context):
 #    Result = bpy.context.view_layer.objects.active
 
     objetos_selecionados = [ o for o in bpy.context.scene.objects if o.select_set ]
-    bpy.data.collections['Collection'].objects.link(objetos_selecionados[0])
+    
+    try:
+        bpy.data.collections['Collection'].objects.link(objetos_selecionados[0])
+    except:
+        print("O objeto já está na Collecion!")
 
 #    obj = context.active_object
 
