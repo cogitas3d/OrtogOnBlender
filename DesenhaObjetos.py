@@ -465,6 +465,48 @@ class LinhaCorte(bpy.types.Operator):
         LinhaCorteDef(self, context)
         return {'FINISHED'}
 
+def LinhaCorteForaaForaDef(self, context):
+
+    context = bpy.context
+    scn = context.scene
+
+#   bpy.context.scene.tool_settings.gpencil_stroke_placement_view3d = 'SURFACE'
+#    bpy.ops.gpencil.convert(type='POLY', timing_mode='LINEAR', use_timing_data=False)
+#    bpy.ops.gpencil.draw('INVOKE_DEFAULT', mode="DRAW_POLY")
+    #bpy.ops.gpencil.annotate(mode="DRAW_POLY")
+    bpy.ops.wm.tool_set_by_id(name="builtin.annotate_polygon") # Capturar direto dos botões da interface
+    bpy.context.scene.tool_settings.annotation_stroke_placement_view3d = 'CURSOR'
+
+
+
+class LinhaCorteForaaFora(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.linha_corte_fora_a_fora"
+    bl_label = "Desenha Linha Corte"
+
+    # ------------------------------
+    # Poll
+    # ------------------------------
+    @classmethod
+    def poll(cls, context):
+        o = context.object
+        if o is None:
+            return False
+        else:
+            if o.type == "MESH":
+                if bpy.context.mode == 'OBJECT':
+                    return True
+                else:
+                    return False
+            else:
+                return False
+
+    def execute(self, context):
+        LinhaCorteForaaForaDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(LinhaCorteForaaFora)
+
 # Modal
 
 class ModalTimerOperator(bpy.types.Operator):

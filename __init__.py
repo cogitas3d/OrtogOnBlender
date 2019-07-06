@@ -73,7 +73,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190705c")
+        row.label(text="VERSION: 20190706a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -373,7 +373,8 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
         row.label(text="Boolean Segmentation:")
 
         row = layout.row()
-        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+#        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+        row.operator("object.linha_corte_fora_a_fora", icon='LINE_DATA', text="Draw Line")
 
         row = layout.row()
         row = layout.row()
@@ -390,7 +391,8 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
         row.label(text="Simple Cut Segmentation:")
 
         row = layout.row()
-        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+#        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+        row.operator("object.linha_corte_fora_a_fora", icon='LINE_DATA', text="Draw Line")
 
         row = layout.row()
         linha=row.operator("object.segmenta_desenho", text="Cut Draw!", icon="FCURVE")
@@ -400,7 +402,7 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
         linha=row.operator("mesh.poisson", text="Poisson Reconstruction", icon="MESH_ICOSPHERE")
 
         row = layout.row()
-        circle=row.operator("object.fecha_molde_simples", text="Close Hole Simple", icon="MESH_GRID")
+        row.operator("object.fecha_buraco_todos", icon='MOD_TRIANGULATE', text="Close All Holes")
 
         row = layout.row()
         box = layout.box()
@@ -477,7 +479,8 @@ class ORTOG_PT_Segmentation(bpy.types.Panel):
         row.label(text="Boolean Segmentation:")
 
         row = layout.row()
-        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+#        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+        row.operator("object.linha_corte_fora_a_fora", icon='LINE_DATA', text="Draw Line")
 
         row = layout.row()
         row = layout.row()
@@ -578,7 +581,8 @@ class ORTOG_PT_Segmentation(bpy.types.Panel):
 
         row = layout.row()
         row = layout.row()
-        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+#        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+        row.operator("object.linha_corte_fora_a_fora", icon='LINE_DATA', text="Draw Line")
 
         row = layout.row()
         linha=row.operator("object.segmenta_desenho", text="Cut Draw!", icon="FCURVE")
@@ -1498,7 +1502,8 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
         row.label(text="Boolean Osteotomy:")
 
         row = layout.row()
-        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+#        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+        row.operator("object.linha_corte_fora_a_fora", icon='LINE_DATA', text="Draw Line")
 
         row = layout.row()
         row = layout.row()
