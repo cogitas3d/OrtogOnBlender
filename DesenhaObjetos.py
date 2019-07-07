@@ -726,6 +726,11 @@ def CriaBezierDef(self, context):
     bpy.context.object.modifiers["Remesh"].octree_depth = 6
     bpy.context.object.modifiers["Remesh"].scale = 0.99
 
+#    obj = context.active_object
+    bpy.ops.object.collection_link(collection='Collection')
+    bpy.ops.object.move_to_collection(collection_index=1)
+#    bpy.data.collections['Scene Collection'].objects.unlink(obj)
+
 
 #    bpy.context.object.location = 0,0,0
 

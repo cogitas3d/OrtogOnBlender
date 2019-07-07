@@ -56,4 +56,5 @@ class AtualizaScript(bpy.types.Operator):
 
     def execute(self, context):
         AtualizaScriptDef(self, context)
+        bpy.ops.wm.quit_blender()
         return {'FINISHED'}

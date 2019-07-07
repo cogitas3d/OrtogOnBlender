@@ -73,7 +73,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190706b")
+        row.label(text="VERSION: 20190707a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -817,6 +817,15 @@ class ORTOG_PT_PontosAnatomicosCabeca(bpy.types.Panel):
         row = layout.row()
         linha=row.operator("object.s_pt", text="S point")
 
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente_points_head", text="SAVE!", icon="FILE_TICK")
+
 class ORTOG_PT_PontosAnatomicosMaxila(bpy.types.Panel):
     bl_label = "Anatomical Points - Maxilla"
     bl_region_type = 'UI'
@@ -860,6 +869,15 @@ class ORTOG_PT_PontosAnatomicosMaxila(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("object.ans_pt", text="ANS point")
+
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente_points_maxilla", text="SAVE!", icon="FILE_TICK")
 
 
 class ORTOG_PT_PontosAnatomicosMandibula(bpy.types.Panel):
@@ -945,6 +963,15 @@ class ORTOG_PT_PontosAnatomicosMandibula(bpy.types.Panel):
         row = layout.row()
         linha=row.operator("object.me_pt", text="Me point")
 
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente_points_mandible", text="SAVE!", icon="FILE_TICK")
+
 class ORTOG_PT_PontosAnatomicosDentes(bpy.types.Panel):
     bl_label = "Anatomical Points - Teeth"
     bl_region_type = 'UI'
@@ -1001,6 +1028,15 @@ class ORTOG_PT_PontosAnatomicosDentes(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("object.tooth_30_pt", text="Tooth 30 (46)")
+
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente_points_teeth", text="SAVE!", icon="FILE_TICK")
 
 class ORTOG_PT_PontosAnatomicosMole(bpy.types.Panel):
     bl_label = "Anatomical Points - Soft Tissue"
@@ -1099,6 +1135,15 @@ class ORTOG_PT_PontosAnatomicosMole(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("object.ab_left_pt", text="AB left")
+
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente_points_soft", text="SAVE!", icon="FILE_TICK")
 
 class ORTOG_PT_Cefalometria(bpy.types.Panel):
     bl_label = "Cephalometry"
@@ -1564,6 +1609,15 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
         row = layout.row()
         circle=row.operator("object.booleana_osteo_geral", text="Cut Boolean", icon="MOD_BOOLEAN")
 
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente_osteotomy", text="SAVE!", icon="FILE_TICK")
+
 class ORTOG_PT_ArmatureDynamic(bpy.types.Panel):
     bl_label = "Dynamic"
     bl_region_type = 'UI'
@@ -1598,6 +1652,15 @@ class ORTOG_PT_ArmatureDynamic(bpy.types.Panel):
 
         row = layout.row()
         circle=row.operator("object.parenteia_emp", text="Parent Points", icon="LINKED")
+
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente_dynamic", text="SAVE!", icon="FILE_TICK")
 
 class ORTOG_PT_MeasuringTools(bpy.types.Panel):
     bl_label = "Measuring Tools"
@@ -1656,6 +1719,15 @@ class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
 
         row = layout.row()
         row.operator("object.gera_relatorio", text="GENERATE REPORT", icon="SHORTDISPLAY")
+
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente_kinematic", text="SAVE!", icon="FILE_TICK")
 
 
 class ORTOG_PT_GuideCreation(bpy.types.Panel):
@@ -1718,6 +1790,15 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
         row = layout.row()
         
         row.operator("export_mesh.stl", text="Export STL", icon="TRACKING_REFINE_FORWARDS").use_selection=True#.use_mesh_modifiers=True
+
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente_guide", text="SAVE!", icon="FILE_TICK")
 
 
 class ORTOG_PT_ImportTomoImg(bpy.types.Panel):

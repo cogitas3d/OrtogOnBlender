@@ -585,6 +585,611 @@ class NomePacienteAlinhaFotoTomo(bpy.types.Operator):
         NomePacienteAlinhaFotoTomoDef(self, context)
         return {'FINISHED'}
 
+# PONTOS CABEÇA
+
+def NomePacientePointsHeadDef(self, context):
+
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    
+#    scene = context.scene
+#    rd = scene.render
+
+    homeDir = expanduser("~")
+
+    NomePaciente = bpy.context.scene.nome_paciente
+    SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+    if NomePaciente == "" and SobrenomePaciente == "":
+        bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
+
+    else:
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Points_Head-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+        if not os.path.exists(NomePacienteFile):
+            bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
+            print("Arquivo da tomografia criado!")
+
+
+class NomePacientePointsHead(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_dir_nome_paciente_points_head"
+    bl_label = "Gera Nome Dir Nome Paciente Voxel"
+
+    @classmethod
+    def poll(cls, context):
+
+#        found = 'Orbital right' in bpy.data.objects
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        
+    #    scene = context.scene
+    #    rd = scene.render
+
+        homeDir = expanduser("~")
+
+        NomePaciente = bpy.context.scene.nome_paciente
+        SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Points_Head-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+#        if found == False:
+        if not os.path.exists(NomePacienteFile):
+            return True
+        else:
+            if os.path.exists(NomePacienteFile):
+                return False
+
+
+    def execute(self, context):
+        NomePacientePointsHeadDef(self, context)
+        return {'FINISHED'}
+
+
+bpy.utils.register_class(NomePacientePointsHead)
+
+# PONTOS MAXILA
+
+def NomePacientePointsMaxillaDef(self, context):
+
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    
+#    scene = context.scene
+#    rd = scene.render
+
+    homeDir = expanduser("~")
+
+    NomePaciente = bpy.context.scene.nome_paciente
+    SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+    if NomePaciente == "" and SobrenomePaciente == "":
+        bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
+
+    else:
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Points_Maxilla-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+        if not os.path.exists(NomePacienteFile):
+            bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
+            print("Arquivo da tomografia criado!")
+
+
+class NomePacientePointsMaxilla(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_dir_nome_paciente_points_maxilla"
+    bl_label = "Gera Nome Dir Nome Paciente Maxilla"
+
+    @classmethod
+    def poll(cls, context):
+
+#        found = 'Orbital right' in bpy.data.objects
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        
+    #    scene = context.scene
+    #    rd = scene.render
+
+        homeDir = expanduser("~")
+
+        NomePaciente = bpy.context.scene.nome_paciente
+        SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Points_Maxilla-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+#        if found == False:
+        if not os.path.exists(NomePacienteFile):
+            return True
+        else:
+            if os.path.exists(NomePacienteFile):
+                return False
+
+
+    def execute(self, context):
+        NomePacientePointsMaxillaDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(NomePacientePointsMaxilla)
+
+# PONTOS MANDÍBULA
+
+def NomePacientePointsMandibleDef(self, context):
+
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    
+#    scene = context.scene
+#    rd = scene.render
+
+    homeDir = expanduser("~")
+
+    NomePaciente = bpy.context.scene.nome_paciente
+    SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+    if NomePaciente == "" and SobrenomePaciente == "":
+        bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
+
+    else:
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Points_Mandible-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+        if not os.path.exists(NomePacienteFile):
+            bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
+            print("Arquivo da tomografia criado!")
+
+
+class NomePacientePointsMandible(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_dir_nome_paciente_points_mandible"
+    bl_label = "Gera Nome Dir Nome Paciente Mandible"
+
+    @classmethod
+    def poll(cls, context):
+
+#        found = 'Orbital right' in bpy.data.objects
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        
+    #    scene = context.scene
+    #    rd = scene.render
+
+        homeDir = expanduser("~")
+
+        NomePaciente = bpy.context.scene.nome_paciente
+        SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Points_Mandible-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+#        if found == False:
+        if not os.path.exists(NomePacienteFile):
+            return True
+        else:
+            if os.path.exists(NomePacienteFile):
+                return False
+
+
+    def execute(self, context):
+        NomePacientePointsMandibleDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(NomePacientePointsMandible)
+
+# PONTOS DENTES
+
+def NomePacientePointsTeethDef(self, context):
+
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    
+#    scene = context.scene
+#    rd = scene.render
+
+    homeDir = expanduser("~")
+
+    NomePaciente = bpy.context.scene.nome_paciente
+    SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+    if NomePaciente == "" and SobrenomePaciente == "":
+        bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
+
+    else:
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Points_Teeth-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+        if not os.path.exists(NomePacienteFile):
+            bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
+            print("Arquivo da tomografia criado!")
+
+
+class NomePacientePointsTeeth(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_dir_nome_paciente_points_teeth"
+    bl_label = "Gera Nome Dir Nome Paciente Teeth"
+
+    @classmethod
+    def poll(cls, context):
+
+#        found = 'Orbital right' in bpy.data.objects
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        
+    #    scene = context.scene
+    #    rd = scene.render
+
+        homeDir = expanduser("~")
+
+        NomePaciente = bpy.context.scene.nome_paciente
+        SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Points_Teeth-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+#        if found == False:
+        if not os.path.exists(NomePacienteFile):
+            return True
+        else:
+            if os.path.exists(NomePacienteFile):
+                return False
+
+
+    def execute(self, context):
+        NomePacientePointsTeethDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(NomePacientePointsTeeth)
+
+# PONTOS TECIDO MOLE
+
+def NomePacientePointsSoftDef(self, context):
+
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    
+#    scene = context.scene
+#    rd = scene.render
+
+    homeDir = expanduser("~")
+
+    NomePaciente = bpy.context.scene.nome_paciente
+    SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+    if NomePaciente == "" and SobrenomePaciente == "":
+        bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
+
+    else:
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Points_Soft-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+        if not os.path.exists(NomePacienteFile):
+            bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
+            print("Arquivo da tomografia criado!")
+
+
+class NomePacientePointsSoft(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_dir_nome_paciente_points_soft"
+    bl_label = "Gera Nome Dir Nome Paciente Soft"
+
+    @classmethod
+    def poll(cls, context):
+
+#        found = 'Orbital right' in bpy.data.objects
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        
+    #    scene = context.scene
+    #    rd = scene.render
+
+        homeDir = expanduser("~")
+
+        NomePaciente = bpy.context.scene.nome_paciente
+        SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Points_Soft-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+#        if found == False:
+        if not os.path.exists(NomePacienteFile):
+            return True
+        else:
+            if os.path.exists(NomePacienteFile):
+                return False
+
+
+    def execute(self, context):
+        NomePacientePointsSoftDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(NomePacientePointsSoft)
+
+# PONTOS OSTEOTOMIA
+
+def NomePacienteOsteotomyDef(self, context):
+
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    
+#    scene = context.scene
+#    rd = scene.render
+
+    homeDir = expanduser("~")
+
+    NomePaciente = bpy.context.scene.nome_paciente
+    SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+    if NomePaciente == "" and SobrenomePaciente == "":
+        bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
+
+    else:
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Osteotomy-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+        if not os.path.exists(NomePacienteFile):
+            bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
+            print("Arquivo da tomografia criado!")
+
+
+class NomePacienteOsteotomy(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_dir_nome_paciente_osteotomy"
+    bl_label = "Gera Nome Dir Nome Paciente Osteotomy"
+
+    @classmethod
+    def poll(cls, context):
+
+#        found = 'Orbital right' in bpy.data.objects
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        
+    #    scene = context.scene
+    #    rd = scene.render
+
+        homeDir = expanduser("~")
+
+        NomePaciente = bpy.context.scene.nome_paciente
+        SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Osteotomy-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+#        if found == False:
+        if not os.path.exists(NomePacienteFile):
+            return True
+        else:
+            if os.path.exists(NomePacienteFile):
+                return False
+
+
+    def execute(self, context):
+        NomePacienteOsteotomyDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(NomePacienteOsteotomy)
+
+# DINÂMICA
+
+def NomePacienteDynamicDef(self, context):
+
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    
+#    scene = context.scene
+#    rd = scene.render
+
+    homeDir = expanduser("~")
+
+    NomePaciente = bpy.context.scene.nome_paciente
+    SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+    if NomePaciente == "" and SobrenomePaciente == "":
+        bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
+
+    else:
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Dynamic-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+        if not os.path.exists(NomePacienteFile):
+            bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
+            print("Arquivo da tomografia criado!")
+
+
+class NomePacienteDynamic(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_dir_nome_paciente_dynamic"
+    bl_label = "Gera Nome Dir Nome Paciente Dynamic"
+
+    @classmethod
+    def poll(cls, context):
+
+#        found = 'Orbital right' in bpy.data.objects
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        
+    #    scene = context.scene
+    #    rd = scene.render
+
+        homeDir = expanduser("~")
+
+        NomePaciente = bpy.context.scene.nome_paciente
+        SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Dynamic-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+#        if found == False:
+        if not os.path.exists(NomePacienteFile):
+            return True
+        else:
+            if os.path.exists(NomePacienteFile):
+                return False
+
+
+    def execute(self, context):
+        NomePacienteDynamicDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(NomePacienteDynamic)
+
+# CINEMÁTICA
+
+def NomePacienteKinematicDef(self, context):
+
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    
+#    scene = context.scene
+#    rd = scene.render
+
+    homeDir = expanduser("~")
+
+    NomePaciente = bpy.context.scene.nome_paciente
+    SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+    if NomePaciente == "" and SobrenomePaciente == "":
+        bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
+
+    else:
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Kinematic-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+        if not os.path.exists(NomePacienteFile):
+            bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
+            print("Arquivo da tomografia criado!")
+
+
+class NomePacienteKinematic(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_dir_nome_paciente_kinematic"
+    bl_label = "Gera Nome Dir Nome Paciente Kinematic"
+
+    @classmethod
+    def poll(cls, context):
+
+#        found = 'Orbital right' in bpy.data.objects
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        
+    #    scene = context.scene
+    #    rd = scene.render
+
+        homeDir = expanduser("~")
+
+        NomePaciente = bpy.context.scene.nome_paciente
+        SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Kinematic-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+#        if found == False:
+        if not os.path.exists(NomePacienteFile):
+            return True
+        else:
+            if os.path.exists(NomePacienteFile):
+                return False
+
+
+    def execute(self, context):
+        NomePacienteKinematicDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(NomePacienteKinematic)
+
+
+# GUIA E SPLINT
+
+def NomePacienteGuideDef(self, context):
+
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    
+#    scene = context.scene
+#    rd = scene.render
+
+    homeDir = expanduser("~")
+
+    NomePaciente = bpy.context.scene.nome_paciente
+    SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+    if NomePaciente == "" and SobrenomePaciente == "":
+        bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
+
+    else:
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Guide-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+        if not os.path.exists(NomePacienteFile):
+            bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
+            print("Arquivo da tomografia criado!")
+
+
+class NomePacienteGuide(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_dir_nome_paciente_guide"
+    bl_label = "Gera Nome Dir Nome Paciente Guide"
+
+    @classmethod
+    def poll(cls, context):
+
+#        found = 'Orbital right' in bpy.data.objects
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        
+    #    scene = context.scene
+    #    rd = scene.render
+
+        homeDir = expanduser("~")
+
+        NomePaciente = bpy.context.scene.nome_paciente
+        SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Guide-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+#        if found == False:
+        if not os.path.exists(NomePacienteFile):
+            return True
+        else:
+            if os.path.exists(NomePacienteFile):
+                return False
+
+
+    def execute(self, context):
+        NomePacienteGuideDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(NomePacienteGuide)
+
 bpy.utils.register_class(NomePaciente)
 bpy.utils.register_class(NomePacienteTomo)
 bpy.utils.register_class(NomePacienteArc)

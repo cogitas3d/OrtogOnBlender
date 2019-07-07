@@ -144,6 +144,7 @@ def BooleanaMandDef(self, context):
     bpy.ops.object.select_all(action='DESELECT')
     Mandible.select_set(True)
     bpy.context.view_layer.objects.active = Mandible
+    bpy.ops.object.move_to_collection(collection_index=1)
         
 class BooleanaMand(bpy.types.Operator):
     """Tooltip"""
@@ -288,6 +289,7 @@ def BooleanaOsteoDef(self, context):
         i.select_set(True)
         bpy.context.view_layer.objects.active = i
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+        bpy.ops.object.move_to_collection(collection_index=1)
 
 
 class BooleanaOsteoClass(bpy.types.Operator):
@@ -326,17 +328,24 @@ def BooleanaOsteoGeralDef(self, context):
     bpy.ops.object.select_all(action='DESELECT')
     A.select_set(True)
     bpy.context.view_layer.objects.active = A
-    bpy.ops.object.mode_set(mode='EDIT')
-    bpy.ops.mesh.select_all(action='SELECT')
-    bpy.ops.mesh.remove_doubles()
-    bpy.ops.object.mode_set(mode='OBJECT')
+
+    if A.type == 'MESH':
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.select_all(action='SELECT')
+        bpy.ops.mesh.remove_doubles()
+        bpy.ops.object.mode_set(mode='OBJECT')
+    else:
+        print("Não é malha!")
     bpy.ops.object.select_all(action='DESELECT')
     B.select_set(True)
     bpy.context.view_layer.objects.active = B
-    bpy.ops.object.mode_set(mode='EDIT')
-    bpy.ops.mesh.select_all(action='SELECT')
-    bpy.ops.mesh.remove_doubles()
-    bpy.ops.object.mode_set(mode='OBJECT')
+    if B.type == 'MESH':
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.select_all(action='SELECT')
+        bpy.ops.mesh.remove_doubles()
+        bpy.ops.object.mode_set(mode='OBJECT')
+    else:
+        print("Não é malha!")
 
 
     # Cria objeto A
@@ -452,6 +461,7 @@ def BooleanaOsteoGeralDef(self, context):
         bpy.context.view_layer.objects.active = i
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
         bpy.ops.object.collection_link(collection='Collection')
+        bpy.ops.object.move_to_collection(collection_index=1)
 
 
 class BooleanaOsteoGeral(bpy.types.Operator):
@@ -491,17 +501,23 @@ def BooleanaOsteoUnionDef(self, context):
     bpy.ops.object.select_all(action='DESELECT')
     A.select_set(True)
     bpy.context.view_layer.objects.active = A
-    bpy.ops.object.mode_set(mode='EDIT')
-    bpy.ops.mesh.select_all(action='SELECT')
-    bpy.ops.mesh.remove_doubles()
-    bpy.ops.object.mode_set(mode='OBJECT')
+    if A.type == 'MESH':
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.select_all(action='SELECT')
+        bpy.ops.mesh.remove_doubles()
+        bpy.ops.object.mode_set(mode='OBJECT')
+    else:
+        print("Não é malha!")
     bpy.ops.object.select_all(action='DESELECT')
     B.select_set(True)
     bpy.context.view_layer.objects.active = B
-    bpy.ops.object.mode_set(mode='EDIT')
-    bpy.ops.mesh.select_all(action='SELECT')
-    bpy.ops.mesh.remove_doubles()
-    bpy.ops.object.mode_set(mode='OBJECT')
+    if B.type == 'MESH':
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.select_all(action='SELECT')
+        bpy.ops.mesh.remove_doubles()
+        bpy.ops.object.mode_set(mode='OBJECT')
+    else:
+        print("Não é malha!")
 
     # Cria objeto A
     bpy.ops.object.select_all(action='DESELECT')
@@ -620,6 +636,7 @@ def BooleanaOsteoUnionDef(self, context):
             bpy.context.view_layer.objects.active = i
             bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
             bpy.ops.object.collection_link(collection='Collection')
+            bpy.ops.object.move_to_collection(collection_index=1)
 
 class BooleanaOsteoUnion(bpy.types.Operator):
     """Tooltip"""
@@ -660,17 +677,23 @@ def BooleanaOsteoInterDef(self, context):
     bpy.ops.object.select_all(action='DESELECT')
     A.select_set(True)
     bpy.context.view_layer.objects.active = A
-    bpy.ops.object.mode_set(mode='EDIT')
-    bpy.ops.mesh.select_all(action='SELECT')
-    bpy.ops.mesh.remove_doubles()
-    bpy.ops.object.mode_set(mode='OBJECT')
+    if A.type == 'MESH':
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.select_all(action='SELECT')
+        bpy.ops.mesh.remove_doubles()
+        bpy.ops.object.mode_set(mode='OBJECT')
+    else:
+        print("Não é malha!")
     bpy.ops.object.select_all(action='DESELECT')
     B.select_set(True)
     bpy.context.view_layer.objects.active = B
-    bpy.ops.object.mode_set(mode='EDIT')
-    bpy.ops.mesh.select_all(action='SELECT')
-    bpy.ops.mesh.remove_doubles()
-    bpy.ops.object.mode_set(mode='OBJECT')
+    if B.type == 'MESH':
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.select_all(action='SELECT')
+        bpy.ops.mesh.remove_doubles()
+        bpy.ops.object.mode_set(mode='OBJECT')
+    else:
+        print("Não é malha!")
 
     # Cria objeto A
     bpy.ops.object.select_all(action='DESELECT')
@@ -777,12 +800,23 @@ def BooleanaOsteoInterDef(self, context):
 
     objetos_selecionados = [ o for o in bpy.context.selected_objects ]
 
+    '''
     for i in objetos_selecionados:
         bpy.ops.object.collection_link(collection='Collection')
         bpy.ops.object.select_all(action='DESELECT')
         i.select_set(True)
         bpy.context.view_layer.objects.active = i
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+    '''
+
+    for i in objetos_selecionados:
+        if i.visible_get() == True:
+            bpy.ops.object.select_all(action='DESELECT')
+            i.select_set(True)
+            bpy.context.view_layer.objects.active = i
+            bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+            bpy.ops.object.collection_link(collection='Collection')
+            bpy.ops.object.move_to_collection(collection_index=1)
 
 
 class BooleanaOsteoInter(bpy.types.Operator):
@@ -823,16 +857,23 @@ def BooleanaUnionSimplesDef(self, context):
     bpy.ops.object.select_all(action='DESELECT')
     A.select_set(True)
     bpy.context.view_layer.objects.active = A
-    bpy.ops.object.mode_set(mode='EDIT')
-    bpy.ops.mesh.select_all(action='SELECT')
-    bpy.ops.mesh.remove_doubles()
-    bpy.ops.object.mode_set(mode='OBJECT')
+    if A.type == 'MESH':
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.select_all(action='SELECT')
+        bpy.ops.mesh.remove_doubles()
+        bpy.ops.object.mode_set(mode='OBJECT')
+    else:
+        print("Não é malha!")
     bpy.ops.object.select_all(action='DESELECT')
     B.select_set(True)
     bpy.context.view_layer.objects.active = B
-    bpy.ops.object.mode_set(mode='EDIT')
-    bpy.ops.mesh.select_all(action='SELECT')
-    bpy.ops.mesh.remove_doubles()
+    if B.type == 'MESH':
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.select_all(action='SELECT')
+        bpy.ops.mesh.remove_doubles()
+        bpy.ops.object.mode_set(mode='OBJECT')
+    else:
+        print("Não é malha!")
     bpy.ops.object.mode_set(mode='OBJECT')
 
 
@@ -948,6 +989,7 @@ def BooleanaUnionSimplesDef(self, context):
             bpy.context.view_layer.objects.active = i
             bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
             bpy.ops.object.collection_link(collection='Collection')
+            bpy.ops.object.move_to_collection(collection_index=1)
         
 class BooleanaUnionSimples(bpy.types.Operator):
     """Tooltip"""
