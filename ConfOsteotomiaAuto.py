@@ -1,6 +1,7 @@
 import bpy
 import platform
 import bmesh
+from random import randint
 
 # IMPORTA ARMATURE
 
@@ -555,3 +556,192 @@ class ConfOsteotomiaAuto(bpy.types.Operator):
     def execute(self, context):
        ConfOsteotomiaAutoDef(self, context)
        return {'FINISHED'} 
+
+# OSTEOTOMIA GERALAUTOMÁTICA
+
+def OsteoMoleAutomaticaDef():
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    #CRIA OS OSSOS
+    # Lista tdos os objetos em um
+    objetos_selecionados = [ o for o in bpy.context.scene.objects if o.select_set ]
+
+    # Coloca o cursor na pocição do primeiro objeto
+
+    #Adiciona e apaga em modo de edição 
+    bpy.ops.object.armature_add(radius=1, view_align=False, enter_editmode=False)
+    bpy.ops.object.editmode_toggle()
+    bpy.ops.armature.select_all(action='TOGGLE')
+    bpy.ops.armature.select_all(action='TOGGLE')
+    bpy.ops.armature.delete()
+
+    for i in objetos_selecionados:
+        if i.visible_get() == True:
+            bpy.context.scene.cursor.location = (i.location)
+            bpy.ops.armature.bone_primitive_add(name=i.name)
+
+    bpy.ops.object.editmode_toggle()
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+
+    # Lista Objetos
+
+    ob = bpy.context.object
+
+    LisObjetos = []
+
+    if ob.type == 'ARMATURE':
+        armature = ob.data
+
+        for bone in armature.bones:
+	        print(bone.name)
+	        LisObjetos.append(bone.name)
+	    
+    print("FIM")
+    print(LisObjetos)
+
+    # Cria Material
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    for i in LisObjetos:
+        activeObject = bpy.data.objects[i] #Set active object to variable
+        mat = bpy.data.materials.new(name=i) #set new material to variable
+        activeObject.data.materials.append(mat) #add the material to the object
+    #    bpy.context.object.active_material.diffuse_color = (0.8, 0.35, 0.2) #change color
+        activeObject.active_material.diffuse_color = (randint(20, 100)*.01, randint(20, 100)*.01, randint(20, 100)*.01, 1)
+
+    #    bpy.context.object.name = "me"
+
+    # Cria áreas de interesse
+
+    Face = bpy.data.objects['FaceMesh']
+
+    Face.hide_set(False)
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    Face.select_set(True)
+    context.view_layer.objects.active = Face
+
+    bpy.ops.object.mode_set(mode='EDIT')
+
+    # Vertex Groups
+    mesh=bmesh.from_edit_mesh(bpy.context.object.data)
+    for v in mesh.verts:
+        v.select = True
+
+    for i in LisObjetos:
+        Face.vertex_groups.new(name=i)
+        scn.tool_settings.vertex_group_weight=0
+        #bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.object.vertex_group_assign()
+
+    # Vertex Proximtiy
+    for i in LisObjetos:    
+        bpy.ops.object.modifier_add(type='VERTEX_WEIGHT_PROXIMITY')
+        bpy.context.object.modifiers["VertexWeightProximity"].vertex_group = i
+        bpy.context.object.modifiers["VertexWeightProximity"].target = bpy.data.objects[i]
+        bpy.context.object.modifiers["VertexWeightProximity"].proximity_mode = 'GEOMETRY'
+        bpy.context.object.modifiers["VertexWeightProximity"].min_dist = 60
+        bpy.context.object.modifiers["VertexWeightProximity"].max_dist = 12
+        bpy.context.object.modifiers["VertexWeightProximity"].falloff_type = 'SHARP'
+        bpy.context.object.modifiers["VertexWeightProximity"].name = i
+        bpy.context.object.modifiers[i].show_expanded = False
+
+    # Converte em objeto
+    bpy.ops.object.mode_set(mode='OBJECT')    
+    bpy.ops.object.convert(target='MESH')
+
+    # Parenteia Armature
+
+    ArmatureOssos = bpy.data.objects['Armature']
+
+    ArmatureOssos.hide_set(False)
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.context.view_layer.objects.active = ArmatureOssos
+    bpy.data.objects['FaceMesh'].select_set(True)
+    ArmatureOssos.select_set(True)
+    bpy.ops.object.parent_set(type='ARMATURE_NAME')
+
+    #ArmatureOssos.hide=True
+
+    #bpy.ops.object.select_all(action='DESELECT')
+    #bpy.data.objects['FaceMesh'].select = True
+    #bpy.context.scene.objects.active = bpy.data.objects['FaceMesh']
+
+    # Atrela malhas as armaduras
+
+    bpy.ops.object.select_all(action='DESELECT')
+    ArmatureOssos.select_set(True)
+    bpy.context.view_layer.objects.active = ArmatureOssos
+
+    #bpy.ops.object.posemode_toggle()
+
+    for i in LisObjetos:
+        bpy.ops.object.mode_set(mode='POSE')
+        bpy.ops.pose.select_all(action='DESELECT')
+        o=bpy.context.object
+        b=o.data.bones[i]
+        b.select=True
+        o.data.bones.active=b
+         
+        bpy.ops.pose.constraint_add(type='CHILD_OF')
+        bpy.context.object.pose.bones[i].constraints["Child Of"].target = bpy.data.objects[i]
+
+        pbone = bpy.context.active_object.pose.bones[i] # Bone
+        context_copy = bpy.context.copy()
+        context_copy["constraint"] = pbone.constraints["Child Of"]
+        bpy.ops.constraint.childof_set_inverse(context_copy, constraint="Child Of", owner='BONE')
+
+        bpy.ops.object.posemode_toggle()
+        
+    bpy.ops.transform.translate(value=(0,0,0))
+
+class OsteoMoleAutomatica(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.conf_osteo_mole_auto"
+    bl_label = "Configura osteotomias automaticamente"
+    
+    def execute(self, context):
+       OsteoMoleAutomaticaDef()
+       return {'FINISHED'} 
+
+bpy.utils.register_class(OsteoMoleAutomatica)
+
+def RenomearObjeto(nome):
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.context.object.name = nome
+
+class NomeFace(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.nome_face_malha"
+    bl_label = "Set Face Mesh"
+
+    @classmethod
+    def poll(cls, context):
+        o = context.object
+        if o is None:
+            return False
+        else:
+            if o.type == "MESH":
+                if bpy.context.mode == 'OBJECT':
+                    return True
+                else:
+                    return False
+            else:
+                return False
+    
+    def execute(self, context):
+        RenomearObjeto("FaceMesh")
+        bpy.context.object.hide_set(True)
+        return {'FINISHED'} 
+
+bpy.utils.register_class(NomeFace)

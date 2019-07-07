@@ -73,7 +73,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190707a")
+        row.label(text="VERSION: 20190707b")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1633,7 +1633,7 @@ class ORTOG_PT_ArmatureDynamic(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="Configure Armature:")
+        row.label(text="Configure Armature (Classic):")
 
         row = layout.row()
         row.operator("object.conf_osteo_auto", text="Setup Osteotomy Auto", icon="FILE_TICK")
@@ -1647,6 +1647,17 @@ class ORTOG_PT_ArmatureDynamic(bpy.types.Panel):
         row = layout.row()
         circle=row.operator("view3d.clip_border", text="Clipping Border", icon="UV_FACESEL")
 
+       	row = layout.row()
+       	row = layout.row()
+        row.label(text=" Auto Osteo+Soft Setup (Experimental):")
+
+        row = layout.row()
+        row.operator("object.nome_face_malha", text="Set Face and Hide", icon="USER")
+
+        row = layout.row()
+        row.operator("object.conf_osteo_mole_auto", text="Setup Auto!", icon="BONE_DATA")
+
+       	row = layout.row()
         row = layout.row()
         row.label(text="Parent Points:")
 
