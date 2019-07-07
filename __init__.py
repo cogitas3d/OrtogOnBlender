@@ -73,7 +73,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190706a")
+        row.label(text="VERSION: 20190706b")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -216,6 +216,13 @@ class ORTOG_PT_CTScanFerrImg(bpy.types.Panel):
 #        prefs = context.preferences
 #        system = prefs.system
 #        row.prop(system, "gl_clip_alpha", slider=True)
+
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente_voxel", text="SAVE!", icon="FILE_TICK")
 
 class ORTOG_PT_CTScanRec(bpy.types.Panel):
     bl_label = "CT-Scan Reconstruction"
@@ -385,7 +392,7 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
 
         row = layout.row()
         row = layout.row()
-        circle=row.operator("object.booleana_osteo_union", text="Union", icon="MOD_CAST")
+        circle=row.operator("object.booleana_union_multipla", text="MULTIPLE UNION", icon="STICKY_UVS_LOC")
 
         row = layout.row()
         row.label(text="Simple Cut Segmentation:")
@@ -1709,7 +1716,8 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
         row.operator("object.prepara_impressao_3d", text="Prepares 3D Printing", icon="META_CUBE")
 
         row = layout.row()
-        row.operator("export_mesh.stl", text="Export STL", icon="TRACKING_REFINE_FORWARDS").use_selection=True.use_mesh_modifiers=True
+        
+        row.operator("export_mesh.stl", text="Export STL", icon="TRACKING_REFINE_FORWARDS").use_selection=True#.use_mesh_modifiers=True
 
 
 class ORTOG_PT_ImportTomoImg(bpy.types.Panel):

@@ -50,7 +50,7 @@ def NomePacienteDef(self, context):
 
         if not os.path.exists(NomePacienteDir):
             os.mkdir(NomePacienteDir)
-            bpy.ops.wm.save_as_mainfile(filepath=homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/01_Base-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+            bpy.ops.wm.save_as_mainfile(filepath=homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Base-"+NomePaciente+"_"+SobrenomePaciente+".blend")
             print("Diretorio "+NomePaciente+"_"+SobrenomePaciente+" criado!")
     
     else:
@@ -93,6 +93,75 @@ class NomePaciente(bpy.types.Operator):
 
 # SALVA ARQUIVO TOMOGRAFIA
 
+def NomePacienteVoxelDef(self, context):
+
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    
+#    scene = context.scene
+#    rd = scene.render
+
+    homeDir = expanduser("~")
+
+    NomePaciente = bpy.context.scene.nome_paciente
+    SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+    if NomePaciente == "" and SobrenomePaciente == "":
+        bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
+
+    else:
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Voxel-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+        if not os.path.exists(NomePacienteFile):
+            bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
+            print("Arquivo da tomografia criado!")
+
+
+class NomePacienteVoxel(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_dir_nome_paciente_voxel"
+    bl_label = "Gera Nome Dir Nome Paciente Voxel"
+
+    @classmethod
+    def poll(cls, context):
+
+#        found = 'Orbital right' in bpy.data.objects
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        
+    #    scene = context.scene
+    #    rd = scene.render
+
+        homeDir = expanduser("~")
+
+        NomePaciente = bpy.context.scene.nome_paciente
+        SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Voxel-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+#        if found == False:
+        if not os.path.exists(NomePacienteFile):
+            return True
+        else:
+            if os.path.exists(NomePacienteFile):
+                return False
+
+
+    def execute(self, context):
+        bpy.ops.file.pack_all()
+        NomePacienteVoxelDef(self, context)
+        return {'FINISHED'}
+
+
+bpy.utils.register_class(NomePacienteVoxel)
+
+# SALVA ARQUIVO TOMOGRAFIA
+
 def NomePacienteTomoDef(self, context):
 
 
@@ -113,7 +182,7 @@ def NomePacienteTomoDef(self, context):
         bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
 
     else:
-        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/02_CT_Scan-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/CT_Scan-"+NomePaciente+"_"+SobrenomePaciente+".blend")
 
         if not os.path.exists(NomePacienteFile):
             bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
@@ -142,7 +211,7 @@ class NomePacienteTomo(bpy.types.Operator):
         NomePaciente = bpy.context.scene.nome_paciente
         SobrenomePaciente = bpy.context.scene.sobrenome_paciente
 
-        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/02_CT_Scan-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/CT_Scan-"+NomePaciente+"_"+SobrenomePaciente+".blend")
 
 #        if found == False:
         if not os.path.exists(NomePacienteFile):
@@ -174,7 +243,7 @@ def NomePacienteArcDef(self, context):
         bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
 
     else:
-        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/04_Arch-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Arch-"+NomePaciente+"_"+SobrenomePaciente+".blend")
 
         if not os.path.exists(NomePacienteFile):
             bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
@@ -202,7 +271,7 @@ class NomePacienteArc(bpy.types.Operator):
         NomePaciente = bpy.context.scene.nome_paciente
         SobrenomePaciente = bpy.context.scene.sobrenome_paciente
 
-        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/04_Arch-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Arch-"+NomePaciente+"_"+SobrenomePaciente+".blend")
 
 #        if found == False:
         if not os.path.exists(NomePacienteFile):
@@ -234,7 +303,7 @@ def NomePacienteRefDef(self, context):
         bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
 
     else:
-        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/03_Ref-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Ref-"+NomePaciente+"_"+SobrenomePaciente+".blend")
 
         if not os.path.exists(NomePacienteFile):
             bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
@@ -262,7 +331,7 @@ class NomePacienteRef(bpy.types.Operator):
         NomePaciente = bpy.context.scene.nome_paciente
         SobrenomePaciente = bpy.context.scene.sobrenome_paciente
 
-        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/03_Ref-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Ref-"+NomePaciente+"_"+SobrenomePaciente+".blend")
 
 #        if found == False:
         if not os.path.exists(NomePacienteFile):
@@ -294,7 +363,7 @@ def NomePacienteSegDef(self, context):
         bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
 
     else:
-        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/05_Seg-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Seg-"+NomePaciente+"_"+SobrenomePaciente+".blend")
 
         if not os.path.exists(NomePacienteFile):
             bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
@@ -322,7 +391,7 @@ class NomePacienteSeg(bpy.types.Operator):
         NomePaciente = bpy.context.scene.nome_paciente
         SobrenomePaciente = bpy.context.scene.sobrenome_paciente
 
-        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/05_Seg-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Seg-"+NomePaciente+"_"+SobrenomePaciente+".blend")
 
 #        if found == False:
         if not os.path.exists(NomePacienteFile):
@@ -354,7 +423,7 @@ def NomePacienteFotogramDef(self, context):
         bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
 
     else:
-        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/06_Photogram-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Photogram-"+NomePaciente+"_"+SobrenomePaciente+".blend")
 
         if not os.path.exists(NomePacienteFile):
             bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
@@ -382,7 +451,7 @@ class NomePacienteFotogram(bpy.types.Operator):
         NomePaciente = bpy.context.scene.nome_paciente
         SobrenomePaciente = bpy.context.scene.sobrenome_paciente
 
-        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/06_Photogram-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Photogram-"+NomePaciente+"_"+SobrenomePaciente+".blend")
 
 #        if found == False:
         if not os.path.exists(NomePacienteFile):
@@ -414,7 +483,7 @@ def NomePacienteAlinhaFaceDef(self, context):
         bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
 
     else:
-        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/07_Align_Face-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Align_Face-"+NomePaciente+"_"+SobrenomePaciente+".blend")
 
         if not os.path.exists(NomePacienteFile):
             bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
@@ -442,7 +511,7 @@ class NomePacienteAlinhaFace(bpy.types.Operator):
         NomePaciente = bpy.context.scene.nome_paciente
         SobrenomePaciente = bpy.context.scene.sobrenome_paciente
 
-        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/07_Align_Face-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Align_Face-"+NomePaciente+"_"+SobrenomePaciente+".blend")
 
 #        if found == False:
         if not os.path.exists(NomePacienteFile):
@@ -474,7 +543,7 @@ def NomePacienteAlinhaFotoTomoDef(self, context):
         bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
 
     else:
-        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/08_Align_Photogram_CT-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Align_Photogram_CT-"+NomePaciente+"_"+SobrenomePaciente+".blend")
 
         if not os.path.exists(NomePacienteFile):
             bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
@@ -502,7 +571,7 @@ class NomePacienteAlinhaFotoTomo(bpy.types.Operator):
         NomePaciente = bpy.context.scene.nome_paciente
         SobrenomePaciente = bpy.context.scene.sobrenome_paciente
 
-        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/08_Align_Photogram_CT-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Align_Photogram_CT-"+NomePaciente+"_"+SobrenomePaciente+".blend")
 
 #        if found == False:
         if not os.path.exists(NomePacienteFile):

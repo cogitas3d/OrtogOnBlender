@@ -364,18 +364,17 @@ def BooleanaOsteoGeralDef(self, context):
 
     if "Copied_Objects" not in ListaColl:
 
+        obj = context.active_object
         myCol = bpy.data.collections.new("Copied_Objects")
         bpy.context.scene.collection.children.link(myCol)
         bpy.ops.object.collection_link(collection='Copied_Objects')
-#        mainCol = bpy.data.collections['Collection']
-#        bpy.context.scene.collection.children.unlink(mainCol)
-#        bpy.data.collections['Collection'].objects.unlink(obj2)
+        bpy.data.collections['Collection'].objects.unlink(obj)
+
 
     else:
+        obj = context.active_object
         bpy.ops.object.collection_link(collection='Copied_Objects')
-#        mainCol = bpy.data.collections['Collection']
-#        bpy.context.scene.collection.children.unlink(mainCol)
-#        bpy.data.collections['Collection'].objects.unlink(obj2)
+        bpy.data.collections['Collection'].objects.unlink(obj)
 
     bpy.data.collections['Copied_Objects'].hide_viewport=True
 
@@ -399,18 +398,17 @@ def BooleanaOsteoGeralDef(self, context):
 
     if "Copied_Objects" not in ListaColl:
 
+        obj = context.active_object
         myCol = bpy.data.collections.new("Copied_Objects")
         bpy.context.scene.collection.children.link(myCol)
         bpy.ops.object.collection_link(collection='Copied_Objects')
-#        mainCol = bpy.data.collections['Collection']
-#        bpy.context.scene.collection.children.unlink(mainCol)
-#        bpy.data.collections['Collection'].objects.unlink(obj2)
+        bpy.data.collections['Collection'].objects.unlink(obj2)
+
 
     else:
+        obj = context.active_object
         bpy.ops.object.collection_link(collection='Copied_Objects')
-#        mainCol = bpy.data.collections['Collection']
-#        bpy.context.scene.collection.children.unlink(mainCol)
-#        bpy.data.collections['Collection'].objects.unlink(obj2)
+        bpy.data.collections['Collection'].objects.unlink(obj2)
 
     bpy.data.collections['Copied_Objects'].hide_viewport=True
 
@@ -453,6 +451,7 @@ def BooleanaOsteoGeralDef(self, context):
         i.select_set(True)
         bpy.context.view_layer.objects.active = i
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+        bpy.ops.object.collection_link(collection='Collection')
 
 
 class BooleanaOsteoGeral(bpy.types.Operator):
@@ -516,7 +515,7 @@ def BooleanaOsteoUnionDef(self, context):
     bpy.ops.object.modifier_remove(modifier="Triangulate")
 
 
-    obj2 = bpy.context.view_layer.objects.active
+#    obj2 = bpy.context.view_layer.objects.active
 
 
 
@@ -529,20 +528,20 @@ def BooleanaOsteoUnionDef(self, context):
 
     if "Copied_Objects" not in ListaColl:
 
+        obj = context.active_object
         myCol = bpy.data.collections.new("Copied_Objects")
         bpy.context.scene.collection.children.link(myCol)
         bpy.ops.object.collection_link(collection='Copied_Objects')
-#        mainCol = bpy.data.collections['Collection']
-#        bpy.context.scene.collection.children.unlink(mainCol)
-#        bpy.data.collections['Collection'].objects.unlink(obj2)
+        bpy.data.collections['Collection'].objects.unlink(obj)
+
 
     else:
+        obj = context.active_object
         bpy.ops.object.collection_link(collection='Copied_Objects')
-#        mainCol = bpy.data.collections['Collection']
-#        bpy.context.scene.collection.children.unlink(mainCol)
-#        bpy.data.collections['Collection'].objects.unlink(obj2)
+        bpy.data.collections['Collection'].objects.unlink(obj)
 
     bpy.data.collections['Copied_Objects'].hide_viewport=True
+
 
     # Cria objeto B
     bpy.ops.object.select_all(action='DESELECT')
@@ -567,23 +566,23 @@ def BooleanaOsteoUnionDef(self, context):
         myCol = bpy.data.collections.new("Copied_Objects")
         bpy.context.scene.collection.children.link(myCol)
         bpy.ops.object.collection_link(collection='Copied_Objects')
-#        mainCol = bpy.data.collections['Collection']
-#        bpy.context.scene.collection.children.unlink(mainCol)
-#        bpy.data.collections['Collection'].objects.unlink(obj2)
+        bpy.data.collections['Collection'].objects.unlink(obj2)
+
 
     else:
         bpy.ops.object.collection_link(collection='Copied_Objects')
-#        mainCol = bpy.data.collections['Collection']
-#        bpy.context.scene.collection.children.unlink(mainCol)
-#        bpy.data.collections['Collection'].objects.unlink(obj2)
+        bpy.data.collections['Collection'].objects.unlink(obj2)
+
+
 
     bpy.data.collections['Copied_Objects'].hide_viewport=True
 
     bpy.ops.object.select_all(action='DESELECT')
 
+
     # OCulta objetos originais
-    A.hide_viewport=True
-    B.hide_viewport=True
+#    A.hide_viewport=True
+#    B.hide_viewport=True
 
     # Booleana
     if platform.system() == "Linux":
@@ -611,14 +610,16 @@ def BooleanaOsteoUnionDef(self, context):
 
     bpy.ops.mesh.separate(type='LOOSE')
 
+
     objetos_selecionados = [ o for o in bpy.context.selected_objects ]
 
     for i in objetos_selecionados:
-        bpy.ops.object.select_all(action='DESELECT')
-        i.select_set(True)
-        bpy.context.view_layer.objects.active = i
-        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
-
+        if i.visible_get() == True:
+            bpy.ops.object.select_all(action='DESELECT')
+            i.select_set(True)
+            bpy.context.view_layer.objects.active = i
+            bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+            bpy.ops.object.collection_link(collection='Collection')
 
 class BooleanaOsteoUnion(bpy.types.Operator):
     """Tooltip"""
@@ -627,7 +628,7 @@ class BooleanaOsteoUnion(bpy.types.Operator):
     
     def execute(self, context):
         BooleanaOsteoUnionDef(self, context)
-#        bpy.ops.object.collection_link(collection='Collection')
+#g        bpy.ops.object.collection_link(collection='Collection')
         return {'FINISHED'}
 
 bpy.utils.register_class(BooleanaOsteoUnion)
@@ -696,18 +697,17 @@ def BooleanaOsteoInterDef(self, context):
 
     if "Copied_Objects" not in ListaColl:
 
+        obj = context.active_object
         myCol = bpy.data.collections.new("Copied_Objects")
         bpy.context.scene.collection.children.link(myCol)
         bpy.ops.object.collection_link(collection='Copied_Objects')
-#        mainCol = bpy.data.collections['Collection']
-#        bpy.context.scene.collection.children.unlink(mainCol)
-#        bpy.data.collections['Collection'].objects.unlink(obj2)
+        bpy.data.collections['Collection'].objects.unlink(obj)
+
 
     else:
+        obj = context.active_object
         bpy.ops.object.collection_link(collection='Copied_Objects')
-#        mainCol = bpy.data.collections['Collection']
-#        bpy.context.scene.collection.children.unlink(mainCol)
-#        bpy.data.collections['Collection'].objects.unlink(obj2)
+        bpy.data.collections['Collection'].objects.unlink(obj)
 
     bpy.data.collections['Copied_Objects'].hide_viewport=True
 
@@ -734,15 +734,12 @@ def BooleanaOsteoInterDef(self, context):
         myCol = bpy.data.collections.new("Copied_Objects")
         bpy.context.scene.collection.children.link(myCol)
         bpy.ops.object.collection_link(collection='Copied_Objects')
-#        mainCol = bpy.data.collections['Collection']
-#        bpy.context.scene.collection.children.unlink(mainCol)
-#        bpy.data.collections['Collection'].objects.unlink(obj2)
+        bpy.data.collections['Collection'].objects.unlink(obj2)
+
 
     else:
         bpy.ops.object.collection_link(collection='Copied_Objects')
-#        mainCol = bpy.data.collections['Collection']
-#        bpy.context.scene.collection.children.unlink(mainCol)
-#        bpy.data.collections['Collection'].objects.unlink(obj2)
+        bpy.data.collections['Collection'].objects.unlink(obj2)
 
     bpy.data.collections['Copied_Objects'].hide_viewport=True
 
@@ -781,6 +778,7 @@ def BooleanaOsteoInterDef(self, context):
     objetos_selecionados = [ o for o in bpy.context.selected_objects ]
 
     for i in objetos_selecionados:
+        bpy.ops.object.collection_link(collection='Collection')
         bpy.ops.object.select_all(action='DESELECT')
         i.select_set(True)
         bpy.context.view_layer.objects.active = i
@@ -798,6 +796,7 @@ class BooleanaOsteoInter(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(BooleanaOsteoInter)
+
 
 def BooleanaUnionSimplesDef(self, context):
 
@@ -862,18 +861,17 @@ def BooleanaUnionSimplesDef(self, context):
 
     if "Copied_Objects" not in ListaColl:
 
+        obj = context.active_object
         myCol = bpy.data.collections.new("Copied_Objects")
         bpy.context.scene.collection.children.link(myCol)
         bpy.ops.object.collection_link(collection='Copied_Objects')
-#        mainCol = bpy.data.collections['Collection']
-#        bpy.context.scene.collection.children.unlink(mainCol)
-#        bpy.data.collections['Collection'].objects.unlink(obj2)
+        bpy.data.collections['Collection'].objects.unlink(obj)
+
 
     else:
+        obj = context.active_object
         bpy.ops.object.collection_link(collection='Copied_Objects')
-#        mainCol = bpy.data.collections['Collection']
-#        bpy.context.scene.collection.children.unlink(mainCol)
-#        bpy.data.collections['Collection'].objects.unlink(obj2)
+        bpy.data.collections['Collection'].objects.unlink(obj)
 
     bpy.data.collections['Copied_Objects'].hide_viewport=True
 
@@ -900,15 +898,12 @@ def BooleanaUnionSimplesDef(self, context):
         myCol = bpy.data.collections.new("Copied_Objects")
         bpy.context.scene.collection.children.link(myCol)
         bpy.ops.object.collection_link(collection='Copied_Objects')
-#        mainCol = bpy.data.collections['Collection']
-#        bpy.context.scene.collection.children.unlink(mainCol)
-#        bpy.data.collections['Collection'].objects.unlink(obj2)
+        bpy.data.collections['Collection'].objects.unlink(obj2)
+
 
     else:
         bpy.ops.object.collection_link(collection='Copied_Objects')
-#        mainCol = bpy.data.collections['Collection']
-#        bpy.context.scene.collection.children.unlink(mainCol)
-#        bpy.data.collections['Collection'].objects.unlink(obj2)
+        bpy.data.collections['Collection'].objects.unlink(obj2)
 
     bpy.data.collections['Copied_Objects'].hide_viewport=True
 
@@ -947,10 +942,12 @@ def BooleanaUnionSimplesDef(self, context):
     objetos_selecionados = [ o for o in bpy.context.selected_objects ]
 
     for i in objetos_selecionados:
-        bpy.ops.object.select_all(action='DESELECT')
-        i.select_set(True)
-        bpy.context.view_layer.objects.active = i
-        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+        if i.visible_get() == True:
+            bpy.ops.object.select_all(action='DESELECT')
+            i.select_set(True)
+            bpy.context.view_layer.objects.active = i
+            bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+            bpy.ops.object.collection_link(collection='Collection')
         
 class BooleanaUnionSimples(bpy.types.Operator):
     """Tooltip"""

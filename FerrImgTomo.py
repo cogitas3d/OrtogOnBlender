@@ -187,6 +187,7 @@ def ImportaFatiasDef():
 
      
     for Arquivo in ListaArquivos:
+
         bpy.ops.import_image.to_plane(files=[{"name":Arquivo, "name":Arquivo}], directory=TmpDirPNG)
 
         bpy.ops.transform.translate(value=(0, 0, DistanciaZ), constraint_axis=(False, False, True), mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1, release_confirm=True)
@@ -238,6 +239,27 @@ def ImportaFatiasDef():
 
         bpy.context.object.active_material.blend_method = 'BLEND' # Descobri sozinho!
 
+        # ENVIA COLLECTION
+
+        ListaColl = []
+
+        for i in bpy.data.collections:
+            ListaColl.append(i.name)
+
+        if "CT_Scan Voxel" not in ListaColl:
+
+            obj = context.active_object
+            myCol = bpy.data.collections.new("CT_Scan Voxel")
+            bpy.context.scene.collection.children.link(myCol)
+            obj.instance_collection = myCol
+            bpy.ops.object.collection_link(collection='CT_Scan Voxel')
+            bpy.data.collections['Collection'].objects.unlink(obj)
+
+        else:
+            obj = context.active_object
+            bpy.ops.object.collection_link(collection='CT_Scan Voxel')
+            bpy.data.collections['Collection'].objects.unlink(obj)
+
 
     bpy.ops.view3d.view_all(center=False)
 
@@ -256,6 +278,10 @@ def ImportaFatiasDef():
         description = "IMGPathSeq",
         default = str(TmpDirPNG)
       )
+
+
+
+   
 
 class ImportaFatias(bpy.types.Operator):
     """Tooltip"""
