@@ -762,7 +762,10 @@ def BooleanaOsteoInterDef(self, context):
 
     else:
         bpy.ops.object.collection_link(collection='Copied_Objects')
-        bpy.data.collections['Collection'].objects.unlink(obj2)
+        try:
+            bpy.data.collections['Collection'].objects.unlink(obj2)
+        except:
+            print("Não está no Collection!")
 
     bpy.data.collections['Copied_Objects'].hide_viewport=True
 
