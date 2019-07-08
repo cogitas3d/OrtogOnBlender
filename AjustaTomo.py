@@ -187,12 +187,14 @@ def AjustaTomoDef(self, context):
                             SeriesLimpo = SeriesLimpa2.strip(" ")
                             print("SERIES", SeriesLimpo)
 
-                            if not os.path.exists(SeriesLimpo):
-                                os.mkdir(SeriesLimpo)
-
-                            shutil.copy(ArquivoAtual, SeriesLimpo)
-                            print("Copiado de: ", ArquivoAtual, " Para: ", SeriesLimpo)
-                            os.remove(ArquivoAtual)
+                            if SeriesLimpo != '':
+                                if not os.path.exists(SeriesLimpo):
+                                    os.mkdir(SeriesLimpo)
+                            
+                            if SeriesLimpo != '':                    
+                                shutil.copy(ArquivoAtual, SeriesLimpo)
+                                print("Copiado de: ", ArquivoAtual, " Para: ", SeriesLimpo)
+                                os.remove(ArquivoAtual)
 
 
                     os.remove('deletar.txt')

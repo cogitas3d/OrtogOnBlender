@@ -844,6 +844,12 @@ def IdentificaTomografo(Arquivo):
         print("Teeth: 976")
         print("Condylus: 917")
 
+        print("SÉRIE 5")
+        print("Bone: 200")
+        print("SoftTissue: -300")
+        print("Teeth: 1430")
+        print("Condylus: 655")
+
         print("SÉRIE 7")
         print("Bone: 395")
         print("SoftTissue: -300")
@@ -851,7 +857,7 @@ def IdentificaTomografo(Arquivo):
         print("Condylus: 851")
 
         # TAMBÉM FUNCIONA O 201
-        os.chdir(scn.my_tool.path+"/7")
+        os.chdir(scn.my_tool.path+"/5")
         scn.my_tool.path = os.getcwd()
 #        bpy.ops.object.corrige_dicom()
 
@@ -862,9 +868,9 @@ def IdentificaTomografo(Arquivo):
             print("Doesn't have Patient Dir")           
 
         # Gera o 3D 
-        bpy.context.scene.interesse_ossos = "395"
+        bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
-        bpy.context.scene.interesse_dentes = "1140"
+        bpy.context.scene.interesse_dentes = "1430"
 
         bpy.ops.object.gera_modelos_tomo()
 
@@ -888,6 +894,32 @@ def IdentificaTomografo(Arquivo):
 
         # Gera o 3D 
         bpy.context.scene.interesse_ossos = "280"
+        bpy.context.scene.interesse_mole = "-300"
+        bpy.context.scene.interesse_dentes = "1430"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+
+    if ManufacturerLimpo == "'Philips'" and StationNameLimpo == "'HOST-10703'":
+        print("SÉRIE 80328")
+        print("Bone: 200")
+        print("SoftTissue: -300")
+        print("Teeth: 1430")
+        print("Condylus: 655")
+
+        # TAMBÉM FUNCIONA O 201
+        os.chdir(scn.my_tool.path+"/80328")
+        scn.my_tool.path = os.getcwd()
+#        bpy.ops.object.corrige_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")           
+
+        # Gera o 3D 
+        bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
 
