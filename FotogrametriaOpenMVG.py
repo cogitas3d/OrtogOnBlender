@@ -311,6 +311,8 @@ def GeraModeloFotoDef(self, context):
 
         bpy.ops.object.shade_smooth()
 
+        bpy.context.space_data.shading.type = 'MATERIAL'
+
 class GeraModeloFoto(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.gera_modelo_foto"
