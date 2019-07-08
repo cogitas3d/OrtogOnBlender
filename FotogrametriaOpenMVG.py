@@ -121,7 +121,7 @@ def GeraModeloFotoDef(self, context):
         with open(mypath + FotoTeste, 'rb') as f_jpg:
             tags = exifread.process_file(f_jpg, details=True)
             print (tags['Image Model'])
-            CamModel = str(tags['Image Model'])
+            CamModel = str(tags['Image Model'])+";"
 
 
 
@@ -166,7 +166,7 @@ def GeraModeloFotoDef(self, context):
             print("Nao apareceu!")
 
             with open(camDatabase, 'a') as file:
-                inputCam = CamModel, "; 3.80"
+                inputCam = CamModel, " 3.80"
                 print(inputCam)
      #           if platform.system() == "Darwin" or platform.system() == "Windows":
      #              file.write("\n")
