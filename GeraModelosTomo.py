@@ -726,8 +726,13 @@ def IdentificaTomografo(Arquivo):
         print("SoftTissue: -300")
         print("Teeth: 1430")
 
+        print("SÉRIE 3")
+        print("Bone: 250")
+        print("SoftTissue: -300")
+        print("Teeth: 1430")
+
         # TAMBÉM FUNCIONA O 201
-        os.chdir(scn.my_tool.path+"/2")
+        os.chdir(scn.my_tool.path+"/3")
         scn.my_tool.path = os.getcwd()
         bpy.ops.object.corrige_dicom()
 
@@ -738,7 +743,7 @@ def IdentificaTomografo(Arquivo):
             print("Doesn't have Patient Dir")           
 
         # Gera o 3D 
-        bpy.context.scene.interesse_ossos = "250"
+        bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
 
