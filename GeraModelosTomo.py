@@ -725,6 +725,7 @@ def IdentificaTomografo(Arquivo):
         print("Bone: 250")
         print("SoftTissue: -300")
         print("Teeth: 1430")
+        print("FIX!")
 
         print("SÉRIE 3")
         print("Bone: 250")
@@ -734,7 +735,7 @@ def IdentificaTomografo(Arquivo):
         # TAMBÉM FUNCIONA O 201
         os.chdir(scn.my_tool.path+"/3")
         scn.my_tool.path = os.getcwd()
-        bpy.ops.object.corrige_dicom()
+#        bpy.ops.object.corrige_dicom()
 
         # Copia para o diretório
         try:
