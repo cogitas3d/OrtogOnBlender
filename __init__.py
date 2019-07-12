@@ -73,7 +73,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190712a")
+        row.label(text="VERSION: 20190712b")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -242,7 +242,7 @@ class ORTOG_PT_CTScanRec(bpy.types.Panel):
 #        rd = scene.render
 
         row = layout.row()
-        row.label(text="CT-Scan Reconstruction:")
+        row.label(text="Manual Reconstruction:")
 
         col = layout.column(align=True)
         col.prop(scn.my_tool, "path", text="")
@@ -268,6 +268,11 @@ class ORTOG_PT_CTScanRec(bpy.types.Panel):
         row.operator("object.gera_modelos_tomo", text="Convert DICOM to 3D", icon="SNAP_FACE")
 
         row = layout.row()
+        row.label(text="Automatic Reconstruction:")
+
+        col = layout.column(align=True)
+        col.prop(scn.my_tool, "path", text="")
+
         row = layout.row()
         row.operator("object.gera_modelos_tomo_auto", text="AUTOMATIC DICOM TO 3D", icon="SNAP_FACE")
 
