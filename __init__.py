@@ -73,7 +73,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190712b")
+        row.label(text="VERSION: 20190712c")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -410,11 +410,13 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
         linha=row.operator("object.segmenta_desenho", text="Cut Draw!", icon="FCURVE")
 
         row = layout.row()
-        row = layout.row()
-        linha=row.operator("mesh.poisson", text="Poisson Reconstruction", icon="MESH_ICOSPHERE")
+        row.label(text="Reconstruction:")
 
         row = layout.row()
         row.operator("object.fecha_buraco_todos", icon='MOD_TRIANGULATE', text="Close All Holes")
+
+        row = layout.row()
+        linha=row.operator("mesh.poisson", text="Poisson Reconstruction", icon="MESH_ICOSPHERE")
 
         row = layout.row()
         box = layout.box()
