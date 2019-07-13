@@ -688,15 +688,37 @@ def BooleanSeparaMandibula():
 
     bpy.ops.object.booleana_osteo_inter()
 
+
+
     ListaObjetos = ['EMP_Proc_Cor_dir', 'EMP_Proc_Cond_dir', 'EMP_Proc_Cor_esq', 'EMP_Proc_Cond_esq', 'EMP_Gon_dir', 'EMP_Ang_Mand_dir', 'EMP_Gon_esq', 'EMP_Ang_Mand_esq', 'EMP_Meio_Mand_esq', 'EMP_Meio_Mand_dir', 'EMP_Protuberancia_down', 'EMP_Protuberancia', 'EMP_Protuberancia_up', 'ArmatureMandibula', 'Condylar Process right', 'Coronoid Process right', 'Condylar Process left', 'Coronoid Process left', 'Mid Go-Ramus Fracure right', 'Go right', 'Mid Go-Ramus Fracure left', 'Go left', 'Mid Mandibula Angle right', 'Mid Mandibula Angle left', 'Gn point', 'B point', 'Mid Upper Incisors']
 
-    bpy.ops.object.select_all(action='DESELECT')
 
     for i in ListaObjetos:   
  
         bpy.data.objects[i].select_set(True)
         bpy.context.view_layer.objects.active = bpy.data.objects[i]
         bpy.ops.object.delete(use_global=False)
+
+# Traz para Collection
+
+    bpy.ops.object.select_all(action='DESELECT')
+    Cranio.select_set(True)
+
+
+
+    bpy.context.view_layer.objects.active = Cranio
+
+    bpy.ops.object.collection_link(collection='Collection')
+    Cranio.hide_viewport=False
+
+    bpy.context.object.active_material.diffuse_color = (0.8, 0.684753, 0.470028, 0.5)
+
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    objAct = bpy.data.objects["Result.001"]
+    objAct.select_set(True)
+    bpy.context.view_layer.objects.active = objAct
 
 
 class SeparacaoMandibula(bpy.types.Operator):
