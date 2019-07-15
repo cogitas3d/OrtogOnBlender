@@ -73,7 +73,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190713e")
+        row.label(text="VERSION: 20190715a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -616,7 +616,7 @@ class ORTOG_PT_Segmentation(bpy.types.Panel):
         row.operator("object.gera_dir_nome_paciente_seg", text="SAVE!", icon="FILE_TICK")
 
 class ORTOG_PT_Fotogrametria(bpy.types.Panel):
-    bl_label = "Photogrammetry"
+    bl_label = "Photogrammetry Start"
     bl_region_type = 'UI'
     bl_space_type = 'VIEW_3D'
     bl_options = {'DEFAULT_CLOSED'}
@@ -648,9 +648,8 @@ class ORTOG_PT_Fotogrametria(bpy.types.Panel):
         row.alignment = 'CENTER'
         row.operator("object.gera_dir_nome_paciente_fotogram", text="SAVE!", icon="FILE_TICK")
 
-
 class ORTOG_PT_AlinhaFace(bpy.types.Panel):
-    bl_label = "Align & Scale Face"
+    bl_label = "Photogrammetry - Align & Scale"
     bl_region_type = 'UI'
     bl_space_type = 'VIEW_3D'
     bl_options = {'DEFAULT_CLOSED'}
@@ -712,6 +711,37 @@ class ORTOG_PT_AlinhaFace(bpy.types.Panel):
         row.scale_y=1.5
         row.alignment = 'CENTER'
         row.operator("object.gera_dir_nome_paciente_alinha_face", text="SAVE!", icon="FILE_TICK")
+
+class ORTOG_PT_FotogramModif(bpy.types.Panel):
+    bl_label = "Photogrammetry - Modifiers"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Ortog"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        scn = context.scene
+
+        row = layout.row()
+        row.label(text="Modifiers:")
+
+        ob = context.object
+
+        layout.operator_menu_enum("object.modifier_add", "type")
+
+        for md in ob.modifiers:
+            box = layout.template_modifier(md)
+            if box:
+                # match enum type to our functions, avoids a lookup table.
+                getattr(self, md.type)(box, ob, md)
+
+        row = layout.row()
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.convert", text="APPLY ALL!", icon="ERROR").target='MESH'
 
 class ORTOG_PT_AlinhaFaceCT(bpy.types.Panel):
     bl_label = "Align Face to CT-Scan"
@@ -1990,6 +2020,7 @@ def register():
     bpy.utils.register_class(ORTOG_PT_Segmentation)
     bpy.utils.register_class(ORTOG_PT_Fotogrametria)
     bpy.utils.register_class(ORTOG_PT_AlinhaFace)
+    bpy.utils.register_class(ORTOG_PT_FotogramModif)
     bpy.utils.register_class(ORTOG_PT_AlinhaFaceCT)
     bpy.utils.register_class(ORTOG_PT_PontosAnatomicosCabeca)
     bpy.utils.register_class(ORTOG_PT_PontosAnatomicosMaxila)
@@ -2146,6 +2177,7 @@ def unregister():
     bpy.utils.unregister_class(ORTOG_PT_Segmentation)
     bpy.utils.unregister_class(ORTOG_PT_Fotogrametria)
     bpy.utils.unregister_class(ORTOG_PT_AlinhaFace)
+    bpy.utils.unregister_class(ORTOG_PT_FotogramModif)
     bpy.utils.unregister_class(ORTOG_PT_AlinhaFaceCT)
     bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosCabeca)
     bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosMaxila)
