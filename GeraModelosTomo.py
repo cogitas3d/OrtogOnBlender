@@ -646,6 +646,8 @@ def IdentificaTomografo(Arquivo):
         bpy.context.scene.interesse_mole = "-960"
         bpy.context.scene.interesse_dentes = "1230"
 
+        bpy.ops.object.gera_modelos_tomo()
+
     if ManufacturerLimpo == "'Xoran Technologies ®'" and StationNameLimpo == "'SERVER2'":
         print("SÉRIE 1")
         print("Bone: 320")
@@ -667,6 +669,8 @@ def IdentificaTomografo(Arquivo):
         bpy.context.scene.interesse_ossos = "320"
         bpy.context.scene.interesse_mole = "-680"
         bpy.context.scene.interesse_dentes = "1800"
+
+        bpy.ops.object.gera_modelos_tomo()
 
     if ManufacturerLimpo == "'Xoran Technologies ®'" and StationNameLimpo == "'FEN-TOMO05'":
         print("SÉRIE 1")
