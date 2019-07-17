@@ -1143,9 +1143,19 @@ def IdentificaTomografo(Arquivo):
         print("Condylus: 145")
 
         # TAMBÉM FUNCIONA O 201
-        os.chdir(scn.my_tool.path+"/453970")
-        scn.my_tool.path = os.getcwd()
-#        bpy.ops.object.corrige_dicom()
+        try:
+            os.chdir(scn.my_tool.path+"/453970")
+            scn.my_tool.path = os.getcwd()
+#           bpy.ops.object.corrige_dicom()
+        except:
+            print("Não conta com diretório 453970")
+
+        try:
+            os.chdir(scn.my_tool.path+"/456750")
+            scn.my_tool.path = os.getcwd()
+#           bpy.ops.object.corrige_dicom()
+        except:
+            print("Não conta com diretório 456750")
 
         # Copia para o diretório
         try:
@@ -1237,6 +1247,11 @@ def GeraModeloTomoAutoDef(self, context):
 
     try:
 	    os.chdir(scn.my_tool.path+"/453970")
+    except:
+        print("Dir 453970 doesn't exist")
+
+    try:
+	    os.chdir(scn.my_tool.path+"/456750")
     except:
         print("Dir 453970 doesn't exist")
 

@@ -73,7 +73,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190716b")
+        row.label(text="VERSION: 20190717a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1198,6 +1198,13 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
         obj = context.object
         scn = context.scene
 
+
+        linha=row.operator("object.calcula_tudo_cefalo", text="Calculate All!!!", icon="PREFERENCES")
+
+        row = layout.row()
+        row = layout.row()
+        row = layout.row()
+
         row = layout.row()
         row.label(text="Angles:")
 
@@ -1424,12 +1431,6 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
         row = col.row()
         row.alignment = 'RIGHT'
         row.label(text="Women: -1 to 3 Men: -1 to 3")
-
-        row = layout.row()
-        row = layout.row()
-        row = layout.row()
-        linha=row.operator("object.calcula_tudo_cefalo", text="Calculate All!!!", icon="PREFERENCES")
-
 
 bpy.types.Scene.dist_pescoco_garganta_tvl = bpy.props.StringProperty \
     (
