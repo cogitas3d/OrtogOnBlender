@@ -73,7 +73,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190717a")
+        row.label(text="VERSION: 20190718a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -632,6 +632,11 @@ class ORTOG_PT_Fotogrametria(bpy.types.Panel):
         row = layout.row()
         col = layout.column(align=True)
         col.prop(scn.my_tool, "path", text="")
+
+        col = self.layout.column(align = True)
+        col.alignment = 'RIGHT'
+        col.prop(context.scene, "d_factor")
+        col.prop(context.scene, "smooth_factor")
 
         if platform.system() == "Windows":
             row = layout.row()
@@ -1198,12 +1203,12 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
         obj = context.object
         scn = context.scene
 
-
+        row = layout.row()
         linha=row.operator("object.calcula_tudo_cefalo", text="Calculate All!!!", icon="PREFERENCES")
 
         row = layout.row()
         row = layout.row()
-        row = layout.row()
+
 
         row = layout.row()
         row.label(text="Angles:")
@@ -2019,6 +2024,20 @@ def register():
     bpy.utils.register_class(AlinhaTresPontos)
     bpy.utils.register_class(ORTOG_OT_GeraModelosTomoArc)
     bpy.utils.register_class(ORTOG_PT_Segmentation)
+
+    bpy.types.Scene.d_factor = bpy.props.StringProperty \
+      (
+        name = "D Factor",
+        description = "D Factor",
+        default = "6"
+      )
+    bpy.types.Scene.smooth_factor = bpy.props.StringProperty \
+      (
+        name = "Smooth Factor",
+        description = "Smooth Factor",
+        default = "16"
+      )
+
     bpy.utils.register_class(ORTOG_PT_Fotogrametria)
     bpy.utils.register_class(ORTOG_PT_AlinhaFace)
     bpy.utils.register_class(ORTOG_PT_FotogramModif)

@@ -53,6 +53,8 @@ def GeraModeloFotoDef(self, context):
 #    else:
 #        tmpdir = tempfile.gettempdir()
 
+    dFactor = scn.d_factor
+    smoothFactor = scn.smooth_factor
 
     homeall = expanduser("~")
 
@@ -239,15 +241,15 @@ def GeraModeloFotoDef(self, context):
 
         if platform.system() == "Linux":
 
-            subprocess.call('cd '+tmpdir+' && mkdir MVS && ~/Programs/OrtogOnBlender/openMVG/./openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && ~/Programs/OrtogOnBlender/openMVS/./DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && ~/Programs/OrtogOnBlender/openMVS/./ReconstructMesh -d 16 --smooth 6 '+tmpdir+'/MVS/scene_dense.mvs && ~/Programs/OrtogOnBlender/openMVS/./TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
+            subprocess.call('cd '+tmpdir+' && mkdir MVS && ~/Programs/OrtogOnBlender/openMVG/./openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && ~/Programs/OrtogOnBlender/openMVS/./DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && ~/Programs/OrtogOnBlender/openMVS/./ReconstructMesh -d '+dFactor+' --smooth '+smoothFactor+' '+tmpdir+'/MVS/scene_dense.mvs && ~/Programs/OrtogOnBlender/openMVS/./TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
 
         if platform.system() == "Darwin":
 
-            subprocess.call('cd '+tmpdir+' && mkdir MVS && /OrtogOnBlender/openMVGMACelcap/openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && /OrtogOnBlender/openMVSMACelcap/./DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && /OrtogOnBlender/openMVSMACelcap/./ReconstructMesh -d 16 --smooth 6 '+tmpdir+'/MVS/scene_dense.mvs && /OrtogOnBlender/openMVSMACelcap/./TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
+            subprocess.call('cd '+tmpdir+' && mkdir MVS && /OrtogOnBlender/openMVGMACelcap/openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && /OrtogOnBlender/openMVSMACelcap/./DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && /OrtogOnBlender/openMVSMACelcap/./ReconstructMesh -d '+dFactor+' --smooth '+smoothFactor+' '+tmpdir+'/MVS/scene_dense.mvs && /OrtogOnBlender/openMVSMACelcap/./TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
 
         if platform.system() == "Windows":
 
-            subprocess.call('cd '+tmpdir+' && mkdir MVS && C:\OrtogOnBlender\openMVGWin\openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && C:\OrtogOnBlender\openMVSWin\DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && C:\OrtogOnBlender\openMVSWin\ReconstructMesh -d 16 --smooth 6 '+tmpdir+'/MVS/scene_dense.mvs && C:\OrtogOnBlender\openMVSWin\TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
+            subprocess.call('cd '+tmpdir+' && mkdir MVS && C:\OrtogOnBlender\openMVGWin\openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && C:\OrtogOnBlender\openMVSWin\DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && C:\OrtogOnBlender\openMVSWin\ReconstructMesh -d '+dFactor+' --smooth '+smoothFactor+' '+tmpdir+'/MVS/scene_dense.mvs && C:\OrtogOnBlender\openMVSWin\TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
 
 #        else:
 #            subprocess.call(OpenMVSPath ,  shell=True)            
