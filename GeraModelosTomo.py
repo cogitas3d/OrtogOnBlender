@@ -496,6 +496,54 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+    if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'Optima'":
+        print("SÉRIE 303")
+        print("Bone: 200")
+        print("SoftTissue: -300")
+        print("Teeth: 1430")
+        print("Condylus: 655")
+
+        os.chdir(scn.my_tool.path+"/303")
+        scn.my_tool.path = os.getcwd()
+ #       bpy.ops.object.corrige_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")           
+
+        # Gera o 3D 
+        bpy.context.scene.interesse_ossos = "200"
+        bpy.context.scene.interesse_mole = "-300"
+        bpy.context.scene.interesse_dentes = "1430"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+    if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'CT99'":
+        print("SÉRIE 3")
+        print("Bone: 200")
+        print("SoftTissue: -300")
+        print("Teeth: 1430")
+        print("Condylus: 655")
+
+        os.chdir(scn.my_tool.path+"/3")
+        scn.my_tool.path = os.getcwd()
+ #       bpy.ops.object.corrige_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")           
+
+        # Gera o 3D 
+        bpy.context.scene.interesse_ossos = "200"
+        bpy.context.scene.interesse_mole = "-300"
+        bpy.context.scene.interesse_dentes = "1430"
+
+        bpy.ops.object.gera_modelos_tomo()
+
     if ManufacturerLimpo == "'SIEMENS'" and StationNameLimpo == "'CT3SQ'":
         print("SÉRIE 3")
         print("Bone: 200")
@@ -1254,6 +1302,12 @@ def GeraModeloTomoAutoDef(self, context):
 	    os.chdir(scn.my_tool.path+"/456750")
     except:
         print("Dir 453970 doesn't exist")
+
+
+    try:
+	    os.chdir(scn.my_tool.path+"/303")
+    except:
+        print("Dir 303 doesn't exist")
 
 	  
     # Não usar o 1, dá erro!
