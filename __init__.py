@@ -25,6 +25,7 @@ else:
     from .BooleanaOsteo import *
     from .AlinhaObjetos import *
     from .FotogrametriaOpenMVG import *
+    from .FotogrametriaSMVS import *
 #    from .AlinhaTresPontosNovo import *
     from .AlinhaRedimensiona import *
     from .DesenhaObjetos import *
@@ -73,7 +74,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190722a")
+        row.label(text="VERSION: 20190723a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -633,6 +634,10 @@ class ORTOG_PT_Fotogrametria(bpy.types.Panel):
         col = layout.column(align=True)
         col.prop(scn.my_tool, "path", text="")
 
+
+        row = layout.row()
+        row.label(text="OpenMVG+OpenMVS:")
+
         col = self.layout.column(align = True)
         col.alignment = 'RIGHT'
         col.prop(context.scene, "d_factor")
@@ -644,6 +649,14 @@ class ORTOG_PT_Fotogrametria(bpy.types.Panel):
 			
         row = layout.row()
         row.operator("object.gera_modelo_foto", text="Start Photogrammetry!", icon="IMAGE_DATA")
+
+        row = layout.row()
+        row = layout.row()
+        row = layout.row()
+        row.label(text="SMVS:")
+
+        row = layout.row()
+        row.operator("object.gera_modelo_foto_smvs", text="Alternative Photogrammetry", icon="IMAGE_DATA")
 
         row = layout.row()
         box = layout.box()
