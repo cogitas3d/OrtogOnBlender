@@ -6,6 +6,8 @@ import shutil
 import tempfile
 import bmesh
 
+from .FerrImgTomo import *
+
 # ERROS
 
 def ERROruntimeFotosDef(self, context):
@@ -87,7 +89,11 @@ def GeraModeloFotoSMVSDef(self, context):
             bpy.ops.view3d.view_all(center=False)
             bpy.ops.file.pack_all()
 
-    '''
+    bpy.ops.object.modifier_add(type='DECIMATE')
+    #bpy.context.object.modifiers["Decimate"].ratio = 0.25
+    bpy.context.object.modifiers["Decimate"].ratio = 0.35
+    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Decimate")
+
 
     print("FIX SMVS SURFACE AND MAP")
 
@@ -97,16 +103,20 @@ def GeraModeloFotoSMVSDef(self, context):
 
     bpy.ops.object.duplicate_move()
 
-    photogrammetry_original.select_set(True)
+    photogrammetry_original.select_set(False)
     photogrammetry_copy = bpy.context.active_object
 
     print(photogrammetry_original)
     print(photogrammetry_copy)
 
-    bpy.ops.object.modifier_add(type='DECIMATE')
+#    bpy.ops.object.modifier_add(type='DECIMATE')
     #bpy.context.object.modifiers["Decimate"].ratio = 0.25
-    bpy.context.object.modifiers["Decimate"].ratio = 0.50
-    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Decimate")
+#    bpy.context.object.modifiers["Decimate"].ratio = 0.35
+#    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Decimate")
+
+# Apaga material
+
+#    bpy.ops.object.material_slot_remove()
 
 
     # Entra em modo de edição e seleciona todos os vértices
@@ -120,6 +130,7 @@ def GeraModeloFotoSMVSDef(self, context):
     bpy.ops.uv.smart_project(island_margin=0.03)
 #    bpy.ops.uv.smart_project(island_margin=0.3)
 
+    bpy.ops.object.mode_set(mode='OBJECT')
 
     # Faz o bake	
     #bpy.context.scene.render.use_bake_selected_to_active = True
@@ -128,33 +139,57 @@ def GeraModeloFotoSMVSDef(self, context):
     #bpy.ops.object.bake_image()
 
     #Cria imagem
-    bpy.ops.image.new(name='UV_FACE', width=4096, height=4096, color=(0.5, 0.5, 0.5, 1), alpha=True, generated_type='BLANK', float=False, use_stereo_3d=False)
+    bpy.ops.image.new(name='UV_FACE', width=2048, height=2048, color=(0.5, 0.5, 0.5, 1), alpha=True, generated_type='BLANK', float=False, use_stereo_3d=False)
+
+    #Cria material
+
+
+    m = Material()
+    m.set_cycles()
+    # from chapter 1 of [DRM protected book, could not copy author/title]
+    m.make_material("FaceUVunic")
+
+    ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
+    ImageTexture.image = bpy.data.images['UV_FACE']
+
+    diffuseBSDF = m.nodes['Principled BSDF']
+    m.link(ImageTexture, 'Color', diffuseBSDF, 'Base Color')
+
+    bpy.ops.object.material_slot_remove()
+    bpy.ops.object.material_slot_add()
+
+    bpy.data.objects[bpy.context.view_layer.objects.active.name].active_material = bpy.data.materials["FaceUVunic"]
+
 
     # BAKE
-    bpy.context.scene.render.bake_margin = 2
-    bpy.context.scene.render.use_bake_selected_to_active = True
 
     ob.data.uv_layers['UVMap'].active = True
 
-#    bpy.data.scenes["Scene"].render.bake_type = "TEXTURE"
-#    bpy.context.scene.cycles.bake_type = 'UV'
-    bpy.data.scenes["Scene"].cycles.bake_type = 'UV'
 
-#    bpy.ops.object.mode_set(mode='OBJECT')
+#    bpy.data.scenes["Scene"].cycles.bake_type = 'UV'
+    bpy.context.scene.cycles.bake_type = 'DIFFUSE'
+    bpy.context.scene.render.bake.use_pass_direct = False
+    bpy.context.scene.render.bake.use_pass_indirect = False
 
-#    for d in ob.data.uv_layers['UVMap'].data:
-#        d.image = bpy.data.images['UV_FACE']
+    bpy.context.scene.render.bake.use_selected_to_active = True
+    bpy.context.scene.render.bake.margin = 2
+    bpy.context.scene.render.bake.cage_extrusion = 0.32
 
-#    bpy.ops.object.mode_set(mode='EDIT')
 
-    bpy.ops.mesh.select_all(action='SELECT')
 
-    bpy.ops.object.bake_image()
 
-    bpy.ops.object.mode_set(mode='OBJECT')
+    photogrammetry_original.select_set(True)
+
+    bpy.ops.object.bake(type='DIFFUSE')
+    
+
+
+
 
     # Oculta original
     photogrammetry_original.hide_viewport=True
+
+
 
     # MODIFICADORES
 
@@ -174,118 +209,7 @@ def GeraModeloFotoSMVSDef(self, context):
 
     heightTex = bpy.data.textures.new('Texture name', type='IMAGE')
     heightTex.image = bpy.data.images['UV_FACE']
-    dispMod = obj.modifiers.new("Displace", type='DISPLACE')
-    dispMod.texture = heightTex
-    bpy.context.object.modifiers["Displace"].texture_coords = 'UV'
-    bpy.context.object.modifiers["Displace"].strength = 2.2
-    bpy.context.object.modifiers["Displace"].mid_level = 0.5
-    bpy.context.object.modifiers["Displace"].show_viewport = False
-
-    #Comprime modificadores
-    bpy.context.object.modifiers["Smooth"].show_expanded = False
-    bpy.context.object.modifiers["Multires"].show_expanded = False
-    bpy.context.object.modifiers["Displace"].show_expanded = False
-
-    bpy.ops.object.shade_smooth()
-
-#    bpy.ops.file.unpack_item(id_name="UV_FACE")
-#    bpy.data.images["UV_FACE"].filepath = tmpdir+'/UV_FACE.png'
-#    bpy.data.images["UV_FACE"].save()
-
-#    bpy.ops.file.pack_all()
-    bpy.data.images["UV_FACE"].pack(as_png=True)
-
-# Simplifica, gera UVMap único e Displacement
-def DisplaceSMVSDef(self, context):
-
-    scn = context.scene
-
-    print("FIX SMVS SURFACE AND MAP")
-
-    photogrammetry_original = bpy.context.active_object
-
-    #bpy.ops.object.duplicate()
-
-    bpy.ops.object.duplicate_move()
-
-    photogrammetry_original.select=True
-    photogrammetry_copy = bpy.context.active_object
-
-    print(photogrammetry_original)
-    print(photogrammetry_copy)
-
-    bpy.ops.object.modifier_add(type='DECIMATE')
-    #bpy.context.object.modifiers["Decimate"].ratio = 0.25
-    bpy.context.object.modifiers["Decimate"].ratio = 0.50
-    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Decimate")
-
-
-    # Entra em modo de edição e seleciona todos os vértices
-    ob   = bpy.context.active_object
-    bpy.ops.object.mode_set(mode = 'EDIT')
-    mesh = bmesh.from_edit_mesh(ob.data)
-    for v in mesh.verts:
-        v.select = True
-
-    # Cria UV map com espaço entre os grupos    
-    bpy.ops.uv.smart_project(island_margin=0.03)
-#    bpy.ops.uv.smart_project(island_margin=0.3)
-
-
-    # Faz o bake	
-    #bpy.context.scene.render.use_bake_selected_to_active = True
-    #bpy.context.scene.render.bake_type = 'TEXTURE'
-    #bpy.context.scene.render.bake_margin = 4
-    #bpy.ops.object.bake_image()
-
-    #Cria imagem
-    bpy.ops.image.new(name='UV_NEW', width=4096, height=4096, color=(0.5, 0.5, 0.5, 1), alpha=True, generated_type='BLANK', float=False, gen_context='NONE', use_stereo_3d=False)
-
-    # BAKE
-    bpy.context.scene.render.bake_margin = 2
-    bpy.context.scene.render.use_bake_selected_to_active = True
-
-    ob.data.uv_textures['UVMap'].active = True
-
-    bpy.data.scenes["Scene"].render.bake_type = "TEXTURE"
-
-    bpy.ops.object.mode_set(mode='OBJECT')
-
-    for d in ob.data.uv_textures['UVMap'].data:
-        d.image = bpy.data.images['UV_NEW']
-
-    bpy.ops.object.mode_set(mode='EDIT')
-
-    bpy.ops.mesh.select_all(action='SELECT')
-
-    bpy.ops.object.bake_image()
-
-    bpy.ops.object.mode_set(mode='OBJECT')
-
-    # Oculta original
-    photogrammetry_original.hide=True
-
-    '''
-
-    # MODIFICADORES
-
-    # Smooth
-    bpy.ops.object.modifier_add(type='SMOOTH')
-    bpy.context.object.modifiers["Smooth"].factor = 2
-    bpy.context.object.modifiers["Smooth"].iterations = 3
-    bpy.context.object.modifiers["Smooth"].show_viewport = False
-
-    # MultRes
-    bpy.ops.object.modifier_add(type='MULTIRES')
-    bpy.context.object.modifiers["Multires"].show_viewport = False
-    bpy.ops.object.multires_subdivide(modifier="Multires")
-
-    context = bpy.context
-    obj = context.active_object
-
-    heightTex = bpy.data.textures.new('Texture name', type='IMAGE')
-#    heightTex.image = bpy.data.images['UV_NEW']
-    heightTex.image = bpy.data.images['scene_dense_mesh_texture2_material0000_map_Kd.png']
+#    heightTex.image = bpy.data.images['scene_dense_mesh_texture2_material0000_map_Kd.png']
     dispMod = obj.modifiers.new("Displace", type='DISPLACE')
     dispMod.texture = heightTex
     bpy.context.object.modifiers["Displace"].texture_coords = 'UV'
@@ -302,12 +226,12 @@ def DisplaceSMVSDef(self, context):
 
     bpy.context.space_data.shading.type = 'MATERIAL'
 
-    '''
 
-    bpy.data.images["UV_NEW"].pack(as_png=True)
+
+    bpy.data.images['UV_FACE'].pack()
     bpy.ops.file.pack_all()
 
-    '''
+
 
 class GeraModeloFotoSMVS(bpy.types.Operator):
     """Tooltip"""
