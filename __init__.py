@@ -74,7 +74,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190724a")
+        row.label(text="VERSION: 20190724b")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -1765,6 +1765,37 @@ class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
         obj = context.object
 
         row = layout.row()
+        row.label(text="Mode:")
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+        row = layout.row()
+        row.label(text="Pivot Rotation:")
+
+
+        obj = context.active_object
+        tool_settings = context.tool_settings
+
+        object_mode = 'OBJECT' if obj is None else obj.mode
+
+        if object_mode in {'OBJECT', 'EDIT', 'EDIT_GPENCIL', 'SCULPT_GPENCIL'} or has_pose_mode:
+            layout.prop_with_popover(
+                tool_settings,
+                "transform_pivot_point",
+                text="",
+                icon_only=False,
+                panel="VIEW3D_PT_pivot_point",
+            )
+
+#bpy.context.scene.tool_settings.transform_pivot_point = 'CURSOR'
+#bpy.context.scene.tool_settings.transform_pivot_point = 'MEDIAN_POINT'
+
+
+        row = layout.row()
         row.label(text="Controllers:")
 
         row = layout.row()
@@ -1774,6 +1805,20 @@ class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
         row.operator("screen.animation_play", text="", icon="PLAY")
         row.operator("screen.frame_jump", text="End", icon="TRIA_RIGHT_BAR").end=True
 
+        row = layout.row()
+        row.label(text="Piggyback:")
+
+        row = layout.row()
+        row.label(text="1) Select son(s)")
+        row = layout.row()
+        row.label(text="2) Select father")
+
+        row = layout.row()
+        row.operator("object.parenteia_objetos", text="MAKE PARENT", icon="RESTRICT_VIEW_OFF")
+
+        row = layout.row()
+        row = layout.row()
+        row.operator("object.desparenteia_objetos", text="Clar Parent", icon="UNLINKED")
 
         row = layout.row()
         row.label(text="Capturing:")

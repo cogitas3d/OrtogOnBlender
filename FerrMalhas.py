@@ -26,3 +26,46 @@ class FechaMoldeSimples(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(FechaMoldeSimples)
+
+
+def ParenteiaObjetosDef():
+
+#    objetos_selecionados = [ o for o in bpy.context.selected_objects ]
+
+#    for i in objetos_selecionados:
+#        if i.visible_get() == True:
+#            bpy.ops.object.parent_set(type='OBJECT', keep_transform=True)
+
+    bpy.ops.object.parent_set(type='OBJECT', keep_transform=True)
+    print("Parenteado!")
+
+
+class ParenteiaObjetos(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.parenteia_objetos"
+    bl_label = "Parenteia objetos"
+    
+    def execute(self, context):
+        ParenteiaObjetosDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(ParenteiaObjetos)
+
+
+
+def DesparenteiaObjetosDef():
+
+    bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+    print("Desparenteado!")
+
+
+class DesparenteiaObjetos(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.desparenteia_objetos"
+    bl_label = "Desparenteia objetos"
+    
+    def execute(self, context):
+        DesparenteiaObjetosDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(DesparenteiaObjetos)
