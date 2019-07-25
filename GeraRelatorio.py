@@ -86,8 +86,11 @@ def GeraRelatorioDef(self, context):
     CapturaCefaloFIN()
 
 
+
     # Gera CSV
     tmpdir = tempfile.mkdtemp()
+
+    ListaApagar = []
 
     with open(tmpdir+'/Report_OrtogOnBlender.csv', mode='w') as centroid_file:
         report_writer = csv.writer(centroid_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -101,54 +104,75 @@ def GeraRelatorioDef(self, context):
             report_writer.writerow(['HEAD'])
             report_writer.writerow(['ID', 'LocX', 'LocY', 'LocZ'])
 
-            #report_writer.writerow(DeslocamentoINIFIN('Orbital right', 'Orbital right.INI', 'Orbital right.FIN' ))
-
             for ob in Collection_Head:
-                    #calculaDeslocamento( ob+' : ', ob+'.INI', ob+'.FIN')
                     report_writer.writerow(DeslocamentoINIFIN( ob.name+' : ', ob.name+'.INI', ob.name+'.FIN'))
-
+                    ListaApagar.append(ob.name+'.INI')
+                    ListaApagar.append(ob.name+'.FIN')
         except:
             print("Sem pontos da Cabeça.")
 
 
-        '''
+        try:
+            Collection_Maxilla = bpy.data.collections['Anatomical Points - Maxilla'].all_objects
+
+            report_writer.writerow([''])
             report_writer.writerow(['MAXILLA'])
             report_writer.writerow(['ID', 'LocX', 'LocY', 'LocZ'])
 
+            for ob in Collection_Maxilla:
+                    report_writer.writerow(DeslocamentoINIFIN( ob.name+' : ', ob.name+'.INI', ob.name+'.FIN'))
+                    ListaApagar.append(ob.name+'.INI')
+                    ListaApagar.append(ob.name+'.FIN')
+        except:
+            print("Sem pontos da Maxila.")
 
 
-        report_writer.writerow(DeslocamentoINIFIN('Teeth 8 (11)','EMP11.INI', 'EMP11.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('Teeth 9 (21) : ', 'EMP21.INI', 'EMP21.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('Teeth 6 (13) : ', 'EMP13.INI', 'EMP13.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('Teeth 11 (23) :', 'EMP16.INI', 'EMP16.FIN'))   
-        report_writer.writerow(DeslocamentoINIFIN('Teeth 3 (16) : ', 'EMP26.INI', 'EMP26.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('Palatine :     ', 'EMPPalatine.INI', 'EMPPalatine.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('A Point :      ', 'EMPApoint.INI', 'EMPApoint.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('Nasal Spine :  ', 'EMPNasalSpine.INI', 'EMPNasalSpine.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('Pterygoid (L) :', 'EMPPterygoidL.INI', 'EMPPterygoidL.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('Pterygoid (R) :', 'EMPPterygoidR.INI', 'EMPPterygoidR.FIN'))
 
-        report_writer.writerow([''])
-        report_writer.writerow(['MANDIBLE BODY'])
-        report_writer.writerow(['ID', 'LocX', 'LocY', 'LocZ'])
+        try:
+            Collection_Mandible = bpy.data.collections['Anatomical Points - Mandible'].all_objects
 
-        report_writer.writerow(DeslocamentoINIFIN('Teeth 24 (31) :', 'EMP31.INI', 'EMP31.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('Teeth 25 (41) :', 'EMP41.INI', 'EMP41.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('Teeth 22 (33) :', 'EMP33.INI', 'EMP33.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('Teeth 27 (43) :', 'EMP43.INI', 'EMP43.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('Teeth 19 (36) :', 'EMP36.INI', 'EMP36.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('Teeth 30 (46) :', 'EMP46.INI', 'EMP46.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('B Point or Up: ', 'EMPBpoint.INI', 'EMPBpoint.FIN'))
+            report_writer.writerow([''])
+            report_writer.writerow(['MANDIBLE'])
+            report_writer.writerow(['ID', 'LocX', 'LocY', 'LocZ'])
 
-        report_writer.writerow([''])
-        report_writer.writerow(['CHIN'])
-        report_writer.writerow(['ID', 'LocX', 'LocY', 'LocZ'])
+            for ob in Collection_Mandible:
+                    report_writer.writerow(DeslocamentoINIFIN( ob.name+' : ', ob.name+'.INI', ob.name+'.FIN'))
+                    ListaApagar.append(ob.name+'.INI')
+                    ListaApagar.append(ob.name+'.FIN')
+        except:
+            print("Sem pontos da Mandíbula.")
 
-        report_writer.writerow(DeslocamentoINIFIN('Pogonion:      ', 'EMPPogonion.INI', 'EMPPogonion.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('Menton:        ', 'EMPMenton.INI', 'EMPMenton.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('Menton (L):    ', 'EMPMentonL.INI', 'EMPMentonL.FIN'))
-        report_writer.writerow(DeslocamentoINIFIN('Menton (R) :   ', 'EMPMentonR.INI', 'EMPMentonR.FIN'))
 
+        try:
+            Collection_Teeth = bpy.data.collections['Anatomical Points - Teeth'].all_objects
+
+            report_writer.writerow([''])
+            report_writer.writerow(['TEETH'])
+            report_writer.writerow(['ID', 'LocX', 'LocY', 'LocZ'])
+
+            for ob in Collection_Teeth:
+                    report_writer.writerow(DeslocamentoINIFIN( ob.name+' : ', ob.name+'.INI', ob.name+'.FIN'))
+                    ListaApagar.append(ob.name+'.INI')
+                    ListaApagar.append(ob.name+'.FIN')
+        except:
+            print("Sem pontos dos Dentes.")
+
+
+        try:
+            Collection_SoftTissue = bpy.data.collections['Anatomical Points - Soft Tissue'].all_objects
+
+            report_writer.writerow([''])
+            report_writer.writerow(['SOFT TISSUE'])
+            report_writer.writerow(['ID', 'LocX', 'LocY', 'LocZ'])
+
+            for ob in Collection_SoftTissue:
+                    report_writer.writerow(DeslocamentoINIFIN( ob.name+' : ', ob.name+'.INI', ob.name+'.FIN'))
+                    ListaApagar.append(ob.name+'.INI')
+                    ListaApagar.append(ob.name+'.FIN')
+        except:
+            print("Sem pontos do Tecido Mole.")
+
+        '''
         report_writer.writerow([''])
         report_writer.writerow([''])
         report_writer.writerow(['CEFALOMETRY'])
@@ -163,63 +187,29 @@ def GeraRelatorioDef(self, context):
         report_writer.writerow(['FMIA', str(FMIA_INI), str(FMIA_FIN), '66º - 70º'])
         report_writer.writerow(['IMPA', str(IMPA_INI), str(IMPA_FIN), '85º - 89º'])
         report_writer.writerow(['1NS', str(NS_INI), str(NS_FIN), '101º - 105º'])
-	    '''
 
+        '''
     # Apaga
     try:
-        for ob in ListaPontos:
-            if ob in ObjetosCena:
-                apagaObjeto(ob+'.INI')
-                apagaObjeto(ob+'.FIN')
+        for ob in ListaApagar:
+            apagaObjeto(ob)
     except:
         print("Sem objetos INI e FIN na cena.")
 
-    '''
-    apagaObjeto('EMP11.INI')
-    apagaObjeto('EMP11.FIN')
-    apagaObjeto('EMP21.INI')
-    apagaObjeto('EMP21.FIN')
-    apagaObjeto('EMP13.INI')
-    apagaObjeto('EMP13.FIN')
-    apagaObjeto('EMP23.INI')
-    apagaObjeto('EMP23.FIN')
-    apagaObjeto('EMP16.INI')
-    apagaObjeto('EMP16.FIN')
-    apagaObjeto('EMP26.INI')
-    apagaObjeto('EMP26.FIN')
-    apagaObjeto('EMPPalatine.INI')
-    apagaObjeto('EMPPalatine.FIN')
-    apagaObjeto('EMPApoint.INI')
-    apagaObjeto('EMPApoint.FIN')
-    apagaObjeto('EMPNasalSpine.INI')
-    apagaObjeto('EMPNasalSpine.FIN')
-    apagaObjeto('EMPPterygoidL.INI')
-    apagaObjeto('EMPPterygoidR.FIN')
-    apagaObjeto('EMP31.INI')
-    apagaObjeto('EMP31.FIN')
-    apagaObjeto('EMP41.INI')
-    apagaObjeto('EMP41.FIN')
-    apagaObjeto('EMP33.INI')
-    apagaObjeto('EMP33.FIN')
-    apagaObjeto('EMP43.INI')
-    apagaObjeto('EMP43.FIN')
-    apagaObjeto('EMP36.INI')
-    apagaObjeto('EMP36.FIN')
-    apagaObjeto('EMP46.INI')
-    apagaObjeto('EMP46.FIN')
-    apagaObjeto('EMPBpoint.INI')
-    apagaObjeto('EMPBpoint.FIN')
-    apagaObjeto('EMPPogonion.INI')
-    apagaObjeto('EMPPogonion.FIN')
-    apagaObjeto('EMPMenton.INI')
-    apagaObjeto('EMPMenton.FIN')
-    apagaObjeto('EMPMentonL.INI')
-    apagaObjeto('EMPMentonL.FIN')
-    apagaObjeto('EMPMentonR.INI')
-    apagaObjeto('EMPMentonR.FIN')
-    '''
 
-    subprocess.Popen("libreoffice "+tmpdir+"/Report_OrtogOnBlender.csv", shell=True)
+#    subprocess.Popen("libreoffice "+tmpdir+"/Report_OrtogOnBlender.csv", shell=True)
+
+    if platform.system() == "Linux":
+        abrir_diretorio(tmpdir)
+        subprocess.Popen("libreoffice "+tmpdir+"/Report_OrtogOnBlender.csv", shell=True)
+
+    if platform.system() == "Windows":
+        abrir_diretorio(tmpdir)
+        subprocess.Popen('cd "C:/Program Files/LibreOffice/program/" & dir & soffice.bin '+tmpdir+"/Report_OrtogOnBlender.csv", shell=True)
+        
+    if platform.system() == "Darwin":
+        abrir_diretorio(tmpdir)
+        subprocess.Popen('/Applications/LibreOffice.app/Contents/MacOS/soffice '+tmpdir+"/Report_OrtogOnBlender.csv", shell=True)
 
     '''
     # Converte em XLSX
