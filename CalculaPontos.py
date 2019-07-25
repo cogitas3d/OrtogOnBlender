@@ -114,58 +114,82 @@ def geraDeslocamentoTODOSDef(self, context):
 
     ObjetosCena = bpy.data.objects
 
-    Collection_Head = bpy.data.collections['Anatomical Points - Head'].all_objects
-    Collection_Maxilla = bpy.data.collections['Anatomical Points - Maxilla'].all_objects
-    Collection_Teeth = bpy.data.collections['Anatomical Points - Teeth'].all_objects
-    Collection_Mandible = bpy.data.collections['Anatomical Points - Mandible'].all_objects
-    Collection_SoftTissue = bpy.data.collections['Anatomical Points - Soft Tissue'].all_objects
+    try:
+        Collection_Head = bpy.data.collections['Anatomical Points - Head'].all_objects
+
+        print(BOLD + SYEL + "HEAD" + BEND)
+
+        for ob in ListaPontos:
+            if ob in Collection_Head:
+                calculaDeslocamento( ob+' : ', ob+'.INI', ob+'.FIN')
+    except:
+        print("Sem pontos da Cabeça.")
+
+
+    try:
+        Collection_Maxilla = bpy.data.collections['Anatomical Points - Maxilla'].all_objects
+
+        print(" ")
+        print(BOLD + SYEL + "MAXILLA" + BEND)
+
+        for ob in ListaPontos:
+            if ob in Collection_Maxilla:
+                calculaDeslocamento( ob+' : ', ob+'.INI', ob+'.FIN')
+    except:
+        print("Sem pontos da Maxila.")
+
+
+    try:
+        Collection_Teeth = bpy.data.collections['Anatomical Points - Teeth'].all_objects
+
+        print(" ")
+        print(BOLD + SYEL + "TEETH" + BEND)
+
+        for ob in ListaPontos:
+            if ob in Collection_Teeth:
+                calculaDeslocamento( ob+' : ', ob+'.INI', ob+'.FIN')
+    except:
+        print("Sem pontos dos Dentes.")
+
+
+    try:
+        Collection_Mandible = bpy.data.collections['Anatomical Points - Mandible'].all_objects
+
+        print(" ")
+        print(BOLD + SYEL + "MANDIBLE" + BEND)
+
+        for ob in ListaPontos:
+            if ob in Collection_Mandible:
+                calculaDeslocamento( ob+' : ', ob+'.INI', ob+'.FIN')
+    except:
+        print("Sem pontos da Mandíbula.")
+
+    try:
+        Collection_SoftTissue = bpy.data.collections['Anatomical Points - Soft Tissue'].all_objects
+
+        print(" ")
+        print(BOLD + SYEL + "SOFT TISSUE" + BEND)
+
+        for ob in ListaPontos:
+            if ob in Collection_SoftTissue:
+                calculaDeslocamento( ob+' : ', ob+'.INI', ob+'.FIN')
+    except:
+        print("Sem pontos do Tecido Mole.")
 
     '''
     for ob in ListaPontos:
         if ob in ObjetosCena:
             calculaDeslocamento( ob+' : ', ob+'.INI', ob+'.FIN')
     '''
-
-
-    print(BOLD + SYEL + "HEAD" + BEND)
-
-    for ob in ListaPontos:
-        if ob in Collection_Head:
-            calculaDeslocamento( ob+' : ', ob+'.INI', ob+'.FIN')
-
-    print(" ")
-    print(BOLD + SYEL + "MAXILLA" + BEND)
-
-    for ob in ListaPontos:
-        if ob in Collection_Maxilla:
-            calculaDeslocamento( ob+' : ', ob+'.INI', ob+'.FIN')
-
-    print(" ")
-    print(BOLD + SYEL + "TEETH" + BEND)
-
-    for ob in ListaPontos:
-        if ob in Collection_Teeth:
-            calculaDeslocamento( ob+' : ', ob+'.INI', ob+'.FIN')
-
-    print(" ")
-    print(BOLD + SYEL + "MANDIBLE" + BEND)
-
-    for ob in ListaPontos:
-        if ob in Collection_Mandible:
-            calculaDeslocamento( ob+' : ', ob+'.INI', ob+'.FIN')
-
-    print(" ")
-    print(BOLD + SYEL + "SOFT TISSUE" + BEND)
-
-    for ob in ListaPontos:
-        if ob in Collection_SoftTissue:
-            calculaDeslocamento( ob+' : ', ob+'.INI', ob+'.FIN')
 
     # Apaga
-    for ob in ListaPontos:
-        if ob in ObjetosCena:
-            apagaObjeto(ob+'.INI')
-            apagaObjeto(ob+'.FIN')
+    try:
+        for ob in ListaPontos:
+            if ob in ObjetosCena:
+                apagaObjeto(ob+'.INI')
+                apagaObjeto(ob+'.FIN')
+    except:
+        print("Sem objetos INI e FIN na cena.")
     
 
 # Calcula Pontos

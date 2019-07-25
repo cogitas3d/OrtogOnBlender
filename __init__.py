@@ -74,7 +74,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190724c")
+        row.label(text="VERSION: 20190725b")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -211,7 +211,7 @@ class ORTOG_PT_CTScanFerrImg(bpy.types.Panel):
             row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
 
         row = layout.row()
-        row.operator("object.importa_fatias_dcm", text="Import DICOM Slices", icon="LIGHTPROBE_CUBEMAP")
+        row.operator("object.importa_fatias_dcm", text="Import DICOM Slices", icon="ALEMBIC")
 
 #        row = layout.row()
 #        prefs = context.preferences
@@ -1751,6 +1751,10 @@ class ORTOG_PT_MeasuringTools(bpy.types.Panel):
 
         row = layout.row()
         row.operator("measureit.runopengl", text="Show/Hide Measurements", icon="GHOST_ENABLED")
+
+        row = layout.row()
+        row = layout.row()
+        row.operator("object.apaga_pontos_objetos", text="Delete Measure", icon="CANCEL")
 
 class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
     bl_label = "Kinematic"

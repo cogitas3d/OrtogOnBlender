@@ -19,7 +19,7 @@ def ImportaArmatureDef(self, context):
         object    = "Armature_Head"
         
     if platform.system() == "Windows":
-        dirScript = 'C:/OrtogOnBlender/Blender/2.80/scripts/' 
+        dirScript = 'C:/OrtogOnBlender/Blender280/2.80/scripts/' 
 
         blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
         section   = "\\Object\\"

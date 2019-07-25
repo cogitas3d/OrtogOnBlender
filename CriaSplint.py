@@ -28,7 +28,7 @@ def ImportaSplintDef(self, context):
         
     if platform.system() == "Windows":
 
-        dirScript = 'C:/OrtogOnBlender/Blender/2.78/scripts/'
+        dirScript = 'C:/OrtogOnBlender/Blender280/2.80/scripts/'
 
         blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
         section   = "\\Collection\\"
@@ -206,7 +206,7 @@ def CriaSplintDef(self, context):
     # ----------------------------
 
     a = bpy.data.objects['Tooth 3']
-    b = bpy.data.objects['Tooth 27']
+    b = bpy.data.objects['Tooth 30']
 
     bpy.ops.object.select_all(action='DESELECT')
     a.select_set(True)
@@ -301,7 +301,7 @@ class CriaSplint(bpy.types.Operator):
         bpy.ops.object.select_all(action='DESELECT')
         splint = bpy.data.objects['SPLINT']
         splint.select_set(True)
-        context.view_layer.objects.active = splint	
+        context.view_layer.objects.active = splint
 
         bpy.ops.object.convert(target='MESH')
         bpy.context.object.name = "SPLINT_pronto"
@@ -315,6 +315,11 @@ class CriaSplint(bpy.types.Operator):
             ObjAtual.select_set(True)
             context.view_layer.objects.active = ObjAtual
             bpy.ops.object.delete(use_global=False)
+
+        SplintFinal = bpy.data.objects['SPLINT_pronto']
+        SplintFinal.select_set(True)
+        context.view_layer.objects.active = SplintFinal
+        bpy.ops.object.collection_link(collection='Collection')
     
         return {'FINISHED'}
 

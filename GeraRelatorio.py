@@ -95,15 +95,29 @@ def GeraRelatorioDef(self, context):
         report_writer.writerow(['ORTOGONBLENDER'])
         report_writer.writerow([''])
 
-        report_writer.writerow(['MAXILLA'])
-        report_writer.writerow(['ID', 'LocX', 'LocY', 'LocZ'])
+        try:
+            Collection_Head = bpy.data.collections['Anatomical Points - Head'].all_objects
 
+            report_writer.writerow(['HEAD'])
+            report_writer.writerow(['ID', 'LocX', 'LocY', 'LocZ'])
 
-        
+            #report_writer.writerow(DeslocamentoINIFIN('Orbital right', 'Orbital right.INI', 'Orbital right.FIN' ))
 
-        report_writer.writerow(DeslocamentoINIFIN('Teeth 8 (11)','EMP11.INI', 'EMP11.FIN'))
+            for ob in Collection_Head:
+                    #calculaDeslocamento( ob+' : ', ob+'.INI', ob+'.FIN')
+                    report_writer.writerow(DeslocamentoINIFIN( ob.name+' : ', ob.name+'.INI', ob.name+'.FIN'))
+
+        except:
+            print("Sem pontos da Cabeça.")
+
 
         '''
+            report_writer.writerow(['MAXILLA'])
+            report_writer.writerow(['ID', 'LocX', 'LocY', 'LocZ'])
+
+
+
+        report_writer.writerow(DeslocamentoINIFIN('Teeth 8 (11)','EMP11.INI', 'EMP11.FIN'))
         report_writer.writerow(DeslocamentoINIFIN('Teeth 9 (21) : ', 'EMP21.INI', 'EMP21.FIN'))
         report_writer.writerow(DeslocamentoINIFIN('Teeth 6 (13) : ', 'EMP13.INI', 'EMP13.FIN'))
         report_writer.writerow(DeslocamentoINIFIN('Teeth 11 (23) :', 'EMP16.INI', 'EMP16.FIN'))   
@@ -113,9 +127,11 @@ def GeraRelatorioDef(self, context):
         report_writer.writerow(DeslocamentoINIFIN('Nasal Spine :  ', 'EMPNasalSpine.INI', 'EMPNasalSpine.FIN'))
         report_writer.writerow(DeslocamentoINIFIN('Pterygoid (L) :', 'EMPPterygoidL.INI', 'EMPPterygoidL.FIN'))
         report_writer.writerow(DeslocamentoINIFIN('Pterygoid (R) :', 'EMPPterygoidR.INI', 'EMPPterygoidR.FIN'))
+
         report_writer.writerow([''])
         report_writer.writerow(['MANDIBLE BODY'])
         report_writer.writerow(['ID', 'LocX', 'LocY', 'LocZ'])
+
         report_writer.writerow(DeslocamentoINIFIN('Teeth 24 (31) :', 'EMP31.INI', 'EMP31.FIN'))
         report_writer.writerow(DeslocamentoINIFIN('Teeth 25 (41) :', 'EMP41.INI', 'EMP41.FIN'))
         report_writer.writerow(DeslocamentoINIFIN('Teeth 22 (33) :', 'EMP33.INI', 'EMP33.FIN'))
@@ -123,17 +139,21 @@ def GeraRelatorioDef(self, context):
         report_writer.writerow(DeslocamentoINIFIN('Teeth 19 (36) :', 'EMP36.INI', 'EMP36.FIN'))
         report_writer.writerow(DeslocamentoINIFIN('Teeth 30 (46) :', 'EMP46.INI', 'EMP46.FIN'))
         report_writer.writerow(DeslocamentoINIFIN('B Point or Up: ', 'EMPBpoint.INI', 'EMPBpoint.FIN'))
+
         report_writer.writerow([''])
         report_writer.writerow(['CHIN'])
         report_writer.writerow(['ID', 'LocX', 'LocY', 'LocZ'])
+
         report_writer.writerow(DeslocamentoINIFIN('Pogonion:      ', 'EMPPogonion.INI', 'EMPPogonion.FIN'))
         report_writer.writerow(DeslocamentoINIFIN('Menton:        ', 'EMPMenton.INI', 'EMPMenton.FIN'))
         report_writer.writerow(DeslocamentoINIFIN('Menton (L):    ', 'EMPMentonL.INI', 'EMPMentonL.FIN'))
         report_writer.writerow(DeslocamentoINIFIN('Menton (R) :   ', 'EMPMentonR.INI', 'EMPMentonR.FIN'))
+
         report_writer.writerow([''])
         report_writer.writerow([''])
         report_writer.writerow(['CEFALOMETRY'])
         report_writer.writerow(['ID', 'PRE', 'POST', 'RANGE'])
+
         report_writer.writerow(['SNA', str(SNA_INI), str(SNA_FIN), '80º - 84º'])
         report_writer.writerow(['SNB', str(SNB_INI), str(SNB_FIN), '78º - 82º'])
         report_writer.writerow(['ANB', str(ANB_INI), str(ANB_FIN), '0º - 4º'])
@@ -145,8 +165,63 @@ def GeraRelatorioDef(self, context):
         report_writer.writerow(['1NS', str(NS_INI), str(NS_FIN), '101º - 105º'])
 	    '''
 
-#        subprocess.Popen("libreoffice "+tmpdir+"/Report_OrtogOnBlender.csv", shell=True)
+    # Apaga
+    try:
+        for ob in ListaPontos:
+            if ob in ObjetosCena:
+                apagaObjeto(ob+'.INI')
+                apagaObjeto(ob+'.FIN')
+    except:
+        print("Sem objetos INI e FIN na cena.")
 
+    '''
+    apagaObjeto('EMP11.INI')
+    apagaObjeto('EMP11.FIN')
+    apagaObjeto('EMP21.INI')
+    apagaObjeto('EMP21.FIN')
+    apagaObjeto('EMP13.INI')
+    apagaObjeto('EMP13.FIN')
+    apagaObjeto('EMP23.INI')
+    apagaObjeto('EMP23.FIN')
+    apagaObjeto('EMP16.INI')
+    apagaObjeto('EMP16.FIN')
+    apagaObjeto('EMP26.INI')
+    apagaObjeto('EMP26.FIN')
+    apagaObjeto('EMPPalatine.INI')
+    apagaObjeto('EMPPalatine.FIN')
+    apagaObjeto('EMPApoint.INI')
+    apagaObjeto('EMPApoint.FIN')
+    apagaObjeto('EMPNasalSpine.INI')
+    apagaObjeto('EMPNasalSpine.FIN')
+    apagaObjeto('EMPPterygoidL.INI')
+    apagaObjeto('EMPPterygoidR.FIN')
+    apagaObjeto('EMP31.INI')
+    apagaObjeto('EMP31.FIN')
+    apagaObjeto('EMP41.INI')
+    apagaObjeto('EMP41.FIN')
+    apagaObjeto('EMP33.INI')
+    apagaObjeto('EMP33.FIN')
+    apagaObjeto('EMP43.INI')
+    apagaObjeto('EMP43.FIN')
+    apagaObjeto('EMP36.INI')
+    apagaObjeto('EMP36.FIN')
+    apagaObjeto('EMP46.INI')
+    apagaObjeto('EMP46.FIN')
+    apagaObjeto('EMPBpoint.INI')
+    apagaObjeto('EMPBpoint.FIN')
+    apagaObjeto('EMPPogonion.INI')
+    apagaObjeto('EMPPogonion.FIN')
+    apagaObjeto('EMPMenton.INI')
+    apagaObjeto('EMPMenton.FIN')
+    apagaObjeto('EMPMentonL.INI')
+    apagaObjeto('EMPMentonL.FIN')
+    apagaObjeto('EMPMentonR.INI')
+    apagaObjeto('EMPMentonR.FIN')
+    '''
+
+    subprocess.Popen("libreoffice "+tmpdir+"/Report_OrtogOnBlender.csv", shell=True)
+
+    '''
     # Converte em XLSX
     wb = Workbook()
     ws = wb.active
@@ -211,52 +286,7 @@ def GeraRelatorioDef(self, context):
     if platform.system() == "Darwin":
         abrir_diretorio(tmpdir)
         subprocess.Popen('/Applications/LibreOffice.app/Contents/MacOS/soffice '+tmpdir+"/Report_OrtogOnBlender.xlsx", shell=True)    
-    
-
-		# APAGANDO
-
-    apagaObjeto('EMP11.INI')
-    apagaObjeto('EMP11.FIN')
-    apagaObjeto('EMP21.INI')
-    apagaObjeto('EMP21.FIN')
-    apagaObjeto('EMP13.INI')
-    apagaObjeto('EMP13.FIN')
-    apagaObjeto('EMP23.INI')
-    apagaObjeto('EMP23.FIN')
-    apagaObjeto('EMP16.INI')
-    apagaObjeto('EMP16.FIN')
-    apagaObjeto('EMP26.INI')
-    apagaObjeto('EMP26.FIN')
-    apagaObjeto('EMPPalatine.INI')
-    apagaObjeto('EMPPalatine.FIN')
-    apagaObjeto('EMPApoint.INI')
-    apagaObjeto('EMPApoint.FIN')
-    apagaObjeto('EMPNasalSpine.INI')
-    apagaObjeto('EMPNasalSpine.FIN')
-    apagaObjeto('EMPPterygoidL.INI')
-    apagaObjeto('EMPPterygoidR.FIN')
-    apagaObjeto('EMP31.INI')
-    apagaObjeto('EMP31.FIN')
-    apagaObjeto('EMP41.INI')
-    apagaObjeto('EMP41.FIN')
-    apagaObjeto('EMP33.INI')
-    apagaObjeto('EMP33.FIN')
-    apagaObjeto('EMP43.INI')
-    apagaObjeto('EMP43.FIN')
-    apagaObjeto('EMP36.INI')
-    apagaObjeto('EMP36.FIN')
-    apagaObjeto('EMP46.INI')
-    apagaObjeto('EMP46.FIN')
-    apagaObjeto('EMPBpoint.INI')
-    apagaObjeto('EMPBpoint.FIN')
-    apagaObjeto('EMPPogonion.INI')
-    apagaObjeto('EMPPogonion.FIN')
-    apagaObjeto('EMPMenton.INI')
-    apagaObjeto('EMPMenton.FIN')
-    apagaObjeto('EMPMentonL.INI')
-    apagaObjeto('EMPMentonL.FIN')
-    apagaObjeto('EMPMentonR.INI')
-    apagaObjeto('EMPMentonR.FIN')
+    '''
 
 class GeraRelatorio(bpy.types.Operator):
     """Tooltip"""

@@ -246,3 +246,26 @@ class MedidasVerHorDentes(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(MedidasVerHorDentes)
+
+
+def ApagaPontosCopiadosDef():
+
+    ListaPontos = ["Tooth 9.001","Tooth 8.001","Tooth 6.001","Tooth 11.001","Tooth 3.001","Tooth 14.001"]
+
+    for ob in ListaPontos:
+        bpy.ops.object.select_all(action='DESELECT')
+        bpy.data.objects[ob].select_set(True)
+        bpy.ops.object.delete(use_global=False)
+
+class ApagaPontosCopiados(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.apaga_pontos_objetos"
+    bl_label = "Apaga Pontos Copiados"
+    
+    def execute(self, context):
+
+        ApagaPontosCopiadosDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(ApagaPontosCopiados)
+
