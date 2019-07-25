@@ -1822,7 +1822,7 @@ class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
 
         row = layout.row()
         row = layout.row()
-        row.operator("object.desparenteia_objetos", text="Clar Parent", icon="UNLINKED")
+        row.operator("object.desparenteia_objetos", text="Clear Parent", icon="UNLINKED")
 
         row = layout.row()
         row.label(text="Capturing:")
