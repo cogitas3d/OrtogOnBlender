@@ -696,6 +696,30 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+    if ManufacturerLimpo == "'Xoran Technologies'" and StationNameLimpo == "'WS_ICAT'":
+        print("SÉRIE 0")
+        print("Bone: 580")
+        print("SoftTissue: -811")
+        print("Teeth: 1235")
+        print("Condylus: 655")
+
+        os.chdir(scn.my_tool.path+"/0")
+        scn.my_tool.path = os.getcwd()
+ #       bpy.ops.object.corrige_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")           
+
+        # Gera o 3D 
+        bpy.context.scene.interesse_ossos = "580"
+        bpy.context.scene.interesse_mole = "-811"
+        bpy.context.scene.interesse_dentes = "1235"
+
+        bpy.ops.object.gera_modelos_tomo()
+
     if ManufacturerLimpo == "'Xoran Technologies ®'" and StationNameLimpo == "'SERVER2'":
         print("SÉRIE 1")
         print("Bone: 320")

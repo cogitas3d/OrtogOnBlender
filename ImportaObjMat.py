@@ -15,7 +15,7 @@ def ImportaMaterial(impMaterial, SelObj):
         object    = impMaterial
         
     if platform.system() == "Windows":
-        dirScript = 'C:/OrtogOnBlender/Blender/2.78/scripts/' 
+        dirScript = 'C:/OrtogOnBlender/Blender280/2.80/scripts/' 
 
         blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
         section   = "\\Material\\"
