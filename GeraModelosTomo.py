@@ -260,6 +260,68 @@ def CopiaTomoDir(Origem):
             shutil.copytree(Origem, NomePacienteDir+"/CT-Scan")
 
 
+def ReduzDimDICOMDef():
+
+    context = bpy.context
+    scn = context.scene
+
+    print("FATIAAAAAAAAA222")
+
+    ListaArquivos = sorted(os.listdir(scn.my_tool.path))
+
+    os.chdir(scn.my_tool.path)
+
+    for fatia in range(len(ListaArquivos)):
+        ds = pydicom.dcmread(str(ListaArquivos[fatia]), force=True)
+        ArquivoAtual = str(ListaArquivos[fatia])
+        DimPixelsX = ds.Rows
+        DimPixelsY = ds.Columns
+
+        print("FATIAAAAAAAAA222")
+        print("DimPixelsX", DimPixelsX)
+        print("DimPixelsY", DimPixelsY)
+
+        if DimPixelsX > 512 or DimPixelsY > 512:
+
+            ListaDim = [ DimPixelsX, DimPixelsY ]
+            ElementoFator = float(max(ListaDim))
+
+            Fator = str( 512 / ElementoFator )
+
+#            DimPixelsXFinal = str(int(DimPixelsX * Fator))
+#            DimPixelsYFinal = str(int(DimPixelsY * Fator))
+
+#            print("DimPixelsX", DimPixelsX)
+#            print("DimPixelsY", DimPixelsY)
+#            print("Fator:", Fator)
+#            print("DimPixelsXFinal", DimPixelsXFinal)
+#            print("DimPixelsYFinal", DimPixelsYFinal)
+
+
+            if not os.path.exists("REDUC"):
+                os.mkdir("REDUC")
+                print("Diretorio REDUC criado")
+
+            if platform.system() == "Linux" or platform.system() == "Darwin": 
+                    subprocess.call('dcmscale -v +Sxf '+Fator+' +Syf '+Fator+' '+ArquivoAtual+' REDUC/'+ArquivoAtual, shell=True)
+
+            if platform.system() == "Windows": 
+                    subprocess.call('C:/OrtogOnBlender/dcmtk/dcmscale.exe -v +Sxf '+Fator+' +Syf '+Fator+' '+ArquivoAtual+' REDUC/'+ArquivoAtual, shell=True)
+
+    scn.my_tool.path = os.getcwd()+"/REDUC/"
+
+class ReduzDimDICOM(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.reduz_dimensao_dicom"
+    bl_label = "Reduz Dimensao DICOM"
+    
+    def execute(self, context):
+        ReduzDimDICOMDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(ReduzDimDICOM)
+
+
 def IdentificaTomografo(Arquivo):
 
     context = bpy.context
@@ -712,6 +774,9 @@ def IdentificaTomografo(Arquivo):
             CopiaTomoDir(scn.my_tool.path)
         except:
             print("Doesn't have Patient Dir")           
+
+        bpy.ops.object.reduz_dimensao_dicom()
+
 
         # Gera o 3D 
         bpy.context.scene.interesse_ossos = "580"
@@ -1266,7 +1331,6 @@ def IdentificaTomografo(Arquivo):
         bpy.context.scene.interesse_dentes = "1080"
 
         bpy.ops.object.gera_modelos_tomo()
-
 
     
 def GeraModeloTomoAutoDef(self, context):
