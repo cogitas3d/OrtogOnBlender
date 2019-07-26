@@ -20,6 +20,8 @@ def ERROTermFoto():
 
 def GeraModeloFotoSMVSDef(self, context):
 
+    context = bpy.context
+    obj = context.active_object
     scn = context.scene
         
     tmpdir = tempfile.mkdtemp()
@@ -109,18 +111,14 @@ def GeraModeloFotoSMVSDef(self, context):
     print(photogrammetry_original)
     print(photogrammetry_copy)
 
-#    bpy.ops.object.modifier_add(type='DECIMATE')
-    #bpy.context.object.modifiers["Decimate"].ratio = 0.25
-#    bpy.context.object.modifiers["Decimate"].ratio = 0.35
-#    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Decimate")
-
-# Apaga material
-
-#    bpy.ops.object.material_slot_remove()
-
 
     # Entra em modo de edição e seleciona todos os vértices
     ob   = bpy.context.active_object
+
+    #Apaga todos os materiais
+    for i in range(len(ob.material_slots)):
+        bpy.ops.object.material_slot_remove({'object': ob})
+
     bpy.ops.object.mode_set(mode = 'EDIT')
     mesh = bmesh.from_edit_mesh(ob.data)
     for v in mesh.verts:
@@ -132,11 +130,6 @@ def GeraModeloFotoSMVSDef(self, context):
 
     bpy.ops.object.mode_set(mode='OBJECT')
 
-    # Faz o bake	
-    #bpy.context.scene.render.use_bake_selected_to_active = True
-    #bpy.context.scene.render.bake_type = 'TEXTURE'
-    #bpy.context.scene.render.bake_margin = 4
-    #bpy.ops.object.bake_image()
 
     #Cria imagem
     bpy.ops.image.new(name='UV_FACE', width=2048, height=2048, color=(0.5, 0.5, 0.5, 1), alpha=True, generated_type='BLANK', float=False, use_stereo_3d=False)
@@ -175,17 +168,10 @@ def GeraModeloFotoSMVSDef(self, context):
     bpy.context.scene.render.bake.margin = 2
     bpy.context.scene.render.bake.cage_extrusion = 0.32
 
-
-
-
     photogrammetry_original.select_set(True)
 
     bpy.ops.object.bake(type='DIFFUSE')
     
-
-
-
-
     # Oculta original
     photogrammetry_original.hide_viewport=True
 
