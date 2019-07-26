@@ -381,6 +381,8 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
         bpy.ops.object.corrige_dicom()
 
+        #bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
@@ -404,6 +406,8 @@ def IdentificaTomografo(Arquivo):
         os.chdir(scn.my_tool.path+"/0")
         scn.my_tool.path = os.getcwd()
         bpy.ops.object.corrige_dicom()
+
+        #bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -430,6 +434,8 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
         bpy.ops.object.corrige_dicom()
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
@@ -455,6 +461,8 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
 #        bpy.ops.object.corrige_dicom()
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
@@ -467,7 +475,34 @@ def IdentificaTomografo(Arquivo):
         bpy.context.scene.interesse_dentes = "711"
 
         bpy.ops.object.gera_modelos_tomo()
+
+
+    if ManufacturerLimpo == "'Imaging Sciences International'" and StationNameLimpo == "'ICAT_TOMO'":
+        print("SÉRIE 1")
+        print("Bone: 485")
+        print("SoftTissue: -480")
+        print("Teeth: 1030")
+        print("Condylus: MODELO LIMITADO")
+        os.chdir(scn.my_tool.path+"/1")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D 
+        bpy.context.scene.interesse_ossos = "485"
+        bpy.context.scene.interesse_mole = "-480"
+        bpy.context.scene.interesse_dentes = "1030"
+
+        bpy.ops.object.gera_modelos_tomo()
         
+
     if ManufacturerLimpo == "'NIM'" and StationNameLimpo == "'NT'":
         print("Modifica o FIXED! Usar o 67821")
         print("SÉRIE 67821")
@@ -479,6 +514,8 @@ def IdentificaTomografo(Arquivo):
         os.chdir(scn.my_tool.path+"/67821")
         scn.my_tool.path = os.getcwd()
         bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -521,6 +558,8 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
         bpy.ops.object.corrige_dicom()
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
@@ -544,6 +583,8 @@ def IdentificaTomografo(Arquivo):
         os.chdir(scn.my_tool.path+"/3")
         scn.my_tool.path = os.getcwd()
  #       bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -569,6 +610,8 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
  #       bpy.ops.object.corrige_dicom()
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
@@ -592,6 +635,8 @@ def IdentificaTomografo(Arquivo):
         os.chdir(scn.my_tool.path+"/3")
         scn.my_tool.path = os.getcwd()
  #       bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -634,6 +679,8 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
         bpy.ops.object.corrige_dicom()
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
@@ -668,6 +715,8 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
  #       bpy.ops.object.corrige_dicom()
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         CopiaTomoDir(scn.my_tool.path)           
 
@@ -689,6 +738,8 @@ def IdentificaTomografo(Arquivo):
         os.chdir(scn.my_tool.path+"/3")
         scn.my_tool.path = os.getcwd()
         bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -724,6 +775,8 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
 #        bpy.ops.object.corrige_dicom()
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         CopiaTomoDir(scn.my_tool.path)           
 
@@ -744,6 +797,8 @@ def IdentificaTomografo(Arquivo):
         os.chdir(scn.my_tool.path+"/1")
         scn.my_tool.path = os.getcwd()
  #       bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -769,14 +824,13 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
  #       bpy.ops.object.corrige_dicom()
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
             print("Doesn't have Patient Dir")           
-
-        bpy.ops.object.reduz_dimensao_dicom()
-
 
         # Gera o 3D 
         bpy.context.scene.interesse_ossos = "580"
@@ -795,6 +849,8 @@ def IdentificaTomografo(Arquivo):
         os.chdir(scn.my_tool.path+"/1")
         scn.my_tool.path = os.getcwd()
  #       bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -820,6 +876,8 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
  #       bpy.ops.object.corrige_dicom()
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
@@ -843,6 +901,8 @@ def IdentificaTomografo(Arquivo):
         os.chdir(scn.my_tool.path+"/1")
         scn.my_tool.path = os.getcwd()
  #       bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -869,6 +929,8 @@ def IdentificaTomografo(Arquivo):
         os.chdir(scn.my_tool.path+"/202")
         scn.my_tool.path = os.getcwd()
  #       bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -900,6 +962,8 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
 #        bpy.ops.object.corrige_dicom()
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
@@ -929,6 +993,8 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
 #        bpy.ops.object.corrige_dicom()
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
@@ -953,6 +1019,8 @@ def IdentificaTomografo(Arquivo):
         os.chdir(scn.my_tool.path+"/2")
         scn.my_tool.path = os.getcwd()
  #       bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -984,6 +1052,8 @@ def IdentificaTomografo(Arquivo):
         os.chdir(scn.my_tool.path+"/5")
         scn.my_tool.path = os.getcwd()
         bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -1020,6 +1090,8 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
 #        bpy.ops.object.corrige_dicom()
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
@@ -1044,6 +1116,8 @@ def IdentificaTomografo(Arquivo):
         os.chdir(scn.my_tool.path+"/4")
         scn.my_tool.path = os.getcwd()
 #        bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -1070,6 +1144,8 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
         bpy.ops.object.corrige_dicom()
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
@@ -1094,6 +1170,8 @@ def IdentificaTomografo(Arquivo):
         os.chdir(scn.my_tool.path+"/3")
         scn.my_tool.path = os.getcwd()
 #        bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -1133,6 +1211,8 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
 #        bpy.ops.object.corrige_dicom()
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
@@ -1157,6 +1237,8 @@ def IdentificaTomografo(Arquivo):
         os.chdir(scn.my_tool.path+"/2")
         scn.my_tool.path = os.getcwd()
 #        bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -1184,6 +1266,8 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
 #        bpy.ops.object.corrige_dicom()
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
@@ -1208,6 +1292,8 @@ def IdentificaTomografo(Arquivo):
         os.chdir(scn.my_tool.path+"/2")
         scn.my_tool.path = os.getcwd()
 #        bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -1234,6 +1320,8 @@ def IdentificaTomografo(Arquivo):
         scn.my_tool.path = os.getcwd()
         bpy.ops.object.corrige_dicom()
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
@@ -1258,6 +1346,8 @@ def IdentificaTomografo(Arquivo):
         os.chdir(scn.my_tool.path+"/607")
         scn.my_tool.path = os.getcwd()
         bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -1294,6 +1384,8 @@ def IdentificaTomografo(Arquivo):
         except:
             print("Não conta com diretório 456750")
 
+#        bpy.ops.object.reduz_dimensao_dicom()
+
         # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
@@ -1314,6 +1406,7 @@ def IdentificaTomografo(Arquivo):
         print("SoftTissue: -580")
         print("Teeth: 1080")
 
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         os.chdir(scn.my_tool.path+"/1")
         scn.my_tool.path = os.getcwd()
