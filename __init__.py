@@ -26,6 +26,7 @@ else:
     from .AlinhaObjetos import *
     from .FotogrametriaOpenMVG import *
     from .FotogrametriaSMVS import *
+    from .FotogrametriaMeshroom import *
 #    from .AlinhaTresPontosNovo import *
     from .AlinhaRedimensiona import *
     from .DesenhaObjetos import *
@@ -74,7 +75,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190726c")
+        row.label(text="VERSION: 20190727a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -631,12 +632,11 @@ class ORTOG_PT_Fotogrametria(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        col = layout.column(align=True)
-        col.prop(scn.my_tool, "path", text="")
-
+        row.label(text="OpenMVG+OpenMVS:")
 
         row = layout.row()
-        row.label(text="OpenMVG+OpenMVS:")
+        col = layout.column(align=True)
+        col.prop(scn.my_tool, "path", text="")
 
         col = self.layout.column(align = True)
         col.alignment = 'RIGHT'
@@ -653,10 +653,26 @@ class ORTOG_PT_Fotogrametria(bpy.types.Panel):
         row = layout.row()
         row = layout.row()
         row = layout.row()
-        row.label(text="SMVS:")
+        row.label(text="SMVS+Meshlab:")
 
         row = layout.row()
-        row.operator("object.gera_modelo_foto_smvs", text="Alternative Photogrammetry", icon="IMAGE_DATA")
+        col = layout.column(align=True)
+        col.prop(scn.my_tool, "path", text="")
+
+        row = layout.row()
+        row.operator("object.gera_modelo_foto_smvs", text="Alternative Photogrammetry I", icon="IMAGE_DATA")
+
+        row = layout.row()
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Meshroom:")
+
+        row = layout.row()
+        col = layout.column(align=True)
+        col.prop(scn.my_tool, "path", text="")
+
+        row = layout.row()
+        row.operator("object.gera_modelo_foto_meshroom", text="Alternative Photogrammetry II", icon="IMAGE_DATA")
 
         row = layout.row()
         box = layout.box()
@@ -2047,7 +2063,6 @@ def register():
     bpy.utils.register_class(BooleanaOsteoClass)
     bpy.utils.register_class(DesenhaLinhaCorte)
     bpy.utils.register_class(LinhaCorte)
-    bpy.utils.register_class(GeraModeloFoto)
     bpy.utils.register_class(SegmentaDesenho)
     bpy.utils.register_class(BooleanaMand)
     bpy.utils.register_class(MantemPintado)
@@ -2236,7 +2251,6 @@ def unregister():
     bpy.utils.unregister_class(BooleanaOsteoClass)
     bpy.utils.unregister_class(DesenhaLinhaCorte)
     bpy.utils.unregister_class(LinhaCorte)
-    bpy.utils.unregister_class(GeraModeloFoto)
     bpy.utils.unregister_class(AlinhaTresPontos)
     bpy.utils.unregister_class(SegmentaDesenho)
     bpy.utils.unregister_class(BooleanaMand)

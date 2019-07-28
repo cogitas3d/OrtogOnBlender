@@ -323,3 +323,5 @@ class GeraModeloFoto(bpy.types.Operator):
     def execute(self, context):
         GeraModeloFotoDef(self, context)
         return {'FINISHED'}
+
+bpy.utils.register_class(GeraModeloFoto)

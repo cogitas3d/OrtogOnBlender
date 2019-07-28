@@ -146,6 +146,8 @@ def GeraModeloFotoSMVSDef(self, context):
     ImageTexture.image = bpy.data.images['UV_FACE']
 
     diffuseBSDF = m.nodes['Principled BSDF']
+    diffuseBSDF.inputs[5].default_value = 0
+
     m.link(ImageTexture, 'Color', diffuseBSDF, 'Base Color')
 
     bpy.ops.object.material_slot_remove()
