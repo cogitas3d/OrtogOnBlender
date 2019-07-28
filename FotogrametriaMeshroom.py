@@ -61,6 +61,9 @@ def GeraModeloFotoMeshroomDef(self, context):
 
     if platform.system() == "Linux":
         camDatabase = homeall+"/Programs/OrtogOnBlender/Meshroom/aliceVision/share/aliceVision/cameraSensors.db"
+        
+    if platform.system() == "Windows":
+        camDatabase = "C:/OrtogOnBlender/Meshroom/aliceVision/share/aliceVision/cameraSensors.db"
 
     infile = open(camDatabase, "r")
 
@@ -100,22 +103,44 @@ def GeraModeloFotoMeshroomDef(self, context):
 
     if platform.system() == "Linux":
 
+        
         subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && for i in *; do cp $i '+tmpdir+'/JPG/; done ', shell=True)
-#        scn.my_tool.path = tmpdir+'/JPG/'
+
+
         subprocess.call('~/Programs/OrtogOnBlender/Meshroom/meshroom_photogrammetry --input '+tmpdir+'/JPG/ --output '+tmpdir+' --scale 2 --save '+tmpdir+'/PipelineOrtogOnBlender.txt', shell=True)
 
 
-        with open(tmpdir+'/PipelineOrtogOnBlender.txt', 'r') as fd:
-            txt = fd.read()
+    if platform.system() == "Windows":
 
-            txt = txt.replace('"iterations": 5','"iterations": 16')
-            txt = txt.replace('"maxInputPoints": 50000000','"maxInputPoints": 5000000', 1)
-            txt = txt.replace('"maxPoints": 5000000','"maxPoints": 500000', 1)
+        print("TENTA COPIAR")
+        subprocess.call('mkdir '+tmpdir+'\JPG & cd '+mypath+' & for %f in (*) do copy %f '+tmpdir+'\JPG', shell=True)
 
-        with open(tmpdir+'/PipelineOrtogOnBlender.txt', 'w') as fd:
-            fd.write(txt)
+        print("TENTA RODAR MESHROOM")
+        subprocess.call('C:/OrtogOnBlender/Meshroom/meshroom_photogrammetry --input '+tmpdir+'/JPG/ --output '+tmpdir+' --scale 2 --save '+tmpdir+'/PipelineOrtogOnBlender.txt', shell=True)
+        
+
+
+    with open(tmpdir+'/PipelineOrtogOnBlender.txt', 'r') as fd:
+        txt = fd.read()
+
+        txt = txt.replace('"iterations": 5','"iterations": 16')
+        txt = txt.replace('"maxInputPoints": 50000000','"maxInputPoints": 5000000', 1)
+        txt = txt.replace('"maxPoints": 5000000','"maxPoints": 500000', 1)
+
+    with open(tmpdir+'/PipelineOrtogOnBlender.txt', 'w') as fd:
+        fd.write(txt)
+    
+    print("ARQUIVO CRIADO!")
+
+    if platform.system() == "Linux":
 
         subprocess.call('~/Programs/OrtogOnBlender/Meshroom/meshroom_photogrammetry --input '+tmpdir+'/JPG/ --output '+tmpdir+' --scale 2 --pipeline '+tmpdir+'/PipelineOrtogOnBlender.txt', shell=True)
+
+
+    if platform.system() == "Windows":
+
+        subprocess.call('C:/OrtogOnBlender/Meshroom/meshroom_photogrammetry --input '+tmpdir+'/JPG/ --output '+tmpdir+' --scale 2 --pipeline '+tmpdir+'/PipelineOrtogOnBlender.txt', shell=True)
+
 
     tmpOBJface = tmpdir+'/texturedMesh.obj'
 
