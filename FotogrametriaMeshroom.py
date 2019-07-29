@@ -258,6 +258,9 @@ def GeraModeloFotoMeshroomDef(self, context):
     photogrammetry_original.select_set(True)
 
     bpy.ops.object.bake(type='DIFFUSE')
+
+    bpy.data.images['UV_FACE'].pack()
+    bpy.ops.file.pack_all()
     
     # Oculta original
     photogrammetry_original.hide_viewport=True
