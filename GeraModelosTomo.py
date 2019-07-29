@@ -1194,6 +1194,13 @@ def IdentificaTomografo(Arquivo):
         print("Teeth: 976")
         print("Condylus: 917")
 
+        # ManufacturerModelNameLimpo: 'Aquilion ONE'
+        print("SÉRIE 4")
+        print("Bone: 200")
+        print("SoftTissue: -300")
+        print("Teeth: 1430")
+        print("Condylus: 655")
+
         print("SÉRIE 5")
         print("Bone: 200")
         print("SoftTissue: -300")
@@ -1207,7 +1214,8 @@ def IdentificaTomografo(Arquivo):
         print("Condylus: 851")
 
         # TAMBÉM FUNCIONA O 201
-        os.chdir(scn.my_tool.path+"/5")
+
+        os.chdir(scn.my_tool.path+"/4")
         scn.my_tool.path = os.getcwd()
 #        bpy.ops.object.corrige_dicom()
 
