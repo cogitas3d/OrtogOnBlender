@@ -306,7 +306,15 @@ def SegmentaDesenhoDef(self, context):
     bpy.data.objects['GP_Scene'].select_set(True)
     bpy.ops.object.delete()
     bpy.data.objects['Note'].select_set(True)
-    bpy.context.object.name = "Cut_Line"
+#    bpy.context.object.name = "Cut_Line"
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects['Note'].select_set(True)
+    bpy.context.view_layer.objects.active = bpy.data.objects['Note']
+    bpy.context.object.name = "Cutline_to_Delete"
+
+    bpy.ops.wm.tool_set_by_id(name="builtin.select_box")
+
 
 #    bpy.ops.object.delete()
     

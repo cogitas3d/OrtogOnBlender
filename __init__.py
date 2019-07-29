@@ -75,7 +75,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190729a")
+        row.label(text="VERSION: 20190729b")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -146,7 +146,7 @@ class ORTOG_OT_GeraModelosTomoArc(bpy.types.Operator):
         return {'FINISHED'}
 
 class ORTOG_PT_CTScanOrgFIX(bpy.types.Panel):
-    bl_label = "CT-Scan Organize & FIX"
+    bl_label = "CT-Scan Manual Reconstruction"
     bl_region_type = 'UI'
     bl_space_type = 'VIEW_3D'
     bl_options = {'DEFAULT_CLOSED'}
@@ -183,6 +183,41 @@ class ORTOG_PT_CTScanOrgFIX(bpy.types.Panel):
         col.prop(scn.my_tool, "path", text="")
         row = layout.row()
         row.operator("object.corrige_dicom", text="Fix it!", icon="FILE_TICK")
+
+
+        row = layout.row()
+        row.label(text="CT-Scan 3D Reconstruction:")
+
+        col = layout.column(align=True)
+        col.prop(scn.my_tool, "path", text="")
+
+        row = layout.row()
+#        row.operator("object.tomo_heli", text="CT-Scan")
+#        row.operator("object.tomo_cone", text="CBCT")
+
+        col = self.layout.column(align = True)
+        col.prop(context.scene, "interesse_ossos")
+
+        col = self.layout.column(align = True)
+        col.prop(context.scene, "interesse_mole")
+
+        col = self.layout.column(align = True)
+        col.prop(context.scene, "interesse_dentes")
+
+        if platform.system() == "Windows":
+            row = layout.row()
+            row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
+
+        row = layout.row()
+        row.operator("object.gera_modelos_tomo", text="Convert DICOM to 3D", icon="SNAP_FACE")
+
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente_tomo", text="SAVE!", icon="FILE_TICK")
 
 class ORTOG_PT_CTScanFerrImg(bpy.types.Panel):
     bl_label = "CT-Scan Voxel Tools"
@@ -227,7 +262,7 @@ class ORTOG_PT_CTScanFerrImg(bpy.types.Panel):
         row.operator("object.gera_dir_nome_paciente_voxel", text="SAVE!", icon="FILE_TICK")
 
 class ORTOG_PT_CTScanRec(bpy.types.Panel):
-    bl_label = "CT-Scan Reconstruction"
+    bl_label = "CT-Scan Auto 3D Reconstruction"
     bl_region_type = 'UI'
     bl_space_type = 'VIEW_3D'
     bl_options = {'DEFAULT_CLOSED'}
@@ -244,32 +279,6 @@ class ORTOG_PT_CTScanRec(bpy.types.Panel):
 #        rd = scene.render
 
         row = layout.row()
-        row.label(text="Manual Reconstruction:")
-
-        col = layout.column(align=True)
-        col.prop(scn.my_tool, "path", text="")
-
-        row = layout.row()
-#        row.operator("object.tomo_heli", text="CT-Scan")
-#        row.operator("object.tomo_cone", text="CBCT")
-
-        col = self.layout.column(align = True)
-        col.prop(context.scene, "interesse_ossos")
-
-        col = self.layout.column(align = True)
-        col.prop(context.scene, "interesse_mole")
-
-        col = self.layout.column(align = True)
-        col.prop(context.scene, "interesse_dentes")
-
-        if platform.system() == "Windows":
-            row = layout.row()
-            row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
-
-        row = layout.row()
-        row.operator("object.gera_modelos_tomo", text="Convert DICOM to 3D", icon="SNAP_FACE")
-
-        row = layout.row()
         row.label(text="Automatic Reconstruction:")
 
         col = layout.column(align=True)
@@ -284,7 +293,7 @@ class ORTOG_PT_CTScanRec(bpy.types.Panel):
         row = col.row()
         row.scale_y=1.5
         row.alignment = 'CENTER'
-        row.operator("object.gera_dir_nome_paciente_tomo", text="SAVE!", icon="FILE_TICK")
+        row.operator("object.gera_dir_nome_paciente_tomo_auto", text="SAVE!", icon="FILE_TICK")
 
 class ORTOG_PT_ImportaArc(bpy.types.Panel):
     bl_label = "Import Archs"
@@ -441,6 +450,15 @@ class ORTOG_PT_GraphicRefs(bpy.types.Panel):
         context = bpy.context
         obj = context.object
         scn = context.scene
+
+        row = layout.row()
+        row.label(text="Mode:")
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
         linha=row.operator("mesh.add_linhabase", text="Vertical Center Line", icon="SORT_DESC")
@@ -729,13 +747,30 @@ class ORTOG_PT_AlinhaFace(bpy.types.Panel):
 
         row = layout.row()
         row = layout.row()
-        row.label(text="Segmentation:")
+        row.label(text="Segmentation Cut Through:")
 
         row = layout.row()
         row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
 
         row = layout.row()
         linha=row.operator("object.segmenta_desenho", text="Cut Draw!", icon="FCURVE")
+
+
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Surface Cut:")
+
+        row = layout.row()
+        row.operator("wm.modal_cria_pontos", icon='CURVE_DATA', text="Create Points")
+
+        row = layout.row()
+        row.operator("mesh.add_curva_bezier_unido", icon='CURVE_BEZCIRCLE', text="Create Bezier Line")
+
+        row = layout.row()
+        circle=row.operator("object.bezier_corta", text="Cut Line!", icon="SCULPTMODE_HLT")
+
+        row = layout.row()
+        circle=row.operator("object.bezier_corta_dupla", text="Cut Line Double!", icon="MOD_THICKNESS")
 
         row = layout.row()
         row = layout.row()

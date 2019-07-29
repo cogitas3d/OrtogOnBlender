@@ -1522,9 +1522,15 @@ def DesagrupaTomoDef(self, context):
 
 
     bpy.ops.object.select_all(action='DESELECT')
+
+    a.hide_set(False)
+    b.hide_set(False)
+    c.hide_set(False)
+
     a.select_set(True)
     b.select_set(True)
     c.select_set(True)
+
     context.view_layer.objects.active = a
 
     bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')

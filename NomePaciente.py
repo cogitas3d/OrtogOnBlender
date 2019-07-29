@@ -225,6 +225,71 @@ class NomePacienteTomo(bpy.types.Operator):
         NomePacienteTomoDef(self, context)
         return {'FINISHED'}
 
+# SALVA ARQUIVO TOMOGRAFIA AUTO
+
+def NomePacienteTomoAutoDef(self, context):
+
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    
+#    scene = context.scene
+#    rd = scene.render
+
+    homeDir = expanduser("~")
+
+    NomePaciente = bpy.context.scene.nome_paciente
+    SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+    if NomePaciente == "" and SobrenomePaciente == "":
+        bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
+
+    else:
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/CT_Scan_Auto-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+        if not os.path.exists(NomePacienteFile):
+            bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
+            print("Arquivo da tomografia criado!")
+
+
+class NomePacienteTomoAuto(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_dir_nome_paciente_tomo_auto"
+    bl_label = "Gera Nome Dir Nome Paciente Tomo AUto"
+
+    @classmethod
+    def poll(cls, context):
+
+#        found = 'Orbital right' in bpy.data.objects
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        
+    #    scene = context.scene
+    #    rd = scene.render
+
+        homeDir = expanduser("~")
+
+        NomePaciente = bpy.context.scene.nome_paciente
+        SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/CT_Scan_Auto-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+#        if found == False:
+        if not os.path.exists(NomePacienteFile):
+            return True
+        else:
+            if os.path.exists(NomePacienteFile):
+                return False
+
+
+    def execute(self, context):
+        NomePacienteTomoAutoDef(self, context)
+        return {'FINISHED'}
+
 # SALVA ARQUIVO MOLDES
 
 def NomePacienteArcDef(self, context):
@@ -1192,6 +1257,7 @@ bpy.utils.register_class(NomePacienteGuide)
 
 bpy.utils.register_class(NomePaciente)
 bpy.utils.register_class(NomePacienteTomo)
+bpy.utils.register_class(NomePacienteTomoAuto)
 bpy.utils.register_class(NomePacienteArc)
 bpy.utils.register_class(NomePacienteRef)
 bpy.utils.register_class(NomePacienteSeg)
