@@ -75,7 +75,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190729d")
+        row.label(text="VERSION: 20190730a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -459,6 +459,32 @@ class ORTOG_PT_GraphicRefs(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+        row = layout.row()
+        row.label(text="Frankfurt Alignment:")
+
+        row = layout.row()
+        linha=row.operator("object.orbital_right_pt", text="Orbital right")
+
+        row = layout.row()
+        linha=row.operator("object.orbital_left_pt", text="Orbital left")
+
+        row = layout.row()
+        linha=row.operator("object.n_pt", text="N point")
+
+        row = layout.row()
+        linha=row.operator("object.po_right", text="Po right")
+
+        row = layout.row()
+        linha=row.operator("object.po_left", text="Po left")
+
+        row = layout.row()
+        row = layout.row()
+        row.operator("object.alinha_cranio_frankfurt", text="Align!", icon="ORIENTATION_LOCAL")
+
+
+        row = layout.row()
+        row.label(text="Reference Lines:")
 
         row = layout.row()
         linha=row.operator("mesh.add_linhabase", text="Vertical Center Line", icon="SORT_DESC")
