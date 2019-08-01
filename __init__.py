@@ -75,7 +75,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190730a")
+        row.label(text="VERSION: 20190801a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -472,8 +472,8 @@ class ORTOG_PT_GraphicRefs(bpy.types.Panel):
         row = layout.row()
         linha=row.operator("object.n_pt", text="N point")
 
-        row = layout.row()
-        linha=row.operator("object.po_right", text="Po right")
+#        row = layout.row()
+#        linha=row.operator("object.po_right", text="Po right")
 
         row = layout.row()
         linha=row.operator("object.po_left", text="Po left")
@@ -1712,6 +1712,47 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
 
         row = layout.row()
         circle=row.operator("object.bezier_corta_dupla", text="Cut Line Double!", icon="MOD_THICKNESS")
+
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Auto Cut Planes:")
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+        row = layout.row()
+        linha=row.operator("object.orbital_right_pt", text="Orbital right")
+
+        row = layout.row()
+        linha=row.operator("object.orbital_left_pt", text="Orbital left")
+
+        row = layout.row()
+        linha=row.operator("object.a_pt", text="A point")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_30_pt", text="Tooth 30 (46)")
+
+        row = layout.row()
+        linha=row.operator("object.go_right_pt", text="Go right")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_19_pt", text="Tooth 19 (36)")
+
+        row = layout.row()
+        linha=row.operator("object.go_left_pt", text="Go left")
+
+        row = layout.row()
+        linha=row.operator("object.b_pt", text="B point")
+
+        row = layout.row()
+        linha=row.operator("object.me_pt", text="Me point")
+
+        row = layout.row()
+        row = layout.row()
+        circle=row.operator("object.adiciona_planos_corte_auto", text="Create Cut Planes!", icon="AXIS_TOP")
 
         row = layout.row()
         row = layout.row()

@@ -1,5 +1,6 @@
 import bpy
 
+from random import randint
 from mathutils import Matrix, Vector
 
 from bpy.types import (Panel,
@@ -58,6 +59,16 @@ def CriaMentoDef(self, context):
     bpy.context.object.modifiers["Solidify"].thickness = 0.3
     bpy.context.object.modifiers["Solidify"].offset = 0
 
+    bpy.context.object.show_wire = True
+
+    context = bpy.context
+    activeObject = context.object
+
+    mat = bpy.data.materials.new(name='Mat_'+activeObject.name) #set new material to variable
+    activeObject.data.materials.append(mat) #add the material to the object
+    activeObject.active_material.diffuse_color = (randint(20, 100)*.01, randint(20, 100)*.01, randint(20, 100)*.01, 1)
+
+
 class CriaMento(Operator, AddObjectHelper):
     """Create a new Mesh Object"""
     bl_idname = "mesh.add_mento"
@@ -90,6 +101,16 @@ def CriaRamoDef(self, context):
     bpy.context.object.modifiers["Solidify"].thickness = 0.3
     bpy.context.object.modifiers["Solidify"].offset = 0
 
+    bpy.context.object.show_wire = True
+
+    context = bpy.context
+    activeObject = context.object
+
+    mat = bpy.data.materials.new(name='Mat_'+activeObject.name) #set new material to variable
+    activeObject.data.materials.append(mat) #add the material to the object
+    activeObject.active_material.diffuse_color = (randint(20, 100)*.01, randint(20, 100)*.01, randint(20, 100)*.01, 1)
+
+
 class CriaRamo(Operator, AddObjectHelper):
     """Create a new Mesh Object"""
     bl_idname = "mesh.add_ramo"
@@ -115,7 +136,7 @@ def CriaMaxilaDef(self, context):
             ]
 
     edges = []
-    faces = [[0, 1, 2, 3],[4, 5, 6, 7]]
+    faces = [[0, 1, 2, 3],[5,4,3,2],[4, 5, 6, 7]]
 
     mesh = bpy.data.meshes.new(name="Maxila")
     mesh.from_pydata(verts, edges, faces)
@@ -124,6 +145,16 @@ def CriaMaxilaDef(self, context):
     bpy.ops.object.modifier_add(type='SOLIDIFY') 
     bpy.context.object.modifiers["Solidify"].thickness = 0.3
     bpy.context.object.modifiers["Solidify"].offset = 0
+
+    bpy.context.object.show_wire = True
+
+    context = bpy.context
+    activeObject = context.object
+
+    mat = bpy.data.materials.new(name='Mat_'+activeObject.name) #set new material to variable
+    activeObject.data.materials.append(mat) #add the material to the object
+    activeObject.active_material.diffuse_color = (randint(20, 100)*.01, randint(20, 100)*.01, randint(20, 100)*.01, 1)
+
 
 class CriaMaxila(Operator, AddObjectHelper):
     """Create a new Mesh Object"""
@@ -219,3 +250,143 @@ class CriaMeshAlinhAlinh(Operator, AddObjectHelper):
 
 bpy.utils.register_class(CriaMeshAlinhOrig)
 bpy.utils.register_class(CriaMeshAlinhAlinh)
+
+
+
+def AdicionaPlanosCorteAutoDef():
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    # Plano Maxila
+
+    try:
+        ListaPontos1 = [ 'Orbital right', 'Orbital left', 'A point' ]
+
+        bpy.ops.object.select_all(action='DESELECT')
+
+        for i in ListaPontos1:
+            bpy.data.objects[i].select_set(True)
+            context.view_layer.objects.active = bpy.data.objects[i]
+            
+
+        # Cursor to selected
+
+        for area in bpy.context.screen.areas:
+            if area.type == 'VIEW_3D':
+                ctx = bpy.context.copy()
+                ctx['area'] = area
+                ctx['region'] = area.regions[-1]
+        #        bpy.ops.view3d.view_selected(ctx)
+                bpy.ops.view3d.snap_cursor_to_selected(ctx)
+                break
+            
+        CursorLoc = bpy.context.scene.cursor.location
+            
+        bpy.ops.mesh.add_maxila(location=(CursorLoc))
+        bpy.ops.transform.translate(value=(0, 0, -10))
+    except:
+        print("Pode estar faltando algum ponto para o plano da Maxila.")
+        
+    # Plano Mento
+
+    try:
+        ListaPontos1 = [ 'B point', 'Me point' ]
+
+        bpy.ops.object.select_all(action='DESELECT')
+
+        for i in ListaPontos1:
+            bpy.data.objects[i].select_set(True)
+            context.view_layer.objects.active = bpy.data.objects[i]
+            
+
+        # Cursor to selected
+
+        for area in bpy.context.screen.areas:
+            if area.type == 'VIEW_3D':
+                ctx = bpy.context.copy()
+                ctx['area'] = area
+                ctx['region'] = area.regions[-1]
+        #        bpy.ops.view3d.view_selected(ctx)
+                bpy.ops.view3d.snap_cursor_to_selected(ctx)
+                break
+            
+        CursorLoc = bpy.context.scene.cursor.location
+            
+        bpy.ops.mesh.add_mento(location=(CursorLoc))
+    except:
+        print("Pode estar faltando algum ponto para o plano do Mento.")
+        
+    # Ramo Esquerdo
+
+    try:
+        ListaPontos1 = [ 'Tooth 19', 'Go left' ]
+
+        bpy.ops.object.select_all(action='DESELECT')
+
+        for i in ListaPontos1:
+            bpy.data.objects[i].select_set(True)
+            context.view_layer.objects.active = bpy.data.objects[i]
+            
+
+        # Cursor to selected
+
+        for area in bpy.context.screen.areas:
+            if area.type == 'VIEW_3D':
+                ctx = bpy.context.copy()
+                ctx['area'] = area
+                ctx['region'] = area.regions[-1]
+        #        bpy.ops.view3d.view_selected(ctx)
+                bpy.ops.view3d.snap_cursor_to_selected(ctx)
+                break
+            
+        CursorLoc = bpy.context.scene.cursor.location
+            
+        bpy.ops.mesh.add_ramo(location=(CursorLoc))
+    except:
+        print("Pode estar faltando algum ponto para o plano do Ramo Esquerdo.")
+
+        
+    # Ramo Direito
+
+    try:
+        ListaPontos1 = [ 'Tooth 30', 'Go right' ]
+
+        bpy.ops.object.select_all(action='DESELECT')
+
+        for i in ListaPontos1:
+            bpy.data.objects[i].select_set(True)
+            context.view_layer.objects.active = bpy.data.objects[i]
+            
+
+        # Cursor to selected
+
+        for area in bpy.context.screen.areas:
+            if area.type == 'VIEW_3D':
+                ctx = bpy.context.copy()
+                ctx['area'] = area
+                ctx['region'] = area.regions[-1]
+        #        bpy.ops.view3d.view_selected(ctx)
+                bpy.ops.view3d.snap_cursor_to_selected(ctx)
+                break
+            
+        CursorLoc = bpy.context.scene.cursor.location
+            
+        bpy.ops.mesh.add_ramo(location=(CursorLoc))
+    except:
+        print("Pode estar faltando algum ponto para o plano do Ramo Direito.")
+
+class AdicionaPlanosCorteAuto(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "object.adiciona_planos_corte_auto"
+    bl_label = "Add Cut Planes Auto"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+
+        AdicionaPlanosCorteAutoDef()
+
+        return {'FINISHED'}
+
+bpy.utils.register_class(AdicionaPlanosCorteAuto)

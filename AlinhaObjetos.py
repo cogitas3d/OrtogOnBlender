@@ -616,7 +616,7 @@ def AlinhaCranioFrankfurtDef():
     # Parenteia objetos à Linha
     bpy.ops.object.select_all(action='DESELECT')
 
-    ListaObjetos = ['Bones', 'Orbital right', 'Orbital left', 'Po right', 'Po left', 'N point']
+    ListaObjetos = ['Bones', 'Orbital right', 'Orbital left', 'Po left', 'N point']
 
     for i in ListaObjetos:
         bpy.ops.object.select_all(action='DESELECT')
@@ -668,7 +668,7 @@ def AlinhaCranioFrankfurtDef():
     # Parenteia objetos à Linha
     bpy.ops.object.select_all(action='DESELECT')
 
-    ListaObjetos = ['Bones', 'Orbital right', 'Orbital left', 'Po right', 'Po left', 'N point']
+    ListaObjetos = ['Bones', 'Orbital right', 'Orbital left', 'Po left', 'N point']
 
     for i in ListaObjetos:
         bpy.ops.object.select_all(action='DESELECT')
@@ -701,7 +701,7 @@ def AlinhaCranioFrankfurtDef():
 
     bpy.ops.object.select_all(action='DESELECT')
 
-    ListaObjetos2 = ['Bones', 'Orbital right', 'Orbital left', 'Po right', 'Po left']
+    ListaObjetos2 = ['Bones', 'Orbital right', 'Orbital left', 'Po left']
 
     PontoCentral = bpy.data.objects['N point']
 
