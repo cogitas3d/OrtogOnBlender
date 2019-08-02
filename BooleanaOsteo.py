@@ -266,6 +266,7 @@ def BooleanaOsteoDef(self, context):
         bpy.ops.import_mesh.off(filepath=tmpdir+"/Result.off")
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
+    
 
 #    Result = context.active_object
 #    Result = bpy.context.view_layer.objects.active
@@ -290,6 +291,7 @@ def BooleanaOsteoDef(self, context):
         bpy.context.view_layer.objects.active = i
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
         bpy.ops.object.move_to_collection(collection_index=1)
+        bpy.ops.object.transforms_to_deltas(mode='ALL')
 
 
 class BooleanaOsteoClass(bpy.types.Operator):
@@ -462,6 +464,7 @@ def BooleanaOsteoGeralDef(self, context):
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
         bpy.ops.object.collection_link(collection='Collection')
         bpy.ops.object.move_to_collection(collection_index=1)
+        bpy.ops.object.transforms_to_deltas(mode='ALL')
 
 
 class BooleanaOsteoGeral(bpy.types.Operator):
@@ -616,6 +619,8 @@ def BooleanaOsteoUnionDef(self, context):
         bpy.ops.import_mesh.off(filepath=tmpdir+"/Result.off")
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
+
+
 #    Result = context.active_object
 #    Result = bpy.context.view_layer.objects.active
 
@@ -637,6 +642,8 @@ def BooleanaOsteoUnionDef(self, context):
             bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
             bpy.ops.object.collection_link(collection='Collection')
             bpy.ops.object.move_to_collection(collection_index=1)
+            bpy.ops.object.transforms_to_deltas(mode='ALL')
+
 
 class BooleanaOsteoUnion(bpy.types.Operator):
     """Tooltip"""
@@ -791,6 +798,8 @@ def BooleanaOsteoInterDef(self, context):
         bpy.ops.import_mesh.off(filepath=tmpdir+"/Result.off")
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
+
+
 #    Result = context.active_object
 #    Result = bpy.context.view_layer.objects.active
 
@@ -820,6 +829,7 @@ def BooleanaOsteoInterDef(self, context):
             bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
             bpy.ops.object.collection_link(collection='Collection')
             bpy.ops.object.move_to_collection(collection_index=1)
+            bpy.ops.object.transforms_to_deltas(mode='ALL')
 
 
 class BooleanaOsteoInter(bpy.types.Operator):
@@ -973,6 +983,7 @@ def BooleanaUnionSimplesDef(self, context):
         bpy.ops.import_mesh.off(filepath=tmpdir+"/Result.off")
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
+
 #    Result = context.active_object
 #    Result = bpy.context.view_layer.objects.active
 
@@ -993,6 +1004,8 @@ def BooleanaUnionSimplesDef(self, context):
             bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
             bpy.ops.object.collection_link(collection='Collection')
             bpy.ops.object.move_to_collection(collection_index=1)
+            bpy.ops.object.transforms_to_deltas(mode='ALL')
+
         
 class BooleanaUnionSimples(bpy.types.Operator):
     """Tooltip"""

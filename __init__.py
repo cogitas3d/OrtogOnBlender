@@ -75,7 +75,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190801a")
+        row.label(text="VERSION: 20190802a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -130,7 +130,6 @@ class ORTOG_UI_Local(PropertyGroup):
     path = StringProperty(
         name="",
         description="Path to Directory",
-        default="",
         maxlen=1024,
         subtype='DIR_PATH')
 
@@ -1874,6 +1873,7 @@ class ORTOG_PT_MeasuringTools(bpy.types.Panel):
         row = layout.row()
         row.operator("object.apaga_pontos_objetos", text="Delete Measure", icon="CANCEL")
 
+
 class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
     bl_label = "Kinematic"
     bl_region_type = 'UI'
@@ -1894,6 +1894,21 @@ class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+        try:
+            cursor = context.active_object
+
+            layout.column().prop(cursor, "location", text="Location")
+            rotation_mode = cursor.rotation_mode
+            if rotation_mode == 'QUATERNION':
+                layout.column().prop(cursor, "rotation_quaternion", text="Rotation")
+            elif rotation_mode == 'AXIS_ANGLE':
+                layout.column().prop(cursor, "rotation_axis_angle", text="Rotation")
+            else:
+                layout.column().prop(cursor, "rotation_euler", text="Rotation")
+            layout.prop(cursor, "rotation_mode", text="")
+        except:
+            print("Selectione objeto!")
 
         row = layout.row()
         row.label(text="Pivot Rotation:")
