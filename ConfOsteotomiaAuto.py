@@ -3,6 +3,24 @@ import platform
 import bmesh
 from random import randint
 
+# MENSAGENS
+
+class MessageObjSelecionados(bpy.types.Operator):
+    bl_idname = "object.dialog_operator_obj_selecionados"
+    bl_label = "You have to select 6 objects!"
+  
+    def execute(self, context):
+        message = ("You have to select 6 objects!")
+        self.report({'INFO'}, message)
+        return {'FINISHED'}
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        return wm.invoke_props_dialog(self)
+
+bpy.utils.register_class(MessageObjSelecionados)
+
+
 # IMPORTA ARMATURE
 
 def ImportaArmatureDef(self, context):
@@ -459,94 +477,122 @@ def ConfOsteotomiaAutoDef(self, context):
     objetos_selecionados = [ o for o in bpy.context.selected_objects ]
 #    objetos_selecionados = [ o for o in bpy.context.scene.objects if o.select ]
 
-    Obj_Hor = []
+    objetos_visiveis = []
+
     for i in objetos_selecionados:
-        Obj_Hor.append(i.location[0])
+        if i.visible_get() == True:
+            objetos_visiveis.append(i.name)
 
-    # Ramos da mandíbula    
-    MaxHor = max(Obj_Hor)
-    IndexMax = [i for i, j in enumerate(Obj_Hor) if j == MaxHor]
-    re = objetos_selecionados[int(IndexMax[0])]
-    print(re)
+    if len(objetos_visiveis) == 6:
 
-    MinHor = min(Obj_Hor)
-    IndexMin = [i for i, j in enumerate(Obj_Hor) if j == MinHor]
-    rd = objetos_selecionados[int(IndexMin[0])]
-    print(rd)
+        Obj_Hor = []
+        for i in objetos_selecionados:
+            Obj_Hor.append(i.location[0])
 
-    print("Len antes: ",len(objetos_selecionados))
-    objetos_selecionados.remove(re)
-    objetos_selecionados.remove(rd)
-    print("Len depois: ",len(objetos_selecionados))
+        # Ramos da mandíbula    
+        MaxHor = max(Obj_Hor)
+        IndexMax = [i for i, j in enumerate(Obj_Hor) if j == MaxHor]
+        re = objetos_selecionados[int(IndexMax[0])]
+        print(re)
 
-    # Cabeça e mento
-    Obj_Ver = []
-    for i in objetos_selecionados:
-        Obj_Ver.append(i.location[2])
+        MinHor = min(Obj_Hor)
+        IndexMin = [i for i, j in enumerate(Obj_Hor) if j == MinHor]
+        rd = objetos_selecionados[int(IndexMin[0])]
+        print(rd)
 
-    MaxVer = max(Obj_Ver)
-    IndexMax = [i for i, j in enumerate(Obj_Ver) if j == MaxVer]
-    ca = objetos_selecionados[int(IndexMax[0])]
-    print(ca)
+        print("Len antes: ",len(objetos_selecionados))
+        objetos_selecionados.remove(re)
+        objetos_selecionados.remove(rd)
+        print("Len depois: ",len(objetos_selecionados))
 
-    MinVer = min(Obj_Ver)
-    IndexMin = [i for i, j in enumerate(Obj_Ver) if j == MinVer]
-    me = objetos_selecionados[int(IndexMin[0])]
-    print(me)
+        # Cabeça e mento
+        Obj_Ver = []
+        for i in objetos_selecionados:
+            Obj_Ver.append(i.location[2])
 
-    print("Len antes: ",len(objetos_selecionados))
-    objetos_selecionados.remove(ca)
-    objetos_selecionados.remove(me)
-    print("Len depois: ",len(objetos_selecionados))
+        MaxVer = max(Obj_Ver)
+        IndexMax = [i for i, j in enumerate(Obj_Ver) if j == MaxVer]
+        ca = objetos_selecionados[int(IndexMax[0])]
+        print(ca)
+
+        MinVer = min(Obj_Ver)
+        IndexMin = [i for i, j in enumerate(Obj_Ver) if j == MinVer]
+        me = objetos_selecionados[int(IndexMin[0])]
+        print(me)
+
+        print("Len antes: ",len(objetos_selecionados))
+        objetos_selecionados.remove(ca)
+        objetos_selecionados.remove(me)
+        print("Len depois: ",len(objetos_selecionados))
 
 
-    # Maxila e corpo da mandíbula
-    Obj_Ver = []
-    for i in objetos_selecionados:
-        Obj_Ver.append(i.location[2])
-        
-    MaxVer = max(Obj_Ver)
-    IndexMax = [i for i, j in enumerate(Obj_Ver) if j == MaxVer]
-    ma = objetos_selecionados[int(IndexMax[0])]
-    print(ma)
+        # Maxila e corpo da mandíbula
+        Obj_Ver = []
+        for i in objetos_selecionados:
+            Obj_Ver.append(i.location[2])
+            
+        MaxVer = max(Obj_Ver)
+        IndexMax = [i for i, j in enumerate(Obj_Ver) if j == MaxVer]
+        ma = objetos_selecionados[int(IndexMax[0])]
+        print(ma)
 
-    MinVer = min(Obj_Ver)
-    IndexMin = [i for i, j in enumerate(Obj_Ver) if j == MinVer]
-    cm = objetos_selecionados[int(IndexMin[0])]
-    print(cm)
+        MinVer = min(Obj_Ver)
+        IndexMin = [i for i, j in enumerate(Obj_Ver) if j == MinVer]
+        cm = objetos_selecionados[int(IndexMin[0])]
+        print(cm)
 
-    # Configura osteotomias
-    bpy.ops.object.importa_armature()
+        # Configura osteotomias
+        bpy.ops.object.importa_armature()
 
-    ca.select_set(True)
-    bpy.context.view_layer.objects.active = ca
-    bpy.ops.object.configura_cabeca()
-    bpy.ops.object.select_all(action='DESELECT')
+        ca.select_set(True)
+        bpy.context.view_layer.objects.active = ca
+        bpy.ops.object.configura_cabeca()
+        bpy.ops.object.select_all(action='DESELECT')
 
-    ma.select_set(True)
-    bpy.context.view_layer.objects.active = ma
-    bpy.ops.object.configura_maxila()
-    bpy.ops.object.select_all(action='DESELECT')
+        ma.select_set(True)
+        bpy.context.view_layer.objects.active = ma
+        bpy.ops.object.configura_maxila()
+        bpy.ops.object.select_all(action='DESELECT')
 
-    rd.select_set(True)
-    bpy.context.view_layer.objects.active = rd
-    bpy.ops.object.configura_ramo_dir()
-    bpy.ops.object.select_all(action='DESELECT')
+        rd.select_set(True)
+        bpy.context.view_layer.objects.active = rd
+        bpy.ops.object.configura_ramo_dir()
+        bpy.ops.object.select_all(action='DESELECT')
 
-    re.select_set(True)
-    bpy.context.view_layer.objects.active = re
-    bpy.ops.object.configura_ramo_esq()
-    bpy.ops.object.select_all(action='DESELECT')
+        re.select_set(True)
+        bpy.context.view_layer.objects.active = re
+        bpy.ops.object.configura_ramo_esq()
+        bpy.ops.object.select_all(action='DESELECT')
 
-    cm.select_set(True)
-    bpy.context.view_layer.objects.active = cm
-    bpy.ops.object.configura_corpo_mand()
-    bpy.ops.object.select_all(action='DESELECT')
+        cm.select_set(True)
+        bpy.context.view_layer.objects.active = cm
+        bpy.ops.object.configura_corpo_mand()
+        bpy.ops.object.select_all(action='DESELECT')
 
-    me.select_set(True)
-    bpy.context.view_layer.objects.active = me
-    bpy.ops.object.configura_mento()
-    bpy.ops.object.select_all(action='DESELECT')
+        me.select_set(True)
+        bpy.context.view_layer.objects.active = me
+        bpy.ops.object.configura_mento()
+        bpy.ops.object.select_all(action='DESELECT')
+
+        # Zera Deltas
+
+        lista_osteo = ['ca','ma', 'cm', 'rd', 're', 'me']
+
+        for i in lista_osteo:
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.data.objects[i].select_set(True)
+            bpy.context.view_layer.objects.active = bpy.data.objects[i]
+            bpy.ops.object.transforms_to_deltas(mode='ALL')
+            bpy.ops.anim.ortog_loc_rot()
+            bpy.ops.object.select_all(action='DESELECT')
+    
+        bpy.context.scene.frame_end = 100
+        bpy.context.scene.frame_current = 100
+
+
+    if len(objetos_visiveis) != 6:
+        print("Selecione os 6 objetos!")
+        bpy.ops.object.dialog_operator_obj_selecionados('INVOKE_DEFAULT')
 
 class ConfOsteotomiaAuto(bpy.types.Operator):
     """Tooltip"""
