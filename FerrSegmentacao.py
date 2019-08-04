@@ -686,6 +686,18 @@ def BooleanSeparaMandibula():
 
     bpy.ops.object.select_all(action='DESELECT')
 
+    MandibulaBase = bpy.data.objects['MandibulaBase']
+
+    MandibulaBase.select_set(True) 
+    bpy.context.view_layer.objects.active = MandibulaBase
+
+    obj = context.active_object
+    bpy.ops.object.collection_link(collection='Collection')
+
+
+
+    bpy.ops.object.select_all(action='DESELECT')
+
     Cranio = bpy.data.objects['Bones']
     MandibulaBase = bpy.data.objects['MandibulaBase']
 
@@ -696,6 +708,7 @@ def BooleanSeparaMandibula():
 
     bpy.ops.object.booleana_osteo_inter()
 
+    bpy.ops.object.select_all(action='DESELECT')
 
 
     ListaObjetos = ['EMP_Proc_Cor_dir', 'EMP_Proc_Cond_dir', 'EMP_Proc_Cor_esq', 'EMP_Proc_Cond_esq', 'EMP_Gon_dir', 'EMP_Ang_Mand_dir', 'EMP_Gon_esq', 'EMP_Ang_Mand_esq', 'EMP_Meio_Mand_esq', 'EMP_Meio_Mand_dir', 'EMP_Protuberancia_down', 'EMP_Protuberancia', 'EMP_Protuberancia_up', 'ArmatureMandibula', 'Condylar Process right', 'Coronoid Process right', 'Condylar Process left', 'Coronoid Process left', 'Mid Go-Ramus Fracure right', 'Go right', 'Mid Go-Ramus Fracure left', 'Go left', 'Mid Mandibula Angle right', 'Mid Mandibula Angle left', 'Gn point', 'B point', 'Mid Upper Incisors']
@@ -706,6 +719,8 @@ def BooleanSeparaMandibula():
         bpy.data.objects[i].select_set(True)
         bpy.context.view_layer.objects.active = bpy.data.objects[i]
         bpy.ops.object.delete(use_global=False)
+
+
 
 # Traz para Collection
 
@@ -719,14 +734,28 @@ def BooleanSeparaMandibula():
     bpy.ops.object.collection_link(collection='Collection')
     Cranio.hide_viewport=False
 
-    bpy.context.object.active_material.diffuse_color = (0.8, 0.684753, 0.470028, 0.5)
+    try:
+        bpy.context.object.active_material.diffuse_color = (0.8, 0.684753, 0.470028, 0.5)
+    except:
+        activeObject = bpy.context.active_object #Set active object to variable
+        mat = bpy.data.materials.new(name="MaterialSkull") #set new material to variable
+        activeObject.data.materials.append(mat) #add the material to the object
+        bpy.context.object.active_material.diffuse_color = (0.8, 0.684753, 0.470028, 0.5) #change color
 
 
     bpy.ops.object.select_all(action='DESELECT')
 
-    objAct = bpy.data.objects["Result.001"]
-    objAct.select_set(True)
-    bpy.context.view_layer.objects.active = objAct
+
+    try:
+        objAct = bpy.data.objects["Result.001"]
+        objAct.select_set(True)
+        bpy.context.view_layer.objects.active = objAct
+    except:
+        objAct = bpy.data.objects["Result"]
+        objAct.select_set(True)
+        bpy.context.view_layer.objects.active = objAct
+
+
 
 
 class SeparacaoMandibula(bpy.types.Operator):
@@ -738,10 +767,11 @@ class SeparacaoMandibula(bpy.types.Operator):
         ImportaSeparaMandibulaDef(self, context)
         AjustaMandibula()
         BooleanSeparaMandibula()
-        bpy.ops.wm.tool_set_by_id(name="builtin.select_box")
+#        bpy.ops.wm.tool_set_by_id(name="builtin.select_box")
         return {'FINISHED'}
 
 bpy.utils.register_class(SeparacaoMandibula)
+
 
 
 def SeparaMandibulaCranioDef():
