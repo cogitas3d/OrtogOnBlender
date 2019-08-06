@@ -376,8 +376,12 @@ def IdentificaTomografo(Arquivo):
         print("Teeth: 1430")
         print("Condylus: 655")
 
+        try:
         # Seleciona diretório e corrige biblio
-        os.chdir(scn.my_tool.path+"/3")
+            os.chdir(scn.my_tool.path+"/3")
+        except:
+            os.chdir(scn.my_tool.path+"/1005")
+
         scn.my_tool.path = os.getcwd()
         bpy.ops.object.corrige_dicom()
 
@@ -1512,6 +1516,12 @@ def GeraModeloTomoAutoDef(self, context):
 	    os.chdir(scn.my_tool.path+"/4")
     except:
         print("Dir 4 doesn't exist")
+
+    try:
+	    os.chdir(scn.my_tool.path+"/5")
+    except:
+        print("Dir 5 doesn't exist")
+
 	  
     try:
 	    os.chdir(scn.my_tool.path+"/0")
@@ -1548,15 +1558,28 @@ def GeraModeloTomoAutoDef(self, context):
     except:
         print("Dir 303 doesn't exist")
 
+    try:
+	    os.chdir(scn.my_tool.path+"/1005")
+    except:
+        print("Dir 1005 doesn't exist")
+
 	  
     # Não usar o 1, dá erro!
 	  
-    print("Atual:", os.getcwd())
-    print (os.listdir(os.getcwd())[0])
+    try:
+        print("Atual:", os.getcwd())
+        print (os.listdir(os.getcwd())[0])
 
-    ArquivoAtual = os.listdir(os.getcwd())[0]
+        ArquivoAtual = os.listdir(os.getcwd())[0]
 
-    IdentificaTomografo(ArquivoAtual)
+        IdentificaTomografo(ArquivoAtual)
+    except:
+        print("Erro no DICOM, tentativa 2!")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+        scn.my_tool.path = os.getcwd()+"/FIXED/"
+        ArquivoAtual = os.listdir(os.getcwd())[0]
+        IdentificaTomografo(ArquivoAtual)
 
 class GeraModeloTomoAuto(bpy.types.Operator):
     """Tooltip"""
@@ -1564,7 +1587,10 @@ class GeraModeloTomoAuto(bpy.types.Operator):
     bl_label = "Gera Modelo Tomo"
     
     def execute(self, context):
-        GeraModeloTomoAutoDef(self, context)
+        try:
+            GeraModeloTomoAutoDef(self, context)
+        except:
+            GeraModeloTomoAutoDef(self, context)
         return {'FINISHED'}
 
 bpy.utils.register_class(GeraModeloTomoAuto)
