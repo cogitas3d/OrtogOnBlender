@@ -1576,6 +1576,8 @@ def GeraModeloTomoAutoDef(self, context):
     except:
         print("Erro no DICOM, tentativa 2!")
         scn.my_tool.path = os.getcwd()
+        global DirExportado
+        DirExportado = scn.my_tool.path
         bpy.ops.object.corrige_dicom()
         scn.my_tool.path = os.getcwd()+"/FIXED/"
         ArquivoAtual = os.listdir(os.getcwd())[0]
@@ -1588,9 +1590,46 @@ class GeraModeloTomoAuto(bpy.types.Operator):
     
     def execute(self, context):
         try:
-            GeraModeloTomoAutoDef(self, context)
+
+            try:
+                GeraModeloTomoAutoDef(self, context)
+            except:
+                GeraModeloTomoAutoDef(self, context)
         except:
-            GeraModeloTomoAutoDef(self, context)
+ 
+            print("EROOOOO")
+
+            if platform.system() == "Windows":            
+
+                context = bpy.context
+                scn = context.scene
+                
+                os.chdir(DirExportado+"/Error/")
+                os.makedirs("FIXED")
+
+                path = DirExportado+"/Error/"
+                dirs = os.listdir( path )
+                
+                print("DIRRRRRRRR GLOBAL:", DirExportado)
+
+
+                # print the files in given directory
+                DCMNum = 0
+                
+                for file in dirs:
+                    print (file)
+
+                    print("FIXED WINDOWS MANUAL!!!")
+                    try:
+                        os.system("C:\OrtogOnBlender\dicomtools\dicomtodicom --verbose -o FIXED "+file)
+                        shutil.move(DirExportado+"/Error/FIXED/IM-0001-0001.dcm", DirExportado+"/Error/FIXED/"+str(DCMNum))
+                        DCMNum += 1
+                    except:
+                        print("Arquivo corrompido ou não é um DICOM!")
+
+                scn.my_tool.path = DirExportado+"/Error/FIXED/"
+                GeraModeloTomoAutoDef(self, context)
+
         return {'FINISHED'}
 
 bpy.utils.register_class(GeraModeloTomoAuto)
