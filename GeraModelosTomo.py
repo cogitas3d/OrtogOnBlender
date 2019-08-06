@@ -1439,11 +1439,11 @@ def IdentificaTomografo(Arquivo):
         print("SoftTissue: -580")
         print("Teeth: 1080")
 
-#        bpy.ops.object.reduz_dimensao_dicom()
-
         os.chdir(scn.my_tool.path+"/1")
         scn.my_tool.path = os.getcwd()
         bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
         try:
@@ -1454,6 +1454,31 @@ def IdentificaTomografo(Arquivo):
         # Gera o 3D 
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-580"
+        bpy.context.scene.interesse_dentes = "1080"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+    if ManufacturerLimpo == "'Dabi Atlante'" and ManufacturerModelNameLimpo == "'Eagle 3D'":
+        print("SÉRIE 1")
+        print("Bone: 575")
+        print("SoftTissue: -377")
+        print("Teeth: 1080")
+
+        os.chdir(scn.my_tool.path+"/1")
+        scn.my_tool.path = os.getcwd()
+#        bpy.ops.object.corrige_dicom()
+
+        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")           
+
+        # Gera o 3D 
+        bpy.context.scene.interesse_ossos = "575"
+        bpy.context.scene.interesse_mole = "-377"
         bpy.context.scene.interesse_dentes = "1080"
 
         bpy.ops.object.gera_modelos_tomo()
