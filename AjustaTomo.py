@@ -238,7 +238,7 @@ def AjustaTomoDef(self, context):
             shutil.rmtree(tmpdirCopy+'COPY')
             shutil.rmtree(tmpdirCopy)
         except:
-            print("Problema de permissão ao apagar no TMP!")
+            print("Erro de permissão ao apagar os diretório do TMP!")
 
         print("CT-SCAN ready!")
 
