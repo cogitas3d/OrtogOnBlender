@@ -234,8 +234,11 @@ def AjustaTomoDef(self, context):
 				    
             #os.remove('deletar.txt')
     #        os.remove('deletar.txt')
-        shutil.rmtree(tmpdirCopy+'COPY')
-        shutil.rmtree(tmpdirCopy)
+        try:
+            shutil.rmtree(tmpdirCopy+'COPY')
+            shutil.rmtree(tmpdirCopy)
+        except:
+            print("Problema de permissão ao apagar no TMP!")
 
         print("CT-SCAN ready!")
 
