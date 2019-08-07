@@ -425,6 +425,33 @@ def IdentificaTomografo(Arquivo):
         bpy.context.scene.interesse_dentes = "800"
 
         bpy.ops.object.gera_modelos_tomo()
+
+    if ManufacturerLimpo == "'Imaging Sciences International'" and StationNameLimpo == "'ICAT-8D9DCF422B'":
+        print("USA FIXED!")
+        print("SÉRIE 0")
+        print("Bone: 345")
+        print("SoftTissue: -600")
+        print("Teeth: 972")
+        print("Condylus: 655")
+
+        os.chdir(scn.my_tool.path+"/0")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")           
+
+        # Gera o 3D 
+        bpy.context.scene.interesse_ossos = "345"
+        bpy.context.scene.interesse_mole = "-600"
+        bpy.context.scene.interesse_dentes = "972"
+
+        bpy.ops.object.gera_modelos_tomo()
         
     if ManufacturerLimpo == "'Imaging Sciences International'" and StationNameLimpo == "'ICAT-6BHI1BTQFF'":
         print("USA FIXED!")
