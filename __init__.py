@@ -75,7 +75,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190807d")
+        row.label(text="VERSION: 20190807e")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -654,6 +654,25 @@ class ORTOG_PT_Segmentation(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("object.separa_objeto", text="Separate Selected!", icon="MOD_BEVEL")
+
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Pivot Rotation:")
+
+
+        obj = context.active_object
+        tool_settings = context.tool_settings
+
+        object_mode = 'OBJECT' if obj is None else obj.mode
+
+        if object_mode in {'OBJECT', 'EDIT', 'EDIT_GPENCIL', 'SCULPT_GPENCIL'} or has_pose_mode:
+            layout.prop_with_popover(
+                tool_settings,
+                "transform_pivot_point",
+                text="",
+                icon_only=False,
+                panel="VIEW3D_PT_pivot_point",
+            )
 
         row = layout.row()
         box = layout.box()
