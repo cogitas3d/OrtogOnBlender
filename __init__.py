@@ -75,7 +75,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190807c")
+        row.label(text="VERSION: 20190807d")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -651,6 +651,9 @@ class ORTOG_PT_Segmentation(bpy.types.Panel):
         linha=row.operator("mesh.select_more", text="Sel. More", icon="ADD")
         
         linha=row.operator("mesh.select_less", text="Sel. Less", icon="REMOVE")
+
+        row = layout.row()
+        linha=row.operator("object.separa_objeto", text="Separate Selected!", icon="MOD_BEVEL")
 
         row = layout.row()
         box = layout.box()

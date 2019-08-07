@@ -847,4 +847,36 @@ class FecharBuracosTodos(bpy.types.Operator):
 
 bpy.utils.register_class(FecharBuracosTodos)
 
+def SeparaObjetoDef():
+
+    bpy.ops.mesh.select_mode(type="FACE")
+    bpy.ops.mesh.select_all(action='INVERT')
+    bpy.ops.mesh.separate(type='SELECTED')
+    bpy.ops.object.mode_set(mode='OBJECT')
+    objSel = bpy.context.view_layer.objects.active
+    bpy.ops.object.select_all(action='DESELECT')
+    objSel.select_set(True)
+    bpy.context.view_layer.objects.active = objSel
+
+class SeparaObjeto(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.separa_objeto"
+    bl_label = "Separa Ojeto"
+
+    @classmethod
+    def poll(cls, context):
+
+#        found = 'Orbital right' in bpy.data.objects
+
+        if bpy.context.active_object.mode == 'EDIT':
+            return True
+        else:
+            if bpy.context.active_object.mode == 'OBJECT':
+                return False
+
+    def execute(self, context):
+        SeparaObjetoDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(SeparaObjeto)
 
