@@ -852,6 +852,7 @@ def SeparaObjetoDef():
     bpy.ops.mesh.select_mode(type="FACE")
     bpy.ops.mesh.select_all(action='INVERT')
     bpy.ops.mesh.separate(type='SELECTED')
+    bpy.ops.mesh.select_mode(type="VERT")
     bpy.ops.object.mode_set(mode='OBJECT')
     objSel = bpy.context.view_layer.objects.active
     bpy.ops.object.select_all(action='DESELECT')
