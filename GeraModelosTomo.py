@@ -1390,9 +1390,9 @@ def IdentificaTomografo(Arquivo):
         # Copia para o diretório
 
         # Gera o 3D 
-            bpy.context.scene.interesse_ossos = "630"
-            bpy.context.scene.interesse_mole = "-460"
-            bpy.context.scene.interesse_dentes = "1865"
+            bpy.context.scene.interesse_ossos = "200"
+            bpy.context.scene.interesse_mole = "-300"
+            bpy.context.scene.interesse_dentes = "1430"
 
         except:
 
