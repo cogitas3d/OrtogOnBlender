@@ -1577,7 +1577,7 @@ def IdentificaTomografo(Arquivo):
         # TAMBÉM FUNCIONA O 201
         os.chdir(scn.my_tool.path+"/81")
         scn.my_tool.path = os.getcwd()
-        bpy.ops.object.corrige_dicom()
+#        bpy.ops.object.corrige_dicom()
 
         bpy.ops.object.reduz_dimensao_dicom()
 
