@@ -1566,7 +1566,33 @@ def IdentificaTomografo(Arquivo):
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
 
-        bpy.ops.object.gera_modelos_tomo()    
+        bpy.ops.object.gera_modelos_tomo()
+
+    if ManufacturerLimpo == "'NewTom'" and ManufacturerModelNameLimpo == "'NT5GXL'":
+        print("SÉRIE 81")
+        print("Bone: 650")
+        print("SoftTissue: -610")
+        print("Teeth: 1240")
+
+        # TAMBÉM FUNCIONA O 201
+        os.chdir(scn.my_tool.path+"/81")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")           
+
+        # Gera o 3D 
+        bpy.context.scene.interesse_ossos = "650"
+        bpy.context.scene.interesse_mole = "-610"
+        bpy.context.scene.interesse_dentes = "1240"
+
+        bpy.ops.object.gera_modelos_tomo()     
 
     if ManufacturerLimpo == "'Planmeca'" and ManufacturerModelNameLimpo == "'ProMax'":
         print("SÉRIE 453970")
@@ -1700,6 +1726,11 @@ def GeraModeloTomoAutoDef(self, context):
 	    os.chdir(scn.my_tool.path+"/0")
     except:
         print("Dir 0 doesn't exist")
+
+    try:
+	    os.chdir(scn.my_tool.path+"/81")
+    except:
+        print("Dir 81 doesn't exist")
 
     try:
 	    os.chdir(scn.my_tool.path+"/202")
