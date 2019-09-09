@@ -1341,24 +1341,53 @@ def IdentificaTomografo(Arquivo):
         print("Condylus: 655")
 
         # TAMBÉM FUNCIONA O 201
-        os.chdir(scn.my_tool.path+"/3")
-        scn.my_tool.path = os.getcwd()
-#        bpy.ops.object.corrige_dicom()
 
-#        bpy.ops.object.reduz_dimensao_dicom()
-
-        # Copia para o diretório
         try:
-            CopiaTomoDir(scn.my_tool.path)
+            os.chdir(scn.my_tool.path+"/3")
+            scn.my_tool.path = os.getcwd()
+    #        bpy.ops.object.corrige_dicom()
+
+    #        bpy.ops.object.reduz_dimensao_dicom()
+
+            # Copia para o diretório
+            try:
+                CopiaTomoDir(scn.my_tool.path)
+            except:
+                print("Doesn't have Patient Dir")           
+
+            # Gera o 3D 
+            bpy.context.scene.interesse_ossos = "200"
+            bpy.context.scene.interesse_mole = "-300"
+            bpy.context.scene.interesse_dentes = "1430"
+
+            bpy.ops.object.gera_modelos_tomo()
+
         except:
-            print("Doesn't have Patient Dir")           
+            print("Não há o direório 3!")
 
-        # Gera o 3D 
-        bpy.context.scene.interesse_ossos = "200"
-        bpy.context.scene.interesse_mole = "-300"
-        bpy.context.scene.interesse_dentes = "1430"
 
-        bpy.ops.object.gera_modelos_tomo()
+        try:
+            os.chdir(scn.my_tool.path+"/700")
+            scn.my_tool.path = os.getcwd()
+            bpy.ops.object.corrige_dicom()
+
+    #        bpy.ops.object.reduz_dimensao_dicom()
+
+            # Copia para o diretório
+            try:
+                CopiaTomoDir(scn.my_tool.path)
+            except:
+                print("Doesn't have Patient Dir")           
+
+            # Gera o 3D 
+            bpy.context.scene.interesse_ossos = "200"
+            bpy.context.scene.interesse_mole = "-300"
+            bpy.context.scene.interesse_dentes = "1430"
+
+            bpy.ops.object.gera_modelos_tomo()
+
+        except:
+            print("Não há o direório 700!")
 
     if ManufacturerLimpo == "'SIEMENS'" and StationNameLimpo == "'CT4SQ'":
         print("SÉRIE 4")
@@ -1971,6 +2000,11 @@ def GeraModeloTomoAutoDef(self, context):
 	    os.chdir(scn.my_tool.path+"/303")
     except:
         print("Dir 303 doesn't exist")
+
+    try:
+	    os.chdir(scn.my_tool.path+"/700")
+    except:
+        print("Dir 700 doesn't exist")
 
     try:
 	    os.chdir(scn.my_tool.path+"/1005")
