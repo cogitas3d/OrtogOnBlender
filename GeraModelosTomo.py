@@ -778,6 +778,7 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+
     if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'Optima'":
         print("SÉRIE 303")
         print("Bone: 200")
@@ -1772,17 +1773,18 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
-    if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'CT'":
-        print("SÉRIE 2")
+
+    if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'CT'" and ManufacturerModelNameLimpo == "'HiSpeed'":
+        print("SÉRIE 5")
         print("Bone: 200")
         print("SoftTissue: -300")
         print("Teeth: 1430")
         print("Condylus: 655")
 
         # TAMBÉM FUNCIONA O 201
-        os.chdir(scn.my_tool.path+"/2")
+        os.chdir(scn.my_tool.path+"/5")
         scn.my_tool.path = os.getcwd()
-#        bpy.ops.object.corrige_dicom()
+        bpy.ops.object.corrige_dicom()
 
 #        bpy.ops.object.reduz_dimensao_dicom()
 
