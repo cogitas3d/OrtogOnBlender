@@ -873,6 +873,84 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+    if ManufacturerLimpo == "'SIEMENS'" and StationNameLimpo == "'CT44308'":
+        print("SÉRIE ")
+        print("Bone: 200")
+        print("SoftTissue: -300")
+        print("Teeth: 1430")
+        print("Condylus: 655")
+
+        os.chdir(scn.my_tool.path+"/4")
+        scn.my_tool.path = os.getcwd()
+#        bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")          
+
+        # Gera o 3D 
+        bpy.context.scene.interesse_ossos = "200"
+        bpy.context.scene.interesse_mole = "-300"
+        bpy.context.scene.interesse_dentes = "1430"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+    if ManufacturerLimpo == "'SIEMENS'" and StationNameLimpo == "'CTAWP96482'":
+        print("SÉRIE 4")
+        print("Bone: 200")
+        print("SoftTissue: -300")
+        print("Teeth: 1430")
+        print("Condylus: 655")
+
+        os.chdir(scn.my_tool.path+"/4")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")          
+
+        # Gera o 3D 
+        bpy.context.scene.interesse_ossos = "200"
+        bpy.context.scene.interesse_mole = "-300"
+        bpy.context.scene.interesse_dentes = "1430"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+    if ManufacturerLimpo == "'SIEMENS'" and StationNameLimpo == "'CTAWP66507'":
+        print("SÉRIE 2")
+        print("Bone: 200")
+        print("SoftTissue: -300")
+        print("Teeth: 1430")
+        print("Condylus: 655")
+
+        os.chdir(scn.my_tool.path+"/2")
+        scn.my_tool.path = os.getcwd()
+#        bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")          
+
+        # Gera o 3D 
+        bpy.context.scene.interesse_ossos = "200"
+        bpy.context.scene.interesse_mole = "-300"
+        bpy.context.scene.interesse_dentes = "1430"
+
+        bpy.ops.object.gera_modelos_tomo()
+
     if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'PETCT'":
 #        print("USA FIXED!")
         print("SÉRIE 3")
@@ -1799,7 +1877,34 @@ def IdentificaTomografo(Arquivo):
         bpy.context.scene.interesse_mole = "-610"
         bpy.context.scene.interesse_dentes = "1240"
 
+        bpy.ops.object.gera_modelos_tomo()
+
+    if ManufacturerLimpo == "'NewTom'" and ManufacturerModelNameLimpo == "'NTVGiEVO'":
+        print("SÉRIE 1")
+        print("Bone: 570")
+        print("SoftTissue: -600")
+        print("Teeth: 1105")
+
+        # TAMBÉM FUNCIONA O 201
+        os.chdir(scn.my_tool.path+"/1")
+        scn.my_tool.path = os.getcwd()
+#        bpy.ops.object.corrige_dicom()
+
+        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")           
+
+        # Gera o 3D 
+        bpy.context.scene.interesse_ossos = "570"
+        bpy.context.scene.interesse_mole = "-600"
+        bpy.context.scene.interesse_dentes = "1105"
+
         bpy.ops.object.gera_modelos_tomo()     
+
 
     if ManufacturerLimpo == "'Planmeca'" and ManufacturerModelNameLimpo == "'ProMax'":
         print("SÉRIE 453970")
@@ -1813,6 +1918,22 @@ def IdentificaTomografo(Arquivo):
             os.chdir(scn.my_tool.path+"/453970")
             scn.my_tool.path = os.getcwd()
 #           bpy.ops.object.corrige_dicom()
+
+            bpy.ops.object.reduz_dimensao_dicom()
+
+            # Copia para o diretório
+            try:
+                CopiaTomoDir(scn.my_tool.path)
+            except:
+                print("Doesn't have Patient Dir")           
+
+            # Gera o 3D 
+            bpy.context.scene.interesse_ossos = "200"
+            bpy.context.scene.interesse_mole = "-580"
+            bpy.context.scene.interesse_dentes = "460"
+
+            bpy.ops.object.gera_modelos_tomo()
+
         except:
             print("Não conta com diretório 453970")
 
@@ -1820,23 +1941,49 @@ def IdentificaTomografo(Arquivo):
             os.chdir(scn.my_tool.path+"/456750")
             scn.my_tool.path = os.getcwd()
 #           bpy.ops.object.corrige_dicom()
+
+            bpy.ops.object.reduz_dimensao_dicom()
+
+            # Copia para o diretório
+            try:
+                CopiaTomoDir(scn.my_tool.path)
+            except:
+                print("Doesn't have Patient Dir")           
+
+            # Gera o 3D 
+            bpy.context.scene.interesse_ossos = "200"
+            bpy.context.scene.interesse_mole = "-580"
+            bpy.context.scene.interesse_dentes = "460"
+
+            bpy.ops.object.gera_modelos_tomo()
+
         except:
             print("Não conta com diretório 456750")
 
-#        bpy.ops.object.reduz_dimensao_dicom()
 
-        # Copia para o diretório
         try:
-            CopiaTomoDir(scn.my_tool.path)
+            os.chdir(scn.my_tool.path+"/134149")
+            scn.my_tool.path = os.getcwd()
+#           bpy.ops.object.corrige_dicom()
+
+            bpy.ops.object.reduz_dimensao_dicom()
+
+            # Copia para o diretório
+            try:
+                CopiaTomoDir(scn.my_tool.path)
+            except:
+                print("Doesn't have Patient Dir")           
+
+            # Gera o 3D 
+            bpy.context.scene.interesse_ossos = "200"
+            bpy.context.scene.interesse_mole = "-580"
+            bpy.context.scene.interesse_dentes = "460"
+
+            bpy.ops.object.gera_modelos_tomo()
+
+
         except:
-            print("Doesn't have Patient Dir")           
-
-        # Gera o 3D 
-        bpy.context.scene.interesse_ossos = "200"
-        bpy.context.scene.interesse_mole = "-580"
-        bpy.context.scene.interesse_dentes = "460"
-
-        bpy.ops.object.gera_modelos_tomo()
+            print("Não conta com diretório 134149")
 
 
     if ManufacturerLimpo == "'Carestream Health'" and ManufacturerModelNameLimpo == "'CS 9300'":
@@ -1984,6 +2131,10 @@ def GeraModeloTomoAutoDef(self, context):
     except:
         print("Dir 67821 doesn't exist")
 
+    try:
+	    os.chdir(scn.my_tool.path+"/134149")
+    except:
+        print("Dir 134149 doesn't exist")
 
     try:
 	    os.chdir(scn.my_tool.path+"/453970")
