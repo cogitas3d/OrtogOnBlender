@@ -831,7 +831,7 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
-    if ManufacturerLimpo == "'Hitachi Medical Corporation'" and StationNameLimpo == "'CT99'":
+    if ManufacturerLimpo == "'Hitachi Medical Corporation'" and StationNameLimpo == "'HITACHI Scenaria'":
         print("SÉRIE 3")
         print("Bone: 200")
         print("SoftTissue: -300")
