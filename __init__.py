@@ -76,7 +76,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190916a")
+        row.label(text="VERSION: 20190916b")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -396,7 +396,7 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
         row.label(text="Boolean Segmentation:")
 
         row = layout.row()
-        row.operator("object.prepara_impressao_3d", text="Prepares 3D Printing?", icon="META_CUBE")
+        row.operator("object.prepara_impressao_3d", text="Close Holes (Remesh)?", icon="META_CUBE")
 
         row = layout.row()
 #        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
