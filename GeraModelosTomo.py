@@ -2469,4 +2469,55 @@ class DesagrupaTomo(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(DesagrupaTomo)
-   
+
+def GeraModelosTomoManualDef(self, context):
+
+    scn = context.scene
+
+    homeall = expanduser("~")
+
+    os.chdir(scn.my_tool.path)
+    DirAtual = os.getcwd()
+    ArqAtual = os.listdir(os.getcwd())[0]
+    print("Atual:", os.getcwd())
+    print (os.listdir(os.getcwd())[0])
+
+    ListaArquivos = sorted(os.listdir(scn.my_tool.path))
+
+    os.chdir(scn.my_tool.path)
+
+    ds = pydicom.dcmread(str(DirAtual+"/"+ArqAtual), force=True)
+    DimPixelsX = ds.Rows
+    DimPixelsY = ds.Columns
+
+    print("TESTA FATIA...")
+    print("DimPixelsX", DimPixelsX)
+    print("DimPixelsY", DimPixelsY)
+
+    if DimPixelsX > 512 or DimPixelsY > 512:
+
+        print("MAIOR QUE 512!!! REDUZINDO...")
+
+        bpy.ops.object.corrige_dicom()
+        bpy.ops.object.reduz_dimensao_dicom() # SÓ FUNCIONA SE FOR COMPATIVEL! POR ISSO O FIXED ANTES!!!
+        bpy.ops.object.gera_modelos_tomo()
+
+
+
+
+    else:
+        print("MENOR OU IGUAL A 512...")
+        bpy.ops.object.corrige_dicom()
+        bpy.ops.object.gera_modelos_tomo()
+
+
+class GeraModelosTomoManual(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_modelo_tomo_manual"
+    bl_label = "Gera Modelo Tomo Manual"
+    
+    def execute(self, context):
+        GeraModelosTomoManualDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(GeraModelosTomoManual)

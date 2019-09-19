@@ -76,7 +76,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190916c")
+        row.label(text="VERSION: 20190919a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -178,11 +178,18 @@ class ORTOG_PT_CTScanOrgFIX(bpy.types.Panel):
 
         row = layout.row()
         row = layout.row()
-        row.label(text="CT-Scan Fix:")
+#        row.label(text="CT-Scan Fix:")
+#        col = layout.column(align=True)
+#        col.prop(scn.my_tool, "path", text="")
+#        row = layout.row()
+#        row.operator("object.corrige_dicom", text="Fix it!", icon="FILE_TICK")
+
+        row = layout.row()
+        row.label(text="Threshold Setup:")
         col = layout.column(align=True)
         col.prop(scn.my_tool, "path", text="")
         row = layout.row()
-        row.operator("object.corrige_dicom", text="Fix it!", icon="FILE_TICK")
+        row.operator("object.abre_slicer", text="Open Slicer!", icon="FILE_TICK")
 
 
         row = layout.row()
@@ -209,7 +216,8 @@ class ORTOG_PT_CTScanOrgFIX(bpy.types.Panel):
             row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
 
         row = layout.row()
-        row.operator("object.gera_modelos_tomo", text="Convert DICOM to 3D", icon="SNAP_FACE")
+#        row.operator("object.gera_modelos_tomo", text="Convert DICOM to 3D", icon="SNAP_FACE")
+        row.operator("object.gera_modelo_tomo_manual", text="Convert DICOM to 3D", icon="SNAP_FACE")
 
         row = layout.row()
         box = layout.box()
