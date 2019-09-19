@@ -2051,9 +2051,9 @@ def IdentificaTomografo(Arquivo):
 
     if ManufacturerLimpo == "'SIEMENS'" and StationNameLimpo == "'CT54945'":
         print("SÉRIE 2")
-        print("Bone: 200")
+        print("Bone: 400")
         print("SoftTissue: -300")
-        print("Teeth: 1430")
+        print("Teeth: 1350")
         print("Condylus: 655")
 
         # TAMBÉM FUNCIONA O 201
@@ -2070,9 +2070,9 @@ def IdentificaTomografo(Arquivo):
             print("Doesn't have Patient Dir")           
 
         # Gera o 3D 
-        bpy.context.scene.interesse_ossos = "200"
+        bpy.context.scene.interesse_ossos = "400"
         bpy.context.scene.interesse_mole = "-300"
-        bpy.context.scene.interesse_dentes = "1430"
+        bpy.context.scene.interesse_dentes = "1350"
 
         bpy.ops.object.gera_modelos_tomo()
 
