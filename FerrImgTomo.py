@@ -4,7 +4,8 @@ import pydicom as dicom
 import subprocess
 import tempfile
 import platform
-
+from os.path import expanduser
+import platform
 
 
 # EXTRAI DADOS DA TOMOGRAFIA
@@ -502,3 +503,39 @@ class ExportaSeqTomo(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(ExportaSeqTomo)
+
+
+# Abre o SLicer para ver o Threshold
+
+def AbreSlicerDef(self, context):
+
+    scn = context.scene
+
+    homeall = expanduser("~")
+
+    os.chdir(scn.my_tool.path)
+    DirAtual = os.getcwd()
+    ArqAtual = os.listdir(os.getcwd())[0]
+    print("Atual:", os.getcwd())
+    print (os.listdir(os.getcwd())[0])
+
+    if platform.system() == "Linux":
+        subprocess.call(homeall+'/Programs/OrtogOnBlender/Slicer481/./Slicer '+str(DirAtual+"/"+ArqAtual+" &"), shell=True)
+        
+    if platform.system() == "Windows":
+        subprocess.call('START /B C:/OrtogOnBlender/Slicer410/Slicer.exe '+str(DirAtual+"/"+ArqAtual), shell=True)
+        
+    if platform.system() == "Darwin":
+        subprocess.call('/OrtogOnBlender/Slicer/Slicer.app/Contents/MacOS/Slicer '+str(DirAtual+"/"+ArqAtual+" &"), shell=True)
+
+class AbreSlicer(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.abre_slicer"
+    bl_label = "Open Slicer"
+    
+    def execute(self, context):
+        AbreSlicerDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(AbreSlicer)
+
