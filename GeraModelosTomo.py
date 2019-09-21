@@ -2593,8 +2593,9 @@ def GeraModelosTomoManualDef(self, context):
         DiretorioTomo = scn.my_tool.path
 
     TmpDirTomografo = tempfile.mkdtemp()
+    TmpTomograforFile = TmpDirTomografo+'/CT_Scan_tomograph.txt'
 
-    with open(TmpDirTomografo+"CT_Scan_tomograph.txt", "a") as ModeloTomografo:
+    with open(TmpTomograforFile, "a") as ModeloTomografo:
         ModeloTomografo.write('ManufacturerLimpo == '+str(ManufacturerLimpo)+"\n")
         ModeloTomografo.write('StationNameLimpo == '+str(StationNameLimpo)+"\n")
         ModeloTomografo.write('ManufacturerModelNameLimpo == '+str(ManufacturerModelNameLimpo)+"\n")
@@ -2607,11 +2608,11 @@ def GeraModelosTomoManualDef(self, context):
     # ABRE DIRETÓRIO
 
     if platform.system() == "Windows":
-        os.startfile(TmpDirTomografo+"CT_Scan_tomograph.txt")
+        os.startfile(TmpTomograforFile)
     elif platform.system() == "Darwin":
-        subprocess.Popen(["open", TmpDirTomografo+"CT_Scan_tomograph.txt"])
+        subprocess.Popen(["open", TmpTomograforFile])
     else:
-        subprocess.Popen(["xdg-open", TmpDirTomografo+"CT_Scan_tomograph.txt"])
+        subprocess.Popen(["xdg-open", TmpTomograforFile])
 
     # GERA MODELOS
 
