@@ -509,6 +509,7 @@ bpy.utils.register_class(ExportaSeqTomo)
 
 def AbreSlicerDef(self, context):
 
+    context = bpy.context
     scn = context.scene
 
     homeall = expanduser("~")
@@ -518,6 +519,9 @@ def AbreSlicerDef(self, context):
     ArqAtual = os.listdir(os.getcwd())[0]
     print("Atual:", os.getcwd())
     print (os.listdir(os.getcwd())[0])
+
+
+    # ABRE SLICER
 
     if platform.system() == "Linux":
         subprocess.call(homeall+'/Programs/OrtogOnBlender/Slicer481/./Slicer '+str(DirAtual+"/"+ArqAtual+" &"), shell=True)

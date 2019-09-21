@@ -690,31 +690,61 @@ def IdentificaTomografo(Arquivo):
         bpy.ops.object.gera_modelos_tomo()
 
     if ManufacturerLimpo == "'TOSHIBA'" and ManufacturerModelNameLimpo == "'Aquilion'":
-        print("SÉRIE 2")
-        print("Bone: 200")
-        print("SoftTissue: -300")
-        print("Teeth: 1430")
-        print("Condylus: 655")
-        
 
-        os.chdir(scn.my_tool.path+"/2")
-        scn.my_tool.path = os.getcwd()
-#        bpy.ops.object.corrige_dicom()
+        if StationNameLimpo == "'HCUV_TC_01'":
+            print("SÉRIE 6")
+            print("Bone: 200")
+            print("SoftTissue: -300")
+            print("Teeth: 1430")
+            print("Condylus: 655")
+            
 
-#        bpy.ops.object.reduz_dimensao_dicom()
+            os.chdir(scn.my_tool.path+"/6")
+            scn.my_tool.path = os.getcwd()
+    #        bpy.ops.object.corrige_dicom()
 
-        # Copia para o diretório
-        try:
-            CopiaTomoDir(scn.my_tool.path)
-        except:
-            print("Doesn't have Patient Dir")           
+    #        bpy.ops.object.reduz_dimensao_dicom()
 
-        # Gera o 3D 
-        bpy.context.scene.interesse_ossos = "200"
-        bpy.context.scene.interesse_mole = "-300"
-        bpy.context.scene.interesse_dentes = "1430"
+            # Copia para o diretório
+            try:
+                CopiaTomoDir(scn.my_tool.path)
+            except:
+                print("Doesn't have Patient Dir")           
 
-        bpy.ops.object.gera_modelos_tomo()
+            # Gera o 3D 
+            bpy.context.scene.interesse_ossos = "200"
+            bpy.context.scene.interesse_mole = "-300"
+            bpy.context.scene.interesse_dentes = "1430"
+
+            bpy.ops.object.gera_modelos_tomo()
+
+
+        else:
+            print("SÉRIE 2")
+            print("Bone: 200")
+            print("SoftTissue: -300")
+            print("Teeth: 1430")
+            print("Condylus: 655")
+            
+
+            os.chdir(scn.my_tool.path+"/2")
+            scn.my_tool.path = os.getcwd()
+    #        bpy.ops.object.corrige_dicom()
+
+    #        bpy.ops.object.reduz_dimensao_dicom()
+
+            # Copia para o diretório
+            try:
+                CopiaTomoDir(scn.my_tool.path)
+            except:
+                print("Doesn't have Patient Dir")           
+
+            # Gera o 3D 
+            bpy.context.scene.interesse_ossos = "200"
+            bpy.context.scene.interesse_mole = "-300"
+            bpy.context.scene.interesse_dentes = "1430"
+
+            bpy.ops.object.gera_modelos_tomo()
 
     if ManufacturerLimpo == "'TOSHIBA'" and ManufacturerModelNameLimpo == "'Alexion'":
         print("USA FIXED!")
@@ -2510,6 +2540,81 @@ def GeraModelosTomoManualDef(self, context):
     print("Atual:", os.getcwd())
     print (os.listdir(os.getcwd())[0])
 
+    # IDENTIFICA TOMOGRAFO
+
+    # Lê arquivo DICOM
+
+
+    ds = pydicom.dcmread(ArqAtual)
+
+    # Separa Manufacturer
+    ManufacturerComplete = ds.data_element("Manufacturer")
+    ManufacturerLimpa1 = str(ManufacturerComplete).split('LO: ')
+    ManufacturerLimpo = str(ManufacturerLimpa1[1]).strip('"')
+
+    print("ManufacturerComplete:", ManufacturerComplete)
+    print("ManufacturerLimpa1:", ManufacturerLimpa1)
+    print("ManufacturerLimpo:", ManufacturerLimpo)
+
+
+    try:
+        # Separa StationName
+        StationNameComplete = ds.data_element("StationName")
+        StationNameLimpa1 = str(StationNameComplete).split('SH: ')
+        StationNameLimpo = str(StationNameLimpa1[1]).strip('"')
+
+        print("StationNameComplete:", StationNameComplete)
+        print("StationNameLimpa1:", StationNameLimpa1)
+        print("StationNameLimpo:", StationNameLimpo)
+    except:
+        print("Sem StationNam")
+
+
+    
+    try:
+        # Separa ManufacturerModelName
+        ManufacturerModelNameComplete = ds.data_element("ManufacturerModelName")
+        ManufacturerModelNameLimpa1 = str(ManufacturerModelNameComplete).split('LO: ')
+        ManufacturerModelNameLimpo = str(ManufacturerModelNameLimpa1[1]).strip('"')
+
+        print("ManufacturerModelName:", ManufacturerModelNameComplete)
+        print("ManufacturerModelNameLimpa1:", ManufacturerModelNameLimpa1)
+        print("ManufacturerModelNameLimpo:", ManufacturerModelNameLimpo)
+        return ManufacturerModelName
+    except:
+        print("Sem ManufacturerModelName")
+
+    # CAPTURA VALORES DOS FATORES
+
+        FatorOssos = bpy.context.scene.interesse_ossos
+        FatorMole = bpy.context.scene.interesse_mole
+        FatorDentes = bpy.context.scene.interesse_dentes
+
+        DiretorioTomo = scn.my_tool.path
+
+    TmpDirTomografo = tempfile.mkdtemp()
+
+    with open(TmpDirTomografo+"CT_Scan_tomograph.txt", "a") as ModeloTomografo:
+        ModeloTomografo.write('ManufacturerLimpo == '+str(ManufacturerLimpo)+"\n")
+        ModeloTomografo.write('StationNameLimpo == '+str(StationNameLimpo)+"\n")
+        ModeloTomografo.write('ManufacturerModelNameLimpo == '+str(ManufacturerModelNameLimpo)+"\n")
+        ModeloTomografo.write('FatorOssos == '+str(FatorOssos)+"\n")
+        ModeloTomografo.write('FatorMole == '+str(FatorMole)+"\n")
+        ModeloTomografo.write('FatorDentes == '+str(FatorDentes)+"\n")
+        ModeloTomografo.write('DiretorioTomo == '+str(DiretorioTomo))
+        ModeloTomografo.close()
+
+    # ABRE DIRETÓRIO
+
+    if platform.system() == "Windows":
+        os.startfile(TmpDirTomografo+"CT_Scan_tomograph.txt")
+    elif platform.system() == "Darwin":
+        subprocess.Popen(["open", TmpDirTomografo+"CT_Scan_tomograph.txt"])
+    else:
+        subprocess.Popen(["xdg-open", TmpDirTomografo+"CT_Scan_tomograph.txt"])
+
+    # GERA MODELOS
+
     ListaArquivos = sorted(os.listdir(scn.my_tool.path))
 
     os.chdir(scn.my_tool.path)
@@ -2529,9 +2634,6 @@ def GeraModelosTomoManualDef(self, context):
         bpy.ops.object.corrige_dicom()
         bpy.ops.object.reduz_dimensao_dicom() # SÓ FUNCIONA SE FOR COMPATIVEL! POR ISSO O FIXED ANTES!!!
         bpy.ops.object.gera_modelos_tomo()
-
-
-
 
     else:
         print("MENOR OU IGUAL A 512...")
