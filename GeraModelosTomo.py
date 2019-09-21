@@ -2595,15 +2595,18 @@ def GeraModelosTomoManualDef(self, context):
     TmpDirTomografo = tempfile.mkdtemp()
     TmpTomograforFile = TmpDirTomografo+'/CT_Scan_tomograph.txt'
 
-    with open(TmpTomograforFile, "a") as ModeloTomografo:
-        ModeloTomografo.write('ManufacturerLimpo == '+str(ManufacturerLimpo)+"\n")
-        ModeloTomografo.write('StationNameLimpo == '+str(StationNameLimpo)+"\n")
-        ModeloTomografo.write('ManufacturerModelNameLimpo == '+str(ManufacturerModelNameLimpo)+"\n")
-        ModeloTomografo.write('FatorOssos == '+str(FatorOssos)+"\n")
-        ModeloTomografo.write('FatorMole == '+str(FatorMole)+"\n")
-        ModeloTomografo.write('FatorDentes == '+str(FatorDentes)+"\n")
-        ModeloTomografo.write('DiretorioTomo == '+str(DiretorioTomo))
-        ModeloTomografo.close()
+    try:
+        with open(TmpTomograforFile, "a") as ModeloTomografo:
+            ModeloTomografo.write('ManufacturerLimpo == '+str(ManufacturerLimpo)+"\n")
+            ModeloTomografo.write('StationNameLimpo == '+str(StationNameLimpo)+"\n")
+            ModeloTomografo.write('ManufacturerModelNameLimpo == '+str(ManufacturerModelNameLimpo)+"\n")
+            ModeloTomografo.write('FatorOssos == '+str(FatorOssos)+"\n")
+            ModeloTomografo.write('FatorMole == '+str(FatorMole)+"\n")
+            ModeloTomografo.write('FatorDentes == '+str(FatorDentes)+"\n")
+            ModeloTomografo.write('DiretorioTomo == '+str(DiretorioTomo))
+            ModeloTomografo.close()
+    except:
+        print("Não consta dados do tomógrafo.")
 
     # ABRE DIRETÓRIO
 
