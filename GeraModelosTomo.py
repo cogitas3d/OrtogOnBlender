@@ -398,6 +398,36 @@ def IdentificaTomografo(Arquivo):
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
 
+        bpy.ops.object.gera_modelos_tomo()
+        
+    if ManufacturerLimpo == "'TOSHIBA'" and StationNameLimpo == "'ID_STATION'" and ManufacturerModelNameLimpo == "'Aquilion Lightning'":
+        print("USA FIXED!")
+        print("SÉRIE 3")
+        print("Bone: 250")
+        print("SoftTissue: -300")
+        print("Teeth: 1430")
+        print("Condylus: 655")
+
+        # Seleciona diretório e corrige biblio
+        os.chdir(scn.my_tool.path+"/3")
+
+
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+        #bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")           
+
+        # Gera o 3D        
+        bpy.context.scene.interesse_ossos = "250"
+        bpy.context.scene.interesse_mole = "-300"
+        bpy.context.scene.interesse_dentes = "1430"
+
         bpy.ops.object.gera_modelos_tomo() 
 
     if ManufacturerLimpo == "'Imaging Sciences International'" and StationNameLimpo == "'IMAGING-53246DF'":
@@ -2584,13 +2614,27 @@ def GeraModelosTomoManualDef(self, context):
     except:
         print("Sem ManufacturerModelName")
 
+    # GERA MODELOS
+
+    ListaArquivos = sorted(os.listdir(scn.my_tool.path))
+
+    os.chdir(scn.my_tool.path)
+
+    ds = pydicom.dcmread(str(DirAtual+"/"+ArqAtual), force=True)
+    DimPixelsX = ds.Rows
+    DimPixelsY = ds.Columns
+
+    print("TESTA FATIA...")
+    print("DimPixelsX", DimPixelsX)
+    print("DimPixelsY", DimPixelsY)
+
     # CAPTURA VALORES DOS FATORES
 
-        FatorOssos = bpy.context.scene.interesse_ossos
-        FatorMole = bpy.context.scene.interesse_mole
-        FatorDentes = bpy.context.scene.interesse_dentes
+    FatorOssos = bpy.context.scene.interesse_ossos
+    FatorMole = bpy.context.scene.interesse_mole
+    FatorDentes = bpy.context.scene.interesse_dentes
 
-        DiretorioTomo = scn.my_tool.path
+    DiretorioTomo = scn.my_tool.path
 
     TmpDirTomografo = tempfile.mkdtemp()
     TmpTomograforFile = TmpDirTomografo+'/CT_Scan_tomograph.txt'
@@ -2600,6 +2644,10 @@ def GeraModelosTomoManualDef(self, context):
             ModeloTomografo.write('ManufacturerLimpo == '+str(ManufacturerLimpo)+"\n")
             ModeloTomografo.write('StationNameLimpo == '+str(StationNameLimpo)+"\n")
             ModeloTomografo.write('ManufacturerModelNameLimpo == '+str(ManufacturerModelNameLimpo)+"\n")
+            if DimPixelsX > 512 or DimPixelsY > 512:
+                ModeloTomografo.write("NECESSÁRIO REDUZIR!!!\n")
+            else:
+                ModeloTomografo.write("Não é necessário reduzir\n")
             ModeloTomografo.write('FatorOssos == '+str(FatorOssos)+"\n")
             ModeloTomografo.write('FatorMole == '+str(FatorMole)+"\n")
             ModeloTomografo.write('FatorDentes == '+str(FatorDentes)+"\n")
@@ -2616,20 +2664,6 @@ def GeraModelosTomoManualDef(self, context):
         subprocess.Popen(["open", TmpTomograforFile])
     else:
         subprocess.Popen(["xdg-open", TmpTomograforFile])
-
-    # GERA MODELOS
-
-    ListaArquivos = sorted(os.listdir(scn.my_tool.path))
-
-    os.chdir(scn.my_tool.path)
-
-    ds = pydicom.dcmread(str(DirAtual+"/"+ArqAtual), force=True)
-    DimPixelsX = ds.Rows
-    DimPixelsY = ds.Columns
-
-    print("TESTA FATIA...")
-    print("DimPixelsX", DimPixelsX)
-    print("DimPixelsY", DimPixelsY)
 
     if DimPixelsX > 512 or DimPixelsY > 512:
 
