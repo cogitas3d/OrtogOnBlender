@@ -2343,6 +2343,32 @@ def IdentificaTomografo(Arquivo):
         bpy.context.scene.interesse_dentes = "982"
 
         bpy.ops.object.gera_modelos_tomo()
+
+
+    if ManufacturerLimpo == "'Carestream Health'" and ManufacturerModelNameLimpo == "'CS 8100 3D'":
+        print("SÉRIE 1")
+        print("Bone: -522")
+        print("SoftTissue: -680")
+        print("Teeth: 982")
+
+        os.chdir(scn.my_tool.path+"/1")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")           
+
+        # Gera o 3D 
+        bpy.context.scene.interesse_ossos = "522"
+        bpy.context.scene.interesse_mole = "-680"
+        bpy.context.scene.interesse_dentes = "982"
+
+        bpy.ops.object.gera_modelos_tomo()
     
 def GeraModeloTomoAutoDef(self, context):
 
