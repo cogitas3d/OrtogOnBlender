@@ -76,7 +76,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190921e")
+        row.label(text="VERSION: 20190923a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -136,6 +136,145 @@ class ORTOG_UI_Local(PropertyGroup):
 
 # IMPORTA TOMO MOLDES
 
+class ENUM_VALUES_CTSCAN:
+    MANUAL = 'Manual'
+    VOXEL = 'Voxel'
+    AUTO = 'Auto'
+
+#ENUM_VALUES_CTSCAN.MANUAL, "Manualsssss", "Standard Photogrammetry"), (ENUM_VALUES_CTSCAN.VOXEL, "SMVS+MeshLab", "Alternative Photogrammetry I"), (ENUM_VALUES_CTSCAN.AUTO, "Meshroom (AliceVision)", "Alternative Photogrammetry II")],)  
+
+class ORTOG_PT_CTScanSelect(bpy.types.Panel):
+    bl_label = "CT-Scan Reconstruction"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Ortog"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        row = layout.row()
+        row.prop(scn, "my_enum_ct")
+        
+        my_enum_ct = scn.my_enum_ct
+
+        if my_enum_ct == ENUM_VALUES_CTSCAN.MANUAL:
+            row = layout.row()
+            row.label(text="CT-Scan Preparing:")
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path", text="")
+    #        layout.prop(rd, "filepath", text="")
+
+            if platform.system() == "Windows":
+                row = layout.row()
+                row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
+			    
+            row = layout.row()
+            row.operator("object.ajusta_tomo", text="Organize", icon="NODETREE")
+
+
+            row = layout.row()
+            row = layout.row()
+    #        row.label(text="CT-Scan Fix:")
+    #        col = layout.column(align=True)
+    #        col.prop(scn.my_tool, "path", text="")
+    #        row = layout.row()
+    #        row.operator("object.corrige_dicom", text="Fix it!", icon="FILE_TICK")
+
+            row = layout.row()
+            row.label(text="Threshold Setup:")
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path", text="")
+            row = layout.row()
+            row.operator("object.abre_slicer", text="Open Slicer!", icon="FILE_TICK")
+
+
+            row = layout.row()
+            row.label(text="CT-Scan 3D Reconstruction:")
+
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path", text="")
+
+            row = layout.row()
+    #        row.operator("object.tomo_heli", text="CT-Scan")
+    #        row.operator("object.tomo_cone", text="CBCT")
+
+            col = self.layout.column(align = True)
+            col.prop(context.scene, "interesse_ossos")
+
+            col = self.layout.column(align = True)
+            col.prop(context.scene, "interesse_mole")
+
+            col = self.layout.column(align = True)
+            col.prop(context.scene, "interesse_dentes")
+
+            if platform.system() == "Windows":
+                row = layout.row()
+                row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
+
+            row = layout.row()
+    #        row.operator("object.gera_modelos_tomo", text="Convert DICOM to 3D", icon="SNAP_FACE")
+            row.operator("object.gera_modelo_tomo_manual", text="Convert DICOM to 3D", icon="SNAP_FACE")
+
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.5
+            row.alignment = 'CENTER'
+            row.operator("object.gera_dir_nome_paciente_tomo", text="SAVE!", icon="FILE_TICK")
+
+        if my_enum_ct == ENUM_VALUES_CTSCAN.VOXEL:
+
+            row = layout.row()
+            row.label(text="CT-Scan Voxel Importing:")
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path", text="")
+    #        layout.prop(rd, "filepath", text="")
+
+            if platform.system() == "Windows":
+                row = layout.row()
+                row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
+
+            row = layout.row()
+            row.operator("object.importa_fatias_dcm", text="Import DICOM Slices", icon="ALEMBIC")
+
+    #        row = layout.row()
+    #        prefs = context.preferences
+    #        system = prefs.system
+    #        row.prop(system, "gl_clip_alpha", slider=True)
+
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.5
+            row.alignment = 'CENTER'
+            row.operator("object.gera_dir_nome_paciente_voxel", text="SAVE!", icon="FILE_TICK")
+
+        if my_enum_ct == ENUM_VALUES_CTSCAN.AUTO:
+
+            row = layout.row()
+            row.label(text="Automatic Reconstruction:")
+
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path", text="")
+
+            row = layout.row()
+            row.operator("object.gera_modelos_tomo_auto", text="AUTOMATIC DICOM TO 3D", icon="SNAP_FACE")
+
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.5
+            row.alignment = 'CENTER'
+            row.operator("object.gera_dir_nome_paciente_tomo_auto", text="SAVE!", icon="FILE_TICK")
+
+
 class ORTOG_OT_GeraModelosTomoArc(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.gera_modelos_tomo_arc"
@@ -145,6 +284,7 @@ class ORTOG_OT_GeraModelosTomoArc(bpy.types.Operator):
         GeraModelosTomoArcDef(self, context)
         return {'FINISHED'}
 
+'''
 class ORTOG_PT_CTScanOrgFIX(bpy.types.Panel):
     bl_label = "CT-Scan Manual Reconstruction"
     bl_region_type = 'UI'
@@ -302,6 +442,7 @@ class ORTOG_PT_CTScanRec(bpy.types.Panel):
         row.scale_y=1.5
         row.alignment = 'CENTER'
         row.operator("object.gera_dir_nome_paciente_tomo_auto", text="SAVE!", icon="FILE_TICK")
+'''
 
 class ORTOG_PT_ImportaArc(bpy.types.Panel):
     bl_label = "Import Archs"
@@ -703,6 +844,13 @@ class ORTOG_PT_Segmentation(bpy.types.Panel):
         row.alignment = 'CENTER'
         row.operator("object.gera_dir_nome_paciente_seg", text="SAVE!", icon="FILE_TICK")
 
+
+class ENUM_VALUES_PHOTOGRAMMETRY:
+    OPENMVG = 'OpenMVG+OpenMVS'
+    SMVS = 'SMVS+MeshLab'
+    MESHROOM = 'Meshroom'
+
+
 class ORTOG_PT_Fotogrametria(bpy.types.Panel):
     bl_label = "Photogrammetry Start"
     bl_region_type = 'UI'
@@ -718,47 +866,54 @@ class ORTOG_PT_Fotogrametria(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="OpenMVG+OpenMVS:")
+        row.prop(scn, "my_enum")
+        
+        my_enum = scn.my_enum
 
-        row = layout.row()
-        col = layout.column(align=True)
-        col.prop(scn.my_tool, "path", text="")
+        if my_enum == ENUM_VALUES_PHOTOGRAMMETRY.OPENMVG:
+#            row = layout.row()
+#            row.label(text="OpenMVG+OpenMVS:")
 
-        col = self.layout.column(align = True)
-        col.alignment = 'RIGHT'
-        col.prop(context.scene, "d_factor")
-        col.prop(context.scene, "smooth_factor")
-
-        if platform.system() == "Windows":
             row = layout.row()
-            row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
-			
-        row = layout.row()
-        row.operator("object.gera_modelo_foto", text="Start Photogrammetry!", icon="IMAGE_DATA")
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path", text="")
 
-        row = layout.row()
-        row = layout.row()
-        row = layout.row()
-        row.label(text="SMVS+Meshlab:")
+            col = self.layout.column(align = True)
+            col.alignment = 'RIGHT'
+            col.prop(context.scene, "d_factor")
+            col.prop(context.scene, "smooth_factor")
 
-        row = layout.row()
-        col = layout.column(align=True)
-        col.prop(scn.my_tool, "path", text="")
+            if platform.system() == "Windows":
+                row = layout.row()
+                row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
 
-        row = layout.row()
-        row.operator("object.gera_modelo_foto_smvs", text="Alternative Photogrammetry I", icon="IMAGE_DATA")
+            row = layout.row()
+            row.operator("object.gera_modelo_foto", text="Start Photogrammetry!", icon="IMAGE_DATA")
 
-        row = layout.row()
-        row = layout.row()
-        row = layout.row()
-        row.label(text="Meshroom (AliceVision):")
+        if my_enum == ENUM_VALUES_PHOTOGRAMMETRY.SMVS:
 
-        row = layout.row()
-        col = layout.column(align=True)
-        col.prop(scn.my_tool, "path", text="")
+#            row = layout.row()
+#            row.label(text="SMVS+Meshlab:")
 
-        row = layout.row()
-        row.operator("object.gera_modelo_foto_meshroom", text="Alternative Photogrammetry II", icon="IMAGE_DATA")
+            row = layout.row()
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path", text="")
+
+            row = layout.row()
+            row.operator("object.gera_modelo_foto_smvs", text="Alternative Photogrammetry I", icon="IMAGE_DATA")
+
+
+        if my_enum == ENUM_VALUES_PHOTOGRAMMETRY.MESHROOM:
+
+#            row = layout.row()
+#            row.label(text="Meshroom (AliceVision):")
+
+            row = layout.row()
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path", text="")
+
+            row = layout.row()
+            row.operator("object.gera_modelo_foto_meshroom", text="Alternative Photogrammetry II", icon="IMAGE_DATA")
 
         row = layout.row()
         box = layout.box()
@@ -2236,12 +2391,17 @@ def register():
     bpy.utils.register_class(Weight1)
     bpy.utils.register_class(SegmentaLinked)
     bpy.utils.register_class(LinhaBase)
-    bpy.utils.register_class(ORTOG_PT_CTScanOrgFIX)
-    bpy.utils.register_class(CorrigeDicom)
+    bpy.utils.register_class(ORTOG_PT_CTScanSelect)
+#    bpy.utils.register_class(ORTOG_PT_CTScanOrgFIX)
+#    bpy.utils.register_class(CorrigeDicom)
     bpy.utils.register_class(AjustaTomo)
-    bpy.utils.register_class(GeraModelosTomo)
-    bpy.utils.register_class(ORTOG_PT_CTScanFerrImg)
-    bpy.utils.register_class(ORTOG_PT_CTScanRec)
+    bpy.types.Scene.my_enum_ct = bpy.props.EnumProperty(
+        name="Select",
+        description= "",
+        items=[(ENUM_VALUES_CTSCAN.MANUAL, "MANUAL", "Manual CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.VOXEL, "VOXEL", "Voxel Data CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.AUTO, "AUTOMATIC", "Automatic CT-Scan Reconstruction")],)
+#    bpy.utils.register_class(GeraModelosTomo)
+#    bpy.utils.register_class(ORTOG_PT_CTScanFerrImg)
+#    bpy.utils.register_class(ORTOG_PT_CTScanRec)
     bpy.types.Scene.interesse_ossos = bpy.props.StringProperty \
       (
         name = "Bone Factor",
@@ -2279,6 +2439,11 @@ def register():
         description = "Smooth Factor",
         default = "16"
       )
+
+    bpy.types.Scene.my_enum = bpy.props.EnumProperty(
+        name="Select",
+        description= "",
+        items=[(ENUM_VALUES_PHOTOGRAMMETRY.OPENMVG, "OpenMVG+OpenMVS", "Standard Photogrammetry"), (ENUM_VALUES_PHOTOGRAMMETRY.SMVS, "SMVS+MeshLab", "Alternative Photogrammetry I"), (ENUM_VALUES_PHOTOGRAMMETRY.MESHROOM, "Meshroom (AliceVision)", "Alternative Photogrammetry II")],)    
 
     bpy.utils.register_class(ORTOG_PT_Fotogrametria)
     bpy.utils.register_class(ORTOG_PT_AlinhaFace)
@@ -2425,12 +2590,12 @@ def unregister():
     bpy.utils.unregister_class(Weight1)
     bpy.utils.unregister_class(SegmentaLinked)
     bpy.utils.unregister_class(LinhaBase)
-    bpy.utils.unregister_class(ORTOG_PT_CTScanOrgFIX)
-    bpy.utils.unregister_class(CorrigeDicom)
-    bpy.utils.unregister_class(AjustaTomo)
-    bpy.utils.unregister_class(GeraModelosTomo)
-    bpy.utils.unregister_class(ORTOG_PT_CTScanFerrImg)
-    bpy.utils.unregister_class(CTScanRec)
+#    bpy.utils.unregister_class(ORTOG_PT_CTScanOrgFIX)
+#    bpy.utils.unregister_class(CorrigeDicom)
+#    bpy.utils.unregister_class(AjustaTomo)
+#    bpy.utils.unregister_class(GeraModelosTomo)
+#    bpy.utils.unregister_class(ORTOG_PT_CTScanFerrImg)
+#    bpy.utils.unregister_class(CTScanRec)
     bpy.utils.unregister_class(ORTOG_PT_ImportaArc)
     bpy.utils.unregister_class(ORTOG_UI_CapturaLocal)
     bpy.utils.unregister_class(ORTOG_OT_GeraModelosTomoArc)
