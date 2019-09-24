@@ -76,7 +76,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190923a")
+        row.label(text="VERSION: 20190924a")
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -134,14 +134,24 @@ class ORTOG_UI_Local(PropertyGroup):
         maxlen=1024,
         subtype='DIR_PATH')
 
+    path_photo = StringProperty(
+        name="",
+        description="Path to Directory",
+        maxlen=1024,
+        subtype='DIR_PATH')
+
+    path_tomo = StringProperty(
+        name="",
+        description="Path to Directory",
+        maxlen=1024,
+        subtype='DIR_PATH')
+
 # IMPORTA TOMO MOLDES
 
 class ENUM_VALUES_CTSCAN:
     MANUAL = 'Manual'
     VOXEL = 'Voxel'
     AUTO = 'Auto'
-
-#ENUM_VALUES_CTSCAN.MANUAL, "Manualsssss", "Standard Photogrammetry"), (ENUM_VALUES_CTSCAN.VOXEL, "SMVS+MeshLab", "Alternative Photogrammetry I"), (ENUM_VALUES_CTSCAN.AUTO, "Meshroom (AliceVision)", "Alternative Photogrammetry II")],)  
 
 class ORTOG_PT_CTScanSelect(bpy.types.Panel):
     bl_label = "CT-Scan Reconstruction"
@@ -166,7 +176,7 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
             row = layout.row()
             row.label(text="CT-Scan Preparing:")
             col = layout.column(align=True)
-            col.prop(scn.my_tool, "path", text="")
+            col.prop(scn.my_tool, "path_tomo", text="")
     #        layout.prop(rd, "filepath", text="")
 
             if platform.system() == "Windows":
@@ -188,7 +198,7 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
             row = layout.row()
             row.label(text="Threshold Setup:")
             col = layout.column(align=True)
-            col.prop(scn.my_tool, "path", text="")
+            col.prop(scn.my_tool, "path_tomo", text="")
             row = layout.row()
             row.operator("object.abre_slicer", text="Open Slicer!", icon="FILE_TICK")
 
@@ -197,7 +207,7 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
             row.label(text="CT-Scan 3D Reconstruction:")
 
             col = layout.column(align=True)
-            col.prop(scn.my_tool, "path", text="")
+            col.prop(scn.my_tool, "path_tomo", text="")
 
             row = layout.row()
     #        row.operator("object.tomo_heli", text="CT-Scan")
@@ -233,7 +243,7 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
             row = layout.row()
             row.label(text="CT-Scan Voxel Importing:")
             col = layout.column(align=True)
-            col.prop(scn.my_tool, "path", text="")
+            col.prop(scn.my_tool, "path_tomo", text="")
     #        layout.prop(rd, "filepath", text="")
 
             if platform.system() == "Windows":
@@ -261,7 +271,7 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
             row.label(text="Automatic Reconstruction:")
 
             col = layout.column(align=True)
-            col.prop(scn.my_tool, "path", text="")
+            col.prop(scn.my_tool, "path_tomo", text="")
 
             row = layout.row()
             row.operator("object.gera_modelos_tomo_auto", text="AUTOMATIC DICOM TO 3D", icon="SNAP_FACE")
@@ -876,7 +886,7 @@ class ORTOG_PT_Fotogrametria(bpy.types.Panel):
 
             row = layout.row()
             col = layout.column(align=True)
-            col.prop(scn.my_tool, "path", text="")
+            col.prop(scn.my_tool, "path_photo", text="")
 
             col = self.layout.column(align = True)
             col.alignment = 'RIGHT'
@@ -897,7 +907,7 @@ class ORTOG_PT_Fotogrametria(bpy.types.Panel):
 
             row = layout.row()
             col = layout.column(align=True)
-            col.prop(scn.my_tool, "path", text="")
+            col.prop(scn.my_tool, "path_photo", text="")
 
             row = layout.row()
             row.operator("object.gera_modelo_foto_smvs", text="Alternative Photogrammetry I", icon="IMAGE_DATA")
@@ -910,7 +920,7 @@ class ORTOG_PT_Fotogrametria(bpy.types.Panel):
 
             row = layout.row()
             col = layout.column(align=True)
-            col.prop(scn.my_tool, "path", text="")
+            col.prop(scn.my_tool, "path_photo", text="")
 
             row = layout.row()
             row.operator("object.gera_modelo_foto_meshroom", text="Alternative Photogrammetry II", icon="IMAGE_DATA")
@@ -1105,6 +1115,346 @@ class ORTOG_PT_AlinhaFaceCT(bpy.types.Panel):
         row.alignment = 'CENTER'
         row.operator("object.gera_dir_nome_paciente_alinha_foto_tomo", text="SAVE!", icon="FILE_TICK")
 
+class ENUM_VALUES_ANATOMICAL:
+    HEAD = 'Head'
+    MAXILLA = 'Maxilla'
+    MANDIBLE = 'Mandible'
+    TEETH = 'Teeth'
+    SOFTTISSUE = 'SoftTissue'
+
+
+class ORTOG_PT_PontosAnatomicos(bpy.types.Panel):
+    bl_label = "Anatomical Points"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Ortog"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        row = layout.row()
+        row.prop(scn, "my_enum_ana")
+    
+        my_enum_ana = scn.my_enum_ana
+
+        if my_enum_ana == ENUM_VALUES_ANATOMICAL.HEAD:
+
+            row = layout.row()
+            linha=row.operator("object.orbital_right_pt", text="Orbital right")
+
+            row = layout.row()
+            linha=row.operator("object.orbital_left_pt", text="Orbital left")
+
+            row = layout.row()
+            linha=row.operator("object.n_pt", text="N point")
+
+            row = layout.row()
+            linha=row.operator("object.po_right", text="Po right")
+
+            row = layout.row()
+            linha=row.operator("object.po_left", text="Po left")
+
+            row = layout.row()
+            linha=row.operator("object.pt_right", text="Pt right")
+
+            row = layout.row()
+            linha=row.operator("object.pt_left", text="Pt left")
+
+            row = layout.row()
+            linha=row.operator("object.ba_pt", text="Ba point")
+
+            row = layout.row()
+            linha=row.operator("object.s_pt", text="S point")
+
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.5
+            row.alignment = 'CENTER'
+            row.operator("object.gera_dir_nome_paciente_points_head", text="SAVE!", icon="FILE_TICK")
+
+
+        if my_enum_ana == ENUM_VALUES_ANATOMICAL.MAXILLA:
+
+            row = layout.row()
+            linha=row.operator("object.u1_tip_pt", text="U1 Tip")
+
+            row = layout.row()
+            linha=row.operator("object.u1_labgenbor_pt", text="U1 Labial Gengival Border")
+
+            row = layout.row()
+            linha=row.operator("object.u1_lingenbor_pt", text="U1 Lingual Gengival Border")
+
+            row = layout.row()
+            linha=row.operator("object.u1_root_pt", text="U1 Root")
+
+            row = layout.row()
+            linha=row.operator("object.m_u6_pt", text="M U6")
+
+            row = layout.row()
+            linha=row.operator("object.d_u6_pt", text="D U6")
+
+            row = layout.row()
+            linha=row.operator("object.u6_occlusal_pt", text="U6 Occlusal")
+
+            row = layout.row()
+            linha=row.operator("object.pns_pt", text="PNS point")
+
+            row = layout.row()
+            linha=row.operator("object.a_pt", text="A point")
+
+            row = layout.row()
+            linha=row.operator("object.ans_pt", text="ANS point")
+
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.5
+            row.alignment = 'CENTER'
+            row.operator("object.gera_dir_nome_paciente_points_maxilla", text="SAVE!", icon="FILE_TICK")
+
+
+        if my_enum_ana == ENUM_VALUES_ANATOMICAL.MANDIBLE:
+
+            row = layout.row()
+            linha=row.operator("object.l1_tip_pt", text="L1 Tip")
+
+            row = layout.row()
+            linha=row.operator("object.l1_labgenbor_pt", text="L1 Labial Gengival Border")
+
+            row = layout.row()
+            linha=row.operator("object.l1_lingenbor_pt", text="L1 Lingual Gengival Border")
+
+            row = layout.row()
+            linha=row.operator("object.l1_root_pt", text="L1 Root")
+
+            row = layout.row()
+            linha=row.operator("object.b_pt", text="B point")
+
+            row = layout.row()
+            linha=row.operator("object.m_l6_pt", text="M L6")
+
+            row = layout.row()
+            linha=row.operator("object.l6_occlusal_pt", text="L6 Occlusal")
+
+            row = layout.row()
+            linha=row.operator("object.d_l6_pt", text="D L6")
+
+            row = layout.row()
+            linha=row.operator("object.mid_ramus_right_pt", text="Mid Ramus right")
+
+            row = layout.row()
+            linha=row.operator("object.mid_ramus_left_pt", text="Mid Ramus left")
+
+            row = layout.row()
+            linha=row.operator("object.r_right_pt", text="R right")
+
+            row = layout.row()
+            linha=row.operator("object.r_left_pt", text="R left")
+
+            row = layout.row()
+            linha=row.operator("object.go_right_pt", text="Go right")
+
+            row = layout.row()
+            linha=row.operator("object.go_left_pt", text="Go left")
+
+            row = layout.row()
+            linha=row.operator("object.ar_right_pt", text="Ar right")
+
+            row = layout.row()
+            linha=row.operator("object.ar_left_pt", text="Ar left")
+
+            row = layout.row()
+            linha=row.operator("object.sigmoid_right_pt", text="Sigmoid right")
+
+            row = layout.row()
+            linha=row.operator("object.sigmoid_left_pt", text="Sigmoid left")
+
+            row = layout.row()
+            linha=row.operator("object.co_right_pt", text="Co right")
+
+            row = layout.row()
+            linha=row.operator("object.co_left_pt", text="Co left")
+
+            row = layout.row()
+            linha=row.operator("object.pg_pt", text="Pg point")
+
+            row = layout.row()
+            linha=row.operator("object.gn_pt", text="Gn point")
+
+            row = layout.row()
+            linha=row.operator("object.me_pt", text="Me point")
+
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.5
+            row.alignment = 'CENTER'
+            row.operator("object.gera_dir_nome_paciente_points_mandible", text="SAVE!", icon="FILE_TICK")
+
+
+        if my_enum_ana == ENUM_VALUES_ANATOMICAL.TEETH:
+
+            row = layout.row()
+            row.label(text="Upper Teeth:")
+
+            row = layout.row()
+            linha=row.operator("object.tooth_8_pt", text="Tooth 8 (11)")
+
+            row = layout.row()
+            linha=row.operator("object.tooth_9_pt", text="Tooth 9 (21)")
+
+            row = layout.row()
+            linha=row.operator("object.tooth_6_pt", text="Tooth 6 (13)")
+
+            row = layout.row()
+            linha=row.operator("object.tooth_11_pt", text="Tooth 11 (23)")
+
+            row = layout.row()
+            linha=row.operator("object.tooth_3_pt", text="Tooth 3 (16)")
+
+            row = layout.row()
+            linha=row.operator("object.tooth_14_pt", text="Tooth 14 (26)")
+
+            row = layout.row()
+            row = layout.row()
+            row.label(text="Lower Teeth:")
+
+            row = layout.row()
+            linha=row.operator("object.tooth_24_pt", text="Tooth 24 (31)")
+
+            row = layout.row()
+            linha=row.operator("object.tooth_25_pt", text="Tooth 25 (41)")
+
+            row = layout.row()
+            linha=row.operator("object.tooth_22_pt", text="Tooth 22 (33)")
+
+            row = layout.row()
+            linha=row.operator("object.tooth_27_pt", text="Tooth 27 (43)")
+
+            row = layout.row()
+            linha=row.operator("object.tooth_19_pt", text="Tooth 19 (36)")
+
+            row = layout.row()
+            linha=row.operator("object.tooth_30_pt", text="Tooth 30 (46)")
+
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.5
+            row.alignment = 'CENTER'
+            row.operator("object.gera_dir_nome_paciente_points_teeth", text="SAVE!", icon="FILE_TICK")
+
+
+        if my_enum_ana == ENUM_VALUES_ANATOMICAL.SOFTTISSUE:
+
+            row = layout.row()
+            linha=row.operator("object.st_glabella_pt", text="ST Glabella")
+
+            row = layout.row()
+            linha=row.operator("object.st_nasion_pt", text="ST Nasion")
+
+            row = layout.row()
+            linha=row.operator("object.bridge_nose_pt", text="Bridge of Nose")
+
+            row = layout.row()
+            linha=row.operator("object.tip_nose_pt", text="Tip of Nose")
+
+            row = layout.row()
+            linha=row.operator("object.columella_pt", text="Columella")
+
+            row = layout.row()
+            linha=row.operator("object.subnasale_pt", text="Subnasale")
+
+            row = layout.row()
+            linha=row.operator("object.st_a_point_pt", text="ST A point")
+
+            row = layout.row()
+            linha=row.operator("object.upper_lip_pt", text="Upper Lip")
+
+            row = layout.row()
+            linha=row.operator("object.stomion_superius_pt", text="Stomion Superius")
+
+            row = layout.row()
+            linha=row.operator("object.stomion_inferius_pt", text="Stomion Inferius")
+
+            row = layout.row()
+            linha=row.operator("object.lower_lip_pt", text="Lower Lip")
+
+            row = layout.row()
+            linha=row.operator("object.st_b_point_pt", text="ST B point")
+
+            row = layout.row()
+            linha=row.operator("object.st_pogonion_pt", text="ST Pogonion")
+
+            row = layout.row()
+            linha=row.operator("object.st_gnathion_pt", text="ST Gnathion")
+
+            row = layout.row()
+            linha=row.operator("object.st_menton_pt", text="ST Menton")
+
+            row = layout.row()
+            linha=row.operator("object.throat_point_pt", text="Throat point")
+
+            row = layout.row()
+            linha=row.operator("object.cb_right_pt", text="CB right")
+
+            row = layout.row()
+            linha=row.operator("object.cb_left_pt", text="CB left")
+
+            row = layout.row()
+            linha=row.operator("object.or_right_pt", text="OR' right")
+
+            row = layout.row()
+            linha=row.operator("object.or_left_pt", text="OR' left")
+
+            row = layout.row()
+            linha=row.operator("object.subpupil_right_pt", text="Subpupil right")
+
+            row = layout.row()
+            linha=row.operator("object.subpupil_left_pt", text="Subpupil left")
+
+            row = layout.row()
+            linha=row.operator("object.cheekbone_right_pt", text="Cheekbone right")
+
+            row = layout.row()
+            linha=row.operator("object.cheekbone_left_pt", text="Cheekbone left")
+
+            row = layout.row()
+            linha=row.operator("object.sp_right_pt", text="SP right")
+
+            row = layout.row()
+            linha=row.operator("object.sp_left_pt", text="SP left")
+
+            row = layout.row()
+            linha=row.operator("object.ab_right_pt", text="AB right")
+
+            row = layout.row()
+            linha=row.operator("object.ab_left_pt", text="AB left")
+
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.5
+            row.alignment = 'CENTER'
+            row.operator("object.gera_dir_nome_paciente_points_soft", text="SAVE!", icon="FILE_TICK")
+
+'''
 class ORTOG_PT_PontosAnatomicosCabeca(bpy.types.Panel):
     bl_label = "Anatomical Points - Head"
     bl_region_type = 'UI'
@@ -1473,6 +1823,7 @@ class ORTOG_PT_PontosAnatomicosMole(bpy.types.Panel):
         row.scale_y=1.5
         row.alignment = 'CENTER'
         row.operator("object.gera_dir_nome_paciente_points_soft", text="SAVE!", icon="FILE_TICK")
+'''
 
 class ORTOG_PT_Cefalometria(bpy.types.Panel):
     bl_label = "Cephalometry"
@@ -2449,11 +2800,16 @@ def register():
     bpy.utils.register_class(ORTOG_PT_AlinhaFace)
     bpy.utils.register_class(ORTOG_PT_FotogramModif)
     bpy.utils.register_class(ORTOG_PT_AlinhaFaceCT)
-    bpy.utils.register_class(ORTOG_PT_PontosAnatomicosCabeca)
-    bpy.utils.register_class(ORTOG_PT_PontosAnatomicosMaxila)
-    bpy.utils.register_class(ORTOG_PT_PontosAnatomicosMandibula)
-    bpy.utils.register_class(ORTOG_PT_PontosAnatomicosDentes)
-    bpy.utils.register_class(ORTOG_PT_PontosAnatomicosMole)
+    bpy.utils.register_class(ORTOG_PT_PontosAnatomicos)
+    bpy.types.Scene.my_enum_ana = bpy.props.EnumProperty(
+        name="Select",
+        description= "",
+        items=[(ENUM_VALUES_ANATOMICAL.HEAD, "HEAD", "Head Points"), (ENUM_VALUES_ANATOMICAL.MAXILLA, "MAXILLA", "Maxilla Points"), (ENUM_VALUES_ANATOMICAL.MANDIBLE, "MANDIBLE", "Mandible Points"), (ENUM_VALUES_ANATOMICAL.TEETH, "TEETH", "Teeth Points"), (ENUM_VALUES_ANATOMICAL.SOFTTISSUE, "SOFT TISSUE", "Soft Tissue Points")],)
+#    bpy.utils.register_class(ORTOG_PT_PontosAnatomicosCabeca)
+#    bpy.utils.register_class(ORTOG_PT_PontosAnatomicosMaxila)
+#    bpy.utils.register_class(ORTOG_PT_PontosAnatomicosMandibula)
+#    bpy.utils.register_class(ORTOG_PT_PontosAnatomicosDentes)
+#    bpy.utils.register_class(ORTOG_PT_PontosAnatomicosMole)
     bpy.utils.register_class(ORTOG_PT_Cefalometria)
     bpy.utils.register_class(ORTOG_PT_Osteotomia)
     bpy.types.Scene.medida_real2 = bpy.props.StringProperty \
@@ -2605,11 +2961,11 @@ def unregister():
     bpy.utils.unregister_class(ORTOG_PT_AlinhaFace)
     bpy.utils.unregister_class(ORTOG_PT_FotogramModif)
     bpy.utils.unregister_class(ORTOG_PT_AlinhaFaceCT)
-    bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosCabeca)
-    bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosMaxila)
-    bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosMandibula)
-    bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosDentes)
-    bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosMole)
+#    bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosCabeca)
+#    bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosMaxila)
+#    bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosMandibula)
+#    bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosDentes)
+#    bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosMole)
     bpy.utils.unregister_class(ORTOG_PT_Cefalometria)
     bpy.utils.unregister_class(ORTOG_PT_Osteotomia)
     del bpy.types.Scene.medida_real2
