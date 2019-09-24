@@ -59,7 +59,7 @@ def GeraModeloFotoDef(self, context):
     homeall = expanduser("~")
 
 	# TESTA ARQUIVOS
-    mypath = scn.my_tool.path
+    mypath = scn.my_tool.path_photo
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
     FotoTeste = onlyfiles[1]
 
@@ -68,31 +68,31 @@ def GeraModeloFotoDef(self, context):
     if TestaHEIC == True:
         if platform.system() == "Linux":        
             subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && for i in *; do heif-convert $i $i.jpg; done && mv *.jpg '+tmpdir+'/JPG/', shell=True)
-            scn.my_tool.path = tmpdir+'/JPG/'
+            scn.my_tool.path_photo = tmpdir+'/JPG/'
 
         if platform.system() == "Darwin":
             subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && mogrify -format jpg *.HEIC && mv *.jpg '+tmpdir+'/JPG/', shell=True)
-            scn.my_tool.path = tmpdir+'/JPG/'
+            scn.my_tool.path_photo = tmpdir+'/JPG/'
 
     TestaJPEG = ".jpeg" in FotoTeste
 
     if TestaJPEG == True:
         if platform.system() == "Linux" or platform.system() == "Darwin":
             subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && for i in *; do cp $i $i.jpg; done && mv *.jpg '+tmpdir+'/JPG/', shell=True)
-            scn.my_tool.path = tmpdir+'/JPG/'
+            scn.my_tool.path_photo = tmpdir+'/JPG/'
 
     # TESTA CAMERA
 
 
 #    if platform.system() == "Windows":
-    if bpy.context.scene.my_tool.path == "":
+    if bpy.context.scene.my_tool.path_photo == "":
         bpy.ops.object.dialog_operator_falta_foto('INVOKE_DEFAULT')
 
 
     else:
 
 
-        mypath = scn.my_tool.path  # Tem que ter o / no final
+        mypath = scn.my_tool.path_photo  # Tem que ter o / no final
  #       mypathFotos = mypath+'*'
  #       print("Caminho:"+mypathFotos)
 
@@ -181,7 +181,7 @@ def GeraModeloFotoDef(self, context):
 
     #    try:
 
-    #    if scn.my_tool.path == "":
+    #    if scn.my_tool.path_photo == "":
     #        ERROTermFoto()        
     #        bpy.context.window_manager.popup_menu(ERROruntimeFotosDef, title="Attention!", icon='INFO')
 
@@ -227,14 +227,14 @@ def GeraModeloFotoDef(self, context):
 
 
         if platform.system() == "Linux":
-            subprocess.call(['python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
+            subprocess.call(['python', OpenMVGPath , scn.my_tool.path_photo ,  OpenMVGtmpDir])
 
                     
         if platform.system() == "Windows":
-            subprocess.call(['C:/OrtogOnBlender/Python27/python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
+            subprocess.call(['C:/OrtogOnBlender/Python27/python', OpenMVGPath , scn.my_tool.path_photo ,  OpenMVGtmpDir])
 
         if platform.system() == "Darwin":
-            subprocess.call(['python', OpenMVGPath , scn.my_tool.path ,  OpenMVGtmpDir])
+            subprocess.call(['python', OpenMVGPath , scn.my_tool.path_photo ,  OpenMVGtmpDir])
 
 
         #subprocess.call(OpenMVSPath ,  shell=True)

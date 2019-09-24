@@ -59,6 +59,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
+VERSION = "20190924c"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -76,7 +77,7 @@ class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="VERSION: 20190924a")
+        row.label(text="VERSION: "+VERSION)
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE ORTOG!", icon="RECOVER_LAST")
@@ -140,12 +141,6 @@ class ORTOG_UI_Local(PropertyGroup):
         maxlen=1024,
         subtype='DIR_PATH')
 
-    path_tomo = StringProperty(
-        name="",
-        description="Path to Directory",
-        maxlen=1024,
-        subtype='DIR_PATH')
-
 # IMPORTA TOMO MOLDES
 
 class ENUM_VALUES_CTSCAN:
@@ -176,7 +171,7 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
             row = layout.row()
             row.label(text="CT-Scan Preparing:")
             col = layout.column(align=True)
-            col.prop(scn.my_tool, "path_tomo", text="")
+            col.prop(scn.my_tool, "path", text="")
     #        layout.prop(rd, "filepath", text="")
 
             if platform.system() == "Windows":
@@ -198,7 +193,7 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
             row = layout.row()
             row.label(text="Threshold Setup:")
             col = layout.column(align=True)
-            col.prop(scn.my_tool, "path_tomo", text="")
+            col.prop(scn.my_tool, "path", text="")
             row = layout.row()
             row.operator("object.abre_slicer", text="Open Slicer!", icon="FILE_TICK")
 
@@ -207,7 +202,7 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
             row.label(text="CT-Scan 3D Reconstruction:")
 
             col = layout.column(align=True)
-            col.prop(scn.my_tool, "path_tomo", text="")
+            col.prop(scn.my_tool, "path", text="")
 
             row = layout.row()
     #        row.operator("object.tomo_heli", text="CT-Scan")
@@ -243,7 +238,7 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
             row = layout.row()
             row.label(text="CT-Scan Voxel Importing:")
             col = layout.column(align=True)
-            col.prop(scn.my_tool, "path_tomo", text="")
+            col.prop(scn.my_tool, "path", text="")
     #        layout.prop(rd, "filepath", text="")
 
             if platform.system() == "Windows":
@@ -271,7 +266,7 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
             row.label(text="Automatic Reconstruction:")
 
             col = layout.column(align=True)
-            col.prop(scn.my_tool, "path_tomo", text="")
+            col.prop(scn.my_tool, "path", text="")
 
             row = layout.row()
             row.operator("object.gera_modelos_tomo_auto", text="AUTOMATIC DICOM TO 3D", icon="SNAP_FACE")
@@ -2744,13 +2739,13 @@ def register():
     bpy.utils.register_class(LinhaBase)
     bpy.utils.register_class(ORTOG_PT_CTScanSelect)
 #    bpy.utils.register_class(ORTOG_PT_CTScanOrgFIX)
-#    bpy.utils.register_class(CorrigeDicom)
+    bpy.utils.register_class(CorrigeDicom)
     bpy.utils.register_class(AjustaTomo)
     bpy.types.Scene.my_enum_ct = bpy.props.EnumProperty(
         name="Select",
         description= "",
         items=[(ENUM_VALUES_CTSCAN.MANUAL, "MANUAL", "Manual CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.VOXEL, "VOXEL", "Voxel Data CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.AUTO, "AUTOMATIC", "Automatic CT-Scan Reconstruction")],)
-#    bpy.utils.register_class(GeraModelosTomo)
+    bpy.utils.register_class(GeraModelosTomo)
 #    bpy.utils.register_class(ORTOG_PT_CTScanFerrImg)
 #    bpy.utils.register_class(ORTOG_PT_CTScanRec)
     bpy.types.Scene.interesse_ossos = bpy.props.StringProperty \
@@ -2947,9 +2942,9 @@ def unregister():
     bpy.utils.unregister_class(SegmentaLinked)
     bpy.utils.unregister_class(LinhaBase)
 #    bpy.utils.unregister_class(ORTOG_PT_CTScanOrgFIX)
-#    bpy.utils.unregister_class(CorrigeDicom)
-#    bpy.utils.unregister_class(AjustaTomo)
-#    bpy.utils.unregister_class(GeraModelosTomo)
+    bpy.utils.unregister_class(CorrigeDicom)
+    bpy.utils.unregister_class(AjustaTomo)
+    bpy.utils.unregister_class(GeraModelosTomo)
 #    bpy.utils.unregister_class(ORTOG_PT_CTScanFerrImg)
 #    bpy.utils.unregister_class(CTScanRec)
     bpy.utils.unregister_class(ORTOG_PT_ImportaArc)

@@ -23,7 +23,7 @@ def GeraModeloFotoMeshroomDef(self, context):
 
 # Database
 
-    mypath = scn.my_tool.path  # Tem que ter o / no final
+    mypath = scn.my_tool.path_photo  # Tem que ter o / no final
 #       mypathFotos = mypath+'*'
 #       print("Caminho:"+mypathFotos)
 

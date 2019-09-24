@@ -30,7 +30,7 @@ def GeraModeloFotoSMVSDef(self, context):
 
     homeall = expanduser("~")
     
-    if scn.my_tool.path == "":
+    if scn.my_tool.path_photo == "":
         ERROTermFoto()        
         bpy.context.window_manager.popup_menu(ERROruntimeFotosDef, title="Attention!", icon='INFO')
 
@@ -38,7 +38,7 @@ def GeraModeloFotoSMVSDef(self, context):
         if platform.system() == "Linux":
             SMVSPath = homeall+"/Programs/OrtogOnBlender/SMVS/"
             subprocess.call(['rm', '-rf', tmpdir+'/scene'])
-            subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path, tmpdir+'/scene'])
+            subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path_photo, tmpdir+'/scene'])
             subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
             subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
             subprocess.call(['meshlabserver', '-i', tmpdir+'/scene/smvs-B2.ply', '-o', tmpdir+'/scene/meshlab.ply', '-s', SMVSPath+'SMVSmeshlab.mlx', '-om'])
@@ -55,7 +55,7 @@ def GeraModeloFotoSMVSDef(self, context):
         if platform.system() == "Windows":
             SMVSPath = 'C:/OrtogOnBlender/SMVS/'
 #            shutil.rmtree(tmpdir+'/scene')
-            subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path, tmpdir+'/scene'])
+            subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path_photo, tmpdir+'/scene'])
             subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
             subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
             subprocess.call([SMVSPath+'./fssrecon', tmpdir+'/scene/smvs-B2.ply', tmpdir+'/scene/smvs-surface.ply'])
@@ -75,7 +75,7 @@ def GeraModeloFotoSMVSDef(self, context):
             SMVSPath = '/OrtogOnBlender/SMVSMAC/'
 
             subprocess.call(['rm', '-Rf', tmpdir+'/scene'])
-            subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path, tmpdir+'/scene'])
+            subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path_photo, tmpdir+'/scene'])
             subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
             subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
             subprocess.call([SMVSPath+'./fssrecon', '-s4', tmpdir+'/scene/smvs-B2.ply', tmpdir+'/scene/smvs-surface.ply'])
