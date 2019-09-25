@@ -16,6 +16,7 @@ if "bpy" in locals():
 #    imp.reload(GeraModelosTomo)
     print("Reloaded multifiles")
 else:
+    from .RhinOnBlender import *
     from .ForensicOnBlender import *
     from .NomePaciente import *
     from .GeraModelosTomo import *
@@ -59,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20190924c"
+VERSION = "20190924d"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
