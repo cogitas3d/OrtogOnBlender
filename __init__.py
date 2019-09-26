@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20190924d"
+VERSION = "20190925a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -97,7 +97,7 @@ class ORTOG_PT_NomePaciente(bpy.types.Panel):
         context = bpy.context
         obj = context.object
         scn = context.scene
-        
+
 #        scene = context.scene
 #        rd = scene.render
 
@@ -165,7 +165,7 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
 
         row = layout.row()
         row.prop(scn, "my_enum_ct")
-        
+
         my_enum_ct = scn.my_enum_ct
 
         if my_enum_ct == ENUM_VALUES_CTSCAN.MANUAL:
@@ -178,7 +178,7 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
             if platform.system() == "Windows":
                 row = layout.row()
                 row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
-			    
+
             row = layout.row()
             row.operator("object.ajusta_tomo", text="Organize", icon="NODETREE")
 
@@ -285,7 +285,7 @@ class ORTOG_OT_GeraModelosTomoArc(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.gera_modelos_tomo_arc"
     bl_label = "Gera Tomografia Molde"
-    
+
     def execute(self, context):
         GeraModelosTomoArcDef(self, context)
         return {'FINISHED'}
@@ -304,7 +304,7 @@ class ORTOG_PT_CTScanOrgFIX(bpy.types.Panel):
         context = bpy.context
         obj = context.object
         scn = context.scene
-        
+
 #        scene = context.scene
 #        rd = scene.render
 
@@ -317,7 +317,7 @@ class ORTOG_PT_CTScanOrgFIX(bpy.types.Panel):
         if platform.system() == "Windows":
             row = layout.row()
             row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
-			
+
         row = layout.row()
         row.operator("object.ajusta_tomo", text="Organize", icon="NODETREE")
 
@@ -386,7 +386,7 @@ class ORTOG_PT_CTScanFerrImg(bpy.types.Panel):
         context = bpy.context
         obj = context.object
         scn = context.scene
-        
+
 #        scene = context.scene
 #        rd = scene.render
 
@@ -428,7 +428,7 @@ class ORTOG_PT_CTScanRec(bpy.types.Panel):
         context = bpy.context
         obj = context.object
         scn = context.scene
-        
+
 #        scene = context.scene
 #        rd = scene.render
 
@@ -472,11 +472,11 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
 
         col = layout.column(align=True)
         col.prop(scn.my_tool, "path", text="")
-		
+
         if platform.system() == "Windows":
             row = layout.row()
             row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
- 
+
         row = layout.row()
         row.operator("object.gera_modelos_tomo_arc", text="Archs Generator", icon="SNAP_FACE")
 
@@ -652,7 +652,7 @@ class ORTOG_PT_GraphicRefs(bpy.types.Panel):
         linha=row.operator("mesh.add_linhabase", text="Horizontal Center Line", icon="FORWARD")
         linha.location=(0,-200,0)
         linha.rotation=(0,1.5708,0)
-        
+
         row = layout.row()
         linha=row.operator("mesh.add_linhabase", text="Horizontal Side Line", icon="FORWARD")
         linha.location=(200,30,0)
@@ -661,7 +661,7 @@ class ORTOG_PT_GraphicRefs(bpy.types.Panel):
         row = layout.row()
         row = layout.row()
         row = layout.row()
-        row.operator("object.desagrupa_tomo", text="UNGROUP!!!", icon="PARTICLE_DATA")	
+        row.operator("object.desagrupa_tomo", text="UNGROUP!!!", icon="PARTICLE_DATA")
 
         row = layout.row()
         box = layout.box()
@@ -808,7 +808,7 @@ class ORTOG_PT_Segmentation(bpy.types.Panel):
         row = layout.row()
         row = layout.row()
         linha=row.operator("mesh.select_more", text="Sel. More", icon="ADD")
-        
+
         linha=row.operator("mesh.select_less", text="Sel. Less", icon="REMOVE")
 
         row = layout.row()
@@ -873,7 +873,7 @@ class ORTOG_PT_Fotogrametria(bpy.types.Panel):
 
         row = layout.row()
         row.prop(scn, "my_enum")
-        
+
         my_enum = scn.my_enum
 
         if my_enum == ENUM_VALUES_PHOTOGRAMMETRY.OPENMVG:
@@ -969,7 +969,7 @@ class ORTOG_PT_AlinhaFace(bpy.types.Panel):
 #        row.operator("object.cria_tres_pontos", text="3 Points Click", icon="OUTLINER_OB_MESH")
 
         col = self.layout.column(align = True)
-        col.prop(context.scene, "medida_real2")  
+        col.prop(context.scene, "medida_real2")
 
         row = layout.row()
         row.operator("object.alinha_forca", text="Align and Resize!", icon="ORIENTATION_LOCAL")
@@ -1135,7 +1135,7 @@ class ORTOG_PT_PontosAnatomicos(bpy.types.Panel):
 
         row = layout.row()
         row.prop(scn, "my_enum_ana")
-    
+
         my_enum_ana = scn.my_enum_ana
 
         if my_enum_ana == ENUM_VALUES_ANATOMICAL.HEAD:
@@ -1884,7 +1884,7 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
         row.prop(context.scene, "angulo_GbSnPog")
         row = col.row()
         row.alignment = 'RIGHT'
-        row.label(text="Women: 90º-120º Men: 85º-105º") 
+        row.label(text="Women: 90º-120º Men: 85º-105º")
 
         row = layout.row()
         row.label(text="Distances:")
@@ -2301,7 +2301,7 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
         row = layout.row()
         row = layout.row()
         row.label(text="Cut Planes:")
-      
+
         row = layout.row()
         circle=row.operator("mesh.add_mento", text="Chin Plane", icon="TRIA_DOWN")
         circle.location=(0,-35,-81)
@@ -2309,7 +2309,7 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
         row = layout.row()
         circle=row.operator("mesh.add_ramo", text="Left Ramus Plane", icon="TRIA_RIGHT")
         circle.location=(36, -4, -45)
-        
+
         row = layout.row()
         circle=row.operator("mesh.add_ramo", text="Right Ramus Plane", icon="TRIA_LEFT")
         circle.location=(-36, -4, -45)
@@ -2428,7 +2428,7 @@ class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        
+
         obj = context.object
 
         row = layout.row()
@@ -2559,7 +2559,7 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
 
         row = layout.row()
         row.operator("mesh.add_curva_bezier", icon='MESH_CYLINDER', text="Create Bezier Volume")
-	
+
         row = layout.row()
         row.label(text="Boolean:")
 
@@ -2587,7 +2587,7 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
         row.operator("object.prepara_impressao_3d", text="Prepares 3D Printing", icon="META_CUBE")
 
         row = layout.row()
-        
+
         row.operator("export_mesh.stl", text="Export STL", icon="TRACKING_REFINE_FORWARDS").use_selection=True#.use_mesh_modifiers=True
 
         row = layout.row()
@@ -2625,13 +2625,13 @@ class ORTOG_PT_ImportTomoImg(bpy.types.Panel):
 
         row = layout.row(align = True)
         row.prop(context.scene, "PixelSpacingX")
-        
+
         row = layout.row(align = True)
         row.prop(context.scene, "PixelSpacingY")
-        
+
         row = layout.row(align = True)
         row.prop(context.scene, "IMGDimX")
-        
+
         row = layout.row(align = True)
         row.prop(context.scene, "IMGDimY")
 
@@ -2643,7 +2643,7 @@ class ORTOG_PT_ImportTomoImg(bpy.types.Panel):
         row.operator("object.exporta_img_tomo", text="Export DICOM Slices", icon="EXPORT")
 
 
-      
+
 def register():
     bpy.utils.register_class(EMP1a)
     bpy.utils.register_class(EMP2a)
@@ -2790,7 +2790,7 @@ def register():
     bpy.types.Scene.my_enum = bpy.props.EnumProperty(
         name="Select",
         description= "",
-        items=[(ENUM_VALUES_PHOTOGRAMMETRY.OPENMVG, "OpenMVG+OpenMVS", "Standard Photogrammetry"), (ENUM_VALUES_PHOTOGRAMMETRY.SMVS, "SMVS+MeshLab", "Alternative Photogrammetry I"), (ENUM_VALUES_PHOTOGRAMMETRY.MESHROOM, "Meshroom (AliceVision)", "Alternative Photogrammetry II")],)    
+        items=[(ENUM_VALUES_PHOTOGRAMMETRY.OPENMVG, "OpenMVG+OpenMVS", "Standard Photogrammetry"), (ENUM_VALUES_PHOTOGRAMMETRY.SMVS, "SMVS+MeshLab", "Alternative Photogrammetry I"), (ENUM_VALUES_PHOTOGRAMMETRY.MESHROOM, "Meshroom (AliceVision)", "Alternative Photogrammetry II")],)
 
     bpy.utils.register_class(ORTOG_PT_Fotogrametria)
     bpy.utils.register_class(ORTOG_PT_AlinhaFace)
@@ -2831,7 +2831,7 @@ def register():
         description = "Slice Thickness",
         default = "NONE"
       )
-      
+
     bpy.types.Scene.PixelSpacingX = bpy.props.StringProperty \
       (
         name = "PixelSpacingX",
@@ -2845,14 +2845,14 @@ def register():
         description = "Pixel SpacingY",
         default = "NONE"
       )
-      
+
     bpy.types.Scene.IMGDimX = bpy.props.StringProperty \
       (
         name = "IMGDimX",
         description = "IMGDimX",
         default = "NONE"
       )
-      
+
     bpy.types.Scene.IMGDimY = bpy.props.StringProperty \
       (
         name = "IMGDimY",
@@ -2861,7 +2861,7 @@ def register():
       )
 
 
-  
+
 def unregister():
     bpy.utils.unregister_class(NomePaciente)
     bpy.utils.unregister_class(NomePacienteTomo)

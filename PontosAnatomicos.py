@@ -3,15 +3,15 @@ import bmesh
 from math import sqrt
 
 def TestaPontoCollDef():
-    
+
     context = bpy.context
     obj = context.active_object
     scn = context.scene
 
     #Teste se há algum objeto ponto na cena aqui!
-    ListaPontos = ['Orbital right', 'Orbital left', 'N point', 'Po right', 'Po left', 'Pt right', 'Pt left', 'Ba point', 'S point', 'U1 Tip', 'U1 Labial Gengival Border', 'U1 Lingual Gengival Border', 'M U6', 'D U6', 'U6 Occlusal', 'PNS point', 'A point', 'ANS point', 'U1 Root', 'L1 Tip', 'L1 Root', 'L1 Labial Gengival Border', 'L1 Lingual Gengival Border', 'B point', 'M L6', 'L6 Occlusal', 'D L6', 'Mid Ramus right', 'Mid Ramus left', 'R right', 'R left', 'Go right', 'Go left', 'Ar right', 'Ar left', 'Sigmoid right', 'Sigmoid left', 'Co right', 'Co left', 'Pg point', 'Gn point', 'Me point', 'ST Glabella', 'ST Nasion', 'Bridge of Nose', 'Tip of Nose', 'Cheekbone right', 'Cheekbone left', 'Columella', 'Subnasale', 'Subpupil right', 'Subpupil left', 'ST A point', 'Upper Lip', 'Stomion Superius', 'Stomion Inferius', 'Lower Lip', 'ST B point', 'ST Pogonion', 'ST Gnathion', 'ST Menton', 'Throat point', 'CB right', 'CB left', 'OR right', 'OR left', 'SP right', 'SP left', 'AB right', 'AB left', 'Tooth 8', 'Tooth 9', 'Tooth 6', 'Tooth 11', 'Tooth 3', 'Tooth 14', 'Tooth 24', 'Tooth 25', 'Tooth 22', 'Tooth 27', 'Tooth 19', 'Tooth 30', 'Condylar Process right', 'Condylar Process left', 'Coronoid Process left', 'Coronoid Process right', 'Mid Go-Ramus Fracure left', 'Mid Go-Ramus Fracure right', 'Mid Upper Incisors', 'Mid Mandibula Angle left', 'Mid Mandibula Angle right']
+    ListaPontos = ['Orbital right', 'Orbital left', 'N point', 'Po right', 'Po left', 'Pt right', 'Pt left', 'Ba point', 'S point', 'U1 Tip', 'U1 Labial Gengival Border', 'U1 Lingual Gengival Border', 'M U6', 'D U6', 'U6 Occlusal', 'PNS point', 'A point', 'ANS point', 'U1 Root', 'L1 Tip', 'L1 Root', 'L1 Labial Gengival Border', 'L1 Lingual Gengival Border', 'B point', 'M L6', 'L6 Occlusal', 'D L6', 'Mid Ramus right', 'Mid Ramus left', 'R right', 'R left', 'Go right', 'Go left', 'Ar right', 'Ar left', 'Sigmoid right', 'Sigmoid left', 'Co right', 'Co left', 'Pg point', 'Gn point', 'Me point', 'ST Glabella', 'ST Nasion', 'Bridge of Nose', 'Tip of Nose', 'Cheekbone right', 'Cheekbone left', 'Columella', 'Subnasale', 'Subpupil right', 'Subpupil left', 'ST A point', 'Upper Lip', 'Stomion Superius', 'Stomion Inferius', 'Lower Lip', 'ST B point', 'ST Pogonion', 'ST Gnathion', 'ST Menton', 'Throat point', 'CB right', 'CB left', 'OR right', 'OR left', 'SP right', 'SP left', 'AB right', 'AB left', 'Tooth 8', 'Tooth 9', 'Tooth 6', 'Tooth 11', 'Tooth 3', 'Tooth 14', 'Tooth 24', 'Tooth 25', 'Tooth 22', 'Tooth 27', 'Tooth 19', 'Tooth 30', 'Condylar Process right', 'Condylar Process left', 'Coronoid Process left', 'Coronoid Process right', 'Mid Go-Ramus Fracure left', 'Mid Go-Ramus Fracure right', 'Mid Upper Incisors', 'Mid Mandibula Angle left', 'Mid Mandibula Angle right', 'Radix']
 
-  
+
     ObjetosColletion = bpy.data.collections['Collection'].objects
 
     for i in ObjetosColletion:
@@ -23,7 +23,7 @@ def TestaPontoCollDef():
 
 
 def CriaPontoDef(nome, colecao):
-    
+
     context = bpy.context
     obj = context.active_object
     scn = context.scene
@@ -32,7 +32,7 @@ def CriaPontoDef(nome, colecao):
     #Teste se há algum objeto ponto na cena aqui!
     ListaPontos = ['Orbital right', 'Orbital left', 'N', 'Po right', 'Po left', 'Pt rigt', 'Pt left', 'Ba', 'S', 'U1 Tip', 'U1 Labial Gengival Border', 'U1 Lingual Gengival Border', 'M U6', 'D U6', 'U6 Occlusal', 'PNS', 'A', 'ANS', 'U1 Root', 'L1 Tip', 'L1 Labial', 'Gengival Border', 'L1 Lingual Gengival Border', 'B', 'M L6', 'L6 Occlusal', 'D L6', 'Mid Ramus right', 'Mid Ramus left', 'R right', 'R left', 'Go right', 'Go left', 'Ar right', 'Ar left', 'Sigmoid right', 'Sigmoid left', 'Co right', 'Co left', 'Pg', 'Gn', 'Me', 'ST Glabela', 'ST Nasion', 'Bridge of Nose', 'Tip of Nose', 'Subnasale', 'ST A point', 'Upper Lip', 'Stomion Superius', 'Stomion Inferius', 'Lower Lip', 'ST B point', 'ST Pogonion', 'ST Gnathion', 'ST Menton', 'Throat point', 'CB right', 'CB left', 'OR right', 'OR left', 'SP right', 'SP left', 'AB right', 'AB left', 'Condylar Process right', 'Condylar Process left', 'Coronoid Process left', 'Coronoid Process right', 'Mid Go-Ramus Fracure left', 'Mid Go-Ramus Fracure right', 'Mid Upper Incisors']
 
-  
+
     ObjetosColletion = bpy.data.collections['Collection'].objects
 
     for i in ObjetosColletion:
@@ -79,10 +79,10 @@ def CriaPontoDef(nome, colecao):
 
     ListaColecoes = []
     ColocoesCena =  bpy.data.collections
-    
+
     for i in ColocoesCena:
         ListaColecoes.append(i.name)
-    
+
     if colecao in ListaColecoes:
         bpy.ops.object.collection_link(collection=colecao)
 #        bpy.data.collections['Collection'].objects.unlink(obj)
@@ -91,7 +91,7 @@ def CriaPontoDef(nome, colecao):
         bpy.context.scene.collection.children.link(myCol)
         bpy.ops.object.collection_link(collection=colecao)
 #        bpy.data.collections['Collection'].objects.unlink(obj)
-        
+
 
 # CABEÇA
 
@@ -111,7 +111,7 @@ class Orbital_right_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Orbital right', 'Anatomical Points - Head')
         TestaPontoCollDef()
@@ -133,7 +133,7 @@ class Orbital_left_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Orbital left', 'Anatomical Points - Head')
         TestaPontoCollDef()
@@ -155,7 +155,7 @@ class N_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('N point', 'Anatomical Points - Head')
         TestaPontoCollDef()
@@ -177,7 +177,7 @@ class Po_right_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Po right', 'Anatomical Points - Head')
         TestaPontoCollDef()
@@ -199,7 +199,7 @@ class Po_left_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Po left', 'Anatomical Points - Head')
         TestaPontoCollDef()
@@ -221,7 +221,7 @@ class Pt_right_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Pt right', 'Anatomical Points - Head')
         TestaPontoCollDef()
@@ -243,7 +243,7 @@ class Pt_left_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Pt left', 'Anatomical Points - Head')
         TestaPontoCollDef()
@@ -265,7 +265,7 @@ class Ba_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Ba point', 'Anatomical Points - Head')
         TestaPontoCollDef()
@@ -287,7 +287,7 @@ class S_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('S point', 'Anatomical Points - Head')
         TestaPontoCollDef()
@@ -311,7 +311,7 @@ class U1_Tip_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('U1 Tip', 'Anatomical Points - Maxilla')
         TestaPontoCollDef()
@@ -333,7 +333,7 @@ class U1_LabGenBor_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('U1 Labial Gengival Border', 'Anatomical Points - Maxilla')
         TestaPontoCollDef()
@@ -355,7 +355,7 @@ class U1_LinGenBor_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('U1 Lingual Gengival Border', 'Anatomical Points - Maxilla')
         TestaPontoCollDef()
@@ -377,7 +377,7 @@ class M_U6_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('M U6', 'Anatomical Points - Maxilla')
         TestaPontoCollDef()
@@ -399,7 +399,7 @@ class D_U6_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('D U6', 'Anatomical Points - Maxilla')
         TestaPontoCollDef()
@@ -421,7 +421,7 @@ class U6_Occlusal_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('U6 Occlusal', 'Anatomical Points - Maxilla')
         TestaPontoCollDef()
@@ -443,7 +443,7 @@ class PNS_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('PNS point', 'Anatomical Points - Maxilla')
         TestaPontoCollDef()
@@ -465,7 +465,7 @@ class A_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('A point', 'Anatomical Points - Maxilla')
         TestaPontoCollDef()
@@ -487,7 +487,7 @@ class ANS_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('ANS point', 'Anatomical Points - Maxilla')
         TestaPontoCollDef()
@@ -509,7 +509,7 @@ class U1_Root_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('U1 Root', 'Anatomical Points - Maxilla')
         TestaPontoCollDef()
@@ -533,7 +533,7 @@ class L1_Tip_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('L1 Tip', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -555,7 +555,7 @@ class L1_Root_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('L1 Root', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -577,7 +577,7 @@ class L1_LabGenBor_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('L1 Labial Gengival Border', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -599,7 +599,7 @@ class L1_LinGenBor_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('L1 Lingual Gengival Border', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -621,7 +621,7 @@ class B_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('B point', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -643,7 +643,7 @@ class M_L6_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('M L6', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -665,7 +665,7 @@ class L6_Occlusal_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('L6 Occlusal', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -687,7 +687,7 @@ class D_L6_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('D L6', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -709,7 +709,7 @@ class MidRamusRight_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Mid Ramus right', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -731,7 +731,7 @@ class MidRamusLeft_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Mid Ramus left', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -753,7 +753,7 @@ class R_right_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('R right', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -775,7 +775,7 @@ class R_left_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('R left', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -797,7 +797,7 @@ class Go_right_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Go right', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -819,7 +819,7 @@ class Go_left_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Go left', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -841,7 +841,7 @@ class Ar_right_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Ar right', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -863,7 +863,7 @@ class Ar_left_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Ar left', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -885,7 +885,7 @@ class Sigmoid_right_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Sigmoid right', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -907,7 +907,7 @@ class Sigmoid_left_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Sigmoid left', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -929,7 +929,7 @@ class Co_right_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Co right', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -951,7 +951,7 @@ class Co_left_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Co left', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -973,7 +973,7 @@ class Pg_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Pg point', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -995,7 +995,7 @@ class Gn_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Gn point', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -1017,7 +1017,7 @@ class Me_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Me point', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -1039,7 +1039,7 @@ class Condylar_Process_left_pt(bpy.types.Operator):
         else:
             if found == True:
                 return False
-    
+
     def execute(self, context):
         CriaPontoDef('Condylar Process left', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -1063,7 +1063,7 @@ class Condylar_Process_right_pt(bpy.types.Operator):
         else:
             if found == True:
                 return False
-    
+
     def execute(self, context):
         CriaPontoDef('Condylar Process right', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -1087,7 +1087,7 @@ class Coronoid_Process_left_pt(bpy.types.Operator):
         else:
             if found == True:
                 return False
-    
+
     def execute(self, context):
         CriaPontoDef('Coronoid Process left', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -1111,7 +1111,7 @@ class Coronoid_Process_right_pt(bpy.types.Operator):
         else:
             if found == True:
                 return False
-    
+
     def execute(self, context):
         CriaPontoDef('Coronoid Process right', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -1135,7 +1135,7 @@ class Go_Ramus_Fracure_left_pt(bpy.types.Operator):
         else:
             if found == True:
                 return False
-    
+
     def execute(self, context):
         CriaPontoDef('Mid Go-Ramus Fracure left', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -1159,7 +1159,7 @@ class Go_Ramus_Fracure_right_pt(bpy.types.Operator):
         else:
             if found == True:
                 return False
-    
+
     def execute(self, context):
         CriaPontoDef('Mid Go-Ramus Fracure right', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -1183,7 +1183,7 @@ class Mid_Mandibula_Angle_left_pt(bpy.types.Operator):
         else:
             if found == True:
                 return False
-    
+
     def execute(self, context):
         CriaPontoDef('Mid Mandibula Angle left', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -1206,7 +1206,7 @@ class Mid_Mandibula_Angle_right_pt(bpy.types.Operator):
         else:
             if found == True:
                 return False
-    
+
     def execute(self, context):
         CriaPontoDef('Mid Mandibula Angle right', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -1230,7 +1230,7 @@ class Mid_Upper_Incisors_pt(bpy.types.Operator):
         else:
             if found == True:
                 return False
-    
+
     def execute(self, context):
         CriaPontoDef('Mid Upper Incisors', 'Anatomical Points - Mandible')
         TestaPontoCollDef()
@@ -1257,7 +1257,7 @@ class Tooth_8_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Tooth 8', 'Anatomical Points - Teeth')
         TestaPontoCollDef()
@@ -1281,7 +1281,7 @@ class Tooth_9_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Tooth 9', 'Anatomical Points - Teeth')
         TestaPontoCollDef()
@@ -1305,7 +1305,7 @@ class Tooth_6_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Tooth 6', 'Anatomical Points - Teeth')
         TestaPontoCollDef()
@@ -1329,7 +1329,7 @@ class Tooth_11_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Tooth 11', 'Anatomical Points - Teeth')
         TestaPontoCollDef()
@@ -1353,7 +1353,7 @@ class Tooth_3_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Tooth 3', 'Anatomical Points - Teeth')
         TestaPontoCollDef()
@@ -1377,7 +1377,7 @@ class Tooth_14_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Tooth 14', 'Anatomical Points - Teeth')
         TestaPontoCollDef()
@@ -1401,7 +1401,7 @@ class Tooth_24_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Tooth 24', 'Anatomical Points - Teeth')
         TestaPontoCollDef()
@@ -1425,7 +1425,7 @@ class Tooth_25_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Tooth 25', 'Anatomical Points - Teeth')
         TestaPontoCollDef()
@@ -1449,7 +1449,7 @@ class Tooth_22_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Tooth 22', 'Anatomical Points - Teeth')
         TestaPontoCollDef()
@@ -1473,7 +1473,7 @@ class Tooth_27_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Tooth 27', 'Anatomical Points - Teeth')
         TestaPontoCollDef()
@@ -1497,7 +1497,7 @@ class Tooth_19_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Tooth 19', 'Anatomical Points - Teeth')
         TestaPontoCollDef()
@@ -1521,7 +1521,7 @@ class Tooth_30_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Tooth 30', 'Anatomical Points - Teeth')
         TestaPontoCollDef()
@@ -1548,7 +1548,7 @@ class ST_Glabella_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('ST Glabella', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1573,7 +1573,7 @@ class ST_Nasion_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('ST Nasion', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1597,7 +1597,7 @@ class Bridge_Nose_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Bridge of Nose', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1621,7 +1621,7 @@ class Tip_Nose_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Tip of Nose', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1645,7 +1645,7 @@ class Columella_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Columella', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1669,7 +1669,7 @@ class Subnasale_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Subnasale', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1693,7 +1693,7 @@ class ST_A_point_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('ST A point', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1717,7 +1717,7 @@ class Upper_Lip_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Upper Lip', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1741,7 +1741,7 @@ class Stomion_Superius_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Stomion Superius', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1765,7 +1765,7 @@ class Stomion_Inferius_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Stomion Inferius', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1789,7 +1789,7 @@ class Lower_Lip_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Lower Lip', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1813,7 +1813,7 @@ class ST_B_point_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('ST B point', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1838,7 +1838,7 @@ class ST_Pogonion_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('ST Pogonion', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1863,7 +1863,7 @@ class ST_Gnathion_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('ST Gnathion', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1888,7 +1888,7 @@ class ST_Menton_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('ST Menton', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1913,7 +1913,7 @@ class Throat_point_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Throat point', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1937,7 +1937,7 @@ class Subpupil_right_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Subpupil right', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1961,7 +1961,7 @@ class Subpupil_left_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Subpupil left', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -1985,7 +1985,7 @@ class CB_right_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('CB right', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -2010,7 +2010,7 @@ class CB_left_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('CB left', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -2034,7 +2034,7 @@ class OR_right_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('OR right', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -2059,7 +2059,7 @@ class OR_left_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('OR left', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -2083,7 +2083,7 @@ class Cheekbone_left_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Cheekbone left', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -2107,7 +2107,7 @@ class Cheekbone_right_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('Cheekbone right', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -2132,7 +2132,7 @@ class SP_right_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('SP right', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -2156,7 +2156,7 @@ class SP_left_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('SP left', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -2181,7 +2181,7 @@ class AB_right_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('AB right', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -2206,7 +2206,7 @@ class AB_left_pt(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         CriaPontoDef('AB left', 'Anatomical Points - Soft Tissue')
         TestaPontoCollDef()
@@ -2238,7 +2238,7 @@ def ParenteiaPonto(ponto):
                 vertices = obj.data.vertices
 
             # Todos os vértices por vetor
-            verts = [obj.matrix_world @ vert.co for vert in vertices] 
+            verts = [obj.matrix_world @ vert.co for vert in vertices]
 
             # Captura vetor do objeto
 
@@ -2252,11 +2252,11 @@ def ParenteiaPonto(ponto):
 
                 objA = bpy.data.objects[obj1].location
                 objB = obj2
-                
+
                 distancia = sqrt( (objB[0] - objA[0])**2 + (objB[1] - objA[1])**2 + (objB[2] - objA[2])**2 )
-                
+
                 return distancia
-                
+
 
 
             for i in range(len(verts)):
@@ -2266,8 +2266,8 @@ def ParenteiaPonto(ponto):
                 distanciaVert = DistanciaObjs(ponto, vertAtual)
 
                 listaDist.append([distanciaVert, obj.name])
-                
-                
+
+
 
     listaFin = sorted(listaDist)
     print("MAIS PRÓXIMO!", listaFin[0])
@@ -2299,43 +2299,43 @@ def ParenteiaPontoMole(ponto):
         vertices = obj.data.vertices
 
             # Todos os vértices por vetor
-    verts = [obj.matrix_world @ vert.co for vert in vertices] 
+    verts = [obj.matrix_world @ vert.co for vert in vertices]
 
             # Captura vetor do objeto
 
     referencia = bpy.data.objects[ponto].location
-    
+
             # Calcula distância pontos
 
     def DistanciaObjs(obj1, obj2):
         objA = bpy.data.objects[obj1].location
         objB = obj2
-                
+
         distancia = sqrt( (objB[0] - objA[0])**2 + (objB[1] - objA[1])**2 + (objB[2] - objA[2])**2 )
-                
+
         return distancia
-                
+
 
     for i in range(len(verts)):
 
         vertAtual = verts[i]
-            
+
         distanciaVert = DistanciaObjs(ponto, vertAtual)
 
         listaDist.append([distanciaVert, i])
-                
-                
+
+
 
     listaFin = sorted(listaDist)
     print("MAIS PRÓXIMO!", listaFin[0])
-    
+
 
 
     bpy.ops.object.select_all(action='DESELECT')
     obj.select_set(True)
     bpy.context.view_layer.objects.active = obj
 
-    bpy.ops.object.mode_set(mode = 'EDIT') 
+    bpy.ops.object.mode_set(mode = 'EDIT')
     bpy.ops.mesh.select_mode(type="VERT")
     bpy.ops.mesh.select_all(action = 'DESELECT')
     bpy.ops.object.mode_set(mode = 'OBJECT')
@@ -2347,8 +2347,8 @@ def ParenteiaPontoMole(ponto):
 
     bpy.ops.object.mode_set(mode = 'EDIT')
 
-    
-    bpy.ops.object.mode_set(mode = 'OBJECT')            
+
+    bpy.ops.object.mode_set(mode = 'OBJECT')
 
     bpy.ops.object.select_all(action='DESELECT')
 
@@ -2358,7 +2358,7 @@ def ParenteiaPontoMole(ponto):
     b.select_set(True)
     bpy.context.view_layer.objects.active = b
     bpy.ops.object.mode_set(mode = 'EDIT')
-    bpy.ops.mesh.select_all(action = 'DESELECT')        
+    bpy.ops.mesh.select_all(action = 'DESELECT')
 
 
     obj.select_set(True)
@@ -2370,18 +2370,18 @@ def ParenteiaPontoMole(ponto):
 
     bpy.ops.object.mode_set(mode = 'EDIT')
     bpy.ops.object.vertex_parent_set()
-    bpy.ops.object.mode_set(mode = 'OBJECT')  
+    bpy.ops.object.mode_set(mode = 'OBJECT')
 
 
 class testaPontos(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.testa_pontos"
     bl_label = "TestaPontos"
-    
+
     def execute(self, context):
         testaPontosDef(self, context)
         return {'FINISHED'}
- 
+
 # Parenteia pontos
 
 def ParenteiaEMPDef(self, context):
@@ -2391,7 +2391,7 @@ def ParenteiaEMPDef(self, context):
 
 	ListaPontos = ['Orbital right', 'Orbital left', 'N point', 'Po right', 'Po left', 'Pt right', 'Pt left', 'Ba point', 'S point', 'U1 Tip', 'U1 Labial Gengival Border', 'U1 Lingual Gengival Border', 'M U6', 'D U6', 'U6 Occlusal', 'PNS point', 'A point', 'ANS point', 'U1 Root', 'L1 Tip', 'L1 Root', 'L1 Labial Gengival Border', 'L1 Lingual Gengival Border', 'B point', 'M L6', 'L6 Occlusal', 'D L6', 'Mid Ramus right', 'Mid Ramus left', 'R right', 'R left', 'Go right', 'Go left', 'Ar right', 'Ar left', 'Sigmoid right', 'Sigmoid left', 'Co right', 'Co left', 'Pg point', 'Gn point', 'Me point', 'Tooth 8', 'Tooth 9', 'Tooth 6', 'Tooth 11', 'Tooth 3', 'Tooth 14', 'Tooth 24', 'Tooth 25', 'Tooth 22', 'Tooth 27', 'Tooth 19', 'Tooth 30']
 
-	ListaPontosMole = [ 'ST Glabella', 'ST Nasion', 'Bridge of Nose', 'Tip of Nose', 'Cheekbone right', 'Cheekbone left', 'Columella', 'Subnasale', 'Subpupil right', 'Subpupil left' ,'ST A point', 'Upper Lip', 'Stomion Superius', 'Stomion Inferius', 'Lower Lip', 'ST B point', 'ST Pogonion', 'ST Gnathion', 'ST Menton', 'Throat point', 'CB right', 'CB left', 'OR right', 'OR left', 'SP right', 'SP left', 'AB right', 'AB left']
+	ListaPontosMole = [ 'ST Glabella', 'ST Nasion', 'Bridge of Nose', 'Tip of Nose', 'Cheekbone right', 'Cheekbone left', 'Columella', 'Subnasale', 'Subpupil right', 'Subpupil left' ,'ST A point', 'Upper Lip', 'Stomion Superius', 'Stomion Inferius', 'Lower Lip', 'ST B point', 'ST Pogonion', 'ST Gnathion', 'ST Menton', 'Throat point', 'CB right', 'CB left', 'OR right', 'OR left', 'SP right', 'SP left', 'AB right', 'AB left', 'Radix']
 
 	# Cria lista com pontos da cena
 
@@ -2409,12 +2409,12 @@ def ParenteiaEMPDef(self, context):
 		if ob in ObjetosCena:
 			ParenteiaPontoMole(ob)
 			print(ob,"Existe na lista (Mole)!")
-	
+
 class ParenteiaEMP(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.parenteia_emp"
     bl_label = "ParenteiaEMP"
-    
+
     def execute(self, context):
         ParenteiaEMPDef(self, context)
         return {'FINISHED'}
