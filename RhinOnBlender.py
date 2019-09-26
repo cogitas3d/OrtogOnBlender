@@ -252,6 +252,9 @@ class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
         row = layout.row()
         linha=row.operator("object.tip_nose_pt", text="Tip of Nose")
 
+        row = layout.row()
+        linha=row.operator("object.subnasale_pt", text="Subnasale")
+
        	row = layout.row()
         row = layout.row()
         row.label(text="Parent Points:")

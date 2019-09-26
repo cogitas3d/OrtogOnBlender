@@ -16,7 +16,7 @@ from .ImportaObjMat import *
 class MessageFaltaDICOM(bpy.types.Operator):
     bl_idname = "object.dialog_operator_informe_dicom"
     bl_label = "Doesn't have DICOM path!"
-  
+
     def execute(self, context):
         message = ("Doesn't have DICOM path!")
         self.report({'INFO'}, message)
@@ -52,7 +52,7 @@ def GeraModelosTomoDef(self, context):
     if scn.my_tool.path == "":
             bpy.ops.object.dialog_operator_informe_dicom('INVOKE_DEFAULT')
             return {'FINISHED'}
-    
+
 #    scene = context.scene
 #    rd = scene.render
 
@@ -95,7 +95,7 @@ def GeraModelosTomoDef(self, context):
     #    bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
     #    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='MEDIAN')
 
-        
+
         bpy.ops.object.select_all(action='DESELECT')
         b.select_set(True)
     #    bpy.context.scene.objects.active = b
@@ -112,7 +112,7 @@ def GeraModelosTomoDef(self, context):
 
         bpy.ops.object.select_all(action='DESELECT')
         a.select_set(True)
-        b.select_set(True) 
+        b.select_set(True)
         c.select_set(True)
     #    bpy.context.scene.objects.active = a
         context.view_layer.objects.active = a
@@ -123,7 +123,7 @@ def GeraModelosTomoDef(self, context):
         bpy.ops.transform.rotate(value=3.14159, orient_axis='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
 
 
-                                     
+
         a.location[0] = 0
         a.location[1] = 0
         a.location[2] = 0
@@ -153,7 +153,7 @@ class GeraModelosTomo(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.gera_modelos_tomo"
     bl_label = "Prepara Impressao"
-    
+
     def execute(self, context):
         GeraModelosTomoDef(self, context)
         return {'FINISHED'}
@@ -161,7 +161,7 @@ class GeraModelosTomo(bpy.types.Operator):
 # GERA MODELO ARCADA
 
 def GeraModelosTomoArcDef(self, context):
-    
+
     context = bpy.context
     obj = context.object
     scn = context.scene
@@ -193,7 +193,7 @@ def ReconTomo(pathdir, interes, saida, simplif):
 
 #    scene = context.scene
 #    rd = scene.render
-    
+
     tmpdir = tempfile.mkdtemp()
     tmpSTL = tmpdir+'/'+saida+'.stl'
 
@@ -202,7 +202,7 @@ def ReconTomo(pathdir, interes, saida, simplif):
 #    capturaEndereco = bpy.data.scenes['Scene'].my_tool['path']
 #    dirAtual = os.getcwd()
 #    print("DIRETÓRIO ATUAL:", dirAtual)
-#    os.chdir(dirAtual)    
+#    os.chdir(dirAtual)
 
 
     if scn.my_tool.path == "":
@@ -216,7 +216,7 @@ def ReconTomo(pathdir, interes, saida, simplif):
 
 
             dicom2DtlPath = homeall+'/Programs/OrtogOnBlender/Dicom2Mesh/dicom2mesh'
-    
+
 
 
         if platform.system() == "Windows":
@@ -233,7 +233,7 @@ def ReconTomo(pathdir, interes, saida, simplif):
         subprocess.call([dicom2DtlPath, '-i',  pathdir, '-r', simplif, '-s', '-t', interes, '-o', tmpSTL])
         bpy.ops.import_mesh.stl(filepath=tmpSTL, filter_glob="*.stl",  files=[{"name":saida+".stl", "name":saida+".stl"}], directory=tmpdir)
 
- 
+
 #        bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
 #        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='MEDIAN')
 #        bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN', center='MEDIAN')
@@ -302,10 +302,10 @@ def ReduzDimDICOMDef():
                 os.mkdir("REDUC")
                 print("Diretorio REDUC criado")
 
-            if platform.system() == "Linux" or platform.system() == "Darwin": 
+            if platform.system() == "Linux" or platform.system() == "Darwin":
                     subprocess.call('dcmscale -v +Sxf '+Fator+' +Syf '+Fator+' '+ArquivoAtual+' REDUC/'+ArquivoAtual, shell=True)
 
-            if platform.system() == "Windows": 
+            if platform.system() == "Windows":
                     subprocess.call('C:/OrtogOnBlender/dcmtk/dcmscale.exe -v +Sxf '+Fator+' +Syf '+Fator+' '+ArquivoAtual+' REDUC/'+ArquivoAtual, shell=True)
 
     scn.my_tool.path = os.getcwd()+"/REDUC/"
@@ -314,7 +314,7 @@ class ReduzDimDICOM(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.reduz_dimensao_dicom"
     bl_label = "Reduz Dimensao DICOM"
-    
+
     def execute(self, context):
         ReduzDimDICOMDef()
         return {'FINISHED'}
@@ -353,7 +353,7 @@ def IdentificaTomografo(Arquivo):
         print("Sem StationNam")
 
 
-    
+
     try:
         # Separa ManufacturerModelName
         ManufacturerModelNameComplete = ds.data_element("ManufacturerModelName")
@@ -391,15 +391,15 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D        
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
 
         bpy.ops.object.gera_modelos_tomo()
-        
+
     if ManufacturerLimpo == "'TOSHIBA'" and StationNameLimpo == "'ID_STATION'" and ManufacturerModelNameLimpo == "'Aquilion Lightning'":
         print("USA FIXED!")
         print("SÉRIE 3")
@@ -421,14 +421,42 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D        
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "250"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
 
-        bpy.ops.object.gera_modelos_tomo() 
+        bpy.ops.object.gera_modelos_tomo()
+
+    if ManufacturerLimpo == "'MyRay'" and StationNameLimpo == "'NT'":
+
+        if ManufacturerModelNameLimpo == "'HYB'":
+
+            print("SÉRIE 1")
+            print("Bone: 850")
+            print("SoftTissue: -360")
+            print("Teeth: 1735")
+
+            os.chdir(scn.my_tool.path+"/1")
+            scn.my_tool.path = os.getcwd()
+            bpy.ops.object.corrige_dicom()
+
+            bpy.ops.object.reduz_dimensao_dicom()
+
+            # Copia para o diretório
+            try:
+                CopiaTomoDir(scn.my_tool.path)
+            except:
+                print("Doesn't have Patient Dir")
+
+            # Gera o 3D
+            bpy.context.scene.interesse_ossos = "850"
+            bpy.context.scene.interesse_mole = "-360"
+            bpy.context.scene.interesse_dentes = "1735"
+
+            bpy.ops.object.gera_modelos_tomo()
 
     if ManufacturerLimpo == "'Imaging Sciences International'" and StationNameLimpo == "'IMAGING-53246DF'":
         print("SÉRIE 0")
@@ -447,9 +475,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-600"
         bpy.context.scene.interesse_dentes = "800"
@@ -472,9 +500,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "480"
         bpy.context.scene.interesse_mole = "-550"
         bpy.context.scene.interesse_dentes = "1060"
@@ -500,9 +528,9 @@ def IdentificaTomografo(Arquivo):
             try:
                 CopiaTomoDir(scn.my_tool.path)
             except:
-                print("Doesn't have Patient Dir")           
+                print("Doesn't have Patient Dir")
 
-            # Gera o 3D 
+            # Gera o 3D
             bpy.context.scene.interesse_ossos = "345"
             bpy.context.scene.interesse_mole = "-600"
             bpy.context.scene.interesse_dentes = "972"
@@ -520,9 +548,9 @@ def IdentificaTomografo(Arquivo):
                 try:
                     CopiaTomoDir(scn.my_tool.path)
                 except:
-                    print("Doesn't have Patient Dir")           
+                    print("Doesn't have Patient Dir")
 
-                # Gera o 3D 
+                # Gera o 3D
                 bpy.context.scene.interesse_ossos = "345"
                 bpy.context.scene.interesse_mole = "-600"
                 bpy.context.scene.interesse_dentes = "972"
@@ -530,7 +558,7 @@ def IdentificaTomografo(Arquivo):
                 bpy.ops.object.gera_modelos_tomo()
             except:
                 print("Sem modelo!")
-        
+
     if ManufacturerLimpo == "'Imaging Sciences International'" and StationNameLimpo == "'ICAT-6BHI1BTQFF'":
         print("USA FIXED!")
         print("SÉRIE 0")
@@ -549,14 +577,14 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-600"
         bpy.context.scene.interesse_dentes = "1000"
 
-        bpy.ops.object.gera_modelos_tomo()        
+        bpy.ops.object.gera_modelos_tomo()
 
 
     if ManufacturerLimpo == "'Imaging Sciences International'" and StationNameLimpo == "'CONEPEAM'":
@@ -576,9 +604,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "250"
         bpy.context.scene.interesse_mole = "-950"
         bpy.context.scene.interesse_dentes = "711"
@@ -604,13 +632,13 @@ def IdentificaTomografo(Arquivo):
         except:
             print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "485"
         bpy.context.scene.interesse_mole = "-480"
         bpy.context.scene.interesse_dentes = "1030"
 
         bpy.ops.object.gera_modelos_tomo()
-        
+
 
     if ManufacturerLimpo == "'NIM'" and StationNameLimpo == "'NT'":
         print("Modifica o FIXED! Usar o 67821")
@@ -630,15 +658,15 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "1300"
         bpy.context.scene.interesse_mole = "-1"
         bpy.context.scene.interesse_dentes = "1260"
 
-        bpy.ops.object.gera_modelos_tomo() 
-        
+        bpy.ops.object.gera_modelos_tomo()
+
     if ManufacturerLimpo == "'PreXion'" and StationNameLimpo == "'CT-02'":
         print("SÉRIE 1000")
         print("Bone: 287")
@@ -653,9 +681,9 @@ def IdentificaTomografo(Arquivo):
         print("SoftTissue: -562")
         print("Teeth: 1862")
         print("Condylus: 655")
-        
+
         print("----")
-        
+
         print("USA FIXED!")
         print("SÉRIE 4")
         print("Bone: 200")
@@ -673,9 +701,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -690,9 +718,9 @@ def IdentificaTomografo(Arquivo):
         print("SoftTissue: -562")
         print("Teeth: 1862")
         print("Condylus: 655")
-        
+
         print("----")
-        
+
         print("USA FIXED!")
         print("SÉRIE 4")
         print("Bone: 200")
@@ -710,9 +738,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -727,7 +755,7 @@ def IdentificaTomografo(Arquivo):
             print("SoftTissue: -300")
             print("Teeth: 1430")
             print("Condylus: 655")
-            
+
 
             os.chdir(scn.my_tool.path+"/6")
             scn.my_tool.path = os.getcwd()
@@ -739,9 +767,9 @@ def IdentificaTomografo(Arquivo):
             try:
                 CopiaTomoDir(scn.my_tool.path)
             except:
-                print("Doesn't have Patient Dir")           
+                print("Doesn't have Patient Dir")
 
-            # Gera o 3D 
+            # Gera o 3D
             bpy.context.scene.interesse_ossos = "200"
             bpy.context.scene.interesse_mole = "-300"
             bpy.context.scene.interesse_dentes = "1430"
@@ -755,7 +783,7 @@ def IdentificaTomografo(Arquivo):
             print("SoftTissue: -300")
             print("Teeth: 1430")
             print("Condylus: 655")
-            
+
 
             os.chdir(scn.my_tool.path+"/2")
             scn.my_tool.path = os.getcwd()
@@ -767,9 +795,9 @@ def IdentificaTomografo(Arquivo):
             try:
                 CopiaTomoDir(scn.my_tool.path)
             except:
-                print("Doesn't have Patient Dir")           
+                print("Doesn't have Patient Dir")
 
-            # Gera o 3D 
+            # Gera o 3D
             bpy.context.scene.interesse_ossos = "200"
             bpy.context.scene.interesse_mole = "-300"
             bpy.context.scene.interesse_dentes = "1430"
@@ -783,9 +811,9 @@ def IdentificaTomografo(Arquivo):
         print("SoftTissue: -562")
         print("Teeth: 1862")
         print("Condylus: 655")
-        
+
         print("----")
-        
+
         print("USA FIXED!")
         print("SÉRIE 4")
         print("Bone: 200")
@@ -803,9 +831,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -829,9 +857,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -856,9 +884,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -882,9 +910,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -908,9 +936,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -934,9 +962,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -949,7 +977,7 @@ def IdentificaTomografo(Arquivo):
         print("SoftTissue: -300")
         print("Teeth: 1430")
         print("Condylus: 655")
-        
+
     if ManufacturerLimpo == "'SIEMENS'" and StationNameLimpo == "'CT54551'":
         print("USA FIXED!")
         print("SÉRIE ")
@@ -977,9 +1005,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")          
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1003,9 +1031,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")          
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1029,9 +1057,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")          
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1055,9 +1083,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")          
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1081,9 +1109,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")          
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1114,9 +1142,9 @@ def IdentificaTomografo(Arquivo):
 #        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
-        CopiaTomoDir(scn.my_tool.path)           
+        CopiaTomoDir(scn.my_tool.path)
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1139,9 +1167,9 @@ def IdentificaTomografo(Arquivo):
 #        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
-        CopiaTomoDir(scn.my_tool.path)           
+        CopiaTomoDir(scn.my_tool.path)
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1166,9 +1194,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "710"
         bpy.context.scene.interesse_mole = "-460"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1192,9 +1220,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1218,9 +1246,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1251,9 +1279,9 @@ def IdentificaTomografo(Arquivo):
 #        bpy.ops.object.reduz_dimensao_dicom()
 
         # Copia para o diretório
-        CopiaTomoDir(scn.my_tool.path)           
+        CopiaTomoDir(scn.my_tool.path)
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1276,9 +1304,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "250"
         bpy.context.scene.interesse_mole = "-630"
         bpy.context.scene.interesse_dentes = "977"
@@ -1302,9 +1330,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "545"
         bpy.context.scene.interesse_mole = "-960"
         bpy.context.scene.interesse_dentes = "1230"
@@ -1327,9 +1355,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "438"
         bpy.context.scene.interesse_mole = "-975"
         bpy.context.scene.interesse_dentes = "1140"
@@ -1352,9 +1380,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "450"
         bpy.context.scene.interesse_mole = "-700"
         bpy.context.scene.interesse_dentes = "1440"
@@ -1378,9 +1406,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "580"
         bpy.context.scene.interesse_mole = "-811"
         bpy.context.scene.interesse_dentes = "1235"
@@ -1404,9 +1432,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "320"
         bpy.context.scene.interesse_mole = "-680"
         bpy.context.scene.interesse_dentes = "1800"
@@ -1430,9 +1458,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "335"
         bpy.context.scene.interesse_mole = "-925"
         bpy.context.scene.interesse_dentes = "1070"
@@ -1456,9 +1484,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "462"
         bpy.context.scene.interesse_mole = "1688"
         bpy.context.scene.interesse_dentes = "4591"
@@ -1484,9 +1512,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1516,9 +1544,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1547,9 +1575,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1574,9 +1602,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1607,9 +1635,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1661,9 +1689,9 @@ def IdentificaTomografo(Arquivo):
             try:
                 CopiaTomoDir(scn.my_tool.path)
             except:
-                print("Doesn't have Patient Dir")           
+                print("Doesn't have Patient Dir")
 
-            # Gera o 3D 
+            # Gera o 3D
             bpy.context.scene.interesse_ossos = "200"
             bpy.context.scene.interesse_mole = "-300"
             bpy.context.scene.interesse_dentes = "1430"
@@ -1684,9 +1712,9 @@ def IdentificaTomografo(Arquivo):
             try:
                 CopiaTomoDir(scn.my_tool.path)
             except:
-                print("Doesn't have Patient Dir")           
+                print("Doesn't have Patient Dir")
 
-            # Gera o 3D 
+            # Gera o 3D
             bpy.context.scene.interesse_ossos = "200"
             bpy.context.scene.interesse_mole = "-300"
             bpy.context.scene.interesse_dentes = "1430"
@@ -1708,9 +1736,9 @@ def IdentificaTomografo(Arquivo):
             try:
                 CopiaTomoDir(scn.my_tool.path)
             except:
-                print("Doesn't have Patient Dir")           
+                print("Doesn't have Patient Dir")
 
-            # Gera o 3D 
+            # Gera o 3D
             bpy.context.scene.interesse_ossos = "200"
             bpy.context.scene.interesse_mole = "-300"
             bpy.context.scene.interesse_dentes = "1430"
@@ -1739,9 +1767,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1766,9 +1794,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "275"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1793,9 +1821,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -1821,9 +1849,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "370"
         bpy.context.scene.interesse_mole = "-360"
         bpy.context.scene.interesse_dentes = "1660"
@@ -1848,15 +1876,15 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "591"
         bpy.context.scene.interesse_mole = "-170"
         bpy.context.scene.interesse_dentes = "780"
 
         bpy.ops.object.gera_modelos_tomo()
-    
+
     '''
     if ManufacturerLimpo == "'TOSHIBA'" and StationNameLimpo == "'ID_STATION'":
         print("SÉRIE 3")
@@ -1903,7 +1931,7 @@ def IdentificaTomografo(Arquivo):
 
         # Copia para o diretório
 
-        # Gera o 3D 
+        # Gera o 3D
             bpy.context.scene.interesse_ossos = "200"
             bpy.context.scene.interesse_mole = "-300"
             bpy.context.scene.interesse_dentes = "1430"
@@ -1922,9 +1950,9 @@ def IdentificaTomografo(Arquivo):
                 try:
                     CopiaTomoDir(scn.my_tool.path)
                 except:
-                    print("Doesn't have Patient Dir")           
+                    print("Doesn't have Patient Dir")
 
-                # Gera o 3D 
+                # Gera o 3D
                 bpy.context.scene.interesse_ossos = "200"
                 bpy.context.scene.interesse_mole = "-300"
                 bpy.context.scene.interesse_dentes = "1430"
@@ -1937,9 +1965,9 @@ def IdentificaTomografo(Arquivo):
                 try:
                     CopiaTomoDir(scn.my_tool.path)
                 except:
-                    print("Doesn't have Patient Dir")           
+                    print("Doesn't have Patient Dir")
 
-                # Gera o 3D 
+                # Gera o 3D
                 bpy.context.scene.interesse_ossos = "590"
                 bpy.context.scene.interesse_mole = "-430"
                 bpy.context.scene.interesse_dentes = "1590"
@@ -1970,7 +1998,7 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
 
         bpy.ops.object.gera_modelos_tomo()
@@ -1994,9 +2022,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -2021,7 +2049,7 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
 
         bpy.ops.object.gera_modelos_tomo()
@@ -2045,9 +2073,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -2072,9 +2100,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "360"
         bpy.context.scene.interesse_mole = "-600"
         bpy.context.scene.interesse_dentes = "992"
@@ -2099,9 +2127,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
@@ -2127,9 +2155,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "400"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1350"
@@ -2153,9 +2181,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "650"
         bpy.context.scene.interesse_mole = "-610"
         bpy.context.scene.interesse_dentes = "1240"
@@ -2179,14 +2207,14 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "570"
         bpy.context.scene.interesse_mole = "-600"
         bpy.context.scene.interesse_dentes = "1105"
 
-        bpy.ops.object.gera_modelos_tomo()     
+        bpy.ops.object.gera_modelos_tomo()
 
 
     if ManufacturerLimpo == "'Planmeca'" and ManufacturerModelNameLimpo == "'ProMax'":
@@ -2208,9 +2236,9 @@ def IdentificaTomografo(Arquivo):
             try:
                 CopiaTomoDir(scn.my_tool.path)
             except:
-                print("Doesn't have Patient Dir")           
+                print("Doesn't have Patient Dir")
 
-            # Gera o 3D 
+            # Gera o 3D
             bpy.context.scene.interesse_ossos = "200"
             bpy.context.scene.interesse_mole = "-580"
             bpy.context.scene.interesse_dentes = "460"
@@ -2231,9 +2259,9 @@ def IdentificaTomografo(Arquivo):
             try:
                 CopiaTomoDir(scn.my_tool.path)
             except:
-                print("Doesn't have Patient Dir")           
+                print("Doesn't have Patient Dir")
 
-            # Gera o 3D 
+            # Gera o 3D
             bpy.context.scene.interesse_ossos = "200"
             bpy.context.scene.interesse_mole = "-580"
             bpy.context.scene.interesse_dentes = "460"
@@ -2255,9 +2283,9 @@ def IdentificaTomografo(Arquivo):
             try:
                 CopiaTomoDir(scn.my_tool.path)
             except:
-                print("Doesn't have Patient Dir")           
+                print("Doesn't have Patient Dir")
 
-            # Gera o 3D 
+            # Gera o 3D
             bpy.context.scene.interesse_ossos = "200"
             bpy.context.scene.interesse_mole = "-580"
             bpy.context.scene.interesse_dentes = "460"
@@ -2285,9 +2313,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-580"
         bpy.context.scene.interesse_dentes = "1080"
@@ -2310,9 +2338,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "575"
         bpy.context.scene.interesse_mole = "-377"
         bpy.context.scene.interesse_dentes = "1080"
@@ -2335,9 +2363,9 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "446"
         bpy.context.scene.interesse_mole = "536"
         bpy.context.scene.interesse_dentes = "982"
@@ -2361,15 +2389,15 @@ def IdentificaTomografo(Arquivo):
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
-            print("Doesn't have Patient Dir")           
+            print("Doesn't have Patient Dir")
 
-        # Gera o 3D 
+        # Gera o 3D
         bpy.context.scene.interesse_ossos = "522"
         bpy.context.scene.interesse_mole = "-680"
         bpy.context.scene.interesse_dentes = "982"
 
         bpy.ops.object.gera_modelos_tomo()
-    
+
 def GeraModeloTomoAutoDef(self, context):
 
     context = bpy.context
@@ -2378,7 +2406,7 @@ def GeraModeloTomoAutoDef(self, context):
     bpy.ops.object.ajusta_tomo()
 
     print("Original:", scn.my_tool.path)
-    
+
     try:
         os.chdir(scn.my_tool.path+"/1")
     except:
@@ -2413,7 +2441,7 @@ def GeraModeloTomoAutoDef(self, context):
 	    os.chdir(scn.my_tool.path+"/9")
     except:
         print("Dir 6 doesn't exist")
-	  
+
 
     try:
 	    os.chdir(scn.my_tool.path+"/0")
@@ -2476,9 +2504,9 @@ def GeraModeloTomoAutoDef(self, context):
     except:
         print("Dir 1005 doesn't exist")
 
-	  
+
     # Não usar o 1, dá erro!
-	  
+
     try:
         print("Atual:", os.getcwd())
         print (os.listdir(os.getcwd())[0])
@@ -2500,7 +2528,7 @@ class GeraModeloTomoAuto(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.gera_modelos_tomo_auto"
     bl_label = "Gera Modelo Tomo"
-    
+
     def execute(self, context):
         try:
 
@@ -2509,26 +2537,26 @@ class GeraModeloTomoAuto(bpy.types.Operator):
             except:
                 GeraModeloTomoAutoDef(self, context)
         except:
- 
+
             print("EROOOOO")
 
-            if platform.system() == "Windows":            
+            if platform.system() == "Windows":
 
                 context = bpy.context
                 scn = context.scene
-                
+
                 os.chdir(DirExportado+"/Error/")
                 os.makedirs("FIXED")
 
                 path = DirExportado+"/Error/"
                 dirs = os.listdir( path )
-                
+
                 print("DIRRRRRRRR GLOBAL:", DirExportado)
 
 
                 # print the files in given directory
                 DCMNum = 0
-                
+
                 for file in dirs:
                     print (file)
 
@@ -2577,7 +2605,7 @@ class DesagrupaTomo(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.desagrupa_tomo"
     bl_label = "Desagrupa Tomo"
-    
+
     def execute(self, context):
         DesagrupaTomoDef(self, context)
         return {'FINISHED'}
@@ -2626,7 +2654,7 @@ def GeraModelosTomoManualDef(self, context):
         print("Sem StationNam")
 
 
-    
+
     try:
         # Separa ManufacturerModelName
         ManufacturerModelNameComplete = ds.data_element("ManufacturerModelName")
@@ -2709,7 +2737,7 @@ class GeraModelosTomoManual(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.gera_modelo_tomo_manual"
     bl_label = "Gera Modelo Tomo Manual"
-    
+
     def execute(self, context):
         GeraModelosTomoManualDef(self, context)
         return {'FINISHED'}
