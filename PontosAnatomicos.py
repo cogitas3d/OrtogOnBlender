@@ -2251,7 +2251,7 @@ def ParenteiaPonto(ponto):
             def DistanciaObjs(obj1, obj2):
 
                 objA = bpy.data.objects[obj1].location
-                objB = obj2
+                objB = bpy.data.objects[obj2].location
 
                 distancia = sqrt( (objB[0] - objA[0])**2 + (objB[1] - objA[1])**2 + (objB[2] - objA[2])**2 )
 

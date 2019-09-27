@@ -1,5 +1,6 @@
 import bpy
 from .PontosAnatomicos import *
+from .FerrMedidas import *
 
 # PONTOS ANATOMICOS
 
@@ -64,3 +65,34 @@ class CopiaFace(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(CopiaFace)
+
+
+def CalculaDistsNarizDef():
+
+    #DistRadixTip = DistanciaObjetos("Radix", "Tip of Nose")
+
+    try:
+        AnguloNasolabial = CalculaAngulo("Radix", "Tip of Nose", "Subnasale")
+
+        bpy.types.Scene.rhin_angulo_nasolabial = bpy.props.StringProperty \
+            (
+                name = "Nasolabial Angle",
+                description = "Nasolabial Angle",
+                default = str(AnguloNasolabial)+"º"
+            )
+
+    except:
+        print("Não foi possível fazer o cálculo do ângulo nasolabial.")
+#    return DistRadixTip, AnguloNasolabial
+
+
+class CalculaDistsNariz(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.dist_nariz"
+    bl_label = "Nose dists"
+
+    def execute(self, context):
+        CalculaDistsNarizDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(CalculaDistsNariz)

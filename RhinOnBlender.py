@@ -272,3 +272,44 @@ class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
         row.operator("object.gera_dir_nome_paciente_points_soft", text="SAVE!", icon="FILE_TICK")
 
 bpy.utils.register_class(RHIN_PT_PontosAnatomicos)
+
+class RHIN_PT_DistAngles(bpy.types.Panel):
+    bl_label = "Dists & Angles"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Rhin"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        scn = context.scene
+
+        row = layout.row()
+        linha=row.operator("object.dist_nariz", text="CALC ALL!", icon="PREFERENCES")
+
+        row = layout.row()
+        row.label(text="Results:")
+
+        # Ângulo nasolabial
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.0
+        row.alignment = 'RIGHT'
+        row.prop(context.scene, "rhin_angulo_nasolabial")
+        row = col.row()
+        row.alignment = 'RIGHT'
+        row.label(text="Women: 97.7º - 110.3º    Men: 98.7º - 114.1º") # Calculado
+
+bpy.utils.register_class(RHIN_PT_DistAngles)
+
+bpy.types.Scene.rhin_angulo_nasolabial = bpy.props.StringProperty \
+    (
+        name = "Nasolabial Angle",
+        description = "Nasolabial Angle",
+        default = "NONE"
+    )

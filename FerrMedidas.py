@@ -1,4 +1,40 @@
 import bpy
+import math
+from math import sqrt
+
+
+def CalculaAngulo(Obj1, Obj2, Obj3):
+
+        # Calcula
+
+        d1_2 = DistanciaObjetos(Obj1, Obj2)
+        d2_3 = DistanciaObjetos(Obj2, Obj3)
+        d1_3 = DistanciaObjetos(Obj1, Obj3)
+
+
+        Grau = (d2_3**2 + d1_2**2 - d1_3**2) / (2 * d2_3 * d1_2)
+
+        Angulo = float(round(math.degrees(math.acos(Grau)),2))
+
+        print("Grau (rad):", Grau)
+
+        print("Ângulo:", Angulo)
+
+        return str(Angulo)+"º"
+
+
+def DistanciaObjetos(obj1, obj2):
+
+    objA = bpy.data.objects[obj1].location
+    objB = bpy.data.objects[obj2].location
+
+    distancia = sqrt( (objB[0] - objA[0])**2 + (objB[1] - objA[1])**2 + (objB[2] - objA[2])**2 )
+
+    print("Distancia", obj1 , "<-->", obj2 , "=" , distancia )
+
+    return distancia
+
+
 
 def MedidasVerDentesDef(self, context):
 
@@ -121,7 +157,7 @@ def MedidasVerDentesDef(self, context):
 	b.select_set(True)
 	context.view_layer.objects.active = a
 	bpy.ops.measureit.addlink()
-	
+
 	bpy.ops.object.select_all(action='DESELECT')
 	a = bpy.data.objects['Tooth 9']
 	b = bpy.data.objects['Tooth 9.001']
@@ -219,12 +255,12 @@ def MedidasHorDentesDef(self, context):
 	bpy.data.objects['LinhaMedidaHor'].select_set(True)
 	context.view_layer.objects.active = bpy.data.objects['LinhaMedida']
 	bpy.ops.object.parent_set(type='OBJECT', keep_transform=True)
-	
+
 
 
 	bpy.ops.object.select_all(action='DESELECT')
 
-	
+
 	CriaMedidaHor("Tooth 9.001", "EMPHor_9")
 	CriaMedidaHor("Tooth 8.001", "EMPHor_8")
 	CriaMedidaHor("Tooth 6.001", "EMPHor_6")
@@ -238,7 +274,7 @@ class MedidasVerHorDentes(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.medverhor_dentes"
     bl_label = "Medidas Verticais"
-    
+
     def execute(self, context):
 
         MedidasVerDentesDef(self, context)
@@ -261,11 +297,10 @@ class ApagaPontosCopiados(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.apaga_pontos_objetos"
     bl_label = "Apaga Pontos Copiados"
-    
+
     def execute(self, context):
 
         ApagaPontosCopiadosDef()
         return {'FINISHED'}
 
 bpy.utils.register_class(ApagaPontosCopiados)
-
