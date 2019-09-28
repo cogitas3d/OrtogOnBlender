@@ -232,6 +232,9 @@ class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
+        linha=row.operator("object.copia_face", text="COPY FACE!")
+
+        row = layout.row()
         row.label(text="Mode:")
 
         row = layout.row()
@@ -239,9 +242,6 @@ class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
-
-        row = layout.row()
-        linha=row.operator("object.copia_face", text="COPY FACE!")
 
         row = layout.row()
         row.label(text="Anatomical Points:")
@@ -292,6 +292,19 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         row = layout.row()
         row.label(text="Results:")
 
+        # Proporção do nariz
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.0
+        row.alignment = 'RIGHT'
+        row.prop(context.scene, "rhin_prop_nariz")
+        row = col.row()
+        row.alignment = 'RIGHT'
+        row.label(text="Women: 0.67    Men: 0.67") # Calculado
+
         # Ângulo nasolabial
         row = layout.row()
         row = layout.row()
@@ -306,6 +319,13 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         row.label(text="Women: 97.7º - 110.3º    Men: 98.7º - 114.1º") # Calculado
 
 bpy.utils.register_class(RHIN_PT_DistAngles)
+
+bpy.types.Scene.rhin_prop_nariz = bpy.props.StringProperty \
+    (
+        name = "Nose Proportion",
+        description = "Nose Proportion",
+        default = "NONE"
+    )
 
 bpy.types.Scene.rhin_angulo_nasolabial = bpy.props.StringProperty \
     (
