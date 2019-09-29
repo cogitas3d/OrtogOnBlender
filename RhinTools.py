@@ -1,6 +1,7 @@
 import bpy
 from .PontosAnatomicos import *
 from .FerrMedidas import *
+from math import sqrt
 
 # PONTOS ANATOMICOS
 
@@ -127,6 +128,221 @@ class Posterior_Nostril_right_pt(bpy.types.Operator):
 
 bpy.utils.register_class(Posterior_Nostril_right_pt)
 
+class Rhinion_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.rhinion_pt"
+    bl_label = "Rhinion"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Rhinion' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Rhinion', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Rhinion_pt)
+
+class Alar_Groove_right_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.alar_groove_right_pt"
+    bl_label = "Alar Groove right"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Alar Groove right' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Alar Groove right', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Alar_Groove_right_pt)
+
+class Alar_Groove_left_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.alar_groove_left_pt"
+    bl_label = "Alar Groove left"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Alar Groove left' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Alar Groove left', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Alar_Groove_left_pt)
+
+class Supratip_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.supratip_pt"
+    bl_label = "Supratip"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Supratip' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Supratip', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Supratip_pt)
+
+class Infratip_Lobule_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.infratip_lobule_pt"
+    bl_label = "Infratip Lobule"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Infratip Lobule' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Infratip Lobule', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Infratip_Lobule_pt)
+
+class Alar_Rim_right_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.alar_rim_right_pt"
+    bl_label = "Alar Rim right"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Alar Rim right' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Alar Rim right', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Alar_Rim_right_pt)
+
+class Alar_Rim_left_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.alar_rim_left_pt"
+    bl_label = "Alar Rim left"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Alar Rim left' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Alar Rim left', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Alar_Rim_left_pt)
+
+class Columella_right_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.columella_right_pt"
+    bl_label = "Columella right"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Columella right' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Columella right', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Columella_right_pt)
+
+class Columella_left_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.columella_left_pt"
+    bl_label = "Columella left"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Columella left' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Columella left', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Columella_left_pt)
 
 # COPIA FACE
 
@@ -173,7 +389,7 @@ def CalculaDistsNarizDef():
     except:
         print("Já em modo objeto.")
 
-    ListaPontos = ["Radix", "Tip of Nose", "Subnasale", "Anterior Nostril left", "Posterior Nostril left", "Anterior Nostril right", "Posterior Nostril right"]
+    ListaPontos = ['Radix', 'Anterior Nostril left', 'Posterior Nostril left', 'Anterior Nostril right', 'Posterior Nostril right','Rhinion', 'Alar Groove right', 'Alar Groove left', 'Supratip', 'Infratip Lobule', 'Alar Rim right', 'Alar Rim left', 'Columella right', 'Columella left']
 
     for i in ListaPontos:
 #            print("HÁ O NOME!", i.name)
@@ -278,6 +494,41 @@ def CalculaDistsNarizDef():
 
     except:
         print("Não foi possível fazer o cálculo do ângulo nasolabial DIREITO.")
+
+
+    try:
+
+        # CALCULA ALAR RIM - COLUMELLA FACTOR - ESQUERDA
+        AnteriorNostrilLeft = bpy.data.objects["Anterior Nostril left_COPY_MEDIDAS"].location[2]
+        PosteriorNostrilLeft = bpy.data.objects["Posterior Nostril left_COPY_MEDIDAS"].location[2]
+
+        NonstrilLeftMedia = (AnteriorNostrilLeft + PosteriorNostrilLeft) / 2
+
+        AlarRimLeft = bpy.data.objects["Alar Rim left_COPY_MEDIDAS"].location[2]
+        FatorAlarRimLeft = abs(AlarRimLeft - NonstrilLeftMedia)
+
+
+        bpy.types.Scene.rhin_alar_rim_med_esquerdo = bpy.props.StringProperty \
+            (
+                name = "Alar Rim - Nonstrill",
+                description = "Alar Rim - Nonstrill",
+                default = str(round(FatorAlarRimLeft, 2))
+            )
+
+
+        ColumellaLeft = bpy.data.objects["Columella left_COPY_MEDIDAS"].location[2]
+        FatorColumellaLeft = abs(ColumellaLeft - NonstrilLeftMedia)
+        print("FatoColumellaLeft:", FatorColumellaLeft)
+
+        bpy.types.Scene.rhin_columella_med_esquerdo = bpy.props.StringProperty \
+            (
+                name = "Columella - Nonstrill",
+                description = "Columella - Nonstrill",
+                default = str(round(FatorColumellaLeft, 2))
+            )
+
+    except:
+        print("Não foi possível fazer o cálculo do fator Alar Rim-Columella - ESQUERDO.")
 
     # APAGA Pontos criados
 

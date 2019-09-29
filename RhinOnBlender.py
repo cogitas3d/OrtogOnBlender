@@ -244,7 +244,10 @@ class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
-        row.label(text="Anatomical Points:")
+        row.label(text="Anatomical Points")
+
+        row = layout.row()
+        row.label(text="Calculation Points:")
 
         row = layout.row()
         linha=row.operator("object.radix_pt", text="Radix")
@@ -266,6 +269,36 @@ class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("object.posterior_nostril_right_pt", text="Posterior Nostril right")
+
+        row = layout.row()
+        row.label(text="Control Points:")
+
+        row = layout.row()
+        linha=row.operator("object.rhinion_pt", text="Rhinion")
+
+        row = layout.row()
+        linha=row.operator("object.supratip_pt", text="Supratip")
+
+        row = layout.row()
+        linha=row.operator("object.alar_groove_right_pt", text="Alar Groove right")
+
+        row = layout.row()
+        linha=row.operator("object.alar_groove_left_pt", text="Alar Groove left")
+
+        row = layout.row()
+        linha=row.operator("object.infratip_lobule_pt", text="Infratip Lobule")
+
+        row = layout.row()
+        linha=row.operator("object.alar_rim_right_pt", text="Alar Rim right")
+
+        row = layout.row()
+        linha=row.operator("object.alar_rim_left_pt", text="Alar Rim left")
+
+        row = layout.row()
+        linha=row.operator("object.columella_right_pt", text="Columella right")
+
+        row = layout.row()
+        linha=row.operator("object.columella_left_pt", text="Columella left")
 
        	row = layout.row()
         row = layout.row()
@@ -315,7 +348,7 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         row.prop(context.scene, "rhin_prop_nariz")
         row = col.row()
         row.alignment = 'RIGHT'
-        row.label(text="Women: 0.67    Men: 0.67") # Calculado
+        row.label(text="Average: 0.67") # Calculado
 
         # Ângulo nasolabial esquerdo
         row = layout.row()
@@ -328,7 +361,7 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         row.prop(context.scene, "rhin_angulo_nasolabial_esquerdo")
         row = col.row()
         row.alignment = 'RIGHT'
-        row.label(text="Women: 97.7º - 110.3º    Men: 98.7º - 114.1º") # Calculado
+        row.label(text="Women: 95 - 100º    Men: 90º - 95º") # Calculado
 
         # Ângulo nasolabial direito
         row = layout.row()
@@ -341,7 +374,25 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         row.prop(context.scene, "rhin_angulo_nasolabial_direito")
         row = col.row()
         row.alignment = 'RIGHT'
-        row.label(text="Women: 97.7º - 110.3º    Men: 98.7º - 114.1º") # Calculado
+        row.label(text="Women: 95 - 100º    Men: 90º - 95º") # Calculado
+
+        # Alar Rim - Columella left
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.0
+        row.alignment = 'RIGHT'
+        row.label(text="Alar Rim - Columella Factor LEFT")
+        row = col.row()
+        row.alignment = 'RIGHT'
+        row.prop(context.scene, "rhin_alar_rim_med_esquerdo")
+        row = col.row()
+        row.alignment = 'RIGHT'
+        row.prop(context.scene, "rhin_columella_med_esquerdo")
+
+
 
 bpy.utils.register_class(RHIN_PT_DistAngles)
 
@@ -363,5 +414,20 @@ bpy.types.Scene.rhin_angulo_nasolabial_direito = bpy.props.StringProperty \
     (
         name = "Nasolabial Angle right",
         description = "Nasolabial Angle right",
+        default = "NONE"
+    )
+
+# Alar Rim - Columella left
+bpy.types.Scene.rhin_alar_rim_med_esquerdo = bpy.props.StringProperty \
+    (
+        name = "Alar Rim - Nonstrill",
+        description = "Alar Rim - Nonstrill",
+        default = "NONE"
+    )
+
+bpy.types.Scene.rhin_columella_med_esquerdo = bpy.props.StringProperty \
+    (
+        name = "Columella - Nonstrill",
+        description = "Columella - Nonstrill",
         default = "NONE"
     )
