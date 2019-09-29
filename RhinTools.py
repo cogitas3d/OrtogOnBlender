@@ -389,7 +389,7 @@ def CalculaDistsNarizDef():
     except:
         print("Já em modo objeto.")
 
-    ListaPontos = ['Radix', 'Anterior Nostril left', 'Posterior Nostril left', 'Anterior Nostril right', 'Posterior Nostril right','Rhinion', 'Alar Groove right', 'Alar Groove left', 'Supratip', 'Infratip Lobule', 'Alar Rim right', 'Alar Rim left', 'Columella right', 'Columella left']
+    ListaPontos = ['Tip of Nose', 'Subnasale','Radix', 'Anterior Nostril left', 'Posterior Nostril left', 'Anterior Nostril right', 'Posterior Nostril right','Rhinion', 'Alar Groove right', 'Alar Groove left', 'Supratip', 'Infratip Lobule', 'Alar Rim right', 'Alar Rim left', 'Columella right', 'Columella left']
 
     for i in ListaPontos:
 #            print("HÁ O NOME!", i.name)
@@ -406,10 +406,17 @@ def CalculaDistsNarizDef():
 
     try:
 
+        print("TESTEEEEEEEEEEEE")
+        print(bpy.data.objects["Radix_COPY_MEDIDAS"].name)
+#        print(bpy.data.objects["Tip of Nose_COPY_MEDIDAS"].name)
+        print(bpy.data.objects["Subnasale_COPY_MEDIDAS"].name)
         DistRadixTip = DistanciaObjetos("Radix_COPY_MEDIDAS", "Tip of Nose_COPY_MEDIDAS")
         DistTipSub = DistanciaObjetos("Radix_COPY_MEDIDAS", "Subnasale_COPY_MEDIDAS")
+        print("DistRadixTip:", DistRadixTip)
+        print("DistTipSub:", DistTipSub)
 
         ProporcaoNariz = DistRadixTip / DistTipSub
+        print("ProporcaoNariz", ProporcaoNariz)
 
         bpy.types.Scene.rhin_prop_nariz = bpy.props.StringProperty \
             (
@@ -529,6 +536,40 @@ def CalculaDistsNarizDef():
 
     except:
         print("Não foi possível fazer o cálculo do fator Alar Rim-Columella - ESQUERDO.")
+
+    try:
+
+        # CALCULA ALAR RIM - COLUMELLA FACTOR - DIREITA
+        AnteriorNostrilRight = bpy.data.objects["Anterior Nostril right_COPY_MEDIDAS"].location[2]
+        PosteriorNostrilRight = bpy.data.objects["Posterior Nostril right_COPY_MEDIDAS"].location[2]
+
+        NonstrilRightMedia = (AnteriorNostrilRight + PosteriorNostrilRight) / 2
+
+        AlarRimRight = bpy.data.objects["Alar Rim right_COPY_MEDIDAS"].location[2]
+        FatorAlarRimRight = abs(AlarRimRight - NonstrilRightMedia)
+
+
+        bpy.types.Scene.rhin_alar_rim_med_direito = bpy.props.StringProperty \
+            (
+                name = "Alar Rim - Nonstrill",
+                description = "Alar Rim - Nonstrill",
+                default = str(round(FatorAlarRimRight, 2))
+            )
+
+
+        ColumellaRight = bpy.data.objects["Columella right_COPY_MEDIDAS"].location[2]
+        FatorColumellaRight = abs(ColumellaRight - NonstrilRightMedia)
+        print("FatoColumellaRight:", FatorColumellaRight)
+
+        bpy.types.Scene.rhin_columella_med_direito = bpy.props.StringProperty \
+            (
+                name = "Columella - Nonstrill",
+                description = "Columella - Nonstrill",
+                default = str(round(FatorColumellaRight, 2))
+            )
+
+    except:
+        print("Não foi possível fazer o cálculo do fator Alar Rim-Columella - DIREITO.")
 
     # APAGA Pontos criados
 

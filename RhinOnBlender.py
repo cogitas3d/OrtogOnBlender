@@ -392,6 +392,21 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         row.alignment = 'RIGHT'
         row.prop(context.scene, "rhin_columella_med_esquerdo")
 
+        # Alar Rim - Columella left
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.0
+        row.alignment = 'RIGHT'
+        row.label(text="Alar Rim - Columella Factor RIGHT")
+        row = col.row()
+        row.alignment = 'RIGHT'
+        row.prop(context.scene, "rhin_alar_rim_med_direito")
+        row = col.row()
+        row.alignment = 'RIGHT'
+        row.prop(context.scene, "rhin_columella_med_direito")
 
 
 bpy.utils.register_class(RHIN_PT_DistAngles)
@@ -426,6 +441,21 @@ bpy.types.Scene.rhin_alar_rim_med_esquerdo = bpy.props.StringProperty \
     )
 
 bpy.types.Scene.rhin_columella_med_esquerdo = bpy.props.StringProperty \
+    (
+        name = "Columella - Nonstrill",
+        description = "Columella - Nonstrill",
+        default = "NONE"
+    )
+
+# Alar Rim - Columella right
+bpy.types.Scene.rhin_alar_rim_med_direito = bpy.props.StringProperty \
+    (
+        name = "Alar Rim - Nonstrill",
+        description = "Alar Rim - Nonstrill",
+        default = "NONE"
+    )
+
+bpy.types.Scene.rhin_columella_med_direito = bpy.props.StringProperty \
     (
         name = "Columella - Nonstrill",
         description = "Columella - Nonstrill",
