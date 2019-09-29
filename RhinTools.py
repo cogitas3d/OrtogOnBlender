@@ -28,6 +28,105 @@ class Radix_pt(bpy.types.Operator):
 
 bpy.utils.register_class(Radix_pt)
 
+class Anterior_Nostril_left_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.anterior_nostril_left_pt"
+    bl_label = "Anterior Nostril left"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Anterior Nostril left' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Anterior Nostril left', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Anterior_Nostril_left_pt)
+
+
+class Anterior_Nostril_right_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.anterior_nostril_right_pt"
+    bl_label = "Anterior Nostril right"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Anterior Nostril right' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Anterior Nostril right', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Anterior_Nostril_right_pt)
+
+
+class Posterior_Nostril_left_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.posterior_nostril_left_pt"
+    bl_label = "Posterior Nostril left"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Posterior Nostril left' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Posterior Nostril left', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Posterior_Nostril_left_pt)
+
+
+class Posterior_Nostril_right_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.posterior_nostril_right_pt"
+    bl_label = "Posterior Nostril right"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Posterior Nostril right' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Posterior Nostril right', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Posterior_Nostril_right_pt)
+
 
 # COPIA FACE
 
@@ -69,9 +168,12 @@ bpy.utils.register_class(CopiaFace)
 
 def CalculaDistsNarizDef():
 
-    bpy.ops.object.mode_set(mode = 'OBJECT')
+    try:
+        bpy.ops.object.mode_set(mode = 'OBJECT')
+    except:
+        print("Já em modo objeto.")
 
-    ListaPontos = ["Radix", "Tip of Nose", "Subnasale"]
+    ListaPontos = ["Radix", "Tip of Nose", "Subnasale", "Anterior Nostril left", "Posterior Nostril left", "Anterior Nostril right", "Posterior Nostril right"]
 
     for i in ListaPontos:
 #            print("HÁ O NOME!", i.name)
@@ -104,40 +206,78 @@ def CalculaDistsNarizDef():
 
     try:
 
-        # CRIA PONTOS PARA CALCULAR ANGULO
+        # CRIA PONTOS PARA CALCULAR ANGULO ESQUERDO
         bpy.ops.object.select_all(action='DESELECT')
 
-        ObjetoAtual = bpy.data.objects["Subnasale_COPY_MEDIDAS"]
+        ObjetoAtual = bpy.data.objects["Posterior Nostril left_COPY_MEDIDAS"]
         ObjetoAtual.select_set(True)
         bpy.context.view_layer.objects.active = ObjetoAtual
         bpy.ops.object.duplicate()
-        NovoNome = "Subnasale_ABAIXO"
+        NovoNome = "Posterior Nostril left_ABAIXO"
         bpy.context.object.name = NovoNome
         bpy.ops.transform.translate(value=(0, 0, -80))
         bpy.ops.object.select_all(action='DESELECT')
 
         # CALCULA ANGULO
-        AnguloNasolabial = CalculaAngulo("Tip of Nose_COPY_MEDIDAS", "Subnasale_COPY_MEDIDAS", "Subnasale_ABAIXO")
+        AnguloNasolabial = CalculaAngulo("Anterior Nostril left_COPY_MEDIDAS", "Posterior Nostril left_COPY_MEDIDAS", "Posterior Nostril left_ABAIXO")
 
 #        AnguloNasolabial = CalculaAngulo("Radix_COPY_MEDIDAS", "Tip of Nose_COPY_MEDIDAS", "Subnasale_COPY_MEDIDAS")
 
-        bpy.types.Scene.rhin_angulo_nasolabial = bpy.props.StringProperty \
+        bpy.types.Scene.rhin_angulo_nasolabial_esquerdo = bpy.props.StringProperty \
             (
-                name = "Nasolabial Angle",
-                description = "Nasolabial Angle",
+                name = "Nasolabial Angle left",
+                description = "Nasolabial Angle left",
                 default = str(AnguloNasolabial) #+"º"
             )
 
         # Apaga objeto criados
 
         bpy.ops.object.select_all(action='DESELECT')
-        ObjetoAtual = bpy.data.objects["Subnasale_ABAIXO"]
+        ObjetoAtual = bpy.data.objects["Posterior Nostril left_ABAIXO"]
         ObjetoAtual.select_set(True)
         bpy.context.view_layer.objects.active = ObjetoAtual
         bpy.ops.object.delete(use_global=False)
 
     except:
-        print("Não foi possível fazer o cálculo do ângulo nasolabial.")
+        print("Não foi possível fazer o cálculo do ângulo nasolabial ESQUERDO.")
+
+
+    try:
+
+        # CRIA PONTOS PARA CALCULAR ANGULO DIREITO
+        bpy.ops.object.select_all(action='DESELECT')
+
+        ObjetoAtual = bpy.data.objects["Posterior Nostril right_COPY_MEDIDAS"]
+        ObjetoAtual.select_set(True)
+        bpy.context.view_layer.objects.active = ObjetoAtual
+        bpy.ops.object.duplicate()
+        NovoNome = "Posterior Nostril right_ABAIXO"
+        bpy.context.object.name = NovoNome
+        bpy.ops.transform.translate(value=(0, 0, -80))
+        bpy.ops.object.select_all(action='DESELECT')
+
+        # CALCULA ANGULO
+        AnguloNasolabial = CalculaAngulo("Anterior Nostril right_COPY_MEDIDAS", "Posterior Nostril right_COPY_MEDIDAS", "Posterior Nostril right_ABAIXO")
+
+#        AnguloNasolabial = CalculaAngulo("Radix_COPY_MEDIDAS", "Tip of Nose_COPY_MEDIDAS", "Subnasale_COPY_MEDIDAS")
+
+        bpy.types.Scene.rhin_angulo_nasolabial_direito = bpy.props.StringProperty \
+            (
+                name = "Nasolabial Angle right",
+                description = "Nasolabial Angle right",
+                default = str(AnguloNasolabial) #+"º"
+            )
+
+        # Apaga objeto criados
+
+        bpy.ops.object.select_all(action='DESELECT')
+        ObjetoAtual = bpy.data.objects["Posterior Nostril right_ABAIXO"]
+        ObjetoAtual.select_set(True)
+        bpy.context.view_layer.objects.active = ObjetoAtual
+        bpy.ops.object.delete(use_global=False)
+
+    except:
+        print("Não foi possível fazer o cálculo do ângulo nasolabial DIREITO.")
 
     # APAGA Pontos criados
 

@@ -255,6 +255,18 @@ class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
         row = layout.row()
         linha=row.operator("object.subnasale_pt", text="Subnasale")
 
+        row = layout.row()
+        linha=row.operator("object.anterior_nostril_left_pt", text="Anterior Nostril left")
+
+        row = layout.row()
+        linha=row.operator("object.posterior_nostril_left_pt", text="Posterior Nostril left")
+
+        row = layout.row()
+        linha=row.operator("object.anterior_nostril_right_pt", text="Anterior Nostril right")
+
+        row = layout.row()
+        linha=row.operator("object.posterior_nostril_right_pt", text="Posterior Nostril right")
+
        	row = layout.row()
         row = layout.row()
         row.label(text="Parent Points:")
@@ -305,7 +317,7 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         row.alignment = 'RIGHT'
         row.label(text="Women: 0.67    Men: 0.67") # Calculado
 
-        # Ângulo nasolabial
+        # Ângulo nasolabial esquerdo
         row = layout.row()
         row = layout.row()
         box = layout.box()
@@ -313,7 +325,20 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         row = col.row()
         row.scale_y=1.0
         row.alignment = 'RIGHT'
-        row.prop(context.scene, "rhin_angulo_nasolabial")
+        row.prop(context.scene, "rhin_angulo_nasolabial_esquerdo")
+        row = col.row()
+        row.alignment = 'RIGHT'
+        row.label(text="Women: 97.7º - 110.3º    Men: 98.7º - 114.1º") # Calculado
+
+        # Ângulo nasolabial direito
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.0
+        row.alignment = 'RIGHT'
+        row.prop(context.scene, "rhin_angulo_nasolabial_direito")
         row = col.row()
         row.alignment = 'RIGHT'
         row.label(text="Women: 97.7º - 110.3º    Men: 98.7º - 114.1º") # Calculado
@@ -327,9 +352,16 @@ bpy.types.Scene.rhin_prop_nariz = bpy.props.StringProperty \
         default = "NONE"
     )
 
-bpy.types.Scene.rhin_angulo_nasolabial = bpy.props.StringProperty \
+bpy.types.Scene.rhin_angulo_nasolabial_esquerdo = bpy.props.StringProperty \
     (
-        name = "Nasolabial Angle",
-        description = "Nasolabial Angle",
+        name = "Nasolabial Angle left",
+        description = "Nasolabial Angle left",
+        default = "NONE"
+    )
+
+bpy.types.Scene.rhin_angulo_nasolabial_direito = bpy.props.StringProperty \
+    (
+        name = "Nasolabial Angle right",
+        description = "Nasolabial Angle right",
         default = "NONE"
     )
