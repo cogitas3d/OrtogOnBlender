@@ -300,6 +300,12 @@ class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
         row = layout.row()
         linha=row.operator("object.columella_left_pt", text="Columella left")
 
+        row = layout.row()
+        linha=row.operator("object.medial_canthus_right_pt", text="Medial Canthus right")
+
+        row = layout.row()
+        linha=row.operator("object.medial_canthus_left_pt", text="Medial Canthus left")
+
        	row = layout.row()
         row = layout.row()
         row.label(text="Parent Points:")

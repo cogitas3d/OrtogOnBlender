@@ -5,6 +5,54 @@ from math import sqrt
 
 # PONTOS ANATOMICOS
 
+class Medial_Canthus_right_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.medial_canthus_right_pt"
+    bl_label = "Medial Canthus right"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Medial Canthus right' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Medial Canthus right', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Medial_Canthus_right_pt)
+
+class Medial_Canthus_left_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.medial_canthus_left_pt"
+    bl_label = "Medial Canthus left"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Medial Canthus left' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Medial Canthus left', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Medial_Canthus_left_pt)
+
 class Radix_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.radix_pt"
