@@ -747,6 +747,33 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+if ManufacturerLimpo == "'TOSHIBA'" and ManufacturerModelNameLimpo == "'Aquilion PRIME'":
+    print("USA FIXED!")
+    print("SÉRIE 5")
+    print("Bone: 200")
+    print("SoftTissue: -300")
+    print("Teeth: 1430")
+    print("Condylus: 655")
+
+    os.chdir(scn.my_tool.path+"/5")
+    scn.my_tool.path = os.getcwd()
+    bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
+
+    # Copia para o diretório
+    try:
+        CopiaTomoDir(scn.my_tool.path)
+    except:
+        print("Doesn't have Patient Dir")
+
+    # Gera o 3D
+    bpy.context.scene.interesse_ossos = "200"
+    bpy.context.scene.interesse_mole = "-300"
+    bpy.context.scene.interesse_dentes = "1430"
+
+    bpy.ops.object.gera_modelos_tomo()
+
     if ManufacturerLimpo == "'TOSHIBA'" and ManufacturerModelNameLimpo == "'Aquilion'":
 
         if StationNameLimpo == "'HCUV_TC_01'":
@@ -973,6 +1000,13 @@ def IdentificaTomografo(Arquivo):
 
     if ManufacturerLimpo == "'SIEMENS'" and StationNameLimpo == "'CT3SQ'":
         print("SÉRIE 3")
+        print("Bone: 200")
+        print("SoftTissue: -300")
+        print("Teeth: 1430")
+        print("Condylus: 655")
+
+    if ManufacturerLimpo == "'SIEMENS'" and StationNameLimpo == "'CT80741'": # ManufacturerModelNameLimpo == 'Emotion 16 (2010)'
+        print("SÉRIE 4")
         print("Bone: 200")
         print("SoftTissue: -300")
         print("Teeth: 1430")
