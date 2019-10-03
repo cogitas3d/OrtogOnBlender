@@ -747,16 +747,25 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
-    '''
-    if ManufacturerLimpo == "'TOSHIBA'" and ManufacturerModelNameLimpo == "'Aquilion PRIME'":
+
+    if ManufacturerLimpo == "'TOSHIBA'" and ManufacturerModelNameLimpo == "'Aquilion PRIME'" and StationNameLimpo == "'PRIME 160'":
+
+        '''
         print("USA FIXED!")
         print("SÉRIE 5")
         print("Bone: 200")
         print("SoftTissue: -300")
         print("Teeth: 1430")
         print("Condylus: 655")
+        '''
+        print("USA FIXED!")
+        print("SÉRIE 6")
+        print("Bone: 200")
+        print("SoftTissue: -300")
+        print("Teeth: 1430")
+        print("Condylus: 655")
 
-        os.chdir(scn.my_tool.path+"/5")
+        os.chdir(scn.my_tool.path+"/6")
         scn.my_tool.path = os.getcwd()
         bpy.ops.object.corrige_dicom()
 
@@ -775,7 +784,7 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
-    '''
+
 
     if ManufacturerLimpo == "'TOSHIBA'" and ManufacturerModelNameLimpo == "'Aquilion'":
 
