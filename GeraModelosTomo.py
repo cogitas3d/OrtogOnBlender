@@ -747,6 +747,7 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+    '''
     if ManufacturerLimpo == "'TOSHIBA'" and ManufacturerModelNameLimpo == "'Aquilion PRIME'":
         print("USA FIXED!")
         print("SÉRIE 5")
@@ -773,6 +774,8 @@ def IdentificaTomografo(Arquivo):
         bpy.context.scene.interesse_dentes = "1430"
 
         bpy.ops.object.gera_modelos_tomo()
+
+    '''
 
     if ManufacturerLimpo == "'TOSHIBA'" and ManufacturerModelNameLimpo == "'Aquilion'":
 
@@ -2321,6 +2324,29 @@ def IdentificaTomografo(Arquivo):
             print("Não conta com diretório 453970")
 
         try:
+            os.chdir(scn.my_tool.path+"/454156")
+            scn.my_tool.path = os.getcwd()
+            bpy.ops.object.corrige_dicom()
+
+#            bpy.ops.object.reduz_dimensao_dicom()
+
+            # Copia para o diretório
+            try:
+                CopiaTomoDir(scn.my_tool.path)
+            except:
+                print("Doesn't have Patient Dir")
+
+            # Gera o 3D
+            bpy.context.scene.interesse_ossos = "450"
+            bpy.context.scene.interesse_mole = "-450"
+            bpy.context.scene.interesse_dentes = "1300"
+
+            bpy.ops.object.gera_modelos_tomo()
+
+        except:
+            print("Não conta com diretório 454156")
+
+        try:
             os.chdir(scn.my_tool.path+"/456750")
             scn.my_tool.path = os.getcwd()
 #           bpy.ops.object.corrige_dicom()
@@ -2551,10 +2577,14 @@ def GeraModeloTomoAutoDef(self, context):
         print("Dir 453970 doesn't exist")
 
     try:
+	    os.chdir(scn.my_tool.path+"/454156")
+    except:
+        print("Dir 454156 doesn't exist")
+
+    try:
 	    os.chdir(scn.my_tool.path+"/456750")
     except:
         print("Dir 453970 doesn't exist")
-
 
     try:
 	    os.chdir(scn.my_tool.path+"/303")
