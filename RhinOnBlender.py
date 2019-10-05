@@ -2,6 +2,7 @@ import bpy
 import platform
 from .__init__ import *
 from .RhinTools import *
+from .RhinOpenGL import *
 
 class RHIN_PT_AtualizaAddonSec(bpy.types.Panel):
     bl_label = "Upgrade Script"
@@ -337,6 +338,20 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         context = bpy.context
         scn = context.scene
 
+        row = layout.row()
+        linha=row.operator("object.rhin_visualiza_gl", text="View Lines!", icon="HIDE_OFF")
+
+        row = layout.row()
+        linha=row.operator("object.rhin_remove_gl", text="Hide Lines!", icon="HIDE_ON")
+
+
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.rhin_mostra_oculta_pontos", text="Show/Hide Points", icon="GHOST_ENABLED")
+
+
+
+        row = layout.row()
         row = layout.row()
         linha=row.operator("object.dist_nariz", text="CALC ALL!", icon="PREFERENCES")
 

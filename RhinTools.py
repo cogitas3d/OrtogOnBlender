@@ -437,20 +437,23 @@ def CalculaDistsNarizDef():
     except:
         print("Já em modo objeto.")
 
-    ListaPontos = ['Tip of Nose', 'Subnasale','Radix', 'Anterior Nostril left', 'Posterior Nostril left', 'Anterior Nostril right', 'Posterior Nostril right','Rhinion', 'Alar Groove right', 'Alar Groove left', 'Supratip', 'Infratip Lobule', 'Alar Rim right', 'Alar Rim left', 'Columella right', 'Columella left']
+    try:
+        ListaPontos = ['Tip of Nose', 'Subnasale','Radix', 'Anterior Nostril left', 'Posterior Nostril left', 'Anterior Nostril right', 'Posterior Nostril right','Rhinion', 'Alar Groove right', 'Alar Groove left', 'Supratip', 'Infratip Lobule', 'Alar Rim right', 'Alar Rim left', 'Columella right', 'Columella left']
 
-    for i in ListaPontos:
-#            print("HÁ O NOME!", i.name)
-        bpy.ops.object.select_all(action='DESELECT')
+        for i in ListaPontos:
+    #            print("HÁ O NOME!", i.name)
+            bpy.ops.object.select_all(action='DESELECT')
 
-        ObjetoAtual = bpy.data.objects[i]
-        ObjetoAtual.select_set(True)
-        bpy.context.view_layer.objects.active = ObjetoAtual
-        bpy.ops.object.duplicate()
-        NovoNome = str(bpy.data.objects[i].name)+"_COPY_MEDIDAS"
-        bpy.context.object.name = NovoNome
-        bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
-        bpy.ops.object.select_all(action='DESELECT')
+            ObjetoAtual = bpy.data.objects[i]
+            ObjetoAtual.select_set(True)
+            bpy.context.view_layer.objects.active = ObjetoAtual
+            bpy.ops.object.duplicate()
+            NovoNome = str(bpy.data.objects[i].name)+"_COPY_MEDIDAS"
+            bpy.context.object.name = NovoNome
+            bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+            bpy.ops.object.select_all(action='DESELECT')
+    except:
+        print("Erro ao tentar copiar os objetos.")
 
     try:
 
@@ -642,7 +645,55 @@ class CalculaDistsNariz(bpy.types.Operator):
     bl_label = "Nose dists"
 
     def execute(self, context):
+
+
+        try:
+            OriginalBool = bpy.data.collections['Anatomical Points - Soft Tissue'].hide_viewport
+
+            if bpy.data.collections['Anatomical Points - Soft Tissue'].hide_viewport == True:
+                print("XXXXXXXXXX")
+                bpy.data.collections['Anatomical Points - Soft Tissue'].hide_viewport = False
+        except:
+            print("A coleção Anatomical Points - Soft Tissue não existe!")
+
+
         CalculaDistsNarizDef()
+
+        try:
+
+            if OriginalBool == False:
+                bpy.data.collections['Anatomical Points - Soft Tissue'].hide_viewport = False
+            else:
+                bpy.data.collections['Anatomical Points - Soft Tissue'].hide_viewport = True
+        except:
+            print("A coleção Anatomical Points - Soft Tissue não existe!")
+
+
         return {'FINISHED'}
 
+
 bpy.utils.register_class(CalculaDistsNariz)
+
+
+
+class MostraOcultaPontos(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.rhin_mostra_oculta_pontos"
+    bl_label = "Nose dists"
+
+    def execute(self, context):
+
+        try:
+            if bpy.data.collections['Anatomical Points - Soft Tissue'].hide_viewport == False:
+                print("HIDE FALSE")
+                bpy.data.collections['Anatomical Points - Soft Tissue'].hide_viewport = True
+            else: #bpy.data.collections['Anatomical Points - Soft Tissue'].hide_viewport == True:
+                print("HIDE TRUE")
+                bpy.data.collections['Anatomical Points - Soft Tissue'].hide_viewport = False
+#                bpy.data.collections['Anatomical Points - Soft Tissue'].hide_viewport = False
+        except:
+            print("A coleção Anatomical Points - Soft Tissue não existe!")
+
+        return {'FINISHED'}
+
+bpy.utils.register_class(MostraOcultaPontos)
