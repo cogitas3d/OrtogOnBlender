@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191005c"
+VERSION = "20191006a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -2405,6 +2405,62 @@ class ORTOG_PT_MeasuringTools(bpy.types.Panel):
         obj = context.object
         scn = context.scene
 
+        row = layout.row()
+        row.label(text="Mode:")
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+        row = layout.row()
+        row.label(text="Reference Lines:")
+
+        row = layout.row()
+        linha=row.operator("mesh.add_linhabase", text="Vertical Center Line", icon="SORT_DESC")
+        linha.location=(0,-200,0)
+
+        row = layout.row()
+        linha=row.operator("mesh.add_linhabase", text="Horizontal Center Line", icon="FORWARD")
+        linha.location=(0,-200,0)
+        linha.rotation=(0,1.5708,0)
+
+        row = layout.row()
+        linha=row.operator("mesh.add_linhabase", text="Horizontal Side Line", icon="FORWARD")
+        linha.location=(200,30,0)
+        linha.rotation=(1.5708,0,0)
+
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Upper Teeth:")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_8_pt", text="Tooth 8 (11)")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_9_pt", text="Tooth 9 (21)")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_6_pt", text="Tooth 6 (13)")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_11_pt", text="Tooth 11 (23)")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_3_pt", text="Tooth 3 (16)")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_14_pt", text="Tooth 14 (26)")
+
+       	row = layout.row()
+        row = layout.row()
+        row.label(text="Parent Points:")
+
+        row = layout.row()
+        circle=row.operator("object.parenteia_emp", text="Parent Points", icon="LINKED")
+
+        row = layout.row()
         row = layout.row()
         row.label(text="Vertical Measurements:")
 
