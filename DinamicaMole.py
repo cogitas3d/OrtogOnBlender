@@ -2,7 +2,7 @@ import bpy
 import bmesh
 
 def AreasInfluenciaDef(self, context):
-    
+
     context = bpy.context
     obj = context.active_object
     scn = context.scene
@@ -22,7 +22,7 @@ def AreasInfluenciaDef(self, context):
     # CORPO MANDÍBULA
 
     vg = obj.vertex_groups.new(name="cm")
-        
+
     scn.tool_settings.vertex_group_weight=0
 
     bpy.ops.object.mode_set(mode='EDIT')
@@ -33,7 +33,7 @@ def AreasInfluenciaDef(self, context):
     # MAXILA
 
     vg = obj.vertex_groups.new(name="ma")
-        
+
     bpy.ops.object.mode_set(mode='EDIT')
 
     bpy.ops.object.vertex_group_assign()
@@ -42,7 +42,7 @@ def AreasInfluenciaDef(self, context):
     # MENTO
 
     vg = obj.vertex_groups.new(name="me")
-        
+
     bpy.ops.object.mode_set(mode='EDIT')
 
     bpy.ops.object.vertex_group_assign()
@@ -51,16 +51,16 @@ def AreasInfluenciaDef(self, context):
     # CABEÇA
 
     vg = obj.vertex_groups.new(name="ca")
-        
+
     bpy.ops.object.mode_set(mode='EDIT')
 
     bpy.ops.object.vertex_group_assign()
 
 
     # RAMO DIREITO
-        
+
     vg = obj.vertex_groups.new(name="rd")
-        
+
     bpy.ops.object.mode_set(mode='EDIT')
 
     bpy.ops.object.vertex_group_assign()
@@ -69,7 +69,7 @@ def AreasInfluenciaDef(self, context):
     # RAMO ESQUERDO
 
     vg = obj.vertex_groups.new(name="re")
-        
+
     bpy.ops.object.mode_set(mode='EDIT')
 
     bpy.ops.object.vertex_group_assign()
@@ -90,7 +90,7 @@ class AreasInfluencia(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.areas_influencia"
     bl_label = "Áreas de Influência - Dinâmica de Tecidos Moles"
-    
+
     def execute(self, context):
         AreasInfluenciaDef(self, context)
         return {'FINISHED'}
@@ -99,7 +99,7 @@ class AreasInfluencia(bpy.types.Operator):
 # CRIA ÁREA DE DEFORMAÇÃO
 
 def CriaAreasDeformacaoDef(self, context):
-    
+
     context = bpy.context
     obj = context.active_object
     scn = context.scene
@@ -115,7 +115,7 @@ def CriaAreasDeformacaoDef(self, context):
     bpy.context.object.modifiers["VertexWeightProximity"].name = "Mento"
     bpy.context.object.modifiers["Mento"].show_expanded = False
 
-    
+
     bpy.ops.object.modifier_add(type='VERTEX_WEIGHT_PROXIMITY')
     bpy.context.object.modifiers["VertexWeightProximity"].vertex_group = "cm"
     bpy.context.object.modifiers["VertexWeightProximity"].target = bpy.data.objects["cm"]
@@ -125,7 +125,7 @@ def CriaAreasDeformacaoDef(self, context):
     bpy.context.object.modifiers["VertexWeightProximity"].falloff_type = 'LINEAR'
     bpy.context.object.modifiers["VertexWeightProximity"].name = "Corpo Mandibula"
     bpy.context.object.modifiers["Corpo Mandibula"].show_expanded = False
-    
+
     bpy.ops.object.modifier_add(type='VERTEX_WEIGHT_PROXIMITY')
     bpy.context.object.modifiers["VertexWeightProximity"].vertex_group = "re"
     bpy.context.object.modifiers["VertexWeightProximity"].target = bpy.data.objects["re"]
@@ -135,7 +135,7 @@ def CriaAreasDeformacaoDef(self, context):
     bpy.context.object.modifiers["VertexWeightProximity"].falloff_type = 'SHARP'
     bpy.context.object.modifiers["VertexWeightProximity"].name = "Ramo Esquerdo"
     bpy.context.object.modifiers["Ramo Esquerdo"].show_expanded = False
-    
+
     bpy.ops.object.modifier_add(type='VERTEX_WEIGHT_PROXIMITY')
     bpy.context.object.modifiers["VertexWeightProximity"].vertex_group = "rd"
     bpy.context.object.modifiers["VertexWeightProximity"].target = bpy.data.objects["rd"]
@@ -145,7 +145,7 @@ def CriaAreasDeformacaoDef(self, context):
     bpy.context.object.modifiers["VertexWeightProximity"].falloff_type = 'SHARP'
     bpy.context.object.modifiers["VertexWeightProximity"].name = "Ramo Direito"
     bpy.context.object.modifiers["Ramo Direito"].show_expanded = False
-    
+
     bpy.ops.object.modifier_add(type='VERTEX_WEIGHT_PROXIMITY')
     bpy.context.object.modifiers["VertexWeightProximity"].vertex_group = "ma"
     bpy.context.object.modifiers["VertexWeightProximity"].target = bpy.data.objects["ma"]
@@ -180,7 +180,7 @@ class CriaAreasDeformacao(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.cria_areas_deformacao"
     bl_label = "Cria Areas Deformação"
-    
+
     def execute(self, context):
         CriaAreasDeformacaoDef(self, context)
         return {'FINISHED'}
@@ -188,7 +188,7 @@ class CriaAreasDeformacao(bpy.types.Operator):
 # CONFIGURA DINÂMICA MOLE
 
 def ConfiguraDinamicaMoleDef(self, context):
-    
+
     context = bpy.context
     obj = context.active_object
     scn = context.scene
@@ -223,11 +223,87 @@ def ConfiguraDinamicaMoleDef(self, context):
     bpy.context.object.modifiers["Smooth"].vertex_group = "frente"
 
 
+def CursorParaSelecao():
+    context = bpy.context
+
+    for area in bpy.context.screen.areas:
+        if area.type == 'VIEW_3D':
+            ctx = bpy.context.copy()
+            ctx['area'] = area
+            ctx['region'] = area.regions[-1]
+          #  bpy.ops.view3d.view_selected(ctx)
+            bpy.ops.view3d.snap_cursor_to_selected(ctx)
+
+
+def SelecaoParaCursor():
+    context = bpy.context
+
+    for area in bpy.context.screen.areas:
+        if area.type == 'VIEW_3D':
+            ctx = bpy.context.copy()
+            ctx['area'] = area
+            ctx['region'] = area.regions[-1]
+          #  bpy.ops.view3d.view_selected(ctx)
+            bpy.ops.view3d.snap_selected_to_cursor(ctx)
+
+
+def SelectionaObjeto(Obj):
+    context = bpy.context
+    Objeto = bpy.data.objects[Obj]
+
+    bpy.ops.object.select_all(action='DESELECT')
+    Objeto.select_set(True)
+    context.view_layer.objects.active = Objeto
+
+def SelecionaOssos(Armature, Bone):
+    context = bpy.context
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    ArmatureAtual = bpy.data.objects[Armature]
+    ArmatureAtual.select_set(True)
+    context.view_layer.objects.active = ArmatureAtual
+    bpy.ops.object.mode_set(mode = 'EDIT')
+
+
+    bpy.ops.armature.select_all(action='DESELECT')
+
+    bpy.context.object.data.edit_bones[Bone].select_tail = True
+    bpy.context.object.data.edit_bones[Bone].select_head = True
+
+def CorrigeOssosArmature(Objeto, Armature, Osso):
+    SelectionaObjeto(Objeto)
+    CursorParaSelecao()
+    SelecionaOssos(Armature, Osso)
+    SelecaoParaCursor()
+    bpy.ops.object.mode_set(mode = 'OBJECT')
+
+
 class ConfiguraDinamicaMole(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.configura_dinamica_mole"
     bl_label = "Configura Dinâmica do Mole"
-    
+
     def execute(self, context):
+
+        context = bpy.context
+        ObjFace = context.active_object
+
+        bpy.data.objects['Armature_Head'].hide_viewport=False
+#        bpy.data.objects['Armature_Head'].hide_set(False)
+        CorrigeOssosArmature('re', 'Armature_Head', 're')
+        CorrigeOssosArmature('rd', 'Armature_Head', 'rd')
+        CorrigeOssosArmature('ma', 'Armature_Head', 'ma')
+        CorrigeOssosArmature('ma', 'Armature_Head', 'Maxila.GUIA')
+        CorrigeOssosArmature('cm', 'Armature_Head', 'cm')
+        CorrigeOssosArmature('cm', 'Armature_Head', 'Corpo_Mandibular.GUIA')
+        CorrigeOssosArmature('me', 'Armature_Head', 'me')
+        CorrigeOssosArmature('ca', 'Armature_Head', 'ca')
+        CorrigeOssosArmature('ca', 'Armature_Head', 'Mandibula')
+#        bpy.data.objects['Armature_Head'].hide_set(True)
+        bpy.data.objects['Armature_Head'].hide_viewport=True
+
+        SelectionaObjeto(str(ObjFace.name))
+
         ConfiguraDinamicaMoleDef(self, context)
         return {'FINISHED'}
