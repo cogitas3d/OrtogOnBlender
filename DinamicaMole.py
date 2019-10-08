@@ -1,5 +1,6 @@
 import bpy
 import bmesh
+from mathutils import Matrix # Deformação do nariz
 
 def AreasInfluenciaDef(self, context):
 
@@ -279,6 +280,284 @@ def CorrigeOssosArmature(Objeto, Armature, Osso):
     bpy.ops.object.mode_set(mode = 'OBJECT')
 
 
+def GeraNarisDinamicaMole():
+
+    foundTrichion = 'Trichion' in bpy.data.objects
+    foundRadix = 'Radix' in bpy.data.objects
+    foundTipofNose = 'Tip of Nose' in bpy.data.objects
+    foundAlarGrooveright = 'Alar Groove right' in bpy.data.objects
+    foundAlarGrooveleft = 'Alar Groove left' in bpy.data.objects
+    foundSubmental = 'Submental' in bpy.data.objects
+
+    if foundTrichion == True and foundRadix == True and foundTipofNose  == True and foundAlarGrooveright == True and foundAlarGrooveleft == True and foundSubmental == True:
+
+        print("Pontos do nariz presentes!")
+
+        def InverseMatrix():
+            context = bpy.context
+
+            ob = context.object
+            constraints = [(pb, c) for pb in ob.pose.bones
+                    for c in pb.constraints if c.type == 'CHILD_OF']
+
+            cmd = 'SET' # or 'SET'
+            for pb, c in constraints:
+
+                if cmd == 'CLEAR':
+                    c.inverse_matrix = Matrix.Identity(4)
+
+                elif cmd == 'SET':
+                    if c.target:
+                        M = ob.convert_space(pose_bone=pb,
+                                matrix=c.target.matrix_world,
+                                from_space='WORLD',
+                                to_space='POSE')
+                        P = Matrix.Identity(4).lerp(M, c.influence)
+                        c.inverse_matrix = P.inverted()
+                # toggle a property
+                target = c.target
+                c.target = None
+                c.target = target
+                #pb.constraints.update()
+
+        # Captura objetos
+
+        ListaPontos = ['Radix', 'Tip of Nose', 'Alar Groove left', 'Alar Groove right', 'Trichion', 'Submental']
+
+        print("LEITURA FEITA!")
+
+        for i in ListaPontos:
+        #            print("HÁ O NOME!", i.name)
+            bpy.ops.object.select_all(action='DESELECT')
+
+            ObjetoAtual = bpy.data.objects[i]
+            ObjetoAtual.select_set(True)
+            bpy.context.view_layer.objects.active = ObjetoAtual
+            bpy.ops.object.duplicate()
+            NovoNome = str(bpy.data.objects[i].name)+"_COPY_NOSE_DEFORM"
+            bpy.context.object.name = NovoNome
+            bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+            bpy.ops.object.select_all(action='DESELECT')
+
+
+        EMPNasionSoft = bpy.data.objects["Radix_COPY_NOSE_DEFORM"]
+        EMPPNPoint = bpy.data.objects["Tip of Nose_COPY_NOSE_DEFORM"]
+        EMPAlaL = bpy.data.objects["Alar Groove left_COPY_NOSE_DEFORM"]
+        EMPAlaR = bpy.data.objects["Alar Groove right_COPY_NOSE_DEFORM"]
+        EMPTopHead = bpy.data.objects["Trichion_COPY_NOSE_DEFORM"]
+        EMPBottomHead = bpy.data.objects["Submental_COPY_NOSE_DEFORM"]
+
+        # Adiciona Empty Sphere
+        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.empty_add(type='SPHERE', radius=7, view_align=False, location=EMPPNPoint.location)
+        bpy.context.object.name = "EMPNoseUpDown"
+
+        EMPNoseUpDown = bpy.data.objects["EMPNoseUpDown"]
+
+        bpy.ops.object.constraint_add(type='TRANSFORM')
+        bpy.context.object.constraints["Transformation"].target = bpy.data.objects["ma"]
+        bpy.context.object.constraints["Transformation"].use_motion_extrapolate = True
+        bpy.context.object.constraints["Transformation"].from_max_y = 10
+        bpy.context.object.constraints["Transformation"].map_to_x_from = 'Y'
+        bpy.context.object.constraints["Transformation"].map_to_y_from = 'Y'
+        bpy.context.object.constraints["Transformation"].map_to_z_from = 'Y'
+        bpy.context.object.constraints["Transformation"].to_max_z = -5
+
+        # O CURSOR TEM QUE ESTAR NA ORIGEM TOTAL
+        #bpy.context.area.spaces[1].pivot_point='CURSOR' # ANTIGO 2.79
+        bpy.context.scene.tool_settings.transform_pivot_point = 'CURSOR'
+        #bpy.context.area.spaces[1].cursor_location = (0.0, 0.0, 0.0) # ANTIGO 2.79
+        bpy.context.scene.cursor.location = 0,0,0
+
+
+        # Adiciona Armature em modo de edição
+        bpy.ops.object.armature_add(radius=1, view_align=False, enter_editmode=True)
+
+        # Desseleciona tudo
+        #bpy.ops.armature.select_all(action='TOGGLE')
+
+        # Modifica posição dos bones
+        #bpy.context.object.data.edit_bones["Bone"].head = Vector((1.0, 2.0, 3.0))
+
+        bpy.context.object.data.edit_bones["Bone"].name = "Nose"
+
+        bpy.context.object.data.edit_bones["Nose"].head = EMPPNPoint.location
+
+        bpy.context.object.data.edit_bones["Nose"].tail = EMPNasionSoft.location
+
+        # Adiciona Asa Esquerda
+        bpy.ops.armature.bone_primitive_add()
+
+        bpy.context.object.data.edit_bones["Bone"].name = "AlaL"
+
+        bpy.context.object.data.edit_bones["AlaL"].head = EMPPNPoint.location
+
+        bpy.context.object.data.edit_bones["AlaL"].tail = EMPAlaL.location
+
+        # Adiciona Asa Direita
+        bpy.ops.armature.bone_primitive_add()
+
+        bpy.context.object.data.edit_bones["Bone"].name = "AlaR"
+
+        bpy.context.object.data.edit_bones["AlaR"].head = EMPPNPoint.location
+
+        bpy.context.object.data.edit_bones["AlaR"].tail = EMPAlaR.location
+
+        # Adiciona Nariz
+        bpy.context.scene.tool_settings.transform_pivot_point = 'CURSOR'
+        bpy.context.scene.cursor.location = EMPPNPoint.location
+
+        bpy.ops.armature.bone_primitive_add()
+
+        bpy.context.object.data.edit_bones["Bone"].name = "IK_Nose"
+        bpy.context.object.data.edit_bones["IK_Nose"].use_deform = False
+
+        # Adicionar Top Bottom
+
+        bpy.ops.armature.bone_primitive_add()
+
+        bpy.context.object.data.edit_bones["Bone"].name = "TopBottomHead"
+
+        bpy.context.object.data.edit_bones["TopBottomHead"].head = EMPTopHead.location
+
+        bpy.context.object.data.edit_bones["TopBottomHead"].tail = EMPBottomHead.location
+
+
+        # Parentamento
+        bpy.context.object.data.edit_bones["Nose"].parent = bpy.context.object.data.edit_bones['IK_Nose']
+        bpy.context.object.data.edit_bones["AlaL"].parent = bpy.context.object.data.edit_bones['IK_Nose']
+        bpy.context.object.data.edit_bones["AlaR"].parent = bpy.context.object.data.edit_bones['IK_Nose']
+
+        # bpy.context.object.data.draw_type = 'ENVELOPE' # ANTIGO 2.78
+        bpy.context.object.data.display_type = 'ENVELOPE'
+
+
+        # Aumenta tamanho envelope
+
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.context.object.data.edit_bones["Nose"].head_radius=8.5
+        bpy.context.object.data.edit_bones["AlaL"].head_radius=8.5
+        bpy.context.object.data.edit_bones["AlaR"].head_radius=8.5
+        bpy.context.object.data.edit_bones["Nose"].tail_radius=3.5
+        bpy.context.object.data.edit_bones["AlaL"].tail_radius=3.5
+        bpy.context.object.data.edit_bones["AlaR"].tail_radius=3.5
+
+        #bpy.context.object.data.edit_bones["Nose"].select_head=True
+        #bpy.context.object.data.edit_bones["AlaL"].select_head=True
+        #bpy.context.object.data.edit_bones["AlaR"].select_head=True
+        #bpy.ops.transform.transform(mode='BONE_ENVELOPE', value=(85, 0, 0, 0))
+
+
+        # Fazendo o constraint
+        #obj = bpy.data.objects["Armature.002"]
+
+        bpy.ops.object.mode_set(mode='OBJECT')
+        context = bpy.context
+        obj = context.active_object
+
+        bpy.ops.object.mode_set(mode='POSE')
+        pbase=obj.pose.bones['IK_Nose']
+        pbase.bone.select=True
+        bpy.context.object.data.bones.active = bpy.context.object.data.bones['IK_Nose']
+
+
+        # Child Of
+        selected_bone = pbase
+        constraint = selected_bone.constraints
+        ChildOf = constraint.new('CHILD_OF')
+        ChildOf.target = EMPNoseUpDown
+        InverseMatrix()
+        bpy.context.object.pose.bones["IK_Nose"].constraints["Child Of"].influence = 0.5
+
+        # Track to
+        pbase=obj.pose.bones['Nose']
+        pbase.bone.select=True
+        bpy.context.object.data.bones.active = bpy.context.object.data.bones['Nose']
+        selected_bone = pbase
+        constraint = selected_bone.constraints
+        StretchTo = constraint.new('STRETCH_TO')
+        StretchTo.target = EMPNasionSoft
+
+        pbase=obj.pose.bones['AlaL']
+        pbase.bone.select=True
+        bpy.context.object.data.bones.active = bpy.context.object.data.bones['AlaL']
+        selected_bone = pbase
+        constraint = selected_bone.constraints
+        StretchTo = constraint.new('STRETCH_TO')
+        StretchTo.target = EMPAlaL
+
+        pbase=obj.pose.bones['AlaR']
+        pbase.bone.select=True
+        bpy.context.object.data.bones.active = bpy.context.object.data.bones['AlaR']
+        selected_bone = pbase
+        constraint = selected_bone.constraints
+        StretchTo = constraint.new('STRETCH_TO')
+        StretchTo.target = EMPAlaR
+
+        bpy.ops.object.mode_set(mode='OBJECT')
+        Armature = context.active_object
+
+
+        bpy.ops.object.select_all(action='DESELECT')
+        Armature.select_set(True)
+
+        # Envelope configurações
+
+        bpy.ops.object.mode_set(mode='EDIT')
+
+        bpy.context.object.data.edit_bones["Nose"].envelope_distance = 14
+        bpy.context.object.data.edit_bones["Nose"].head_radius = 5
+        bpy.context.object.data.edit_bones["Nose"].tail_radius = 1
+
+        bpy.context.object.data.edit_bones["AlaL"].envelope_distance = 9
+        bpy.context.object.data.edit_bones["AlaL"].head_radius = 9
+        bpy.context.object.data.edit_bones["AlaL"].tail_radius = 3.5
+
+        bpy.context.object.data.edit_bones["AlaR"].envelope_distance = 9
+        bpy.context.object.data.edit_bones["AlaR"].head_radius = 9
+        bpy.context.object.data.edit_bones["AlaR"].tail_radius = 3.5
+
+        bpy.context.object.data.edit_bones["TopBottomHead"].envelope_distance = 55
+        bpy.context.object.data.edit_bones["TopBottomHead"].head_radius = 22
+        bpy.context.object.data.edit_bones["TopBottomHead"].tail_radius = 22
+
+
+        # Deformação
+        bpy.ops.object.mode_set(mode='OBJECT')
+
+        #bpy.context.object.data.draw_type = 'WIRE' # ANTIGO 2.78
+        bpy.context.object.data.display_type = 'WIRE'
+
+        bpy.ops.object.select_all(action='DESELECT')
+        FaceMalha = bpy.data.objects['SoftTissueDynamic']
+        Armature.select_set(True)
+        FaceMalha.select_set(True)
+        bpy.context.view_layer.objects.active = Armature
+
+        bpy.ops.object.parent_set(type='ARMATURE_ENVELOPE')
+
+        bpy.ops.object.select_all(action='DESELECT')
+        FaceMalha.select_set(True)
+        bpy.context.view_layer.objects.active = FaceMalha
+        bpy.ops.object.modifier_move_up(modifier="Armature.001")
+
+        # Oculta Objetos
+        EMPNoseUpDown.hide_viewport=True
+        Armature.hide_viewport=True
+        EMPNasionSoft.hide_viewport=True
+        EMPPNPoint.hide_viewport=True
+        EMPAlaL.hide_viewport=True
+        EMPAlaR.hide_viewport=True
+        EMPTopHead.hide_viewport=True
+        EMPBottomHead.hide_viewport=True
+
+
+
+    else:
+        print("Falta algum ponto anatômico no processo.")
+
+
+
 class ConfiguraDinamicaMole(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.configura_dinamica_mole"
@@ -304,6 +583,7 @@ class ConfiguraDinamicaMole(bpy.types.Operator):
         bpy.data.objects['Armature_Head'].hide_viewport=True
 
         SelectionaObjeto(str(ObjFace.name))
-
         ConfiguraDinamicaMoleDef(self, context)
+        GeraNarisDinamicaMole()
+
         return {'FINISHED'}

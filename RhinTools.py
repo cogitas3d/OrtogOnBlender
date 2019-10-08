@@ -392,6 +392,55 @@ class Columella_left_pt(bpy.types.Operator):
 
 bpy.utils.register_class(Columella_left_pt)
 
+
+class Trichion_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.trichion_pt"
+    bl_label = "Trichion"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Trichion' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        CriaPontoDef('Trichion', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Trichion_pt)
+
+
+class Submental_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.submental_pt"
+    bl_label = "Submental"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Submental' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        CriaPontoDef('Submental', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Submental_pt)
+
+
 # COPIA FACE
 
 def CopiaFaceDef():

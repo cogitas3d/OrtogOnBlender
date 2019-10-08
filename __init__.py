@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191006c"
+VERSION = "20191008a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -2336,6 +2336,11 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
         row.alignment = 'CENTER'
         row.operator("object.gera_dir_nome_paciente_osteotomy", text="SAVE!", icon="FILE_TICK")
 
+class ENUM_VALUES_DYNAMIC:
+    DEFAULT = 'Default'
+    NOSE = 'Nose'
+    EXPERIMENTAL = 'Experimental'
+
 class ORTOG_PT_ArmatureDynamic(bpy.types.Panel):
     bl_label = "Dynamic"
     bl_region_type = 'UI'
@@ -2351,29 +2356,83 @@ class ORTOG_PT_ArmatureDynamic(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="Configure Armature (Classic):")
+        row.prop(scn, "my_enum_dynamic")
 
-        row = layout.row()
-        row.operator("object.conf_osteo_auto", text="Setup Osteotomy Auto", icon="FILE_TICK")
+        my_enum_dynamic = scn.my_enum_dynamic
 
-        row = layout.row()
-        row.label(text="Soft Tissue:")
+        if my_enum_dynamic == ENUM_VALUES_DYNAMIC.DEFAULT:
 
-        row = layout.row()
-        circle=row.operator("object.configura_dinamica_mole", text="Setup Soft Tissue Dynamics", icon="STYLUS_PRESSURE")
+            row = layout.row()
+            row.label(text="Configure Armature (Classic):")
 
-        row = layout.row()
-        circle=row.operator("view3d.clip_border", text="Clipping Border", icon="UV_FACESEL")
+            row = layout.row()
+            row.operator("object.conf_osteo_auto", text="Setup Osteotomy Auto", icon="FILE_TICK")
 
-       	row = layout.row()
-       	row = layout.row()
-        row.label(text=" Auto Osteo+Soft Setup (Experimental):")
+            row = layout.row()
+            row.label(text="Soft Tissue:")
 
-        row = layout.row()
-        row.operator("object.nome_face_malha", text="Set Face and Hide", icon="USER")
+            row = layout.row()
+            circle=row.operator("object.configura_dinamica_mole", text="Setup Soft Tissue Dynamics", icon="STYLUS_PRESSURE")
 
-        row = layout.row()
-        row.operator("object.conf_osteo_mole_auto", text="Setup Auto!", icon="BONE_DATA")
+            row = layout.row()
+            circle=row.operator("view3d.clip_border", text="Clipping Border", icon="UV_FACESEL")
+
+        if my_enum_dynamic == ENUM_VALUES_DYNAMIC.NOSE:
+
+            row = layout.row()
+            row.operator("object.conf_osteo_auto", text="Setup Osteotomy Auto", icon="FILE_TICK")
+
+            row = layout.row()
+            row.label(text="Mode:")
+
+            row = layout.row()
+            linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+
+            row = layout.row()
+            linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+            row = layout.row()
+            row = layout.row()
+            row.label(text="Anatomical Points:")
+
+            row = layout.row()
+            linha=row.operator("object.trichion_pt", text="Trichion")
+
+            row = layout.row()
+            linha=row.operator("object.radix_pt", text="Radix")
+
+            row = layout.row()
+            linha=row.operator("object.tip_nose_pt", text="Tip of Nose")
+
+            row = layout.row()
+            linha=row.operator("object.alar_groove_right_pt", text="Alar Groove right")
+
+            row = layout.row()
+            linha=row.operator("object.alar_groove_left_pt", text="Alar Groove left")
+
+            row = layout.row()
+            linha=row.operator("object.submental_pt", text="Submental")
+
+            row = layout.row()
+            row = layout.row()
+            row.label(text="Soft Tissue:")
+
+            row = layout.row()
+            circle=row.operator("object.configura_dinamica_mole", text="Setup Soft Tissue Dynamics", icon="STYLUS_PRESSURE")
+
+            row = layout.row()
+            circle=row.operator("view3d.clip_border", text="Clipping Border", icon="UV_FACESEL")
+
+        if my_enum_dynamic == ENUM_VALUES_DYNAMIC.EXPERIMENTAL:
+
+            row = layout.row()
+            row.label(text=" Auto Osteo+Soft Setup (Experimental):")
+
+            row = layout.row()
+            row.operator("object.nome_face_malha", text="Set Face and Hide", icon="USER")
+
+            row = layout.row()
+            row.operator("object.conf_osteo_mole_auto", text="Setup Auto!", icon="BONE_DATA")
 
        	row = layout.row()
         row = layout.row()
@@ -2870,6 +2929,10 @@ def register():
         description = "Real size distance between eyes",
         default = "None"
       )
+    bpy.types.Scene.my_enum_dynamic = bpy.props.EnumProperty(
+        name="Select",
+        description= "",
+        items=[(ENUM_VALUES_DYNAMIC.DEFAULT, "DEFAULT", "Default dynamic."), (ENUM_VALUES_DYNAMIC.NOSE, "NOSE EXP.", "Better deformation of nose."), (ENUM_VALUES_DYNAMIC.EXPERIMENTAL, "EXPERIMENTAL SLICES", "Dynamic with indetermined slices.")],)
     bpy.utils.register_class(ORTOG_PT_ArmatureDynamic)
     bpy.utils.register_class(ORTOG_PT_MeasuringTools)
     bpy.utils.register_class(ORTOG_PT_CinematicaPanel)
