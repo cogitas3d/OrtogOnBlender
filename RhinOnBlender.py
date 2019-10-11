@@ -482,3 +482,71 @@ bpy.types.Scene.rhin_columella_med_direito = bpy.props.StringProperty \
         description = "Columella - Nonstrill",
         default = "NONE"
     )
+
+
+class RHIN_PT_GuideCreation(bpy.types.Panel):
+    bl_label = "Guide Creation"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Rhin"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        scn = context.scene
+
+        row = layout.row()
+        row.label(text="Mode:")
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+        row = layout.row()
+        row.label(text="Anatomical Points")
+
+        row = layout.row()
+        linha=row.operator("object.supraglabella_pt", text="Supraglabella")
+
+        row = layout.row()
+        linha=row.operator("object.glabella_pt", text="Glabella")
+
+        row = layout.row()
+        linha=row.operator("object.radix_pt", text="Radix")
+
+        row = layout.row()
+        linha=row.operator("object.rhinion_pt", text="Rhinion")
+
+        row = layout.row()
+        linha=row.operator("object.supratip_pt", text="Supratip")
+
+        row = layout.row()
+        linha=row.operator("object.tip_nose_pt", text="Tip of Nose")
+
+        row = layout.row()
+        linha=row.operator("object.columella_pt", text="Columella")
+
+        row = layout.row()
+        linha=row.operator("object.subnasale_pt", text="Subnasale")
+
+        row = layout.row()
+        linha=row.operator("object.upper_lip_pt", text="Upper Lip")
+
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.gera_guia_nariz", text="Create Nose Guide!", icon="PREFERENCES")
+
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente_guide", text="SAVE!", icon="FILE_TICK")
+
+bpy.utils.register_class(RHIN_PT_GuideCreation)

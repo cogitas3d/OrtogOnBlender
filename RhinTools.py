@@ -3,6 +3,10 @@ from .PontosAnatomicos import *
 from .FerrMedidas import *
 from math import sqrt
 
+import bmesh
+from mathutils import Matrix, Vector
+from time import gmtime, strftime
+
 # PONTOS ANATOMICOS
 
 class Medial_Canthus_right_pt(bpy.types.Operator):
@@ -441,6 +445,52 @@ class Submental_pt(bpy.types.Operator):
 bpy.utils.register_class(Submental_pt)
 
 
+class Supraglabella_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.supraglabella_pt"
+    bl_label = "Supraglabella"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Supraglabella' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        CriaPontoDef('Supraglabella', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Supraglabella_pt)
+
+class Glabella_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.glabella_pt"
+    bl_label = "Glabella"
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Glabella' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        CriaPontoDef('Glabella', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Glabella_pt)
+
 # COPIA FACE
 
 def CopiaFaceDef():
@@ -746,3 +796,118 @@ class MostraOcultaPontos(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(MostraOcultaPontos)
+
+
+def GeraGuiaNarizDef():
+
+    Rosto = bpy.data.objects["SoftTissueDynamic"]
+
+    Pontos = ['Supraglabella', 'Glabella', 'Radix', 'Rhinion', 'Supratip', 'Tip of Nose', 'Columella', 'Subnasale', 'Upper Lip']
+
+    coords = []
+
+    for i in Pontos:
+        VetorAtual = bpy.data.objects[i].location
+        VetX = bpy.data.objects[i].location[0]
+        VetY = bpy.data.objects[i].location[1]
+        VetZ = bpy.data.objects[i].location[2]
+        coords.append((VetX, VetY, VetZ))
+
+    curveData = bpy.data.curves.new('myCurve', type='CURVE')
+    curveData.dimensions = '3D'
+    #    curveData.resolution_u = 6
+    curveData.resolution_u = 36
+
+    # map coords to spline
+    polyline = curveData.splines.new('BEZIER')
+    polyline.bezier_points.add(len(coords)-1)
+    #    for i, coord in enumerate(coords):
+    #        x,y,z = coord
+    #        polyline.points[i].co = (x, y, z, 1)
+
+    from bpy_extras.io_utils import unpack_list
+    polyline.bezier_points.foreach_set("co", unpack_list(coords))
+
+    # Apaga pontos
+    bpy.ops.object.select_all(action='DESELECT')
+
+    #for i in Pontos:
+    #    bpy.data.objects[i].select_set(True)
+
+    #bpy.ops.object.delete(use_global=False)
+
+    bpy.data.collections['Anatomical Points - Soft Tissue'].hide_viewport = True
+
+    # Cria Linha
+    curveOB = bpy.data.objects.new('myCurve', curveData)
+
+    # attach to scene and validate context
+    scn = bpy.context.scene
+    #   scn.objects.link(curveOB)
+    bpy.context.collection.objects.link(curveOB)
+    #scn.collection.objects.link(curveOB) # Esta opção faz com que o objeto criado vá para a Scene Collection!
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.context.view_layer.objects.active = curveOB
+    curveOB.select_set(True)
+
+    bpy.ops.object.editmode_toggle()
+    bpy.ops.curve.select_all(action='SELECT')
+    bpy.ops.curve.handle_type_set(type='AUTOMATIC')
+
+    #bpy.ops.curve.make_segment()
+
+    bpy.ops.object.editmode_toggle()
+
+    bpy.ops.object.modifier_add(type='SHRINKWRAP')
+    bpy.context.object.modifiers["Shrinkwrap"].target = Rosto
+    bpy.context.object.modifiers["Shrinkwrap"].offset = 0.01
+    bpy.context.object.modifiers["Shrinkwrap"].wrap_mode = 'ABOVE_SURFACE'
+
+    #bpy.context.space_data.context = 'MODIFIER'
+    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Shrinkwrap")
+    #bpy.context.space_data.context = 'DATA'
+    bpy.context.object.data.bevel_depth = 4
+
+    bpy.ops.object.modifier_add(type='REMESH')
+    bpy.context.object.modifiers["Remesh"].octree_depth = 6
+    bpy.context.object.modifiers["Remesh"].mode = 'SMOOTH'
+
+    GuiaBaseNome = str("GuiaBase-"+strftime("%Y%m%d%H%M%S", gmtime()))
+    bpy.context.object.name = GuiaBaseNome
+
+    bpy.ops.object.select_all(action='DESELECT')
+    Rosto.select_set(True)
+    bpy.context.view_layer.objects.active = Rosto
+
+    bpy.ops.object.duplicate()
+
+    bpy.ops.object.modifier_add(type='REMESH')
+    bpy.context.object.modifiers["Remesh"].mode = 'SMOOTH'
+    bpy.context.object.modifiers["Remesh"].octree_depth = 8
+    bpy.context.object.modifiers["Remesh"].scale = 0.99
+    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Remesh")
+
+    NomeFaceNova = str("FaceDelete-"+strftime("%Y%m%d%H%M%S", gmtime()))
+    # strftime("%Y-%m-%d %H:%M:%S", gmtime()))
+
+    bpy.context.object.name = NomeFaceNova
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects[NomeFaceNova].select_set(True)
+    bpy.data.objects[GuiaBaseNome].select_set(True)
+    bpy.context.view_layer.objects.active = bpy.data.objects[NomeFaceNova]
+
+    bpy.ops.object.booleana_osteo_geral()
+
+
+
+class GeraGuiaNariz(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_guia_nariz"
+    bl_label = "Nose Guide Generator"
+
+    def execute(self, context):
+        GeraGuiaNarizDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(GeraGuiaNariz)
