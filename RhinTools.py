@@ -881,6 +881,11 @@ def GeraGuiaNarizDef():
 
     bpy.ops.object.duplicate()
 
+    bpy.context.object.active_shape_key_index = 0 # Seleciona o primeiro para apagar e manter o segundo como forma.
+    bpy.ops.object.shape_key_remove(all=False)
+    bpy.ops.object.shape_key_remove(all=False)
+
+
     bpy.ops.object.modifier_add(type='REMESH')
     bpy.context.object.modifiers["Remesh"].mode = 'SMOOTH'
     bpy.context.object.modifiers["Remesh"].octree_depth = 8

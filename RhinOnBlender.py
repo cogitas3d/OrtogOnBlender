@@ -494,14 +494,40 @@ class RHIN_PT_Escultura(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
-        context = bpy.context
-        scn = context.scene
+        row = layout.row()
+        row.operator("object.cria_shape_keys", text="Create Shape Keys", icon="MOD_SIMPLEDEFORM")
 
         row = layout.row()
-        linha=row.operator("object.escultura_grab", text="Grab", icon="BRUSH_GRAB")
+        ob = context.object
+        key = ob.data.shape_keys
+        kb = ob.active_shape_key
 
-        row = layout.row()
-        linha=row.operator("object.escultura_smooth", text="Smooth", icon="BRUSH_SMOOTH")
+        enable_edit = ob.mode != 'EDIT'
+        enable_edit_value = False
+
+        if ob.show_only_shape_key is False:
+            if enable_edit or (ob.type == 'MESH' and ob.use_shape_key_edit_mode):
+                enable_edit_value = True
+
+        if key.use_relative:
+            if ob.active_shape_key_index != 0:
+                layout.use_property_split = True
+
+                row = layout.row()
+                row.active = enable_edit_value
+                row.prop(kb, "value")
+
+                row = layout.row()
+                linha=row.operator("object.escultura_grab", text="Grab", icon="BRUSH_GRAB")
+
+                row = layout.row()
+                linha=row.operator("object.escultura_smooth", text="Smooth", icon="BRUSH_SMOOTH")
+
+                row = layout.row()
+                linha=row.operator("object.escultura_mask", text="Mask", icon="BRUSH_MASK")
+
+                row = layout.row()
+                linha=row.operator("object.mode_set", text="OK! (Object Mode)", icon="META_CUBE").mode='OBJECT'
 
 bpy.utils.register_class(RHIN_PT_Escultura)
 
