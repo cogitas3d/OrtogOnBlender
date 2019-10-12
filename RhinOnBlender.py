@@ -484,6 +484,28 @@ bpy.types.Scene.rhin_columella_med_direito = bpy.props.StringProperty \
     )
 
 
+class RHIN_PT_Escultura(bpy.types.Panel):
+    bl_label = "Sculpting"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Rhin"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        scn = context.scene
+
+        row = layout.row()
+        linha=row.operator("object.escultura_grab", text="Grab", icon="BRUSH_GRAB")
+
+        row = layout.row()
+        linha=row.operator("object.escultura_smooth", text="Smooth", icon="BRUSH_SMOOTH")
+
+bpy.utils.register_class(RHIN_PT_Escultura)
+
+
 class RHIN_PT_GuideCreation(bpy.types.Panel):
     bl_label = "Guide Creation"
     bl_region_type = 'UI'

@@ -911,3 +911,112 @@ class GeraGuiaNariz(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(GeraGuiaNariz)
+
+
+def EsculturaGrabDef():
+
+    context = bpy.context
+    scn = context.scene
+
+    bpy.context.space_data.shading.type = 'MATERIAL'
+    bpy.ops.object.mode_set(mode = 'SCULPT')
+    bpy.ops.wm.tool_set_by_id(name="builtin_brush.Grab")
+    bpy.context.scene.tool_settings.sculpt.use_symmetry_x = False
+
+
+class EsculturaGrab(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.escultura_grab"
+    bl_label = "Change to Grab"
+
+    @classmethod
+    def poll(cls, context):
+        o = context.object
+        if o is None:
+            return False
+        else:
+            if o.type == "MESH":
+                if bpy.context.mode == 'OBJECT' or bpy.context.mode == 'SCULPT':
+                    return True
+                else:
+                    return False
+            else:
+                return False
+
+    def execute(self, context):
+        EsculturaGrabDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(EsculturaGrab)
+
+
+def EsculturaSmoothDef():
+
+    context = bpy.context
+    scn = context.scene
+
+    bpy.context.space_data.shading.type = 'MATERIAL'
+    bpy.ops.object.mode_set(mode = 'SCULPT')
+    bpy.ops.wm.tool_set_by_id(name="builtin_brush.Smooth")
+    bpy.context.scene.tool_settings.sculpt.use_symmetry_x = False
+
+class EsculturaSmooth(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.escultura_smooth"
+    bl_label = "Change to Smooth"
+
+    @classmethod
+    def poll(cls, context):
+        o = context.object
+        if o is None:
+            return False
+        else:
+            if o.type == "MESH":
+                if bpy.context.mode == 'OBJECT' or bpy.context.mode == 'SCULPT':
+                    return True
+                else:
+                    return False
+            else:
+                return False
+
+    def execute(self, context):
+        EsculturaSmoothDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(EsculturaSmooth)
+
+
+def EsculturaMaskDef():
+
+    context = bpy.context
+    scn = context.scene
+
+    bpy.context.space_data.shading.type = 'MATERIAL'
+    bpy.ops.object.mode_set(mode = 'SCULPT')
+    bpy.ops.wm.tool_set_by_id(name="builtin_brush.Mask")
+    bpy.context.scene.tool_settings.sculpt.use_symmetry_x = False
+
+class EsculturaMask(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.escultura_mask"
+    bl_label = "Change to Mask"
+
+    @classmethod
+    def poll(cls, context):
+        o = context.object
+        if o is None:
+            return False
+        else:
+            if o.type == "MESH":
+                if bpy.context.mode == 'OBJECT' or bpy.context.mode == 'SCULPT':
+                    return True
+                else:
+                    return False
+            else:
+                return False
+
+    def execute(self, context):
+        EsculturaMaskDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(EsculturaMask)

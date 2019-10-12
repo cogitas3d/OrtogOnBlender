@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191011b"
+VERSION = "20191012c"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -2643,6 +2643,55 @@ class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
         row.alignment = 'CENTER'
         row.operator("object.gera_dir_nome_paciente_kinematic", text="SAVE!", icon="FILE_TICK")
 
+class ORTOG_PT_FechaLabios(bpy.types.Panel):
+    bl_label = "Close Lips"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Ortog"
+
+    def draw(self, context):
+        layout = self.layout
+
+#        row = layout.row()
+#        row.label(text="Close Lips:")
+
+        row = layout.row()
+        row.operator("object.cria_shape_keys", text="Create Shape Keys", icon="MOD_SIMPLEDEFORM")
+
+        row = layout.row()
+        ob = context.object
+        key = ob.data.shape_keys
+        kb = ob.active_shape_key
+
+        enable_edit = ob.mode != 'EDIT'
+        enable_edit_value = False
+
+        if ob.show_only_shape_key is False:
+            if enable_edit or (ob.type == 'MESH' and ob.use_shape_key_edit_mode):
+                enable_edit_value = True
+
+        if key.use_relative:
+            if ob.active_shape_key_index != 0:
+                layout.use_property_split = True
+
+                row = layout.row()
+                row.active = enable_edit_value
+                row.prop(kb, "value")
+
+                row = layout.row()
+                linha=row.operator("object.escultura_grab", text="Grab", icon="BRUSH_GRAB")
+
+                row = layout.row()
+                linha=row.operator("object.escultura_smooth", text="Smooth", icon="BRUSH_SMOOTH")
+
+                row = layout.row()
+                linha=row.operator("object.escultura_mask", text="Mask", icon="BRUSH_MASK")
+
+                row = layout.row()
+                linha=row.operator("object.mode_set", text="OK! (Object Mode)", icon="META_CUBE").mode='OBJECT'
+
+
 
 class ORTOG_PT_GuideCreation(bpy.types.Panel):
     bl_label = "Guide and Splint Creation"
@@ -2936,6 +2985,7 @@ def register():
     bpy.utils.register_class(ORTOG_PT_ArmatureDynamic)
     bpy.utils.register_class(ORTOG_PT_MeasuringTools)
     bpy.utils.register_class(ORTOG_PT_CinematicaPanel)
+    bpy.utils.register_class(ORTOG_PT_FechaLabios)
     bpy.utils.register_class(ORTOG_PT_GuideCreation)
     bpy.utils.register_class(ORTOG_PT_ImportTomoImg)
     bpy.types.Scene.IMGPathSeq = bpy.props.StringProperty \

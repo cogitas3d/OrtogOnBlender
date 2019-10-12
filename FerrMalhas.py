@@ -20,7 +20,7 @@ class FechaMoldeSimples(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.fecha_molde_simples"
     bl_label = "Close hole simple"
-    
+
     def execute(self, context):
         FechaMoldeSimplesDef(self, context)
         return {'FINISHED'}
@@ -44,7 +44,7 @@ class ParenteiaObjetos(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.parenteia_objetos"
     bl_label = "Parenteia objetos"
-    
+
     def execute(self, context):
         ParenteiaObjetosDef()
         return {'FINISHED'}
@@ -63,9 +63,28 @@ class DesparenteiaObjetos(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.desparenteia_objetos"
     bl_label = "Desparenteia objetos"
-    
+
     def execute(self, context):
         DesparenteiaObjetosDef()
         return {'FINISHED'}
 
 bpy.utils.register_class(DesparenteiaObjetos)
+
+
+def CriaShapeKeysDef():
+
+    bpy.ops.object.shape_key_add(from_mix=False)
+    bpy.ops.object.shape_key_add(from_mix=False)
+    bpy.data.shape_keys["Key"].key_blocks["Key 1"].value = 1
+
+
+class CriaShapeKeys(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.cria_shape_keys"
+    bl_label = "Cria ShapeKeys Def"
+
+    def execute(self, context):
+        CriaShapeKeysDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(CriaShapeKeys)
