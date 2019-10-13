@@ -13,6 +13,10 @@ def ColisaoArcosDef():
     else:
         print("Tudo certo")
 
+        # Inverte gravidade.
+        bpy.context.scene.gravity[2] = 9.81
+
+
         ObjOriginais = bpy.context.selected_objects
 
         for i in bpy.context.selected_objects:
@@ -30,13 +34,13 @@ def ColisaoArcosDef():
         if bpy.context.selected_objects[0].location[2] == bpy.context.selected_objects[1].location[2]:
             print("Os objetos estão na mesma altura!")
 
-        if bpy.context.selected_objects[0].location[2] > bpy.context.selected_objects[1].location[2]:
+        if bpy.context.selected_objects[0].location[2] < bpy.context.selected_objects[1].location[2]: # if bpy.context.selected_objects[0].location[2] > bpy.context.selected_objects[1].location[2]:
 
             ArcadaSup = bpy.context.selected_objects[0]
             ArcadaInf = bpy.context.selected_objects[1]
             print("Obj[0] mais alto")
 
-        if bpy.context.selected_objects[0].location[2] < bpy.context.selected_objects[1].location[2]:
+        if bpy.context.selected_objects[0].location[2] > bpy.context.selected_objects[1].location[2]:  # if bpy.context.selected_objects[0].location[2] < bpy.context.selected_objects[1].location[2]:
 
             ArcadaSup = bpy.context.selected_objects[1]
             ArcadaInf = bpy.context.selected_objects[0]
@@ -133,7 +137,7 @@ class ColisaoArcos(bpy.types.Operator):
         else:
             if len(bpy.context.selected_objects) != 2:
                 return False
-    
+
     def execute(self, context):
         ColisaoArcosDef()
         return {'FINISHED'}
@@ -174,7 +178,7 @@ class AplicaAnimCor(bpy.types.Operator):
         else:
             if len(bpy.context.selected_objects) != 1:
                 return False
-    
+
     def execute(self, context):
         AplicaAnimCorDef()
         return {'FINISHED'}
@@ -200,8 +204,8 @@ def TravaArcoDef():
         print("APAGADOS o grupo e o modificador.")
     except:
         print("Não foi criado grupo e modificador.")
-    '''  
-     
+    '''
+
 
 class TravaArco(bpy.types.Operator):
     """Tooltip"""
@@ -211,7 +215,7 @@ class TravaArco(bpy.types.Operator):
 
 
     # Programação diferente para funcionar!!!
-    
+
     @classmethod
     def poll(cls, context):
 
@@ -225,7 +229,7 @@ class TravaArco(bpy.types.Operator):
             return False
 
     def execute(self, context):
-        bpy.ops.screen.animation_cancel() 
+        bpy.ops.screen.animation_cancel()
         TravaArcoDef()
         return {'FINISHED'}
 
