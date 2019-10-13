@@ -1,6 +1,7 @@
 import bpy
 from .PontosAnatomicos import *
 from .FerrMedidas import *
+from .FerrImgTomo import * # Importa tratamento de materiais
 from math import sqrt
 
 import bmesh
@@ -1025,3 +1026,47 @@ class EsculturaMask(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(EsculturaMask)
+
+
+def MaterialTransparenteDef():
+
+        m = Material()
+        m.set_cycles()
+
+        m.make_material("FaceRhin")
+
+        ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
+        ImageTexture.image = bpy.data.images['scene_dense_mesh_texture_material_0_map_Kd.jpg']
+
+        diffuseBSDF = m.nodes['Principled BSDF']
+#        diffuseBSDF.inputs["Base Color"].default_value = [0.3, 0.2, 0.4, 0.5]
+        materialOutput = m.nodes['Material Output']
+        transparentBSDF = m.makeNode('ShaderNodeBsdfTransparent', 'Transparent BSDF')
+        #bpy.data.node_groups["Shader Nodetree"].nodes["Translucent BSDF"].inputs[0].default_value = (0.8, 0.8, 0.8, 0.00745112)
+
+        mixShader = m.makeNode('ShaderNodeMixShader', 'Mix Shader')
+        m.dump_node(mixShader)
+        mixShader.inputs['Fac'].default_value = 0.3
+        m.link(transparentBSDF, 'BSDF', mixShader, 1)
+        m.link(diffuseBSDF, 'BSDF', mixShader, 2)
+        m.link(mixShader, 'Shader', materialOutput, 'Surface')
+        m.link(ImageTexture, 'Color', diffuseBSDF, 'Base Color')
+
+        bpy.ops.object.material_slot_remove()
+        bpy.ops.object.material_slot_add()
+
+        bpy.data.objects[bpy.context.view_layer.objects.active.name].active_material = bpy.data.materials["FaceRhin"]
+
+        bpy.context.object.active_material.blend_method = 'BLEND'
+
+
+class MaterialTransparente(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.material_transparente"
+    bl_label = "Material Transparente"
+
+    def execute(self, context):
+        MaterialTransparenteDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(MaterialTransparente)

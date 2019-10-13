@@ -590,6 +590,10 @@ class RHIN_PT_GuideCreation(bpy.types.Panel):
 
         row = layout.row()
         row = layout.row()
+        linha=row.operator("object.material_transparente", text="Transp Material", icon="PREFERENCES")
+
+        row = layout.row()
+        row = layout.row()
         box = layout.box()
         col = box.column(align=True)
         row = col.row()
