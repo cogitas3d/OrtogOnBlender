@@ -1028,12 +1028,12 @@ class EsculturaMask(bpy.types.Operator):
 bpy.utils.register_class(EsculturaMask)
 
 
-def MaterialTransparenteDef():
+def MaterialTransparentePosDef():
 
         m = Material()
         m.set_cycles()
 
-        m.make_material("FaceRhin")
+        m.make_material("FaceRhinPos")
 
         ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
         ImageTexture.image = bpy.data.images['scene_dense_mesh_texture_material_0_map_Kd.jpg']
@@ -1055,18 +1055,122 @@ def MaterialTransparenteDef():
         bpy.ops.object.material_slot_remove()
         bpy.ops.object.material_slot_add()
 
-        bpy.data.objects[bpy.context.view_layer.objects.active.name].active_material = bpy.data.materials["FaceRhin"]
+        bpy.data.objects[bpy.context.view_layer.objects.active.name].active_material = bpy.data.materials["FaceRhinPos"]
 
         bpy.context.object.active_material.blend_method = 'BLEND'
 
 
-class MaterialTransparente(bpy.types.Operator):
+def MaterialTransparentePreDef():
+
+        m = Material()
+        m.set_cycles()
+
+        m.make_material("FaceRhinPre")
+
+        ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
+        ImageTexture.image = bpy.data.images['scene_dense_mesh_texture_material_0_map_Kd.jpg']
+
+        diffuseBSDF = m.nodes['Principled BSDF']
+#        diffuseBSDF.inputs["Base Color"].default_value = [0.3, 0.2, 0.4, 0.5]
+        materialOutput = m.nodes['Material Output']
+        transparentBSDF = m.makeNode('ShaderNodeBsdfTransparent', 'Transparent BSDF')
+        #bpy.data.node_groups["Shader Nodetree"].nodes["Translucent BSDF"].inputs[0].default_value = (0.8, 0.8, 0.8, 0.00745112)
+
+        mixShader = m.makeNode('ShaderNodeMixShader', 'Mix Shader')
+        m.dump_node(mixShader)
+        mixShader.inputs['Fac'].default_value = 0.3
+        m.link(transparentBSDF, 'BSDF', mixShader, 1)
+        m.link(diffuseBSDF, 'BSDF', mixShader, 2)
+        m.link(mixShader, 'Shader', materialOutput, 'Surface')
+        m.link(ImageTexture, 'Color', diffuseBSDF, 'Base Color')
+
+        bpy.ops.object.material_slot_remove()
+        bpy.ops.object.material_slot_add()
+
+        bpy.data.objects[bpy.context.view_layer.objects.active.name].active_material = bpy.data.materials["FaceRhinPre"]
+
+        bpy.context.object.active_material.blend_method = 'BLEND'
+
+
+class MaterialTransparenteDois(bpy.types.Operator):
     """Tooltip"""
-    bl_idname = "object.material_transparente"
-    bl_label = "Material Transparente"
+    bl_idname = "object.material_transparente_dois"
+    bl_label = "Material Transparente Pre"
 
     def execute(self, context):
-        MaterialTransparenteDef()
+        bpy.data.objects['SoftTissueDynamic_COPY'].hide_viewport = False
+        FacePre = bpy.data.objects['SoftTissueDynamic_COPY']
+        bpy.ops.object.select_all(action='DESELECT')
+        FacePre.select_set(True)
+        bpy.context.view_layer.objects.active = FacePre
+        MaterialTransparentePreDef()
+
+        bpy.data.objects['SoftTissueDynamic'].hide_viewport = False
+        FacePos = bpy.data.objects['SoftTissueDynamic']
+        bpy.ops.object.select_all(action='DESELECT')
+        FacePos.select_set(True)
+        bpy.context.view_layer.objects.active = FacePos
+        MaterialTransparentePosDef()
+
         return {'FINISHED'}
 
-bpy.utils.register_class(MaterialTransparente)
+bpy.utils.register_class(MaterialTransparenteDois)
+
+
+def MaterialTranspPreDef():
+    bpy.data.materials['FaceRhinPre'].node_tree.nodes["Mix Shader"].inputs[0].default_value = float(bpy.context.scene.mat_transp_pre)
+
+class MaterialTranspPre(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.material_transp_pre"
+    bl_label = "Material Transparente Pre"
+
+    def execute(self, context):
+        MaterialTranspPreDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(MaterialTranspPre)
+
+
+def MaterialTranspPosDef():
+    bpy.data.materials['FaceRhinPos'].node_tree.nodes["Mix Shader"].inputs[0].default_value = float(bpy.context.scene.mat_transp_pos)
+
+
+class MaterialTranspPos(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.material_transp_pos"
+    bl_label = "Material Transparente Pos"
+
+    def execute(self, context):
+        MaterialTranspPosDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(MaterialTranspPos)
+
+class MaterialOpacoDois(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.material_opaco_dois"
+    bl_label = "Material Opaco Dois"
+
+    def execute(self, context):
+        bpy.data.objects['SoftTissueDynamic_COPY'].hide_viewport = False
+        FacePre = bpy.data.objects['SoftTissueDynamic_COPY']
+        bpy.ops.object.select_all(action='DESELECT')
+        FacePre.select_set(True)
+        bpy.context.view_layer.objects.active = FacePre
+        bpy.context.object.active_material.blend_method = 'OPAQUE'
+        #FacePre.hide_viewport = True
+
+        bpy.data.objects['SoftTissueDynamic'].hide_viewport = False
+        FacePos = bpy.data.objects['SoftTissueDynamic']
+        bpy.ops.object.select_all(action='DESELECT')
+        FacePos.select_set(True)
+        bpy.context.view_layer.objects.active = FacePos
+        bpy.context.object.active_material.blend_method = 'OPAQUE'
+
+        bpy.context.space_data.shading.type = 'SOLID'
+        bpy.context.space_data.shading.color_type = 'TEXTURE'
+
+        return {'FINISHED'}
+
+bpy.utils.register_class(MaterialOpacoDois)

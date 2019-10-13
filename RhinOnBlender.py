@@ -529,6 +529,35 @@ class RHIN_PT_Escultura(bpy.types.Panel):
                 row = layout.row()
                 linha=row.operator("object.mode_set", text="OK! (Object Mode)", icon="META_CUBE").mode='OBJECT'
 
+        row = layout.row()
+        row.label(text="View/Transp.:")
+
+        row = layout.row()
+        linha=row.operator("object.material_transparente_dois", text="Transp. Material", icon="SHADING_RENDERED")
+
+        row = layout.row()
+        #col = self.layout.column(align = True)
+        row.alignment = 'CENTER'
+        row.prop(context.scene, "mat_transp_pre")
+        #row = layout.row()
+        row.operator("object.material_transp_pre", text="Original")
+
+        row = layout.row()
+        #col = self.layout.column(align = True)
+        row.alignment = 'CENTER'
+        row.prop(context.scene, "mat_transp_pos")
+        #row = layout.row()
+        row.operator("object.material_transp_pos", text="Planning")
+
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.material_opaco_dois", text="Opaque Material", icon="SHADING_SOLID")
+
+        row = layout.row()
+        row = layout.row()
+        row.operator("view3d.clip_border", text="Clipping Border", icon="UV_FACESEL")
+
+
 bpy.utils.register_class(RHIN_PT_Escultura)
 
 
@@ -590,15 +619,26 @@ class RHIN_PT_GuideCreation(bpy.types.Panel):
 
         row = layout.row()
         row = layout.row()
-        linha=row.operator("object.material_transparente", text="Transp Material", icon="PREFERENCES")
-
-        row = layout.row()
-        row = layout.row()
         box = layout.box()
         col = box.column(align=True)
         row = col.row()
         row.scale_y=1.5
         row.alignment = 'CENTER'
         row.operator("object.gera_dir_nome_paciente_guide", text="SAVE!", icon="FILE_TICK")
+
+
+    bpy.types.Scene.mat_transp_pre = bpy.props.StringProperty \
+      (
+        name = "Original",
+        description = "Original Face",
+        default = "0.30"
+      )
+
+    bpy.types.Scene.mat_transp_pos = bpy.props.StringProperty \
+      (
+        name = "Planning",
+        description = "Planning Face",
+        default = "0.30"
+      )
 
 bpy.utils.register_class(RHIN_PT_GuideCreation)
