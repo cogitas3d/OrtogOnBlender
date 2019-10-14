@@ -26,6 +26,38 @@ class RHIN_PT_AtualizaAddonSec(bpy.types.Panel):
 
 bpy.utils.register_class(RHIN_PT_AtualizaAddonSec)
 
+class RHIN_PT_NomePaciente(bpy.types.Panel):
+    bl_label = "Patient's Name"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Rhin"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+
+        row = layout.row()
+
+        col = self.layout.column(align = True)
+        col.prop(context.scene, "nome_paciente")
+
+        col = self.layout.column(align = True)
+        col.prop(context.scene, "sobrenome_paciente")
+
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente", text="SAVE!", icon="FILE_TICK")
+
+bpy.utils.register_class(RHIN_PT_NomePaciente)
+
 
 class RHIN_PT_Fotogrametria(bpy.types.Panel):
     bl_label = "Photogrammetry Start"
@@ -186,6 +218,7 @@ class RHIN_PT_AlinhaFace(bpy.types.Panel):
 bpy.utils.register_class(RHIN_PT_AlinhaFace)
 
 
+'''
 class RHIN_PT_FotogramModif(bpy.types.Panel):
     bl_label = "Photogrammetry - Modifiers"
     bl_region_type = 'UI'
@@ -218,6 +251,7 @@ class RHIN_PT_FotogramModif(bpy.types.Panel):
         linha=row.operator("object.convert", text="APPLY ALL!", icon="ERROR").target='MESH'
 
 bpy.utils.register_class(RHIN_PT_FotogramModif)
+'''
 
 class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
     bl_label = "Anatomical Points"
