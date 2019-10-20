@@ -430,6 +430,7 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+
     if ManufacturerLimpo == "'MyRay'" and StationNameLimpo == "'NT'":
 
         if ManufacturerModelNameLimpo == "'HYB'":
@@ -785,10 +786,7 @@ def IdentificaTomografo(Arquivo):
         bpy.ops.object.gera_modelos_tomo()
 
 
-
-    if ManufacturerLimpo == "'TOSHIBA'" and ManufacturerModelNameLimpo == "'Aquilion'":
-
-        if StationNameLimpo == "'HCUV_TC_01'":
+    if ManufacturerLimpo == "'TOSHIBA'" and ManufacturerModelNameLimpo == "'Aquilion'" and StationNameLimpo == "'HCUV_TC_01'":
             print("SÉRIE 6")
             print("Bone: 200")
             print("SoftTissue: -300")
@@ -815,16 +813,15 @@ def IdentificaTomografo(Arquivo):
 
             bpy.ops.object.gera_modelos_tomo()
 
-
-        else:
-            print("SÉRIE 2")
+    if ManufacturerLimpo == "'TOSHIBA'" and ManufacturerModelNameLimpo == "'Aquilion'" and StationNameLimpo == "'ID_STATION'":
+            print("SÉRIE 4")
             print("Bone: 200")
             print("SoftTissue: -300")
             print("Teeth: 1430")
             print("Condylus: 655")
 
 
-            os.chdir(scn.my_tool.path+"/2")
+            os.chdir(scn.my_tool.path+"/4")
             scn.my_tool.path = os.getcwd()
     #        bpy.ops.object.corrige_dicom()
 
@@ -842,6 +839,7 @@ def IdentificaTomografo(Arquivo):
             bpy.context.scene.interesse_dentes = "1430"
 
             bpy.ops.object.gera_modelos_tomo()
+
 
     if ManufacturerLimpo == "'TOSHIBA'" and ManufacturerModelNameLimpo == "'Alexion'":
         print("USA FIXED!")
@@ -906,7 +904,34 @@ def IdentificaTomografo(Arquivo):
         bpy.ops.object.gera_modelos_tomo()
 
 
-    if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'Optima'":
+    if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'Optima'" and ManufacturerModelNameLimpo == 'Optima CT660':
+        print("SÉRIE 2")
+        print("Bone: 800")
+        print("SoftTissue: -300")
+        print("Teeth: 1500")
+        print("Condylus: 655")
+
+        os.chdir(scn.my_tool.path+"/2")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "800"
+        bpy.context.scene.interesse_mole = "-300"
+        bpy.context.scene.interesse_dentes = "1500"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+    '''
+     if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'Optima'":
         print("SÉRIE 303")
         print("Bone: 200")
         print("SoftTissue: -300")
@@ -931,6 +956,7 @@ def IdentificaTomografo(Arquivo):
         bpy.context.scene.interesse_dentes = "1430"
 
         bpy.ops.object.gera_modelos_tomo()
+    '''
 
     if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'CT99'":
         print("SÉRIE 3")
@@ -2213,8 +2239,35 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+
+    if ManufacturerLimpo == "'Imaging Sciences International'" and StationNameLimpo == "'ICAT_TOMO2'" and ManufacturerModelNameLimpo == "'i-CAT'":
+        print("SÉRIE 1")
+        print("Bone: 630")
+        print("SoftTissue: -472")
+        print("Teeth: 1040")
+
+        os.chdir(scn.my_tool.path+"/1")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "630"
+        bpy.context.scene.interesse_mole = "-475"
+        bpy.context.scene.interesse_dentes = "1040"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+
     if ManufacturerLimpo == "'Imaging Sciences International'" and StationNameLimpo == "'ICAT'":
-        print("SÉRIE 2")
+        print("SÉRIE 0")
         print("Bone: 360")
         print("SoftTissue: -600")
         print("Teeth: 992")
@@ -2239,6 +2292,7 @@ def IdentificaTomografo(Arquivo):
         bpy.context.scene.interesse_dentes = "992"
 
         bpy.ops.object.gera_modelos_tomo()
+
 
     if ManufacturerLimpo == "'SIEMENS'" and StationNameLimpo == "'CT79409'":
         print("SÉRIE 607")
