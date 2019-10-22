@@ -13,7 +13,7 @@ from mathutils import Matrix, Vector
 from bpy_extras.object_utils import AddObjectHelper, object_data_add
 
 def DesenhaGuiaDef(self, context):
-    
+
     context = bpy.context
     obj = context.active_object
     scn = context.scene
@@ -36,7 +36,7 @@ def DesenhaGuiaDef(self, context):
     bpy.context.object.data.bevel_depth = 10
 
     bpy.ops.object.convert(target='MESH')
-    
+
     bpy.ops.object.modifier_add(type='REMESH')
     bpy.context.object.modifiers["Remesh"].use_remove_disconnected = False
     bpy.context.object.modifiers["Remesh"].mode = 'SMOOTH'
@@ -52,7 +52,7 @@ def DesenhaGuiaDef(self, context):
     bpy.data.particles["ParticleSettings"].dupli_object = bpy.data.objects["Mball"]
     bpy.data.particles["ParticleSettings"].particle_size = 0.6
     bpy.data.particles["ParticleSettings"].name = "DELETE" # Senão não funciona, pois usa o nome anterior
-    
+
     bpy.ops.object.select_all(action='DESELECT')
     Linha.select = True
     bpy.context.scene.objects.active = Linha
@@ -64,17 +64,17 @@ def DesenhaGuiaDef(self, context):
     Guia.select = True
     bpy.context.scene.objects.active = Guia
     bpy.context.object.name = "CirGuide"
-    
+
     bpy.ops.object.convert(target='MESH')
-    
+
     bpy.ops.object.modifier_add(type='SMOOTH')
     bpy.context.object.modifiers["Smooth"].factor = 2
     bpy.context.object.modifiers["Smooth"].iterations = 120
-    
+
     bpy.ops.object.modifier_add(type='DECIMATE')
     bpy.context.object.modifiers["Decimate"].ratio = 0.1
 
-    
+
     bpy.ops.object.convert(target='MESH')
 
 
@@ -98,37 +98,37 @@ def AcabamentoDef(self, context):
     GuiaParte.select = True
     Linha.select = True
     bpy.context.scene.objects.active = GuiaParte
-    
+
     bpy.ops.object.corta_ossos()
-    
-    bpy.ops.object.select_all(action='DESELECT')   
+
+    bpy.ops.object.select_all(action='DESELECT')
     Linha.select = True
     bpy.context.scene.objects.active = Linha
-    bpy.ops.object.delete(use_global=False)   
-    
-    ObjAcabamento = bpy.data.objects['OssoPronto']    
-    bpy.ops.object.select_all(action='DESELECT')   
+    bpy.ops.object.delete(use_global=False)
+
+    ObjAcabamento = bpy.data.objects['OssoPronto']
+    bpy.ops.object.select_all(action='DESELECT')
     ObjAcabamento.select = True
     bpy.context.scene.objects.active = ObjAcabamento
-    
+
     bpy.ops.object.editmode_toggle()
     bpy.ops.mesh.select_all(action='DESELECT')
 
     bpy.ops.mesh.select_mode(type="EDGE")
-    
+
     bpy.ops.mesh.select_non_manifold()
     bpy.ops.mesh.select_non_manifold(use_non_contiguous=False)
 
 
 #    bpy.ops.object.triangle_fill(res_mode='MAX')
-        
+
 
 def FechaBuracoDef(self, context):
 
     context = bpy.context
     obj = context.active_object
-    scn = context.scene    
-    
+    scn = context.scene
+
     bpy.ops.object.triangle_fill(res_mode = 'MAX')
 
 def DesenhaLinhaCorteDef(self, context):
@@ -146,7 +146,7 @@ def DesenhaLinhaCorteDef(self, context):
     bpy.ops.gpencil.paintmode_toggle()
     bpy.ops.gpencil.paintmode_toggle()
     bpy.ops.gpencil.convert(type='POLY', use_timing_data=True)
-    
+
     bpy.ops.object.select_all(action='DESELECT')
     linha = bpy.data.objects['Note']
     linha.select_set(True)
@@ -173,14 +173,14 @@ def DesenhaLinhaCorteDef(self, context):
     bpy.context.object.modifiers["Shrinkwrap"].wrap_mode = 'ABOVE_SURFACE'
     bpy.context.object.modifiers["Shrinkwrap"].target = Osso
     bpy.context.object.modifiers["Shrinkwrap"].offset = 1.5
- 
+
     bpy.ops.object.modifier_add(type='SMOOTH')
     bpy.context.object.modifiers["Smooth"].factor = 1
     bpy.context.object.modifiers["Smooth"].iterations = 1
 
 
     bpy.ops.object.convert(target='MESH')
-    bpy.ops.object.mode_set(mode='EDIT')    
+    bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.mesh.select_all(action='TOGGLE')
     bpy.ops.mesh.remove_doubles()
     bpy.ops.mesh.remove_doubles(threshold=2)
@@ -200,9 +200,9 @@ def DesenhaLinhaCorteDef(self, context):
     bpy.ops.mesh.edge_face_add()
 
     bpy.ops.object.editmode_toggle()
-    
- 
-    bpy.context.object.name = "Corte"    
+
+
+    bpy.context.object.name = "Corte"
     Linha = bpy.data.objects['Corte']
 
     bpy.ops.object.select_all(action='DESELECT')
@@ -212,7 +212,7 @@ def DesenhaLinhaCorteDef(self, context):
 
 # Se não duplicar não funciona!
 #    bpy.ops.object.duplicate()
-    
+
 
     bpy.ops.object.booleana_osteo()
 
@@ -226,8 +226,8 @@ def DesenhaLinhaCorteDef(self, context):
 
 
     bpy.ops.object.select_all(action='DESELECT')
- 
-# Apaga os objetos anteriores   
+
+# Apaga os objetos anteriores
 #    bpy.ops.object.select_all(action='DESELECT')
 #    Linha.select_set(True)
 #    Osso.select_set(True)
@@ -256,7 +256,7 @@ class DesenhaLinhaCorte(bpy.types.Operator):
                     return False
             else:
                 return False
-    
+
     def execute(self, context):
         DesenhaLinhaCorteDef(self, context)
         return {'FINISHED'}
@@ -281,7 +281,7 @@ def DesenhaLinhaVertexDef(self, context):
     bpy.ops.gpencil.paintmode_toggle()
     bpy.ops.gpencil.paintmode_toggle()
     bpy.ops.gpencil.convert(type='POLY', use_timing_data=True)
-    
+
     bpy.ops.object.select_all(action='DESELECT')
     linha = bpy.data.objects['Note']
     linha.select_set(True)
@@ -308,14 +308,14 @@ def DesenhaLinhaVertexDef(self, context):
     bpy.context.object.modifiers["Shrinkwrap"].wrap_mode = 'ABOVE_SURFACE'
     bpy.context.object.modifiers["Shrinkwrap"].target = Osso
     bpy.context.object.modifiers["Shrinkwrap"].offset = 1.5
- 
+
     bpy.ops.object.modifier_add(type='SMOOTH')
     bpy.context.object.modifiers["Smooth"].factor = 1
     bpy.context.object.modifiers["Smooth"].iterations = 1
 
 
     bpy.ops.object.convert(target='MESH')
-    bpy.ops.object.mode_set(mode='EDIT')    
+    bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.mesh.select_all(action='TOGGLE')
     bpy.ops.mesh.remove_doubles()
     bpy.ops.mesh.remove_doubles(threshold=2)
@@ -323,13 +323,13 @@ def DesenhaLinhaVertexDef(self, context):
     bpy.ops.object.mode_set(mode='OBJECT')
     bpy.context.object.name = "Linha_"+Osso.name
 
-    bpy.ops.object.mode_set(mode='EDIT')    
+    bpy.ops.object.mode_set(mode='EDIT')
 
 class DesenhaLinhaVertex(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.desenha_linha_vertex"
     bl_label = "Desenha Linha Corte"
-    
+
     # ------------------------------
     # Poll
     # ------------------------------
@@ -386,13 +386,13 @@ def DesenhaLinhaVertexFinDef(self, context):
     bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, "mirror":False}, TRANSFORM_OT_translate={"value":(1.81608e-08, .6, .6), "orient_type":'NORMAL', "orient_matrix":((0.238327, 0.958761, 0.154848), (0.00483444, -0.160612, 0.987006), (0.971173, -0.234481, -0.0429132)), "orient_matrix_type":'NORMAL', "constraint_axis":(False, False, True), "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "cursor_transform":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False, "use_accurate":False})
     '''
     bpy.ops.object.editmode_toggle()
- 
+
 
     Osso = bpy.data.objects[str(Linha.name.strip("Linha_"))]
     print("OSSSOOO", Osso)
 
 
-    bpy.context.object.name = "Corte" 
+    bpy.context.object.name = "Corte"
 
 #    OssoNome = Osso.name
 #    Osso.name = OssoNome+time.strftime("%Y%m%d%H%M%S")
@@ -406,21 +406,21 @@ def DesenhaLinhaVertexFinDef(self, context):
 # Se não duplicar não funciona!
 #    bpy.ops.object.duplicate()
 
-    
+
     bpy.ops.object.booleana_osteo()
- 
-# Apaga os objetos anteriores   
+
+# Apaga os objetos anteriores
     bpy.ops.object.select_all(action='DESELECT')
     Linha.select_set(True)
     Osso.select_set(True)
     bpy.ops.object.delete(use_global=False)
-    
+
 
 class DesenhaLinhaVertexFin(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.desenha_linha_vertex_fin"
     bl_label = "Desenha Linha Corte"
-    
+
     def execute(self, context):
         DesenhaLinhaVertexFinDef(self, context)
         return {'FINISHED'}
@@ -521,14 +521,14 @@ class ModalTimerOperator(bpy.types.Operator):
         context = bpy.context
         obj = context.active_object
 
-        bpy.ops.wm.tool_set_by_id(name="builtin.cursor")    
+        bpy.ops.wm.tool_set_by_id(name="builtin.cursor")
 
         if event.type in {'RIGHTMOUSE', 'ESC'}:
             self.cancel(context)
             return {'CANCELLED'}
 
 #        bpy.ops.object.select_pattern(pattern="Cub*") # Seleciona objetos com esse padrão
-     
+
 
         if event.type == 'LEFTMOUSE' and event.value == 'RELEASE':
 
@@ -562,7 +562,7 @@ class ModalTimerOperator(bpy.types.Operator):
 
                 bpy.ops.object.select_all(action='DESELECT')
 
-              
+
                 obj.select_set(True)
                 bpy.context.view_layer.objects.active = obj
 
@@ -581,10 +581,10 @@ class ModalTimerOperator(bpy.types.Operator):
     def cancel(self, context):
         wm = context.window_manager
 
-    def end_ui(self, context):            
+    def end_ui(self, context):
         context.area.header_text_set()
         context.window.cursor_modal_restore()
-        
+
     def cleanup(self, context, cleantype=''):
         '''
         remove temporary object
@@ -701,7 +701,7 @@ def CriaBezierDef(self, context):
 
     bpy.ops.object.delete(use_global=False)
 
-    
+
 
     # Cria Linha
     curveOB = bpy.data.objects.new('myCurve', curveData)
@@ -799,7 +799,7 @@ def CriaBezierUnidoDef(self, context):
 
     bpy.ops.object.delete(use_global=False)
 
-    
+
 
     # Cria Linha
     curveOB = bpy.data.objects.new('myCurve', curveData)
@@ -884,7 +884,7 @@ def BezierCortaDef(self, context):
 
     print("VertIndexOrigi:", VertIndexOrigi)
 
-    # Extruda para dentro   
+    # Extruda para dentro
     bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, "mirror":False}, TRANSFORM_OT_translate={"value":(0, 0, 0), "orient_type":'GLOBAL', "orient_matrix":((0, 0, 0), (0, 0, 0), (0, 0, 0)), "orient_matrix_type":'GLOBAL', "constraint_axis":(False, False, False), "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "cursor_transform":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False, "use_accurate":False})
 
     bpy.ops.transform.resize(value=(0.9, 0.9, 0.9), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
@@ -895,12 +895,12 @@ def BezierCortaDef(self, context):
     #    print(vertices)
 
         # É necessário fazer isso senão não seleciona e dá erro!
-        if hasattr(bm.edges, "ensure_lookup_table"): 
+        if hasattr(bm.edges, "ensure_lookup_table"):
             bm.edges.ensure_lookup_table()
-            
+
         bm.edges[i].select_set(True)
 
-    # Extruda para fora    
+    # Extruda para fora
     bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, "mirror":False}, TRANSFORM_OT_translate={"value":(0, 0, 0), "orient_type":'GLOBAL', "orient_matrix":((0, 0, 0), (0, 0, 0), (0, 0, 0)), "orient_matrix_type":'GLOBAL', "constraint_axis":(False, False, False), "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "cursor_transform":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False, "use_accurate":False})
 
     bpy.ops.transform.resize(value=(1.1, 1.1, 1.1), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
@@ -911,12 +911,12 @@ def BezierCortaDef(self, context):
     #    print(vertices)
 
         # É necessário fazer isso senão não seleciona e dá erro!
-        if hasattr(bm.edges, "ensure_lookup_table"): 
+        if hasattr(bm.edges, "ensure_lookup_table"):
             bm.edges.ensure_lookup_table()
-            
+
         bm.edges[i].select_set(True)
 
-    # Apaga vértices do meio e une as outras 
+    # Apaga vértices do meio e une as outras
     bpy.ops.mesh.delete(type='VERT')
     bpy.ops.mesh.select_all(action='SELECT')
     bpy.ops.mesh.bridge_edge_loops()
@@ -926,7 +926,7 @@ def BezierCortaDef(self, context):
     bpy.data.objects[objInicial].select_set(True)
     bpy.context.view_layer.objects.active = bpy.data.objects[objInicial]
 
-    
+
     bpy.ops.object.join()
 
     obj = context.active_object
@@ -953,14 +953,14 @@ def BezierCortaDef(self, context):
 
     bpy.ops.mesh.select_all(action='DESELECT')
 
-    
+
     for i in VertIndexOrigi2:
     #    print(vertices)
 
         # É necessário fazer isso senão não seleciona e dá erro!
-        if hasattr(bm2.verts, "ensure_lookup_table"): 
+        if hasattr(bm2.verts, "ensure_lookup_table"):
             bm2.verts.ensure_lookup_table()
-            
+
         bm2.verts[i].select_set(True)
 
     bpy.ops.mesh.delete(type='VERT')
@@ -971,7 +971,7 @@ def BezierCortaDef(self, context):
 
     bpy.ops.wm.tool_set_by_id(name="builtin.select_box")
 
-    
+
 
 class BezierCorta(Operator, AddObjectHelper):
     """Create a new Mesh Object"""
@@ -1028,17 +1028,17 @@ def BezierCortaDuplaDef(self, context):
     bpy.ops.object.editmode_toggle()
 
     bpy.ops.object.join()
-  
+
     bpy.ops.object.editmode_toggle()
 
     context = bpy.context
     obj = context.active_object
 
-   
+
     bpy.data.objects[objInicial].select_set(True)
     bpy.context.view_layer.objects.active = bpy.data.objects[objInicial]
 
-    
+
     bpy.ops.object.join()
 
     # Corta
@@ -1061,7 +1061,7 @@ def BezierCortaDuplaDef(self, context):
     bpy.ops.object.vertex_group_select()
 
     bpy.ops.mesh.delete(type='VERT')
- 
+
     bpy.ops.object.editmode_toggle()
 
     bpy.ops.mesh.separate(type='LOOSE')
@@ -1083,3 +1083,315 @@ class BezierCortaDupla(Operator, AddObjectHelper):
         return {'FINISHED'}
 
 bpy.utils.register_class(BezierCortaDupla)
+
+
+# MODAL SEPARA DENTES
+
+class ModalTimerOperatorTeeth(bpy.types.Operator):
+    """Operator which runs its self from a timer"""
+    bl_idname = "wm.modal_cria_pontos_teeth"
+    bl_label = "Create points line on teeth"
+
+    _timer = None
+
+    def modal(self, context, event):
+
+        context = bpy.context
+        obj = context.active_object
+
+        bpy.ops.wm.tool_set_by_id(name="builtin.cursor")
+
+        if event.type in {'RIGHTMOUSE', 'ESC'}:
+            self.cancel(context)
+            return {'CANCELLED'}
+
+#        bpy.ops.object.select_pattern(pattern="Cub*") # Seleciona objetos com esse padrão
+
+
+        if event.type == 'LEFTMOUSE' and event.value == 'RELEASE':
+
+
+            if context.area.type == 'VIEW_3D':
+                region = context.region
+                r3d = context.space_data.region_3d
+
+#                bpy.ops.object.empty_add(type='PLAIN_AXES', radius=1, location=(0,0,0))
+
+                bpy.ops.mesh.primitive_uv_sphere_add(radius=0.2, location=(0,0,0)) #Atrasa também
+                bpy.ops.transform.translate(value=(bpy.context.scene.cursor.location))
+                bpy.context.object.name = "PT_Linha"
+
+                ListaMateriais = []
+                MateriaisCena = bpy.data.materials
+
+                for i in MateriaisCena:
+                    ListaMateriais.append(i.name)
+
+                if 'MatModalPoints' in ListaMateriais:
+                    activeObject = bpy.context.active_object #Set active object to variable
+                    mat = bpy.data.materials["MatModalPointsTeeth"] #set new material to variable
+                    activeObject.data.materials.append(mat) #add the material to the object
+                    bpy.context.object.active_material.diffuse_color = (0.2, 0.2, 0.9, 1)
+                else:
+                    activeObject = bpy.context.active_object #Set active object to variable
+                    mat = bpy.data.materials.new(name="MatModalPointsTeeth") #set new material to variable
+                    activeObject.data.materials.append(mat) #add the material to the object
+                    bpy.context.object.active_material.diffuse_color = (0.2, 0.2, 0.9, 1)
+
+                bpy.ops.object.select_all(action='DESELECT')
+
+
+                obj.select_set(True)
+                bpy.context.view_layer.objects.active = obj
+
+
+        return {'PASS_THROUGH'}
+
+    def execute(self, context):
+        if context.area.type != 'VIEW_3D':
+            print("Must use in a 3d region")
+            return {'CANCELLED'}
+
+        wm = context.window_manager
+        wm.modal_handler_add(self)
+        return {'RUNNING_MODAL'}
+
+    def cancel(self, context):
+        wm = context.window_manager
+
+    def end_ui(self, context):
+        context.area.header_text_set()
+        context.window.cursor_modal_restore()
+
+    def cleanup(self, context, cleantype=''):
+        '''
+        remove temporary object
+        '''
+        if cleantype == 'commit':
+            pass
+
+        elif cleantype == 'cancel':
+            pass
+
+bpy.utils.register_class(ModalTimerOperatorTeeth)
+
+
+def CriaBezierUnidoTeethDef(self, context):
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+
+    Pontos = [obj for obj in bpy.context.scene.objects if fnmatch.fnmatchcase(obj.name, "PT_Linh*")]
+
+    coords = []
+
+    for i in Pontos:
+        VetorAtual = i.location
+        VetX = i.location[0]
+        VetY = i.location[1]
+        VetZ = i.location[2]
+        coords.append((VetX, VetY, VetZ))
+
+#    edges = []
+
+#    for i in range(len(vertices)):
+#        edges.append([i,i+1])
+
+#    del(edges[-1]) # Apaga o último elemento da cena
+
+
+    # create the Curve Datablock
+    curveData = bpy.data.curves.new('myCurve', type='CURVE')
+    curveData.dimensions = '3D'
+#    curveData.resolution_u = 6
+    curveData.resolution_u = 36
+
+
+    # map coords to spline
+    polyline = curveData.splines.new('BEZIER')
+    polyline.bezier_points.add(len(coords)-1)
+#    for i, coord in enumerate(coords):
+#        x,y,z = coord
+#        polyline.points[i].co = (x, y, z, 1)
+
+    from bpy_extras.io_utils import unpack_list
+    polyline.bezier_points.foreach_set("co", unpack_list(coords))
+
+    # Apaga pontos
+    bpy.ops.object.select_all(action='DESELECT')
+
+    for i in Pontos:
+        i.select_set(True)
+
+    bpy.ops.object.delete(use_global=False)
+
+
+
+    # Cria Linha
+    curveOB = bpy.data.objects.new('myCurve', curveData)
+
+    # attach to scene and validate context
+    scn = bpy.context.scene
+#   scn.objects.link(curveOB)
+    scn.collection.objects.link(curveOB)
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.context.view_layer.objects.active = curveOB
+    curveOB.select_set(True)
+
+    bpy.ops.object.editmode_toggle()
+    bpy.ops.curve.select_all(action='SELECT')
+    bpy.ops.curve.handle_type_set(type='AUTOMATIC')
+
+    bpy.ops.curve.make_segment()
+
+    bpy.ops.object.editmode_toggle()
+
+    bpy.ops.object.modifier_add(type='SHRINKWRAP')
+    bpy.context.object.modifiers["Shrinkwrap"].target = obj
+    bpy.context.object.modifiers["Shrinkwrap"].offset = 0.01 # ORIGINAL 0.01
+    bpy.context.object.modifiers["Shrinkwrap"].wrap_mode = 'ABOVE_SURFACE'
+    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Shrinkwrap")
+
+#    bpy.ops.object.modifier_add(type='SMOOTH')
+#    bpy.context.object.modifiers["Smooth"].factor = 2
+#    bpy.context.object.modifiers["Smooth"].iterations = 3
+
+
+    bpy.context.object.data.bevel_depth = 0.2
+
+    ListaMateriais = []
+    MateriaisCena = bpy.data.materials
+
+    for i in MateriaisCena:
+        ListaMateriais.append(i.name)
+
+    if 'MatModalPoints' in ListaMateriais:
+        activeObject = bpy.context.active_object #Set active object to variable
+        mat = bpy.data.materials["MatModalPointsTeeth"] #set new material to variable
+        activeObject.data.materials.append(mat) #add the material to the object
+        bpy.context.object.active_material.diffuse_color = (0.2, 0.2, 0.9, 1)
+    else:
+        activeObject = bpy.context.active_object #Set active object to variable
+        mat = bpy.data.materials.new(name="MatModalPointsTeeth") #set new material to variable
+        activeObject.data.materials.append(mat) #add the material to the object
+        bpy.context.object.active_material.diffuse_color = (0.2, 0.2, 0.9, 1)
+
+    bpy.ops.object.select_all(action='DESELECT')
+    obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+
+
+class CriaBezierUnidoTeeth(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "mesh.add_curva_bezier_unido_teeth"
+    bl_label = "Create Points Line Teeth"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+
+        CriaBezierUnidoTeethDef(self, context)
+
+        return {'FINISHED'}
+
+bpy.utils.register_class(CriaBezierUnidoTeeth)
+
+def BezierCortaDuplaTeethDef(self, context):
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.editmode_toggle()
+    bpy.ops.mesh.select_all(action='DESELECT')
+    bpy.ops.object.editmode_toggle()
+
+    objInicial = obj.name
+
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects['myCurve'].select_set(True)
+    bpy.context.view_layer.objects.active = bpy.data.objects['myCurve']
+
+    bpy.ops.object.convert(target='MESH')
+
+    # Revoncerte em linha
+#    bpy.ops.object.convert(target='CURVE')
+#    bpy.context.object.data.bevel_depth = 0.5
+
+#    bpy.ops.object.convert(target='MESH')
+
+    bpy.ops.object.editmode_toggle()
+    bpy.ops.mesh.select_all(action='SELECT')
+
+
+    # Cria vertex group
+
+    objeto = bpy.data.objects['myCurve']
+    vg = objeto.vertex_groups.new(name="Apagar")
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.object.vertex_group_assign()
+
+
+
+    bpy.ops.object.editmode_toggle()
+
+    bpy.ops.object.join()
+
+    bpy.ops.object.editmode_toggle()
+
+    context = bpy.context
+    obj = context.active_object
+
+
+    bpy.data.objects[objInicial].select_set(True)
+    bpy.context.view_layer.objects.active = bpy.data.objects[objInicial]
+
+
+    bpy.ops.object.join()
+
+    # Corta
+    bpy.ops.object.editmode_toggle()
+
+
+    bpy.ops.mesh.select_all(action='SELECT')
+    bpy.ops.mesh.intersect(mode='SELECT')
+    bpy.ops.mesh.select_all(action='DESELECT')
+
+# --------
+
+    groupName = 'Apagar'
+
+
+    obj = bpy.context.view_layer.objects.active
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='DESELECT')
+    bpy.ops.object.vertex_group_set_active(group=groupName)
+    bpy.ops.object.vertex_group_select()
+
+    bpy.ops.mesh.delete(type='VERT')
+
+    bpy.ops.object.editmode_toggle()
+
+    bpy.ops.mesh.separate(type='LOOSE')
+
+    # Centralizar origem
+
+    bpy.ops.wm.tool_set_by_id(name="builtin.select_box")
+
+
+
+class BezierCortaDuplaTeeth(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "object.bezier_corta_dupla_teeth"
+    bl_label = "Create Points Line Teeth "
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+
+        BezierCortaDuplaTeethDef(self, context)
+
+        return {'FINISHED'}
+
+bpy.utils.register_class(BezierCortaDuplaTeeth)

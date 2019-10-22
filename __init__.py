@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191020a"
+VERSION = "20191022a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -722,6 +722,23 @@ class ORTOG_PT_Segmentation(bpy.types.Panel):
         row = layout.row()
         row = layout.row()
         circle=row.operator("object.booleana_union_multipla", text="MULTIPLE UNION", icon="STICKY_UVS_LOC")
+
+        row = layout.row()
+        row.label(text="Teeth Segmentation Tube:")
+
+        row = layout.row()
+        circle=row.operator("wm.modal_cria_pontos_teeth", text="Create Points", icon="CURVE_DATA")
+
+        row = layout.row()
+        row.operator("mesh.add_curva_bezier_unido_teeth", icon='CURVE_BEZCIRCLE', text="Create Bezier Tube")
+
+        row = layout.row()
+        circle=row.operator("object.bezier_corta_dupla_teeth", text="Cut Line Teeth!", icon="MOD_THICKNESS")
+
+        row = layout.row()
+        row.label(text="Teeth Segmentation Line:")
+
+
 
         row = layout.row()
         row.label(text="Separated Teeth:")
