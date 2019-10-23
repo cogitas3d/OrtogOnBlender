@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191022d"
+VERSION = "20191023a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -450,6 +450,10 @@ class ORTOG_PT_CTScanRec(bpy.types.Panel):
         row.operator("object.gera_dir_nome_paciente_tomo_auto", text="SAVE!", icon="FILE_TICK")
 '''
 
+class ENUM_VALUES_ARCHSCOLLISION:
+    DEFAULT = 'Default'
+    INVERTED = 'Inverted'
+
 class ORTOG_PT_ImportaArc(bpy.types.Panel):
     bl_label = "Import Archs"
     bl_region_type = 'UI'
@@ -496,19 +500,45 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
         row = layout.row()
         row.label(text="Archs Collision:")
 
-        row = layout.row()
-        linha=row.operator("object.colisao_arcos", text="Solve Collision", icon="STYLUS_PRESSURE")
+# ----------------------
 
         row = layout.row()
-        row = layout.row()
-        linha=row.operator("object.aplica_anima_cor", text="Contact Color", icon="COLORSET_01_VEC")
+        row.prop(scn, "my_enum_archscollision")
 
-        row = layout.row()
-        row.label(text="Press ESC to enable Apply!")
+        my_enum_ct = scn.my_enum_archscollision
 
-        row = layout.row()
-        linha=row.operator("object.trava_arco", text="Apply!", icon="FREEZE")
+        if my_enum_ct == ENUM_VALUES_ARCHSCOLLISION.DEFAULT:
 
+            row = layout.row()
+            linha=row.operator("object.colisao_arcos", text="Solve Collision Default", icon="STYLUS_PRESSURE")
+
+            row = layout.row()
+            row = layout.row()
+            linha=row.operator("object.aplica_anima_cor", text="Contact Color", icon="COLORSET_01_VEC")
+
+            row = layout.row()
+            row.label(text="Press ESC to enable Apply!")
+
+            row = layout.row()
+            linha=row.operator("object.trava_arco", text="Apply!", icon="FREEZE")
+
+
+        if my_enum_ct == ENUM_VALUES_ARCHSCOLLISION.INVERTED:
+
+            row = layout.row()
+            linha=row.operator("object.colisao_arcos_inverso", text="Solve Collision Inverted", icon="STYLUS_PRESSURE")
+
+            row = layout.row()
+            row = layout.row()
+            linha=row.operator("object.aplica_anima_cor", text="Contact Color", icon="COLORSET_01_VEC")
+
+            row = layout.row()
+            row.label(text="Press ESC to enable Apply!")
+
+            row = layout.row()
+            linha=row.operator("object.trava_arco", text="Apply!", icon="FREEZE")
+
+# ----------------------
 
         row = layout.row()
         row = layout.row()
@@ -2956,6 +2986,12 @@ def register():
         default = "1430"
       )
     bpy.utils.register_class(ORTOG_PT_GraphicRefs)
+
+    bpy.types.Scene.my_enum_archscollision = bpy.props.EnumProperty(
+        name="Select",
+        description= "",
+        items=[(ENUM_VALUES_ARCHSCOLLISION.DEFAULT, "DEFAULT", "Default gravity."), (ENUM_VALUES_ARCHSCOLLISION.INVERTED, "INVERTED", "Inverted gravity.")],)
+
     bpy.utils.register_class(ORTOG_PT_ImportaArc)
 #    bpy.data.scenes['Scene'].render.filepath
     bpy.utils.register_class(AlinhaTresPontos)

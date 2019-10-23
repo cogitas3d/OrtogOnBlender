@@ -1376,6 +1376,9 @@ def BezierCortaDuplaTeethDef(self, context):
 
     bpy.ops.mesh.separate(type='LOOSE')
 
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='MEDIAN')
+
+
     # Centralizar origem
 
     bpy.ops.wm.tool_set_by_id(name="builtin.select_box")
@@ -1395,3 +1398,90 @@ class BezierCortaDuplaTeeth(Operator, AddObjectHelper):
         return {'FINISHED'}
 
 bpy.utils.register_class(BezierCortaDuplaTeeth)
+
+def PreparaMalhaCorteDef(self, context):
+    bpy.ops.object.prepara_impressao_3d()
+    bpy.context.object.modifiers["Remesh"].use_remove_disconnected = False
+#    bpy.context.object.modifiers["Remesh"].octree_depth = 9
+    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Remesh")
+
+    bpy.ops.object.mode_set(mode = 'EDIT')
+    bpy.ops.mesh.select_mode(type="EDGE")
+    bpy.ops.mesh.select_all(action = 'DESELECT')
+
+
+class PreparaMalhaCorte(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "object.prepara_malha_corte"
+    bl_label = "Prepare Mesh to Cut"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+
+        PreparaMalhaCorteDef(self, context)
+
+        return {'FINISHED'}
+
+bpy.utils.register_class(PreparaMalhaCorte)
+
+'''
+def CortaMalhaKnifeDef(self, context):
+    bpy.ops.object.mode_set(mode = 'EDIT')
+    bpy.ops.mesh.select_mode(type="EDGE")
+    bpy.ops.mesh.select_all(action = 'DESELECT')
+#    bpy.ops.mesh.knife_tool()
+    print("AQUIII 1")
+    bpy.ops.mesh.knife_tool()
+    print("AQUII 2")
+
+class CortaMalhaKnife(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "object.corta_malha_knife"
+    bl_label = "Knife Cut"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+
+        CortaMalhaKnifeDef(self, context)
+
+        return {'FINISHED'}
+
+bpy.utils.register_class(CortaMalhaKnife)
+'''
+
+def SeparaEdgeSplitDef(self, context):
+
+    bpy.ops.object.mode_set(mode = 'OBJECT')
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.mode_set(mode = 'EDIT')
+    bpy.ops.mesh.select_mode(type="VERT")
+    bpy.ops.mesh.edge_split()
+    bpy.ops.mesh.select_mode(type="EDGE")
+    bpy.ops.mesh.select_all(action = 'SELECT')
+    bpy.ops.mesh.separate(type='LOOSE')
+    bpy.ops.object.mode_set(mode = 'OBJECT')
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='MEDIAN')
+    bpy.ops.wm.tool_set_by_id(name="builtin.select_box")
+
+    bpy.ops.object.select_all(action='DESELECT')
+    obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+
+
+class SeparaEdgeSplit(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "object.separa_edge_split"
+    bl_label = "Edge Split Teeth Separation"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+
+        SeparaEdgeSplitDef(self, context)
+
+        return {'FINISHED'}
+
+bpy.utils.register_class(SeparaEdgeSplit)
