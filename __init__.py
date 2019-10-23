@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191022a"
+VERSION = "20191022d"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -738,7 +738,14 @@ class ORTOG_PT_Segmentation(bpy.types.Panel):
         row = layout.row()
         row.label(text="Teeth Segmentation Line:")
 
+        row = layout.row()
+        circle=row.operator("object.prepara_malha_corte", text="Prepare Mesh to Cut", icon="ALEMBIC")
 
+        row = layout.row()
+        circle=row.operator("mesh.knife_tool", text="Knife Cut", icon="SCULPTMODE_HLT")
+
+        row = layout.row()
+        circle=row.operator("object.separa_edge_split", text="Edge Split Separation", icon="MATSPHERE")
 
         row = layout.row()
         row.label(text="Separated Teeth:")

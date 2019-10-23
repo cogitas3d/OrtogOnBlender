@@ -8,7 +8,7 @@ from random import randint
 class MessageObjSelecionados(bpy.types.Operator):
     bl_idname = "object.dialog_operator_obj_selecionados"
     bl_label = "You have to select 6 objects!"
-  
+
     def execute(self, context):
         message = ("You have to select 6 objects!")
         self.report({'INFO'}, message)
@@ -31,13 +31,13 @@ def ImportaArmatureDef(self, context):
 
     if platform.system() == "Linux" or platform.system() == "Darwin":
         dirScript = bpy.utils.user_resource('SCRIPTS')
-        
+
         blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
         section   = "\\Object\\"
         object    = "Armature_Head"
-        
+
     if platform.system() == "Windows":
-        dirScript = 'C:/OrtogOnBlender/Blender280/2.80/scripts/' 
+        dirScript = 'C:/OrtogOnBlender/Blender280/2.80/scripts/'
 
         blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
         section   = "\\Object\\"
@@ -48,10 +48,10 @@ def ImportaArmatureDef(self, context):
     filename  = object
 
     bpy.ops.wm.append(
-        filepath=filepath, 
+        filepath=filepath,
         filename=filename,
         directory=directory)
-        
+
  #   bpy.ops.wm.append(filename=filename, directory=directory)
 
     # APAGA OBJETOS EXCEDENTES
@@ -75,7 +75,7 @@ class ImportaArmature(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.importa_armature"
     bl_label = "Importa estrutura de bones"
-    
+
     def execute(self, context):
         ImportaArmatureDef(self, context)
         return {'FINISHED'}
@@ -89,9 +89,9 @@ def ConfiguraCabecaDef(self, context):
  #   scn = context.scene
 
 
- 
+
     ob=bpy.data.objects["Armature_Head"]
-        
+
     bpy.ops.object.mode_set(mode='EDIT')
     mesh=bmesh.from_edit_mesh(bpy.context.object.data)
     for v in mesh.verts:
@@ -101,7 +101,7 @@ def ConfiguraCabecaDef(self, context):
     bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.object.vertex_group_assign()
     bpy.ops.object.mode_set(mode='OBJECT')
-        
+
     activeObject = bpy.context.active_object #Set active object to variable
     mat = bpy.data.materials.new(name="MaterialCabeca") #set new material to variable
     activeObject.data.materials.append(mat) #add the material to the object
@@ -123,7 +123,7 @@ def ConfiguraCabecaDef(self, context):
     b=o.data.bones['ca']
     b.select=True
     o.data.bones.active=b
-     
+
     bpy.ops.pose.constraint_add(type='CHILD_OF')
     bpy.context.object.pose.bones["ca"].constraints["Child Of"].target = bpy.data.objects["ca"]
 
@@ -133,14 +133,14 @@ def ConfiguraCabecaDef(self, context):
     bpy.ops.constraint.childof_set_inverse(context_copy, constraint="Child Of", owner='BONE')
 
     bpy.ops.object.posemode_toggle()
-    armatureHead.hide_viewport=True  
+    armatureHead.hide_viewport=True
 
 
 class ConfiguraCabeca(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.configura_cabeca"
     bl_label = "Configura Cabeça"
-    
+
     def execute(self, context):
         ConfiguraCabecaDef(self, context)
         return {'FINISHED'}
@@ -164,7 +164,7 @@ def ConfiguraMaxilaDef(self, context):
     bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.object.vertex_group_assign()
     bpy.ops.object.mode_set(mode='OBJECT')
-    
+
     activeObject = bpy.context.active_object #Set active object to variable
     mat = bpy.data.materials.new(name="MaterialMaxila") #set new material to variable
     activeObject.data.materials.append(mat) #add the material to the object
@@ -186,7 +186,7 @@ def ConfiguraMaxilaDef(self, context):
     b=o.data.bones['Maxila.GUIA']
     b.select=True
     o.data.bones.active=b
- 
+
     bpy.ops.pose.constraint_add(type='CHILD_OF')
     bpy.context.object.pose.bones["Maxila.GUIA"].constraints["Child Of"].target = bpy.data.objects["ma"]
 
@@ -202,19 +202,19 @@ class ConfiguraMaxila(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.configura_maxila"
     bl_label = "Configura Maxila"
-    
+
     def execute(self, context):
         ConfiguraMaxilaDef(self, context)
         return {'FINISHED'}
 
 # CONFIGURA RAMO DIREITO
 def ConfiguraRamoDirDef(self, context):
-    
+
     context = bpy.context
     obj = context.active_object
  #   scn = context.scene
 
- 
+
     ob=bpy.data.objects["Armature_Head"]
 
     bpy.ops.object.mode_set(mode='EDIT')
@@ -248,7 +248,7 @@ def ConfiguraRamoDirDef(self, context):
     b=o.data.bones['rd']
     b.select=True
     o.data.bones.active=b
- 
+
     bpy.ops.pose.constraint_add(type='CHILD_OF')
     bpy.context.object.pose.bones["rd"].constraints["Child Of"].target = bpy.data.objects["rd"]
 
@@ -264,7 +264,7 @@ class ConfiguraRamoDir(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.configura_ramo_dir"
     bl_label = "Configura Ramo Direito"
-    
+
     def execute(self, context):
         ConfiguraRamoDirDef(self, context)
         return {'FINISHED'}
@@ -276,7 +276,7 @@ def ConfiguraRamoEsqDef(self, context):
     obj = context.active_object
  #   scn = context.scene
 
- 
+
     ob=bpy.data.objects["Armature_Head"]
 
     bpy.ops.object.mode_set(mode='EDIT')
@@ -288,7 +288,7 @@ def ConfiguraRamoEsqDef(self, context):
     bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.object.vertex_group_assign()
     bpy.ops.object.mode_set(mode='OBJECT')
-    
+
     activeObject = bpy.context.active_object #Set active object to variable
     mat = bpy.data.materials.new(name="MaterialRamoEsq") #set new material to variable
     activeObject.data.materials.append(mat) #add the material to the object
@@ -310,7 +310,7 @@ def ConfiguraRamoEsqDef(self, context):
     b=o.data.bones['re']
     b.select=True
     o.data.bones.active=b
- 
+
     bpy.ops.pose.constraint_add(type='CHILD_OF')
     bpy.context.object.pose.bones["re"].constraints["Child Of"].target = bpy.data.objects["re"]
 
@@ -326,14 +326,14 @@ class ConfiguraRamoEsq(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.configura_ramo_esq"
     bl_label = "Configura Ramo Esquerdo"
-    
+
     def execute(self, context):
         ConfiguraRamoEsqDef(self, context)
         return {'FINISHED'}
 
 # CONFIGURA RAMO DA MANDÍBULA
 def ConfiguraCorpoMandDef(self, context):
-    
+
     context = bpy.context
     obj = context.active_object
  #   scn = context.scene
@@ -373,7 +373,7 @@ def ConfiguraCorpoMandDef(self, context):
     b=o.data.bones['Corpo_Mandibular.GUIA']
     b.select=True
     o.data.bones.active=b
- 
+
     bpy.ops.pose.constraint_add(type='CHILD_OF')
     bpy.context.object.pose.bones["Corpo_Mandibular.GUIA"].constraints["Child Of"].target = bpy.data.objects["cm"]
 
@@ -390,7 +390,7 @@ class ConfiguraCorpoMand(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.configura_corpo_mand"
     bl_label = "Configura Mento"
-    
+
     def execute(self, context):
         ConfiguraCorpoMandDef(self, context)
         return {'FINISHED'}
@@ -418,7 +418,7 @@ def ConfiguraMentoDef(self, context):
     bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.object.vertex_group_assign()
     bpy.ops.object.mode_set(mode='OBJECT')
-    
+
     activeObject = bpy.context.active_object #Set active object to variable
     mat = bpy.data.materials.new(name="MaterialMento") #set new material to variable
     activeObject.data.materials.append(mat) #add the material to the object
@@ -441,7 +441,7 @@ def ConfiguraMentoDef(self, context):
     b=o.data.bones['me']
     b.select=True
     o.data.bones.active=b
- 
+
     bpy.ops.pose.constraint_add(type='CHILD_OF')
     bpy.context.object.pose.bones["me"].constraints["Child Of"].target = bpy.data.objects["me"]
 
@@ -458,7 +458,7 @@ def ConfiguraMentoDef(self, context):
 
     bpy.ops.object.select_all(action='DESELECT')
     a.select_set(True)
-    b.select_set(True) 
+    b.select_set(True)
     bpy.context.view_layer.objects.active = a
     bpy.ops.object.parent_set()
 
@@ -466,7 +466,7 @@ class ConfiguraMento(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.configura_mento"
     bl_label = "Configura Mento"
-    
+
     def execute(self, context):
         ConfiguraMentoDef(self, context)
         return {'FINISHED'}
@@ -489,7 +489,7 @@ def ConfOsteotomiaAutoDef(self, context):
         for i in objetos_selecionados:
             Obj_Hor.append(i.location[0])
 
-        # Ramos da mandíbula    
+        # Ramos da mandíbula
         MaxHor = max(Obj_Hor)
         IndexMax = [i for i, j in enumerate(Obj_Hor) if j == MaxHor]
         re = objetos_selecionados[int(IndexMax[0])]
@@ -530,7 +530,7 @@ def ConfOsteotomiaAutoDef(self, context):
         Obj_Ver = []
         for i in objetos_selecionados:
             Obj_Ver.append(i.location[2])
-            
+
         MaxVer = max(Obj_Ver)
         IndexMax = [i for i, j in enumerate(Obj_Ver) if j == MaxVer]
         ma = objetos_selecionados[int(IndexMax[0])]
@@ -585,7 +585,7 @@ def ConfOsteotomiaAutoDef(self, context):
             bpy.ops.object.transforms_to_deltas(mode='ALL')
             bpy.ops.anim.ortog_loc_rot()
             bpy.ops.object.select_all(action='DESELECT')
-    
+
         bpy.context.scene.frame_end = 100
         bpy.context.scene.frame_current = 100
 
@@ -598,10 +598,10 @@ class ConfOsteotomiaAuto(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.conf_osteo_auto"
     bl_label = "Configura osteotomias automaticamente"
-    
+
     def execute(self, context):
        ConfOsteotomiaAutoDef(self, context)
-       return {'FINISHED'} 
+       return {'FINISHED'}
 
 # OSTEOTOMIA GERALAUTOMÁTICA
 
@@ -617,7 +617,7 @@ def OsteoMoleAutomaticaDef():
 
     # Coloca o cursor na pocição do primeiro objeto
 
-    #Adiciona e apaga em modo de edição 
+    #Adiciona e apaga em modo de edição
     bpy.ops.object.armature_add(radius=1, view_align=False, enter_editmode=False)
     bpy.ops.object.editmode_toggle()
     bpy.ops.armature.select_all(action='TOGGLE')
@@ -644,7 +644,7 @@ def OsteoMoleAutomaticaDef():
         for bone in armature.bones:
 	        print(bone.name)
 	        LisObjetos.append(bone.name)
-	    
+
     print("FIM")
     print(LisObjetos)
 
@@ -686,19 +686,19 @@ def OsteoMoleAutomaticaDef():
         bpy.ops.object.vertex_group_assign()
 
     # Vertex Proximtiy
-    for i in LisObjetos:    
+    for i in LisObjetos:
         bpy.ops.object.modifier_add(type='VERTEX_WEIGHT_PROXIMITY')
         bpy.context.object.modifiers["VertexWeightProximity"].vertex_group = i
         bpy.context.object.modifiers["VertexWeightProximity"].target = bpy.data.objects[i]
         bpy.context.object.modifiers["VertexWeightProximity"].proximity_mode = 'GEOMETRY'
-        bpy.context.object.modifiers["VertexWeightProximity"].min_dist = 60
-        bpy.context.object.modifiers["VertexWeightProximity"].max_dist = 12
+        bpy.context.object.modifiers["VertexWeightProximity"].min_dist = 25 #60
+        bpy.context.object.modifiers["VertexWeightProximity"].max_dist = 8 #12
         bpy.context.object.modifiers["VertexWeightProximity"].falloff_type = 'SHARP'
         bpy.context.object.modifiers["VertexWeightProximity"].name = i
         bpy.context.object.modifiers[i].show_expanded = False
 
     # Converte em objeto
-    bpy.ops.object.mode_set(mode='OBJECT')    
+    bpy.ops.object.mode_set(mode='OBJECT')
     bpy.ops.object.convert(target='MESH')
 
     # Parenteia Armature
@@ -734,7 +734,7 @@ def OsteoMoleAutomaticaDef():
         b=o.data.bones[i]
         b.select=True
         o.data.bones.active=b
-         
+
         bpy.ops.pose.constraint_add(type='CHILD_OF')
         bpy.context.object.pose.bones[i].constraints["Child Of"].target = bpy.data.objects[i]
 
@@ -744,17 +744,17 @@ def OsteoMoleAutomaticaDef():
         bpy.ops.constraint.childof_set_inverse(context_copy, constraint="Child Of", owner='BONE')
 
         bpy.ops.object.posemode_toggle()
-        
+
     bpy.ops.transform.translate(value=(0,0,0))
 
 class OsteoMoleAutomatica(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.conf_osteo_mole_auto"
     bl_label = "Configura osteotomias automaticamente"
-    
+
     def execute(self, context):
        OsteoMoleAutomaticaDef()
-       return {'FINISHED'} 
+       return {'FINISHED'}
 
 bpy.utils.register_class(OsteoMoleAutomatica)
 
@@ -784,10 +784,10 @@ class NomeFace(bpy.types.Operator):
                     return False
             else:
                 return False
-    
+
     def execute(self, context):
         RenomearObjeto("FaceMesh")
         bpy.context.object.hide_set(True)
-        return {'FINISHED'} 
+        return {'FINISHED'}
 
 bpy.utils.register_class(NomeFace)
