@@ -691,8 +691,8 @@ def OsteoMoleAutomaticaDef():
         bpy.context.object.modifiers["VertexWeightProximity"].vertex_group = i
         bpy.context.object.modifiers["VertexWeightProximity"].target = bpy.data.objects[i]
         bpy.context.object.modifiers["VertexWeightProximity"].proximity_mode = 'GEOMETRY'
-        bpy.context.object.modifiers["VertexWeightProximity"].min_dist = 25 #60
-        bpy.context.object.modifiers["VertexWeightProximity"].max_dist = 8 #12
+        bpy.context.object.modifiers["VertexWeightProximity"].min_dist = 60 #25
+        bpy.context.object.modifiers["VertexWeightProximity"].max_dist = 12 #8
         bpy.context.object.modifiers["VertexWeightProximity"].falloff_type = 'SHARP'
         bpy.context.object.modifiers["VertexWeightProximity"].name = i
         bpy.context.object.modifiers[i].show_expanded = False
