@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191024a"
+VERSION = "20191024b"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -1186,6 +1186,15 @@ class ORTOG_PT_PontosAnatomicos(bpy.types.Panel):
         context = bpy.context
         obj = context.object
         scn = context.scene
+
+        row = layout.row()
+        row.label(text="Mode:")
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
         row.prop(scn, "my_enum_ana")

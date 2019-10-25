@@ -99,6 +99,7 @@ class Orbital_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.orbital_right_pt"
     bl_label = "Orbital right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -121,6 +122,7 @@ class Orbital_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.orbital_left_pt"
     bl_label = "Orbital left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -143,6 +145,7 @@ class N_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.n_pt"
     bl_label = "N point"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -165,6 +168,7 @@ class Po_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.po_right"
     bl_label = "Po right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -187,6 +191,7 @@ class Po_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.po_left"
     bl_label = "Po left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -209,6 +214,7 @@ class Pt_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.pt_right"
     bl_label = "Pt right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -231,6 +237,7 @@ class Pt_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.pt_left"
     bl_label = "Pt left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -253,6 +260,7 @@ class Ba_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.ba_pt"
     bl_label = "Ba point"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -275,6 +283,7 @@ class S_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.s_pt"
     bl_label = "S point"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -299,6 +308,7 @@ class U1_Tip_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.u1_tip_pt"
     bl_label = "U1 Tip"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -321,6 +331,7 @@ class U1_LabGenBor_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.u1_labgenbor_pt"
     bl_label = "U1 Labial Gengival Border"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -343,6 +354,7 @@ class U1_LinGenBor_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.u1_lingenbor_pt"
     bl_label = "U1 Lingual Gengival Border"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -365,6 +377,7 @@ class M_U6_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.m_u6_pt"
     bl_label = "M U6"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -387,6 +400,7 @@ class D_U6_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.d_u6_pt"
     bl_label = "D U6"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -409,6 +423,7 @@ class U6_Occlusal_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.u6_occlusal_pt"
     bl_label = "U6 Occlusal"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -431,6 +446,7 @@ class PNS_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.pns_pt"
     bl_label = "PNS point"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -453,6 +469,7 @@ class A_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.a_pt"
     bl_label = "A point"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -475,6 +492,7 @@ class ANS_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.ans_pt"
     bl_label = "ANS point"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -497,6 +515,7 @@ class U1_Root_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.u1_root_pt"
     bl_label = "U1 Root"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -521,6 +540,7 @@ class L1_Tip_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.l1_tip_pt"
     bl_label = "L1 Tip"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -543,6 +563,7 @@ class L1_Root_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.l1_root_pt"
     bl_label = "L1 Root"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -565,6 +586,7 @@ class L1_LabGenBor_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.l1_labgenbor_pt"
     bl_label = "L1 Labial Gengival Border"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -587,6 +609,7 @@ class L1_LinGenBor_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.l1_lingenbor_pt"
     bl_label = "L1 Lingual Gengival Border"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -609,6 +632,7 @@ class B_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.b_pt"
     bl_label = "B point"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -631,6 +655,7 @@ class M_L6_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.m_l6_pt"
     bl_label = "M L6"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -653,6 +678,7 @@ class L6_Occlusal_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.l6_occlusal_pt"
     bl_label = "L6 Occlusal"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -675,6 +701,7 @@ class D_L6_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.d_l6_pt"
     bl_label = "D L6"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -697,6 +724,7 @@ class MidRamusRight_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.mid_ramus_right_pt"
     bl_label = "Mid Ramus right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -719,6 +747,7 @@ class MidRamusLeft_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.mid_ramus_left_pt"
     bl_label = "Mid Ramus left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -741,6 +770,7 @@ class R_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.r_right_pt"
     bl_label = "R right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -763,6 +793,7 @@ class R_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.r_left_pt"
     bl_label = "R left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -785,6 +816,7 @@ class Go_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.go_right_pt"
     bl_label = "Go right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -807,6 +839,7 @@ class Go_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.go_left_pt"
     bl_label = "Go left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -829,6 +862,7 @@ class Ar_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.ar_right_pt"
     bl_label = "Ar right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -851,6 +885,7 @@ class Ar_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.ar_left_pt"
     bl_label = "Ar left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -873,6 +908,7 @@ class Sigmoid_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.sigmoid_right_pt"
     bl_label = "Sigmoid right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -895,6 +931,7 @@ class Sigmoid_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.sigmoid_left_pt"
     bl_label = "Sigmoid left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -917,6 +954,7 @@ class Co_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.co_right_pt"
     bl_label = "Co right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -939,6 +977,7 @@ class Co_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.co_left_pt"
     bl_label = "Co left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -961,6 +1000,7 @@ class Pg_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.pg_pt"
     bl_label = "Pg point"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -983,6 +1023,7 @@ class Gn_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.gn_pt"
     bl_label = "Gn point"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1005,6 +1046,7 @@ class Me_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.me_pt"
     bl_label = "Me point"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1028,6 +1070,7 @@ class Condylar_Process_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.condylar_process_left_pt"
     bl_label = "Condylar Process left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1052,6 +1095,7 @@ class Condylar_Process_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.condylar_process_right_pt"
     bl_label = "Condylar Process right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1076,6 +1120,7 @@ class Coronoid_Process_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.coronoid_process_left_pt"
     bl_label = "Coronoid Process left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1100,6 +1145,7 @@ class Coronoid_Process_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.coronoid_process_right_pt"
     bl_label = "Coronoid Process right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1124,6 +1170,7 @@ class Go_Ramus_Fracure_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.go_ramus_fracure_left_pt"
     bl_label = "Mid Go-Ramus Fracure left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1148,6 +1195,7 @@ class Go_Ramus_Fracure_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.go_ramus_fracure_right_pt"
     bl_label = "Mid Go-Ramus Fracure right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1172,6 +1220,7 @@ class Mid_Mandibula_Angle_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.mid_mandibula_angle_left_pt"
     bl_label = "Mid Mandibula Angle left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1195,6 +1244,7 @@ class Mid_Mandibula_Angle_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.mid_mandibula_angle_right_pt"
     bl_label = "Mid Mandibula Angle right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1219,6 +1269,7 @@ class Mid_Upper_Incisors_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.mid_upper_incisors_pt"
     bl_label = "Mid Upper Incisors"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1245,6 +1296,7 @@ class Tooth_8_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.tooth_8_pt"
     bl_label = "Tooth 8"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1269,6 +1321,7 @@ class Tooth_9_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.tooth_9_pt"
     bl_label = "Tooth 9"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1293,6 +1346,7 @@ class Tooth_6_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.tooth_6_pt"
     bl_label = "Tooth 6"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1317,6 +1371,7 @@ class Tooth_11_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.tooth_11_pt"
     bl_label = "Tooth 11"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1341,6 +1396,7 @@ class Tooth_3_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.tooth_3_pt"
     bl_label = "Tooth 3"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1365,6 +1421,7 @@ class Tooth_14_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.tooth_14_pt"
     bl_label = "Tooth 14"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1389,6 +1446,7 @@ class Tooth_24_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.tooth_24_pt"
     bl_label = "Tooth 24"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1413,6 +1471,7 @@ class Tooth_25_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.tooth_25_pt"
     bl_label = "Tooth 25"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1437,6 +1496,7 @@ class Tooth_22_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.tooth_22_pt"
     bl_label = "Tooth 22"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1461,6 +1521,7 @@ class Tooth_27_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.tooth_27_pt"
     bl_label = "Tooth 27"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1485,6 +1546,7 @@ class Tooth_19_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.tooth_19_pt"
     bl_label = "Tooth 19"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1509,6 +1571,7 @@ class Tooth_30_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.tooth_30_pt"
     bl_label = "Tooth 30"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1536,6 +1599,7 @@ class ST_Glabella_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.st_glabella_pt"
     bl_label = "ST Glabella"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1561,6 +1625,7 @@ class ST_Nasion_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.st_nasion_pt"
     bl_label = "ST Nasion"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1585,6 +1650,7 @@ class Bridge_Nose_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.bridge_nose_pt"
     bl_label = "Bridge of Nose"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1609,6 +1675,7 @@ class Tip_Nose_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.tip_nose_pt"
     bl_label = "Tip of Nose"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1632,7 +1699,8 @@ bpy.utils.register_class(Tip_Nose_pt)
 class Columella_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.columella_pt"
-    bl_label = "Tip of Nose"
+    bl_label = "Columalla"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1657,6 +1725,7 @@ class Subnasale_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.subnasale_pt"
     bl_label = "Subnasale"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1681,6 +1750,7 @@ class ST_A_point_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.st_a_point_pt"
     bl_label = "ST A point"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1705,6 +1775,7 @@ class Upper_Lip_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.upper_lip_pt"
     bl_label = "Upper Lip"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1729,6 +1800,7 @@ class Stomion_Superius_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.stomion_superius_pt"
     bl_label = "Stomion Superius"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1753,6 +1825,7 @@ class Stomion_Inferius_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.stomion_inferius_pt"
     bl_label = "Stomion Inferius"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1777,6 +1850,7 @@ class Lower_Lip_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.lower_lip_pt"
     bl_label = "Lower Lip"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1801,6 +1875,7 @@ class ST_B_point_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.st_b_point_pt"
     bl_label = "ST B point"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1826,6 +1901,7 @@ class ST_Pogonion_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.st_pogonion_pt"
     bl_label = "ST Pogonion"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1851,6 +1927,7 @@ class ST_Gnathion_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.st_gnathion_pt"
     bl_label = "ST Gnathion"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1876,6 +1953,7 @@ class ST_Menton_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.st_menton_pt"
     bl_label = "ST Menton"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1901,6 +1979,7 @@ class Throat_point_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.throat_point_pt"
     bl_label = "Throat point"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1925,6 +2004,7 @@ class Subpupil_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.subpupil_right_pt"
     bl_label = "Subpupil right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1949,6 +2029,7 @@ class Subpupil_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.subpupil_left_pt"
     bl_label = "Subpupil left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1973,6 +2054,7 @@ class CB_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.cb_right_pt"
     bl_label = "CB right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -1998,6 +2080,7 @@ class CB_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.cb_left_pt"
     bl_label = "CB left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -2022,6 +2105,7 @@ class OR_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.or_right_pt"
     bl_label = "OR right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -2047,6 +2131,7 @@ class OR_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.or_left_pt"
     bl_label = "OR left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -2071,6 +2156,7 @@ class Cheekbone_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.cheekbone_left_pt"
     bl_label = "Cheekbone left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -2095,6 +2181,7 @@ class Cheekbone_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.cheekbone_right_pt"
     bl_label = "Cheekbone right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -2120,6 +2207,7 @@ class SP_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.sp_right_pt"
     bl_label = "SP right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -2144,6 +2232,7 @@ class SP_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.sp_left_pt"
     bl_label = "SP left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -2169,6 +2258,7 @@ class AB_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.ab_right_pt"
     bl_label = "AB right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -2194,6 +2284,7 @@ class AB_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.ab_left_pt"
     bl_label = "AB left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -2378,6 +2469,7 @@ class testaPontos(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.testa_pontos"
     bl_label = "TestaPontos"
+    bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
         testaPontosDef(self, context)

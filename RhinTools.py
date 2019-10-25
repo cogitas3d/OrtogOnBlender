@@ -14,6 +14,7 @@ class Medial_Canthus_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.medial_canthus_right_pt"
     bl_label = "Medial Canthus right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -38,6 +39,7 @@ class Medial_Canthus_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.medial_canthus_left_pt"
     bl_label = "Medial Canthus left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -62,6 +64,7 @@ class Radix_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.radix_pt"
     bl_label = "Radix"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -86,6 +89,7 @@ class Anterior_Nostril_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.anterior_nostril_left_pt"
     bl_label = "Anterior Nostril left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -111,6 +115,7 @@ class Anterior_Nostril_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.anterior_nostril_right_pt"
     bl_label = "Anterior Nostril right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -136,6 +141,7 @@ class Posterior_Nostril_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.posterior_nostril_left_pt"
     bl_label = "Posterior Nostril left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -161,6 +167,7 @@ class Posterior_Nostril_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.posterior_nostril_right_pt"
     bl_label = "Posterior Nostril right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -185,6 +192,7 @@ class Rhinion_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.rhinion_pt"
     bl_label = "Rhinion"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -209,6 +217,7 @@ class Alar_Groove_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.alar_groove_right_pt"
     bl_label = "Alar Groove right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -233,6 +242,7 @@ class Alar_Groove_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.alar_groove_left_pt"
     bl_label = "Alar Groove left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -257,6 +267,7 @@ class Supratip_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.supratip_pt"
     bl_label = "Supratip"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -281,6 +292,7 @@ class Infratip_Lobule_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.infratip_lobule_pt"
     bl_label = "Infratip Lobule"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -305,6 +317,7 @@ class Alar_Rim_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.alar_rim_right_pt"
     bl_label = "Alar Rim right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -329,6 +342,7 @@ class Alar_Rim_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.alar_rim_left_pt"
     bl_label = "Alar Rim left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -353,6 +367,7 @@ class Columella_right_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.columella_right_pt"
     bl_label = "Columella right"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -377,6 +392,7 @@ class Columella_left_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.columella_left_pt"
     bl_label = "Columella left"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -402,6 +418,7 @@ class Trichion_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.trichion_pt"
     bl_label = "Trichion"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -426,6 +443,7 @@ class Submental_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.submental_pt"
     bl_label = "Submental"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -450,6 +468,7 @@ class Supraglabella_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.supraglabella_pt"
     bl_label = "Supraglabella"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -473,6 +492,7 @@ class Glabella_pt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.glabella_pt"
     bl_label = "Glabella"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
