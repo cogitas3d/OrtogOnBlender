@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191024d"
+VERSION = "20191025a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -493,8 +493,6 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
-
-        row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
@@ -644,8 +642,6 @@ class ORTOG_PT_GraphicRefs(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
-
-        row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
@@ -873,8 +869,6 @@ class ORTOG_PT_Segmentation(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
-
-        row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
@@ -1002,8 +996,6 @@ class ORTOG_PT_AlinhaFace(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
-
-        row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
@@ -1115,8 +1107,6 @@ class ORTOG_PT_AlinhaFaceCT(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
-
-        row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
@@ -1192,8 +1182,6 @@ class ORTOG_PT_PontosAnatomicos(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
-
-        row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
@@ -2326,8 +2314,6 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
-
-        row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
@@ -2450,8 +2436,6 @@ class ORTOG_PT_ArmatureDynamic(bpy.types.Panel):
 
             row = layout.row()
             linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
-
-            row = layout.row()
             linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
             row = layout.row()
@@ -2532,8 +2516,6 @@ class ORTOG_PT_MeasuringTools(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
-
-        row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
@@ -2614,8 +2596,6 @@ class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
-
-        row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
 
