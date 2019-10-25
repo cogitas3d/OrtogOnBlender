@@ -6,7 +6,7 @@ import math
 class MessageSelecioneObjAlinhar(bpy.types.Operator):
     bl_idname = "object.dialog_operator_selecione_alinhar"
     bl_label = "Please, select the object to be aligned!"
-  
+
     def execute(self, context):
         message = ("Please, select an object before!")
         self.report({'INFO'}, message)
@@ -21,7 +21,7 @@ bpy.utils.register_class(MessageSelecioneObjAlinhar)
 # Origin
 
 def EMP1aDef(self, context):
-    
+
     context = bpy.context
     obj = context.active_object
     scn = context.scene
@@ -36,6 +36,7 @@ class EMP1a(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp1a"
     bl_label = "EMP1a"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -48,7 +49,7 @@ class EMP1a(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         context = bpy.context
         obj = context.object
@@ -64,7 +65,7 @@ class EMP1a(bpy.types.Operator):
         return {'FINISHED'}
 
 def EMP2aDef(self, context):
-    
+
     context = bpy.context
     obj = context.active_object
     scn = context.scene
@@ -79,6 +80,7 @@ class EMP2a(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp2a"
     bl_label = "EMP2a"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -91,7 +93,7 @@ class EMP2a(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         context = bpy.context
         obj = context.object
@@ -107,7 +109,7 @@ class EMP2a(bpy.types.Operator):
         return {'FINISHED'}
 
 def EMP3aDef(self, context):
-    
+
     context = bpy.context
     obj = context.active_object
     scn = context.scene
@@ -122,6 +124,7 @@ class EMP3a(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp3a"
     bl_label = "EMP3a"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -134,7 +137,7 @@ class EMP3a(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         context = bpy.context
         obj = context.object
@@ -152,7 +155,7 @@ class EMP3a(bpy.types.Operator):
  # Align
 
 def EMP1bDef(self, context):
-    
+
     context = bpy.context
     obj = context.active_object
     scn = context.scene
@@ -167,6 +170,7 @@ class EMP1b(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp1b"
     bl_label = "EMP1b"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -179,7 +183,7 @@ class EMP1b(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         context = bpy.context
         obj = context.object
@@ -195,7 +199,7 @@ class EMP1b(bpy.types.Operator):
         return {'FINISHED'}
 
 def EMP2bDef(self, context):
-    
+
     context = bpy.context
     obj = context.active_object
     scn = context.scene
@@ -210,6 +214,7 @@ class EMP2b(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp2b"
     bl_label = "EMP2b"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -222,7 +227,7 @@ class EMP2b(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         context = bpy.context
         obj = context.object
@@ -239,7 +244,7 @@ class EMP2b(bpy.types.Operator):
 
 
 def EMP3bDef(self, context):
-    
+
     context = bpy.context
     obj = context.active_object
     scn = context.scene
@@ -254,6 +259,7 @@ class EMP3b(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.emp3b"
     bl_label = "EMP3b"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -266,7 +272,7 @@ class EMP3b(bpy.types.Operator):
             if found == True:
                 return False
 
-    
+
     def execute(self, context):
         context = bpy.context
         obj = context.object
@@ -298,7 +304,7 @@ def AlinhaTresPontosDef(self, context):
         # Seleciona pontos
         bpy.ops.object.mode_set(mode = 'OBJECT')
         obj = bpy.context.active_object
-        bpy.ops.object.mode_set(mode = 'EDIT') 
+        bpy.ops.object.mode_set(mode = 'EDIT')
         bpy.ops.mesh.select_mode(type="VERT")
         bpy.ops.mesh.select_all(action = 'DESELECT')
         bpy.ops.object.mode_set(mode = 'OBJECT')
@@ -322,7 +328,7 @@ def AlinhaTresPontosDef(self, context):
         # Seleciona os pontos
         bpy.ops.object.mode_set(mode = 'OBJECT')
         obj = bpy.context.active_object
-        bpy.ops.object.mode_set(mode = 'EDIT') 
+        bpy.ops.object.mode_set(mode = 'EDIT')
         bpy.ops.mesh.select_mode(type="VERT")
         bpy.ops.mesh.select_all(action = 'DESELECT')
         bpy.ops.object.mode_set(mode = 'OBJECT')
@@ -458,10 +464,10 @@ def AlinhaTresPontosDef(self, context):
 
 	if EMP2a.location[2] < EMP2b.location[2]:
 	    bpy.ops.transform.rotate(value=RotacaoY, orient_axis='Y', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(False, True, False), mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
-	    
+
 	if EMP2a.location[2] > EMP2b.location[2]:
 	    bpy.ops.transform.rotate(value=-abs(RotacaoY), orient_axis='Y', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(False, True, False), mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
-	    
+
 	# Desagrupa para cálculo
 
 	bpy.ops.object.select_all(action='DESELECT')
@@ -502,7 +508,7 @@ def AlinhaTresPontosDef(self, context):
 	    bpy.ops.transform.rotate(value=RotacaoX, orient_axis='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
 	if EMP1a.location[2] > EMP1b.location[2]:
 	    bpy.ops.transform.rotate(value=-abs(RotacaoX), orient_axis='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
-	    
+
 	# Desagrupa para cálculo
 
 	bpy.ops.object.select_all(action='DESELECT')
@@ -550,11 +556,11 @@ def AlinhaTresPontosDef(self, context):
 	EMP1a.select_set(True)
 	EMP2a.select_set(True)
 	EMP3a.select_set(True)
-	EMP4a.select_set(True)  
+	EMP4a.select_set(True)
 	EMP1b.select_set(True)
 	EMP2b.select_set(True)
 	EMP3b.select_set(True)
-	EMP4b.select_set(True)    
+	EMP4b.select_set(True)
 	bpy.ops.object.delete()
     '''
 
@@ -562,7 +568,7 @@ class AlinhaTresPontos(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.alinha_tres_pontos"
     bl_label = "Align 3 Points"
-    
+
     def execute(self, context):
         AlinhaTresPontosDef(self, context)
         return {'FINISHED'}
@@ -582,7 +588,7 @@ def AlinhaCranioFrankfurtDef():
                 ]
 
         edges = [[0,1]]
-            
+
         faces = []
 
         mesh_data = bpy.data.meshes.new("Apaga")
@@ -595,7 +601,7 @@ def AlinhaCranioFrankfurtDef():
         scene = bpy.context.scene
         #scene.objects.link(obj)
         bpy.context.collection.objects.link(obj)
-        
+
         bpy.ops.object.select_all(action='DESELECT')
         obj.select_set(True)
         context.view_layer.objects.active = obj
@@ -605,7 +611,7 @@ def AlinhaCranioFrankfurtDef():
     ObjDestino = context.view_layer.objects.active
     print(ObjDestino.name)
 
-    bpy.ops.mesh.add_linhabase(location=(0, 0, 0), rotation=(0, -1.5708, 0))    
+    bpy.ops.mesh.add_linhabase(location=(0, 0, 0), rotation=(0, -1.5708, 0))
     ObjOrigem = context.view_layer.objects.active
     print(ObjOrigem.name)
 
@@ -647,7 +653,7 @@ def AlinhaCranioFrankfurtDef():
 
     #LINHA LATERAL
 
-    bpy.ops.mesh.add_linhabase(location=(200, 0, 0), rotation=(1.5708, 0, 0))    
+    bpy.ops.mesh.add_linhabase(location=(200, 0, 0), rotation=(1.5708, 0, 0))
     ObjOrigem2 = context.view_layer.objects.active
     print("Origem:", ObjOrigem2.name)
 
@@ -691,7 +697,7 @@ def AlinhaCranioFrankfurtDef():
         bpy.data.objects[i].select_set(True)
         context.view_layer.objects.active = bpy.data.objects[i]
         bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
-        
+
     bpy.ops.object.select_all(action='DESELECT')
     ObjDestino2.select_set(True)
     ObjOrigem2.select_set(True)
@@ -709,9 +715,9 @@ def AlinhaCranioFrankfurtDef():
         bpy.ops.object.select_all(action='DESELECT')
         bpy.data.objects[i].select_set(True)
         PontoCentral .select_set(True)
-        context.view_layer.objects.active = PontoCentral 
+        context.view_layer.objects.active = PontoCentral
         bpy.ops.object.parent_set()
-        
+
     PontoCentral = bpy.context.object.location = 0,0,0
 
     # Desagrupa
@@ -726,7 +732,7 @@ class AlinhaCranioFrankfurt(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.alinha_cranio_frankfurt"
     bl_label = "Align 3 Points"
-    
+
     def execute(self, context):
         AlinhaCranioFrankfurtDef()
         return {'FINISHED'}
