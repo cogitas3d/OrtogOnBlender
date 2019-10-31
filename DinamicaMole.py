@@ -280,7 +280,7 @@ def CorrigeOssosArmature(Objeto, Armature, Osso):
     bpy.ops.object.mode_set(mode = 'OBJECT')
 
 
-def GeraNarisDinamicaMole():
+def GeraNarizDinamicaMole():
 
     foundTrichion = 'Trichion' in bpy.data.objects
     foundRadix = 'Radix' in bpy.data.objects
@@ -557,6 +557,44 @@ def GeraNarisDinamicaMole():
         print("Falta algum ponto anatômico no processo.")
 
 
+def CorrigeDeformacaoOperacoesDef(self, context):
+
+    # Maxila - correção
+    bpy.ops.object.modifier_add(type='VERTEX_WEIGHT_MIX')
+    bpy.context.object.modifiers["VertexWeightMix"].vertex_group_a = "ma"
+    bpy.context.object.modifiers["VertexWeightMix"].vertex_group_b = "cm"
+    bpy.context.object.modifiers["VertexWeightMix"].mix_mode = 'SUB'
+    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="VertexWeightMix")
+
+    # Corpo da mandíbula - correções
+    bpy.ops.object.modifier_add(type='VERTEX_WEIGHT_MIX')
+    bpy.context.object.modifiers["VertexWeightMix"].vertex_group_a = "cm"
+    bpy.context.object.modifiers["VertexWeightMix"].vertex_group_b = "ma"
+    bpy.context.object.modifiers["VertexWeightMix"].mix_mode = 'SUB'
+    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="VertexWeightMix")
+
+    bpy.ops.object.modifier_add(type='VERTEX_WEIGHT_MIX')
+    bpy.context.object.modifiers["VertexWeightMix"].vertex_group_a = "cm"
+    bpy.context.object.modifiers["VertexWeightMix"].vertex_group_b = "me"
+    bpy.context.object.modifiers["VertexWeightMix"].mix_mode = 'SUB'
+    bpy.context.object.modifiers["VertexWeightMix"].mask_constant = 0.30
+    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="VertexWeightMix")
+
+    # Cabeça - correçoes
+    bpy.ops.object.modifier_add(type='VERTEX_WEIGHT_MIX')
+    bpy.context.object.modifiers["VertexWeightMix"].vertex_group_a = "ca"
+    bpy.context.object.modifiers["VertexWeightMix"].vertex_group_b = "cm"
+    bpy.context.object.modifiers["VertexWeightMix"].mix_mode = 'SUB'
+    bpy.context.object.modifiers["VertexWeightMix"].mask_constant = 0.05
+    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="VertexWeightMix")
+
+    bpy.ops.object.modifier_add(type='VERTEX_WEIGHT_MIX')
+    bpy.context.object.modifiers["VertexWeightMix"].vertex_group_a = "ca"
+    bpy.context.object.modifiers["VertexWeightMix"].vertex_group_b = "ma"
+    bpy.context.object.modifiers["VertexWeightMix"].mix_mode = 'SUB'
+    bpy.context.object.modifiers["VertexWeightMix"].mask_constant = 0.2
+    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="VertexWeightMix")
+
 
 class ConfiguraDinamicaMole(bpy.types.Operator):
     """Tooltip"""
@@ -584,6 +622,7 @@ class ConfiguraDinamicaMole(bpy.types.Operator):
 
         SelectionaObjeto(str(ObjFace.name))
         ConfiguraDinamicaMoleDef(self, context)
-        GeraNarisDinamicaMole()
+        CorrigeDeformacaoOperacoesDef(self, context)
+        GeraNarizDinamicaMole()
 
         return {'FINISHED'}
