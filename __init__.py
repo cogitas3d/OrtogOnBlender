@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191101a"
+VERSION = "20191101c"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -754,6 +754,21 @@ class ORTOG_PT_Segmentation(bpy.types.Panel):
         row = layout.row()
         row = layout.row()
         circle=row.operator("object.booleana_union_multipla", text="MULTIPLE UNION", icon="STICKY_UVS_LOC")
+
+        row = layout.row()
+        row.label(text="Surface Cut:")
+
+        row = layout.row()
+        row.operator("wm.modal_cria_pontos", icon='CURVE_DATA', text="Create Points")
+
+        row = layout.row()
+        row.operator("mesh.add_curva_bezier_unido", icon='CURVE_BEZCIRCLE', text="Create Bezier Line")
+
+        row = layout.row()
+        circle=row.operator("object.bezier_corta", text="Cut Line!", icon="SCULPTMODE_HLT")
+
+        row = layout.row()
+        circle=row.operator("object.bezier_corta_dupla", text="Cut Line Double!", icon="MOD_THICKNESS")
 
         row = layout.row()
         row.label(text="Teeth Segmentation Tube:")
@@ -2254,6 +2269,12 @@ bpy.types.Scene.angulo_GbSnPog = bpy.props.StringProperty \
         default = str("NONE")
     )
 
+class ENUM_VALUES_OSTEOTOMY:
+    AUTO = 'Auto'
+    MANUAL = 'Manual'
+    BOOLEAN = 'Boolean'
+    DRAW = 'Draw'
+
 class ORTOG_PT_Osteotomia(bpy.types.Panel):
     bl_label = "Osteotomy"
     bl_region_type = 'UI'
@@ -2269,125 +2290,109 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        row.label(text="Simple Draw Cut!")
+        row.prop(scn, "my_enum_osteotomy")
 
-        row = layout.row()
-        row.operator("object.linha_corte", icon='LINE_DATA', text="Draw Surface Line")
+        my_enum_ct = scn.my_enum_osteotomy
 
-        row = layout.row()
-        circle=row.operator("object.desenha_linha_corte", text="Cut Line!", icon="SCULPTMODE_HLT")
+        if my_enum_ct == ENUM_VALUES_OSTEOTOMY.AUTO:
 
-        row = layout.row()
-        row = layout.row()
-        row.label(text="Advanced Draw Cut!")
+            row = layout.row()
+            linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+            linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
-        row = layout.row()
-        row.operator("object.linha_corte", icon='LINE_DATA', text="Draw Surface Line")
+            row = layout.row()
+            linha=row.operator("object.orbital_right_pt", text="Orbital right")
 
-        row = layout.row()
-        circle=row.operator("object.desenha_linha_vertex", text="View Cut Line", icon="RESTRICT_VIEW_OFF")
+            row = layout.row()
+            linha=row.operator("object.orbital_left_pt", text="Orbital left")
 
-        row = layout.row()
-        circle=row.operator("object.desenha_linha_vertex_fin", text="Cut Visible Line", icon="SCULPTMODE_HLT")
+            row = layout.row()
+            linha=row.operator("object.a_pt", text="A point")
 
-        row = layout.row()
-        row = layout.row()
-        row.label(text="Boolean Osteotomy:")
+            row = layout.row()
+            linha=row.operator("object.tooth_30_pt", text="Tooth 30 (46)")
 
-        row = layout.row()
-#        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
-        row.operator("object.linha_corte_fora_a_fora", icon='LINE_DATA', text="Draw Line")
+            row = layout.row()
+            linha=row.operator("object.go_right_pt", text="Go right")
 
-        row = layout.row()
-        row = layout.row()
-        circle=row.operator("object.desenha_booleana_dentro", text="Subtract IN", icon="LIGHTPROBE_CUBEMAP")
+            row = layout.row()
+            linha=row.operator("object.tooth_19_pt", text="Tooth 19 (36)")
 
-        row = layout.row()
-        circle=row.operator("object.desenha_booleana_fora", text="Subtract OUT", icon="MESH_CUBE")
+            row = layout.row()
+            linha=row.operator("object.go_left_pt", text="Go left")
+
+            row = layout.row()
+            linha=row.operator("object.b_pt", text="B point")
+
+            row = layout.row()
+            linha=row.operator("object.me_pt", text="Me point")
+
+            row = layout.row()
+            row = layout.row()
+            circle=row.operator("object.adiciona_planos_corte_auto", text="Create Cut Planes!", icon="AXIS_TOP")
+
+            row = layout.row()
+            row = layout.row()
+            row.label(text="Boolean:")
+
+            row = layout.row()
+            circle=row.operator("object.booleana_union_multipla", text="Join All (Union)", icon="GROUP")
+
+            row = layout.row()
+            circle=row.operator("object.booleana_osteo_geral", text="Cut Boolean", icon="MOD_BOOLEAN")
 
 
-        row = layout.row()
-        row.label(text="Surface Cut:")
+        if my_enum_ct == ENUM_VALUES_OSTEOTOMY.MANUAL:
 
-        row = layout.row()
-        row.operator("wm.modal_cria_pontos", icon='CURVE_DATA', text="Create Points")
+            row = layout.row()
+            circle=row.operator("mesh.add_mento", text="Chin Plane", icon="TRIA_DOWN")
+            circle.location=(0,-35,-81)
 
-        row = layout.row()
-        row.operator("mesh.add_curva_bezier_unido", icon='CURVE_BEZCIRCLE', text="Create Bezier Line")
+            row = layout.row()
+            circle=row.operator("mesh.add_ramo", text="Left Ramus Plane", icon="TRIA_RIGHT")
+            circle.location=(36, -4, -45)
 
-        row = layout.row()
-        circle=row.operator("object.bezier_corta", text="Cut Line!", icon="SCULPTMODE_HLT")
+            row = layout.row()
+            circle=row.operator("mesh.add_ramo", text="Right Ramus Plane", icon="TRIA_LEFT")
+            circle.location=(-36, -4, -45)
 
-        row = layout.row()
-        circle=row.operator("object.bezier_corta_dupla", text="Cut Line Double!", icon="MOD_THICKNESS")
+            row = layout.row()
+            circle=row.operator("mesh.add_maxila", text="Maxilla Plane", icon="TRIA_UP")
+            circle.location=(0, -45, -31)
 
-        row = layout.row()
-        row = layout.row()
-        row.label(text="Auto Cut Planes:")
+            row = layout.row()
+            row = layout.row()
+            row.label(text="Boolean:")
 
-        row = layout.row()
-        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
-        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+            row = layout.row()
+            circle=row.operator("object.booleana_union_multipla", text="Join All (Union)", icon="GROUP")
 
-        row = layout.row()
-        linha=row.operator("object.orbital_right_pt", text="Orbital right")
+            row = layout.row()
+            circle=row.operator("object.booleana_osteo_geral", text="Cut Boolean", icon="MOD_BOOLEAN")
+            
+        if my_enum_ct == ENUM_VALUES_OSTEOTOMY.BOOLEAN:
+            row = layout.row()
+    #        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+            row.operator("object.linha_corte_fora_a_fora", icon='LINE_DATA', text="Draw Line")
 
-        row = layout.row()
-        linha=row.operator("object.orbital_left_pt", text="Orbital left")
+            row = layout.row()
+            row = layout.row()
+            circle=row.operator("object.desenha_booleana_dentro", text="Subtract IN", icon="LIGHTPROBE_CUBEMAP")
 
-        row = layout.row()
-        linha=row.operator("object.a_pt", text="A point")
+            row = layout.row()
+            circle=row.operator("object.desenha_booleana_fora", text="Subtract OUT", icon="MESH_CUBE")
 
-        row = layout.row()
-        linha=row.operator("object.tooth_30_pt", text="Tooth 30 (46)")
 
-        row = layout.row()
-        linha=row.operator("object.go_right_pt", text="Go right")
+        if my_enum_ct == ENUM_VALUES_OSTEOTOMY.DRAW:
 
-        row = layout.row()
-        linha=row.operator("object.tooth_19_pt", text="Tooth 19 (36)")
+            row = layout.row()
+            row.operator("object.linha_corte", icon='LINE_DATA', text="Draw Surface Line")
 
-        row = layout.row()
-        linha=row.operator("object.go_left_pt", text="Go left")
+            row = layout.row()
+            circle=row.operator("object.desenha_linha_vertex", text="View Cut Line", icon="RESTRICT_VIEW_OFF")
 
-        row = layout.row()
-        linha=row.operator("object.b_pt", text="B point")
-
-        row = layout.row()
-        linha=row.operator("object.me_pt", text="Me point")
-
-        row = layout.row()
-        row = layout.row()
-        circle=row.operator("object.adiciona_planos_corte_auto", text="Create Cut Planes!", icon="AXIS_TOP")
-
-        row = layout.row()
-        row = layout.row()
-        row.label(text="Cut Planes:")
-
-        row = layout.row()
-        circle=row.operator("mesh.add_mento", text="Chin Plane", icon="TRIA_DOWN")
-        circle.location=(0,-35,-81)
-
-        row = layout.row()
-        circle=row.operator("mesh.add_ramo", text="Left Ramus Plane", icon="TRIA_RIGHT")
-        circle.location=(36, -4, -45)
-
-        row = layout.row()
-        circle=row.operator("mesh.add_ramo", text="Right Ramus Plane", icon="TRIA_LEFT")
-        circle.location=(-36, -4, -45)
-
-        row = layout.row()
-        circle=row.operator("mesh.add_maxila", text="Maxilla Plane", icon="TRIA_UP")
-        circle.location=(0, -45, -31)
-
-        row = layout.row()
-        row.label(text="Boolean:")
-
-        row = layout.row()
-        circle=row.operator("object.booleana_union_multipla", text="Join All (Union)", icon="GROUP")
-
-        row = layout.row()
-        circle=row.operator("object.booleana_osteo_geral", text="Cut Boolean", icon="MOD_BOOLEAN")
+            row = layout.row()
+            circle=row.operator("object.desenha_linha_vertex_fin", text="Cut Visible Line", icon="SCULPTMODE_HLT")
 
         row = layout.row()
         row = layout.row()
@@ -3033,6 +3038,10 @@ def register():
 #    bpy.utils.register_class(ORTOG_PT_PontosAnatomicosDentes)
 #    bpy.utils.register_class(ORTOG_PT_PontosAnatomicosMole)
     bpy.utils.register_class(ORTOG_PT_Cefalometria)
+    bpy.types.Scene.my_enum_osteotomy = bpy.props.EnumProperty(
+        name="Select",
+        description= "",
+        items=[(ENUM_VALUES_OSTEOTOMY.AUTO, "AUTO", "Automatic Ostetotomy Cut Planes"), (ENUM_VALUES_OSTEOTOMY.MANUAL, "MANUAL", "Manual Ostetotomy Cut Planes"), (ENUM_VALUES_OSTEOTOMY.BOOLEAN, "BOOLEAN", "Boolean Ostetotomy Cut"), (ENUM_VALUES_OSTEOTOMY.DRAW, "DRAW", "Draw Ostetotomy")],)
     bpy.utils.register_class(ORTOG_PT_Osteotomia)
     bpy.types.Scene.medida_real2 = bpy.props.StringProperty \
       (
