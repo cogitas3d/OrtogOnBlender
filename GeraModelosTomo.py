@@ -29,6 +29,23 @@ class MessageFaltaDICOM(bpy.types.Operator):
 bpy.utils.register_class(MessageFaltaDICOM)
 
 
+class MessageFaltaObjeto(bpy.types.Operator):
+    bl_idname = "object.dialog_operator_falta_objeto"
+    bl_label = "Doesn't have one or more objects!"
+
+    def execute(self, context):
+        message = ("Doesn't have one or more objects!")
+        self.report({'INFO'}, message)
+        return {'FINISHED'}
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        return wm.invoke_props_dialog(self)
+
+bpy.utils.register_class(MessageFaltaObjeto)
+
+
+
 '''
 def ERROruntimeDICOMDef(self, context):
     self.UILayout.label("Doesn't have DICOM path!")
@@ -1884,6 +1901,31 @@ def IdentificaTomografo(Arquivo):
         except:
             print("Não há o direório 3!")
 
+        #ManufacturerModelNameLimpo == "'BrightSpeed S'":
+        try:
+            os.chdir(scn.my_tool.path+"/4")
+            scn.my_tool.path = os.getcwd()
+            bpy.ops.object.corrige_dicom()
+
+    #        bpy.ops.object.reduz_dimensao_dicom()
+
+            # Copia para o diretório
+            try:
+                CopiaTomoDir(scn.my_tool.path)
+            except:
+                print("Doesn't have Patient Dir")
+
+            # Gera o 3D
+            bpy.context.scene.interesse_ossos = "200"
+            bpy.context.scene.interesse_mole = "-300"
+            bpy.context.scene.interesse_dentes = "1430"
+
+            bpy.ops.object.gera_modelos_tomo()
+
+        except:
+            print("Não há o direório 4!")
+
+
         # ManufacturerModelNameLimpo == 'Optima CT660'
         try:
             os.chdir(scn.my_tool.path+"/5")
@@ -2853,26 +2895,31 @@ def DesagrupaTomoDef(self, context):
     context = bpy.context
     scn = context.scene
 
-    a = bpy.data.objects['Bones']
-    b = bpy.data.objects['SoftTissue']
-    c = bpy.data.objects['Teeth']
+    if bpy.data.objects.get('Bones') and bpy.data.objects.get('SoftTissue') and bpy.data.objects.get('Teeth'):
+
+        a = bpy.data.objects['Bones']
+        b = bpy.data.objects['SoftTissue']
+        c = bpy.data.objects['Teeth']
 
 
-    bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action='DESELECT')
 
-    a.hide_set(False)
-    b.hide_set(False)
-    c.hide_set(False)
+        a.hide_set(False)
+        b.hide_set(False)
+        c.hide_set(False)
 
-    a.select_set(True)
-    b.select_set(True)
-    c.select_set(True)
+        a.select_set(True)
+        b.select_set(True)
+        c.select_set(True)
 
-    context.view_layer.objects.active = a
+        context.view_layer.objects.active = a
 
-    bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+        bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
 
-    bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action='DESELECT')
+    else:
+        bpy.ops.object.dialog_operator_falta_objeto('INVOKE_DEFAULT')
+        #return {'FINISHED'}
 
 class DesagrupaTomo(bpy.types.Operator):
     """Tooltip"""
@@ -2889,122 +2936,128 @@ def GeraModelosTomoManualDef(self, context):
 
     scn = context.scene
 
-    homeall = expanduser("~")
-
-    os.chdir(scn.my_tool.path)
-    DirAtual = os.getcwd()
-    ArqAtual = os.listdir(os.getcwd())[0]
-    print("Atual:", os.getcwd())
-    print (os.listdir(os.getcwd())[0])
-
-    # IDENTIFICA TOMOGRAFO
-
-    # Lê arquivo DICOM
-
-
-    ds = pydicom.dcmread(ArqAtual)
-
-    # Separa Manufacturer
-    ManufacturerComplete = ds.data_element("Manufacturer")
-    ManufacturerLimpa1 = str(ManufacturerComplete).split('LO: ')
-    ManufacturerLimpo = str(ManufacturerLimpa1[1]).strip('"')
-
-    print("ManufacturerComplete:", ManufacturerComplete)
-    print("ManufacturerLimpa1:", ManufacturerLimpa1)
-    print("ManufacturerLimpo:", ManufacturerLimpo)
-
-
-    try:
-        # Separa StationName
-        StationNameComplete = ds.data_element("StationName")
-        StationNameLimpa1 = str(StationNameComplete).split('SH: ')
-        StationNameLimpo = str(StationNameLimpa1[1]).strip('"')
-
-        print("StationNameComplete:", StationNameComplete)
-        print("StationNameLimpa1:", StationNameLimpa1)
-        print("StationNameLimpo:", StationNameLimpo)
-    except:
-        print("Sem StationNam")
-
-
-
-    try:
-        # Separa ManufacturerModelName
-        ManufacturerModelNameComplete = ds.data_element("ManufacturerModelName")
-        ManufacturerModelNameLimpa1 = str(ManufacturerModelNameComplete).split('LO: ')
-        ManufacturerModelNameLimpo = str(ManufacturerModelNameLimpa1[1]).strip('"')
-
-        print("ManufacturerModelName:", ManufacturerModelNameComplete)
-        print("ManufacturerModelNameLimpa1:", ManufacturerModelNameLimpa1)
-        print("ManufacturerModelNameLimpo:", ManufacturerModelNameLimpo)
-        return ManufacturerModelName
-    except:
-        print("Sem ManufacturerModelName")
-
-    # GERA MODELOS
-
-    ListaArquivos = sorted(os.listdir(scn.my_tool.path))
-
-    os.chdir(scn.my_tool.path)
-
-    ds = pydicom.dcmread(str(DirAtual+"/"+ArqAtual), force=True)
-    DimPixelsX = ds.Rows
-    DimPixelsY = ds.Columns
-
-    print("TESTA FATIA...")
-    print("DimPixelsX", DimPixelsX)
-    print("DimPixelsY", DimPixelsY)
-
-    # CAPTURA VALORES DOS FATORES
-
-    FatorOssos = bpy.context.scene.interesse_ossos
-    FatorMole = bpy.context.scene.interesse_mole
-    FatorDentes = bpy.context.scene.interesse_dentes
-
-    DiretorioTomo = scn.my_tool.path
-
-    TmpDirTomografo = tempfile.mkdtemp()
-    TmpTomograforFile = TmpDirTomografo+'/CT_Scan_tomograph.txt'
-
-    try:
-        with open(TmpTomograforFile, "a") as ModeloTomografo:
-            ModeloTomografo.write('ManufacturerLimpo == '+'"'+str(ManufacturerLimpo)+'"'+"\n")
-            ModeloTomografo.write('StationNameLimpo == '+'"'+str(StationNameLimpo)+'"'+"\n")
-            ModeloTomografo.write('ManufacturerModelNameLimpo == '+'"'+str(ManufacturerModelNameLimpo)+'"'+"\n")
-            if DimPixelsX > 512 or DimPixelsY > 512:
-                ModeloTomografo.write("NECESSÁRIO REDUZIR!!!\n")
-            else:
-                ModeloTomografo.write("Não é necessário reduzir\n")
-
-            ModeloTomografo.write('bpy.context.scene.interesse_ossos = '+'"'+str(FatorOssos)+'"'+"\n")
-            ModeloTomografo.write('bpy.context.scene.interesse_mole = '+'"'+str(FatorMole)+'"'+"\n")
-            ModeloTomografo.write('bpy.context.scene.interesse_dentes = '+'"'+str(FatorDentes)+'"'+"\n")
-            ModeloTomografo.write('DiretorioTomo == '+str(DiretorioTomo))
-            ModeloTomografo.close()
-    except:
-        print("Não consta dados do tomógrafo.")
-
-    # ABRE DIRETÓRIO
-
-    if platform.system() == "Windows":
-        os.startfile(TmpTomograforFile)
-    elif platform.system() == "Darwin":
-        subprocess.Popen(["open", TmpTomograforFile])
-    else:
-        subprocess.Popen(["xdg-open", TmpTomograforFile])
-
-    if DimPixelsX > 512 or DimPixelsY > 512:
-
-        print("MAIOR QUE 512!!! REDUZINDO...")
-
-        bpy.ops.object.corrige_dicom()
-        bpy.ops.object.reduz_dimensao_dicom() # SÓ FUNCIONA SE FOR COMPATIVEL! POR ISSO O FIXED ANTES!!!
-        bpy.ops.object.gera_modelos_tomo()
+    if scn.my_tool.path == "":
+            bpy.ops.object.dialog_operator_informe_dicom('INVOKE_DEFAULT')
+            return {'FINISHED'}
 
     else:
-        print("MENOR OU IGUAL A 512...")
-        bpy.ops.object.corrige_dicom()
-        bpy.ops.object.gera_modelos_tomo()
+
+        homeall = expanduser("~")
+
+        os.chdir(scn.my_tool.path)
+        DirAtual = os.getcwd()
+        ArqAtual = os.listdir(os.getcwd())[0]
+        print("Atual:", os.getcwd())
+        print (os.listdir(os.getcwd())[0])
+
+        # IDENTIFICA TOMOGRAFO
+
+        # Lê arquivo DICOM
+
+
+        ds = pydicom.dcmread(ArqAtual)
+
+        # Separa Manufacturer
+        ManufacturerComplete = ds.data_element("Manufacturer")
+        ManufacturerLimpa1 = str(ManufacturerComplete).split('LO: ')
+        ManufacturerLimpo = str(ManufacturerLimpa1[1]).strip('"')
+
+        print("ManufacturerComplete:", ManufacturerComplete)
+        print("ManufacturerLimpa1:", ManufacturerLimpa1)
+        print("ManufacturerLimpo:", ManufacturerLimpo)
+
+
+        try:
+            # Separa StationName
+            StationNameComplete = ds.data_element("StationName")
+            StationNameLimpa1 = str(StationNameComplete).split('SH: ')
+            StationNameLimpo = str(StationNameLimpa1[1]).strip('"')
+
+            print("StationNameComplete:", StationNameComplete)
+            print("StationNameLimpa1:", StationNameLimpa1)
+            print("StationNameLimpo:", StationNameLimpo)
+        except:
+            print("Sem StationNam")
+
+
+
+        try:
+            # Separa ManufacturerModelName
+            ManufacturerModelNameComplete = ds.data_element("ManufacturerModelName")
+            ManufacturerModelNameLimpa1 = str(ManufacturerModelNameComplete).split('LO: ')
+            ManufacturerModelNameLimpo = str(ManufacturerModelNameLimpa1[1]).strip('"')
+
+            print("ManufacturerModelName:", ManufacturerModelNameComplete)
+            print("ManufacturerModelNameLimpa1:", ManufacturerModelNameLimpa1)
+            print("ManufacturerModelNameLimpo:", ManufacturerModelNameLimpo)
+            return ManufacturerModelName
+        except:
+            print("Sem ManufacturerModelName")
+
+        # GERA MODELOS
+
+        ListaArquivos = sorted(os.listdir(scn.my_tool.path))
+
+        os.chdir(scn.my_tool.path)
+
+        ds = pydicom.dcmread(str(DirAtual+"/"+ArqAtual), force=True)
+        DimPixelsX = ds.Rows
+        DimPixelsY = ds.Columns
+
+        print("TESTA FATIA...")
+        print("DimPixelsX", DimPixelsX)
+        print("DimPixelsY", DimPixelsY)
+
+        # CAPTURA VALORES DOS FATORES
+
+        FatorOssos = bpy.context.scene.interesse_ossos
+        FatorMole = bpy.context.scene.interesse_mole
+        FatorDentes = bpy.context.scene.interesse_dentes
+
+        DiretorioTomo = scn.my_tool.path
+
+        TmpDirTomografo = tempfile.mkdtemp()
+        TmpTomograforFile = TmpDirTomografo+'/CT_Scan_tomograph.txt'
+
+        try:
+            with open(TmpTomograforFile, "a") as ModeloTomografo:
+                ModeloTomografo.write('ManufacturerLimpo == '+'"'+str(ManufacturerLimpo)+'"'+"\n")
+                ModeloTomografo.write('StationNameLimpo == '+'"'+str(StationNameLimpo)+'"'+"\n")
+                ModeloTomografo.write('ManufacturerModelNameLimpo == '+'"'+str(ManufacturerModelNameLimpo)+'"'+"\n")
+                if DimPixelsX > 512 or DimPixelsY > 512:
+                    ModeloTomografo.write("NECESSÁRIO REDUZIR!!!\n")
+                else:
+                    ModeloTomografo.write("Não é necessário reduzir\n")
+
+                ModeloTomografo.write('bpy.context.scene.interesse_ossos = '+'"'+str(FatorOssos)+'"'+"\n")
+                ModeloTomografo.write('bpy.context.scene.interesse_mole = '+'"'+str(FatorMole)+'"'+"\n")
+                ModeloTomografo.write('bpy.context.scene.interesse_dentes = '+'"'+str(FatorDentes)+'"'+"\n")
+                ModeloTomografo.write('DiretorioTomo == '+str(DiretorioTomo))
+                ModeloTomografo.close()
+        except:
+            print("Não consta dados do tomógrafo.")
+
+        # ABRE DIRETÓRIO
+
+        if platform.system() == "Windows":
+            os.startfile(TmpTomograforFile)
+        elif platform.system() == "Darwin":
+            subprocess.Popen(["open", TmpTomograforFile])
+        else:
+            subprocess.Popen(["xdg-open", TmpTomograforFile])
+
+        if DimPixelsX > 512 or DimPixelsY > 512:
+
+            print("MAIOR QUE 512!!! REDUZINDO...")
+
+            bpy.ops.object.corrige_dicom()
+            bpy.ops.object.reduz_dimensao_dicom() # SÓ FUNCIONA SE FOR COMPATIVEL! POR ISSO O FIXED ANTES!!!
+            bpy.ops.object.gera_modelos_tomo()
+
+        else:
+            print("MENOR OU IGUAL A 512...")
+            bpy.ops.object.corrige_dicom()
+            bpy.ops.object.gera_modelos_tomo()
 
 
 class GeraModelosTomoManual(bpy.types.Operator):

@@ -18,6 +18,38 @@ class MessageSelecioneObjAlinhar(bpy.types.Operator):
 
 bpy.utils.register_class(MessageSelecioneObjAlinhar)
 
+
+class MessageFaltaPontoObj(bpy.types.Operator):
+    bl_idname = "object.dialog_operator_falta_ponto_obj"
+    bl_label = "Doesn't have one or more points or object!"
+
+    def execute(self, context):
+        message = ("Doesn't have one or more points or object!")
+        self.report({'INFO'}, message)
+        return {'FINISHED'}
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        return wm.invoke_props_dialog(self)
+
+bpy.utils.register_class(MessageFaltaPontoObj)
+
+
+class MessageFaltaPonto(bpy.types.Operator):
+    bl_idname = "object.dialog_operator_falta_ponto"
+    bl_label = "Doesn't have one or more point!"
+
+    def execute(self, context):
+        message = ("Doesn't have one or more points!")
+        self.report({'INFO'}, message)
+        return {'FINISHED'}
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        return wm.invoke_props_dialog(self)
+
+bpy.utils.register_class(MessageFaltaPonto)
+
 # Origin
 
 def EMP1aDef(self, context):
@@ -292,11 +324,12 @@ def AlinhaTresPontosDef(self, context):
     context = bpy.context
     objAlinhar = context.active_object
 
-    if bpy.context.selected_objects == []:
-        bpy.ops.object.dialog_operator_selecione_alinhar('INVOKE_DEFAULT')
-        return {'FINISHED'}
+#    if bpy.context.selected_objects == []:
+#        bpy.ops.object.dialog_operator_selecione_alinhar('INVOKE_DEFAULT')
+#        return {'FINISHED'}
 
-    else:
+    if bpy.data.objects.get('EMP1a') and bpy.data.objects.get('EMP2a') and bpy.data.objects.get('EMP3a') and bpy.data.objects.get('EMP1b') and bpy.data.objects.get('EMP2b') and bpy.data.objects.get('EMP3b'):
+
         # Adiciona plano Origem
         bpy.ops.mesh.add_mesh_alinha_origi()
         bpy.context.object.name = "MeshAlignOrigi" # Força nome para não dar erro
@@ -382,6 +415,8 @@ def AlinhaTresPontosDef(self, context):
         bpy.ops.object.select_all(action='DESELECT')
         objAlinhar.select_set(True)
         bpy.context.view_layer.objects.active = objAlinhar
+    else:
+        bpy.ops.object.dialog_operator_falta_ponto('INVOKE_DEFAULT')
 
     '''
 	context = bpy.context
@@ -569,6 +604,15 @@ class AlinhaTresPontos(bpy.types.Operator):
     bl_idname = "object.alinha_tres_pontos"
     bl_label = "Align 3 Points"
 
+    @classmethod
+    def poll(cls, context):
+
+        if len(bpy.context.selected_objects) == 1:
+            return True
+        else:
+            if len(bpy.context.selected_objects) != 1:
+                return False
+
     def execute(self, context):
         AlinhaTresPontosDef(self, context)
         return {'FINISHED'}
@@ -578,155 +622,160 @@ def AlinhaCranioFrankfurtDef():
 
     context = bpy.context
 
-    def CriaLinhaALinha(Obj1, Obj2, Nome):
-        Ponto1 = bpy.data.objects[Obj1].location
+    if bpy.data.objects.get('Bones') and bpy.data.objects.get('Orbital right') and bpy.data.objects.get('Orbital left') and bpy.data.objects.get('Po left') and bpy.data.objects.get('N point'):
 
-        Ponto2 = bpy.data.objects[Obj2].location
+        def CriaLinhaALinha(Obj1, Obj2, Nome):
+            Ponto1 = bpy.data.objects[Obj1].location
 
-        verts = [Ponto1,
-                 Ponto2,
-                ]
+            Ponto2 = bpy.data.objects[Obj2].location
 
-        edges = [[0,1]]
+            verts = [Ponto1,
+                     Ponto2,
+                    ]
 
-        faces = []
+            edges = [[0,1]]
 
-        mesh_data = bpy.data.meshes.new("Apaga")
-        mesh_data.from_pydata(verts, edges, faces)
-        mesh_data.update()
+            faces = []
 
-        obj = bpy.data.objects.new(Nome, mesh_data)
+            mesh_data = bpy.data.meshes.new("Apaga")
+            mesh_data.from_pydata(verts, edges, faces)
+            mesh_data.update()
 
-        context = bpy.context
-        scene = bpy.context.scene
-        #scene.objects.link(obj)
-        bpy.context.collection.objects.link(obj)
+            obj = bpy.data.objects.new(Nome, mesh_data)
+
+            context = bpy.context
+            scene = bpy.context.scene
+            #scene.objects.link(obj)
+            bpy.context.collection.objects.link(obj)
+
+            bpy.ops.object.select_all(action='DESELECT')
+            obj.select_set(True)
+            context.view_layer.objects.active = obj
+
+
+        CriaLinhaALinha('Orbital right', 'Orbital left', 'LinhaOrbAlinha')
+        ObjDestino = context.view_layer.objects.active
+        print(ObjDestino.name)
+
+        bpy.ops.mesh.add_linhabase(location=(0, 0, 0), rotation=(0, -1.5708, 0))
+        ObjOrigem = context.view_layer.objects.active
+        print(ObjOrigem.name)
+
+        bpy.ops.object.mode_set(mode = 'EDIT')
+        bpy.ops.maplus.quickalignlinesgrabdest()
+        bpy.ops.object.mode_set(mode = 'OBJECT')
+
+        # Parenteia objetos à Linha
+        bpy.ops.object.select_all(action='DESELECT')
+
+        ListaObjetos = ['Bones', 'Orbital right', 'Orbital left', 'Po left', 'N point']
+
+        for i in ListaObjetos:
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.data.objects[i].select_set(True)
+            ObjDestino.select_set(True)
+            context.view_layer.objects.active = ObjDestino
+            bpy.ops.object.parent_set()
 
         bpy.ops.object.select_all(action='DESELECT')
-        obj.select_set(True)
-        context.view_layer.objects.active = obj
-
-
-    CriaLinhaALinha('Orbital right', 'Orbital left', 'LinhaOrbAlinha')
-    ObjDestino = context.view_layer.objects.active
-    print(ObjDestino.name)
-
-    bpy.ops.mesh.add_linhabase(location=(0, 0, 0), rotation=(0, -1.5708, 0))
-    ObjOrigem = context.view_layer.objects.active
-    print(ObjOrigem.name)
-
-    bpy.ops.object.mode_set(mode = 'EDIT')
-    bpy.ops.maplus.quickalignlinesgrabdest()
-    bpy.ops.object.mode_set(mode = 'OBJECT')
-
-    # Parenteia objetos à Linha
-    bpy.ops.object.select_all(action='DESELECT')
-
-    ListaObjetos = ['Bones', 'Orbital right', 'Orbital left', 'Po left', 'N point']
-
-    for i in ListaObjetos:
-        bpy.ops.object.select_all(action='DESELECT')
-        bpy.data.objects[i].select_set(True)
         ObjDestino.select_set(True)
         context.view_layer.objects.active = ObjDestino
-        bpy.ops.object.parent_set()
+        bpy.ops.object.mode_set(mode = 'EDIT')
+        bpy.ops.maplus.quickalignlinesobject()
+        bpy.ops.object.mode_set(mode = 'OBJECT')
 
-    bpy.ops.object.select_all(action='DESELECT')
-    ObjDestino.select_set(True)
-    context.view_layer.objects.active = ObjDestino
-    bpy.ops.object.mode_set(mode = 'EDIT')
-    bpy.ops.maplus.quickalignlinesobject()
-    bpy.ops.object.mode_set(mode = 'OBJECT')
+        # Desagrupa
 
-    # Desagrupa
+        for i in ListaObjetos:
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.data.objects[i].select_set(True)
+            context.view_layer.objects.active = bpy.data.objects[i]
+            bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
 
-    for i in ListaObjetos:
         bpy.ops.object.select_all(action='DESELECT')
-        bpy.data.objects[i].select_set(True)
-        context.view_layer.objects.active = bpy.data.objects[i]
-        bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+        ObjDestino.select_set(True)
+        ObjOrigem.select_set(True)
+        bpy.ops.object.delete(use_global=False)
 
-    bpy.ops.object.select_all(action='DESELECT')
-    ObjDestino.select_set(True)
-    ObjOrigem.select_set(True)
-    bpy.ops.object.delete(use_global=False)
+        #LINHA LATERAL
 
-    #LINHA LATERAL
+        bpy.ops.mesh.add_linhabase(location=(200, 0, 0), rotation=(1.5708, 0, 0))
+        ObjOrigem2 = context.view_layer.objects.active
+        print("Origem:", ObjOrigem2.name)
 
-    bpy.ops.mesh.add_linhabase(location=(200, 0, 0), rotation=(1.5708, 0, 0))
-    ObjOrigem2 = context.view_layer.objects.active
-    print("Origem:", ObjOrigem2.name)
-
-    bpy.ops.object.mode_set(mode = 'EDIT')
-    bpy.ops.maplus.quickalignlinesgrabdest()
-    bpy.ops.object.mode_set(mode = 'OBJECT')
+        bpy.ops.object.mode_set(mode = 'EDIT')
+        bpy.ops.maplus.quickalignlinesgrabdest()
+        bpy.ops.object.mode_set(mode = 'OBJECT')
 
 
-    CriaLinhaALinha('Orbital left', 'Po left', 'LinhaOrbAlinha2')
-    ObjDestino2 = context.view_layer.objects.active
-    print(ObjDestino2.name)
+        CriaLinhaALinha('Orbital left', 'Po left', 'LinhaOrbAlinha2')
+        ObjDestino2 = context.view_layer.objects.active
+        print(ObjDestino2.name)
 
 
-    bpy.ops.transform.resize(value=(0, 1, 1), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
-    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+        bpy.ops.transform.resize(value=(0, 1, 1), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+        bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
 
 
-    # Parenteia objetos à Linha
-    bpy.ops.object.select_all(action='DESELECT')
-
-    ListaObjetos = ['Bones', 'Orbital right', 'Orbital left', 'Po left', 'N point']
-
-    for i in ListaObjetos:
+        # Parenteia objetos à Linha
         bpy.ops.object.select_all(action='DESELECT')
-        bpy.data.objects[i].select_set(True)
+
+        ListaObjetos = ['Bones', 'Orbital right', 'Orbital left', 'Po left', 'N point']
+
+        for i in ListaObjetos:
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.data.objects[i].select_set(True)
+            ObjDestino2.select_set(True)
+            context.view_layer.objects.active = ObjDestino2
+            bpy.ops.object.parent_set()
+
+        bpy.ops.object.select_all(action='DESELECT')
         ObjDestino2.select_set(True)
         context.view_layer.objects.active = ObjDestino2
-        bpy.ops.object.parent_set()
+        bpy.ops.object.mode_set(mode = 'EDIT')
+        bpy.ops.maplus.quickalignlinesobject()
+        bpy.ops.object.mode_set(mode = 'OBJECT')
 
-    bpy.ops.object.select_all(action='DESELECT')
-    ObjDestino2.select_set(True)
-    context.view_layer.objects.active = ObjDestino2
-    bpy.ops.object.mode_set(mode = 'EDIT')
-    bpy.ops.maplus.quickalignlinesobject()
-    bpy.ops.object.mode_set(mode = 'OBJECT')
+        # Desagrupa
 
-    # Desagrupa
+        for i in ListaObjetos:
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.data.objects[i].select_set(True)
+            context.view_layer.objects.active = bpy.data.objects[i]
+            bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
 
-    for i in ListaObjetos:
         bpy.ops.object.select_all(action='DESELECT')
-        bpy.data.objects[i].select_set(True)
-        context.view_layer.objects.active = bpy.data.objects[i]
-        bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+        ObjDestino2.select_set(True)
+        ObjOrigem2.select_set(True)
+        bpy.ops.object.delete(use_global=False)
 
-    bpy.ops.object.select_all(action='DESELECT')
-    ObjDestino2.select_set(True)
-    ObjOrigem2.select_set(True)
-    bpy.ops.object.delete(use_global=False)
+        # MOVE AO CENTRO
 
-    # MOVE AO CENTRO
-
-    bpy.ops.object.select_all(action='DESELECT')
-
-    ListaObjetos2 = ['Bones', 'Orbital right', 'Orbital left', 'Po left']
-
-    PontoCentral = bpy.data.objects['N point']
-
-    for i in ListaObjetos2:
         bpy.ops.object.select_all(action='DESELECT')
-        bpy.data.objects[i].select_set(True)
-        PontoCentral .select_set(True)
-        context.view_layer.objects.active = PontoCentral
-        bpy.ops.object.parent_set()
 
-    PontoCentral = bpy.context.object.location = 0,0,0
+        ListaObjetos2 = ['Bones', 'Orbital right', 'Orbital left', 'Po left']
 
-    # Desagrupa
+        PontoCentral = bpy.data.objects['N point']
 
-    for i in ListaObjetos2:
-        bpy.ops.object.select_all(action='DESELECT')
-        bpy.data.objects[i].select_set(True)
-        context.view_layer.objects.active = bpy.data.objects[i]
-        bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+        for i in ListaObjetos2:
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.data.objects[i].select_set(True)
+            PontoCentral .select_set(True)
+            context.view_layer.objects.active = PontoCentral
+            bpy.ops.object.parent_set()
+
+        PontoCentral = bpy.context.object.location = 0,0,0
+
+        # Desagrupa
+
+        for i in ListaObjetos2:
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.data.objects[i].select_set(True)
+            context.view_layer.objects.active = bpy.data.objects[i]
+            bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+
+    else:
+        bpy.ops.object.dialog_operator_falta_ponto_obj('INVOKE_DEFAULT')
 
 class AlinhaCranioFrankfurt(bpy.types.Operator):
     """Tooltip"""
