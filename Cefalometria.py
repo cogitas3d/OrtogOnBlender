@@ -37,10 +37,10 @@ def CalculaAnguloOclusao():
         )
 
         return str(GrauOclusao)+"º"
-        
+
     else:
         print("Veja se os pontos U6 Occlusal e U1 Tip foram adicionados corretamente.")
-    
+
 
 
 
@@ -56,37 +56,37 @@ def CalculaAnguloNasolabial():
         # Copia os 3
 
         Objetos = [bpy.data.objects['Columella'], bpy.data.objects['Subnasale'], bpy.data.objects['Upper Lip']]
-        
+
         for item in Objetos:
-            
+
             bpy.ops.object.select_all(action='DESELECT')
             item.select_set(True)
             bpy.context.view_layer.objects.active = item
             bpy.ops.object.duplicate_move()
             bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
-            
-       
-                 
+
+
+
 
         # Calcula
-            
+
         Columella = bpy.data.objects['Columella.001']
         Subnasale = bpy.data.objects['Subnasale.001']
         UpperLip = bpy.data.objects['Upper Lip.001']
-        
+
         SC = math.sqrt( (Columella.location[1] - Subnasale.location[1])**2 + (Columella.location[2] - Subnasale.location[2])**2 )
         print("SC", SC)
-        
+
         SU = math.sqrt( (UpperLip.location[1] - Subnasale.location[1])**2 + (UpperLip.location[2] - Subnasale.location[2])**2 )
         print("SU", SU)
-        
+
         UC = math.sqrt( (UpperLip.location[1] - Columella.location[1])**2 + (UpperLip.location[2] - Columella.location[2])**2 )
         print("UC", UC)
-        
+
         GrauNasolabial = (SC**2 + SU**2 - UC**2) / (2 * SC * SU)
-        
+
         AnguloNasolabial = float(round(math.degrees(math.acos(GrauNasolabial)),2))
-        
+
         print("Ângulo Nasolabial:", AnguloNasolabial)
 
         bpy.types.Scene.angulo_nasolabial = bpy.props.StringProperty \
@@ -99,11 +99,11 @@ def CalculaAnguloNasolabial():
         # Apaga objetos
 
         bpy.ops.object.select_all(action='DESELECT')
-              
+
         ObjetosCopias = [bpy.data.objects['Columella.001'], bpy.data.objects['Subnasale.001'], bpy.data.objects['Upper Lip.001']]
-        
+
         for item in ObjetosCopias:
-            
+
             bpy.ops.object.select_all(action='DESELECT')
             item.select_set(True)
             bpy.ops.object.delete(use_global=False)
@@ -158,28 +158,28 @@ def CalculaAnguloGbSnPog():
                 name = "Gb', Sn, Pog' Angle",
                 description = "Gb', Sn, Pog' Angle",
                 default = '180º'
-            )    
+            )
 
 def GeraAnguloViewX(Obj1, Obj2, Obj3):
-    
+
     A = bpy.data.objects[Obj1]
     B = bpy.data.objects[Obj2]
     C = bpy.data.objects[Obj3]
-    
+
     AB = math.sqrt( (B.location[1] - A.location[1])**2 + (B.location[2] - A.location[2])**2 )
     print("AB", AB)
-        
+
     AC = math.sqrt( (C.location[1] - A.location[1])**2 + (C.location[2] - A.location[2])**2 )
     print("AC", AC)
-    
+
     BC = math.sqrt( (C.location[1] - B.location[1])**2 + (C.location[2] - B.location[2])**2 )
     print("BC", BC)
-    
+
     AnguloCos = (AB**2 + AC**2 - BC**2) / (2 * AB * AC)
-    
+
     AnguloGraus = float(round(math.degrees(math.acos(AnguloCos)),2))
     print("Ângulo em graus:", AnguloGraus)
-    
+
     return AnguloGraus
 
 #GeraAnguloViewX("U1 Tip", "U1 Root", "U6 Occlusal")
@@ -195,7 +195,7 @@ def DistanciaDupla(ObjDir, ObjEsq, ObjBase, Eixo):
     found_ObjDir = str(ObjDir) in bpy.data.objects
     found_ObjEsq = str(ObjEsq) in bpy.data.objects
     found_ObjBase = str(ObjBase) in bpy.data.objects
-    
+
     if found_ObjDir == True and found_ObjEsq == True and found_ObjBase == True:
 
 
@@ -216,36 +216,36 @@ def DistanciaDupla(ObjDir, ObjEsq, ObjBase, Eixo):
 
         Objetos = [bpy.data.objects[ObjDir], bpy.data.objects[ObjEsq], bpy.data.objects[ObjBase]]
 
-            
+
         for item in Objetos:
-            
+
             bpy.ops.object.select_all(action='DESELECT')
             item.select_set(True)
             bpy.ops.object.duplicate_move()
             bpy.context.view_layer.objects.active = item # Se não tiver dá erro!
             bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
-            
- 
+
+
         Direita = bpy.data.objects[ObjDir+'.001']
         Esquerda = bpy.data.objects[ObjEsq+'.001']
         Base = bpy.data.objects[ObjBase+'.001']
 
- 
-       
+
+
         PontoCentral = ( Direita.location[Eixo] + Esquerda.location[Eixo] ) / 2
-        
+
         Distancia = abs( PontoCentral - Base.location[Eixo] )
 
 
-        # Calcula Posicao        
+        # Calcula Posicao
         if PontoCentral > Base.location[Eixo]:
             DistanciaFinal = Distancia * -1
             print("DistanciaFinal", DistanciaFinal)
             print("")
             ApagaTudo()
-            
+
             return DistanciaFinal
-            
+
         if PontoCentral < Base.location[Eixo]:
             DistanciaFinal = Distancia
             print("DistanciaFinal", DistanciaFinal)
@@ -253,7 +253,7 @@ def DistanciaDupla(ObjDir, ObjEsq, ObjBase, Eixo):
             ApagaTudo()
 
             return DistanciaFinal
-                        
+
         if PontoCentral == Base.location[Eixo]:
             DistanciaFinal = Distancia
             print("DistanciaFinal", DistanciaFinal)
@@ -262,16 +262,16 @@ def DistanciaDupla(ObjDir, ObjEsq, ObjBase, Eixo):
 
             return DistanciaFinal
 
-       
+
     else:
         print( "Não calculou. Algum objeto faltante:", ObjDir,",", ObjEsq, ",", ObjBase)
 
-    
+
 def DistanciaUnica(ObjDist, ObjBase, Eixo):
 
     found_ObjDist = str(ObjDist) in bpy.data.objects
     found_ObjBase = str(ObjBase) in bpy.data.objects
-    
+
     if found_ObjDist == True and found_ObjBase == True:
 
 
@@ -289,7 +289,7 @@ def DistanciaUnica(ObjDist, ObjBase, Eixo):
         # Copia os 2
 
         Objetos = [bpy.data.objects[ObjDist], bpy.data.objects[ObjBase]]
-        
+
         MedidasEixo = []
         ObjetosCopias = []
 
@@ -309,23 +309,23 @@ def DistanciaUnica(ObjDist, ObjBase, Eixo):
             MedidasEixo.append(MedidaAtual)
             ObjetosCopias.append(ObjetoAtual)
 
-    
-        print("DESGRACA", MedidasEixo[0]) 
+
+        print("DESGRACA", MedidasEixo[0])
         print("DESGRACA2", MedidasEixo[1])
-       
+
         Distancia = abs( MedidasEixo[0] - MedidasEixo[1] )
         print("DISTANCIA DESSE DIABO", Distancia)
 
 
-        # Calcula Posicao        
+        # Calcula Posicao
         if MedidasEixo[1] < MedidasEixo[0]:
             DistanciaFinal = Distancia * -1
             print("DistanciaFinal", DistanciaFinal)
             print("")
             ApagaTudo()
-            
+
             return DistanciaFinal
-            
+
         if MedidasEixo[1] > MedidasEixo[0]:
             DistanciaFinal = Distancia
             print("DistanciaFinal", DistanciaFinal)
@@ -333,7 +333,7 @@ def DistanciaUnica(ObjDist, ObjBase, Eixo):
             ApagaTudo()
 
             return DistanciaFinal
-                        
+
         if MedidasEixo[1] == MedidasEixo[0]:
             DistanciaFinal = Distancia
             print("DistanciaFinal", DistanciaFinal)
@@ -342,17 +342,17 @@ def DistanciaUnica(ObjDist, ObjBase, Eixo):
 
             return DistanciaFinal
 
-       
+
     else:
         print( "Não calculou. Algum objeto faltante:", ObjDist,",", ObjBase)
 
-    
+
 
 def CalculaTudoCefalometriaDef(self, context):
 
-#    CalculaAnguloOclusao()
+    CalculaAnguloOclusao()
     CalculaAnguloNasolabial()
-#    CalculaAnguloGbSnPog()
+    CalculaAnguloGbSnPog()
 
 
     try:
@@ -381,7 +381,7 @@ def CalculaTudoCefalometriaDef(self, context):
     except:
         print("Algum ponto faltante!")
 
-    
+
     try:
         rima_or_tvl = str(float(round(DistanciaDupla("Cheekbone right", "Cheekbone left", "Subnasale", 1),2)))+" mm"
 
@@ -390,7 +390,7 @@ def CalculaTudoCefalometriaDef(self, context):
                 name = "Cheekbone - TVL",
                 description = "Cheekbone - TVL",
                 default = rima_or_tvl
-            )  
+            )
     except:
         print("Algum ponto faltante!")
 
@@ -406,7 +406,7 @@ def CalculaTudoCefalometriaDef(self, context):
             )
     except:
         print("Algum ponto faltante!")
-        
+
     '''
     try:
         proj_nasal_tvl = str(float(round(DistanciaDupla("Tip of Nose", "Tip of Nose", "Subnasale", 1),2)))+" mm"
@@ -433,7 +433,7 @@ def CalculaTudoCefalometriaDef(self, context):
             )
     except:
         print("Algum ponto faltante!")
-    
+
     '''
     try:
         a_mole_tvl = str(float(round(DistanciaDupla("ST A point", "ST A point", "Subnasale", 1),2)))+" mm"
@@ -543,11 +543,9 @@ class CalculaTudoCefalometria(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.calcula_tudo_cefalo"
     bl_label = "Cephalometry cal all"
-    
+
     def execute(self, context):
         CalculaTudoCefalometriaDef(self, context)
         return {'FINISHED'}
 
 bpy.utils.register_class(CalculaTudoCefalometria)
-
-

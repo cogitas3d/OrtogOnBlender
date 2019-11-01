@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191031b"
+VERSION = "20191101a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -597,14 +597,20 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
         circle=row.operator("object.booleana_union_multipla", text="MULTIPLE UNION", icon="STICKY_UVS_LOC")
 
         row = layout.row()
-        row.label(text="Simple Cut Segmentation:")
+        row.label(text="Segmentation and Boolean:")
 
         row = layout.row()
-#        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
-        row.operator("object.linha_corte_fora_a_fora", icon='LINE_DATA', text="Draw Line")
+        linha=row.operator("mesh.select_more", text="Sel. More", icon="ADD")
+
+        linha=row.operator("mesh.select_less", text="Sel. Less", icon="REMOVE")
 
         row = layout.row()
-        linha=row.operator("object.segmenta_desenho", text="Cut Draw!", icon="FCURVE")
+        linha=row.operator("object.separa_objeto", text="Separate Selected!", icon="MOD_BEVEL")
+
+        row = layout.row()
+        row = layout.row()
+        circle=row.operator("object.booleana_osteo_union", text="Union", icon="MOD_CAST")
+
 
         row = layout.row()
         row.label(text="Reconstruction:")
@@ -918,6 +924,13 @@ class ORTOG_PT_Fotogrametria(bpy.types.Panel):
         context = bpy.context
         obj = context.object
         scn = context.scene
+
+        row = layout.row()
+        row.operator("object.prepara_cena_fotogram", text="Setup Scene!", icon="ERROR")
+
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Fotogrammetry Algorithm:")
 
         row = layout.row()
         row.prop(scn, "my_enum")

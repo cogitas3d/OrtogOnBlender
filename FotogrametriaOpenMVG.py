@@ -16,7 +16,7 @@ import os
 class MessageFaltaFotos(bpy.types.Operator):
     bl_idname = "object.dialog_operator_falta_foto"
     bl_label = "Doesn't have photo path!"
-  
+
     def execute(self, context):
         message = ("Doesn't have photo path!")
         self.report({'INFO'}, message)
@@ -40,13 +40,37 @@ def ERROTermFoto():
      print(CRED + "Doesn't have photo path!" + CEND)
 '''
 
+# PREPARA CENA
+
+def PreparaCenaFotogramDef(self, context):
+    try:
+        bpy.ops.object.select_all(action='SELECT')
+
+        objetos_selecionados = [ o for o in bpy.context.scene.objects if o.select_get() == True ]
+
+        for i in objetos_selecionados:
+            i.hide_viewport = True
+    except:
+        print("Cena já preparada.")
+
+class PreparaCenaFotogram(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.prepara_cena_fotogram"
+    bl_label = "Photogrammetry Scene Setup"
+
+    def execute(self, context):
+        PreparaCenaFotogramDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(PreparaCenaFotogram)
+
 # MODELOS
 
 def GeraModeloFotoDef(self, context):
-    
+
     scn = context.scene
-    
-    
+
+
     #CRIA OU SETA DIETÓRIO TEMPORÁRIO
 #    if platform.system() == "Linux":
     tmpdir = tempfile.mkdtemp()
@@ -66,7 +90,7 @@ def GeraModeloFotoDef(self, context):
     TestaHEIC = ".HEIC" in FotoTeste
 
     if TestaHEIC == True:
-        if platform.system() == "Linux":        
+        if platform.system() == "Linux":
             subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && for i in *; do heif-convert $i $i.jpg; done && mv *.jpg '+tmpdir+'/JPG/', shell=True)
             scn.my_tool.path_photo = tmpdir+'/JPG/'
 
@@ -182,36 +206,36 @@ def GeraModeloFotoDef(self, context):
     #    try:
 
     #    if scn.my_tool.path_photo == "":
-    #        ERROTermFoto()        
+    #        ERROTermFoto()
     #        bpy.context.window_manager.popup_menu(ERROruntimeFotosDef, title="Attention!", icon='INFO')
 
     #    else:
 
-    
+
         OpenMVGtmpDir = tmpdir+'/OpenMVG'
         tmpOBJface = tmpdir+'/MVS/scene_dense_mesh_texture.obj'
 
-                
+
         if platform.system() == "Linux":
             OpenMVGPath = homeall+'/Programs/OrtogOnBlender/openMVG/software/SfM/SfM_SequentialPipeline.py'
             OpenMVSPath = homeall+'/Programs/OrtogOnBlender/openMVS/OpenMVS'
             print("É Linux")
-                    
+
         if platform.system() == "Windows":
-            OpenMVGPath = 'C:/OrtogOnBlender/openMVGWin/software/SfM/SfM_SequentialPipeline.py' 
-            OpenMVSPath = 'C:/OrtogOnBlender/openMVSWin/OpenMVS.bat' 
+            OpenMVGPath = 'C:/OrtogOnBlender/openMVGWin/software/SfM/SfM_SequentialPipeline.py'
+            OpenMVSPath = 'C:/OrtogOnBlender/openMVSWin/OpenMVS.bat'
 
         if platform.system() == "Darwin":
            #         if platform.release() == '15.6.0':
-        #                OpenMVGPath = '/OrtogOnBlender/openMVGMACelcap/SfM_SequentialPipeline.py' 
-        #                OpenMVSPath = '/OrtogOnBlender/openMVSMACelcap/openMVSMAC.sh' 
+        #                OpenMVGPath = '/OrtogOnBlender/openMVGMACelcap/SfM_SequentialPipeline.py'
+        #                OpenMVSPath = '/OrtogOnBlender/openMVSMACelcap/openMVSMAC.sh'
         #            if platform.release() == '17.5.0':
-        #                OpenMVGPath = '/OrtogOnBlender/openMVGMACelcap/SfM_SequentialPipeline.py' 
-        #                OpenMVSPath = '/OrtogOnBlender/openMVSMACelcap/openMVSMAC.sh'                       
+        #                OpenMVGPath = '/OrtogOnBlender/openMVGMACelcap/SfM_SequentialPipeline.py'
+        #                OpenMVSPath = '/OrtogOnBlender/openMVSMACelcap/openMVSMAC.sh'
         #            else:
-        #                OpenMVGPath = '/OrtogOnBlender/openMVGMAC/SfM_SequentialPipeline.py' 
+        #                OpenMVGPath = '/OrtogOnBlender/openMVGMAC/SfM_SequentialPipeline.py'
         #                OpenMVSPath = '/OrtogOnBlender/openMVSMAC/openMVSMAC.sh'
-            OpenMVGPath = '/OrtogOnBlender/openMVGMACelcap/SfM_SequentialPipeline.py' 
+            OpenMVGPath = '/OrtogOnBlender/openMVGMACelcap/SfM_SequentialPipeline.py'
             OpenMVSPath = '/OrtogOnBlender/openMVSMACelcap/openMVSMAC.sh'
 
             shutil.rmtree(tmpdir+'/OpenMVG', ignore_errors=True)
@@ -229,7 +253,7 @@ def GeraModeloFotoDef(self, context):
         if platform.system() == "Linux":
             subprocess.call(['python', OpenMVGPath , scn.my_tool.path_photo ,  OpenMVGtmpDir])
 
-                    
+
         if platform.system() == "Windows":
             subprocess.call(['C:/OrtogOnBlender/Python27/python', OpenMVGPath , scn.my_tool.path_photo ,  OpenMVGtmpDir])
 
@@ -252,7 +276,7 @@ def GeraModeloFotoDef(self, context):
             subprocess.call('cd '+tmpdir+' && mkdir MVS && C:\OrtogOnBlender\openMVGWin\openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && C:\OrtogOnBlender\openMVSWin\DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && C:\OrtogOnBlender\openMVSWin\ReconstructMesh -d '+dFactor+' --smooth '+smoothFactor+' '+tmpdir+'/MVS/scene_dense.mvs && C:\OrtogOnBlender\openMVSWin\TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
 
 #        else:
-#            subprocess.call(OpenMVSPath ,  shell=True)            
+#            subprocess.call(OpenMVSPath ,  shell=True)
             #subprocess.call([ 'meshlabserver', '-i', tmpdir+'scene_dense_mesh_texture.ply', '-o', tmpdir+'scene_dense_mesh_texture.obj', '-om', 'vn', 'wt' ])
 
 
@@ -275,12 +299,12 @@ def GeraModeloFotoDef(self, context):
             #    bpy.context.object.modifiers["Smooth"].factor = 2
             #    bpy.context.object.modifiers["Smooth"].iterations = 3
             #    bpy.ops.object.convert(target='MESH')
-            #    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Smooth")    
-            
+            #    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Smooth")
+
         bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
         bpy.ops.view3d.view_all(center=False)
         bpy.ops.file.pack_all()
-                
+
         bpy.ops.object.modifier_add(type='SMOOTH')
         bpy.context.object.modifiers["Smooth"].factor = 2
         bpy.context.object.modifiers["Smooth"].iterations = 3
@@ -322,7 +346,7 @@ class GeraModeloFoto(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.gera_modelo_foto"
     bl_label = "Gera Modelos Foto"
-    
+
     def execute(self, context):
         GeraModeloFotoDef(self, context)
         return {'FINISHED'}
