@@ -620,7 +620,7 @@ class ConfiguraDinamicaMole(bpy.types.Operator):
 
         SelectionaObjeto(str(ObjFace.name))
         ConfiguraDinamicaMoleDef(self, context)
-        # CorrigeDeformacaoOperacoesDef(self, context) # FAZER MAIS TESTES FUTUROS!
+        CorrigeDeformacaoOperacoesDef(self, context) # FAZER MAIS TESTES FUTUROS!
         GeraNarizDinamicaMole()
 
         return {'FINISHED'}
