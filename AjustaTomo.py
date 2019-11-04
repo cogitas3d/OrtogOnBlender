@@ -10,6 +10,7 @@ import os
 import platform
 import subprocess
 import pydicom as dicom
+import csv
 
 from .GeraModelosTomo import *
 
@@ -24,7 +25,7 @@ def AjustaTomoDef(self, context):
 
     #Cria diretorios temporarios e copia o conteudo para um deles
     #os.chdir('DEL')
-    
+
 #    scene = context.scene
 #    rd = scene.render
 
@@ -74,7 +75,7 @@ def AjustaTomoDef(self, context):
         def InstanceNumber(Arquivo):
 
 
-            try:        
+            try:
                 ds = dicom.dcmread(Arquivo, force=True) # Diretório e arquivo concatenados
                 #ds = dicom.dcmread(Arquivo, force=True) # Diretório e arquivo concatenados
 
@@ -178,7 +179,7 @@ def AjustaTomoDef(self, context):
                     arq.close()
 
                     palavra = "SeriesNumber"
-                        
+
                     for line in open("deletar.txt"):
                         if palavra in line:
                             SeriesRaw = line
@@ -190,8 +191,8 @@ def AjustaTomoDef(self, context):
                             if SeriesLimpo != '':
                                 if not os.path.exists(SeriesLimpo):
                                     os.mkdir(SeriesLimpo)
-                            
-                            if SeriesLimpo != '':                    
+
+                            if SeriesLimpo != '':
                                 shutil.copy(ArquivoAtual, SeriesLimpo)
                                 print("Copiado de: ", ArquivoAtual, " Para: ", SeriesLimpo)
                                 os.remove(ArquivoAtual)
@@ -231,7 +232,7 @@ def AjustaTomoDef(self, context):
                 os.remove(ArquivoAtual)
 
 
-				    
+
             #os.remove('deletar.txt')
     #        os.remove('deletar.txt')
         try:
@@ -242,8 +243,63 @@ def AjustaTomoDef(self, context):
 
         print("CT-SCAN ready!")
 
-    #    abrir_tomo(tmpdirTomo+'_CT-SCAN')
-        abrir_diretorio(tmpdirTomo)
+# Lista diretórios e arquivos
+
+        tmpdirCSV = tempfile.mkdtemp()
+
+        diretorio = tmpdirTomo+"/"
+
+        lista_compara = []
+
+        lista = [ name for name in os.listdir(diretorio) if os.path.isdir(os.path.join(diretorio, name)) ]
+
+        #print(lista)
+
+        for i in lista:
+        #    print("\n")
+        #    print("Directory:", i)
+        #    print(os.listdir(diretorio+i)[0])
+        #    print("Number of files:", len(os.listdir(diretorio+i)))
+            ArquivoAtual = os.listdir(diretorio+i)[0]
+        #    print(diretorio+i+"/"+ArquivoAtual)
+            ds = dicom.dcmread(diretorio+i+"/"+ArquivoAtual, force=True)
+            SeriesDescription = ds.data_element("SeriesDescription")
+            SeriesDescriptionLimpa1 = str(SeriesDescription).split('LO: ')
+            SeriesDescriptionLimpa2 = str(SeriesDescriptionLimpa1[1]).strip('"')
+        #    print(SeriesDescriptionLimpa2)
+        #    print("Directory:", i, "|| Number of files:", len(os.listdir(diretorio+i)), "||", SeriesDescriptionLimpa2, "\n")
+            lista_compara.append([len(os.listdir(diretorio+i)), i, SeriesDescriptionLimpa2])
+            lista_compara.sort(reverse = True)
+            print(lista_compara)
+
+
+        with open(tmpdirCSV+'/C-Scan_DATA.csv', mode='w') as centroid_file:
+            report_writer = csv.writer(centroid_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            report_writer.writerow(['DIRECTORY', 'NUMBER OF FILES', 'DESCRIPTION'])
+
+
+            for linha in lista_compara:
+                report_writer.writerow([linha[1],linha[0],linha[2]])
+                print("Directory:", linha[1], "|| Number of files", linha[0], "|| Description:", linha[2])
+
+        try:
+            if platform.system() == "Linux":
+            #    abrir_diretorio(tmpdir)
+                subprocess.Popen("libreoffice "+tmpdirCSV+"/C-Scan_DATA.csv", shell=True)
+
+            if platform.system() == "Windows":
+            #    abrir_diretorio(tmpdir)
+                subprocess.Popen('cd "C:/Program Files/LibreOffice/program/" & dir & soffice.bin '+tmpdirCSV+"/C-Scan_DATA.csv", shell=True)
+
+            if platform.system() == "Darwin":
+            #    abrir_diretorio(tmpdir)
+                subprocess.Popen('/Applications/LibreOffice.app/Contents/MacOS/soffice '+tmpdirCSV+"/C-Scan_DATA.csv", shell=True)
+        except:
+            print("Não há programa atribuído ao CSV!")
+
+# Atualiza path
+
+#        abrir_diretorio(tmpdirTomo)
 
         scn.my_tool.path = tmpdirTomo+"/"
 
@@ -258,7 +314,7 @@ class AjustaTomo(bpy.types.Operator):
         return {'FINISHED'}
 
 # ---------------------------------------
-	
+
 def abrir_diretorio(path):
     if platform.system() == "Windows":
         os.startfile(path)
@@ -266,11 +322,11 @@ def abrir_diretorio(path):
         subprocess.Popen(["open", path])
     else:
         subprocess.Popen(["xdg-open", path])
-	
+
 def AbreTMPDef(self, context):
-    
+
     scn = context.scene
-        
+
     tmpdir = tempfile.gettempdir()
     abrir_diretorio(tmpdir)
 
@@ -286,7 +342,7 @@ def CorrigeDicomDef(self, context):
 
     #    scene = context.scene
     #    rd = scene.render
-        
+
         os.chdir(scn.my_tool.path)
         os.makedirs("FIXED")
         if platform.system() == "Linux":
@@ -297,11 +353,11 @@ def CorrigeDicomDef(self, context):
         if platform.system() == "Darwin":
             os.system("/OrtogOnBlender/vtk-dicom/./dicomtodicom --verbose -o FIXED *")
         print("DICOM FIXED")
-	    
+
         if platform.system() == "Windows":
             os.system("C:\OrtogOnBlender\dicomtools\dicomtodicom --verbose -o FIXED *")
         print("DICOM FIXED")
-	    
+
         scn.my_tool.path = os.getcwd()+"/FIXED/"
 
 class CorrigeDicom(bpy.types.Operator):

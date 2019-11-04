@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191101c"
+VERSION = "20191103a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -2369,7 +2369,7 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
 
             row = layout.row()
             circle=row.operator("object.booleana_osteo_geral", text="Cut Boolean", icon="MOD_BOOLEAN")
-            
+
         if my_enum_ct == ENUM_VALUES_OSTEOTOMY.BOOLEAN:
             row = layout.row()
     #        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
