@@ -244,58 +244,60 @@ def AjustaTomoDef(self, context):
         print("CT-SCAN ready!")
 
 # Lista diretórios e arquivos
-
-        tmpdirCSV = tempfile.mkdtemp()
-
-        diretorio = tmpdirTomo+"/"
-
-        lista_compara = []
-
-        lista = [ name for name in os.listdir(diretorio) if os.path.isdir(os.path.join(diretorio, name)) ]
-
-        #print(lista)
-
-        for i in lista:
-        #    print("\n")
-        #    print("Directory:", i)
-        #    print(os.listdir(diretorio+i)[0])
-        #    print("Number of files:", len(os.listdir(diretorio+i)))
-            ArquivoAtual = os.listdir(diretorio+i)[0]
-        #    print(diretorio+i+"/"+ArquivoAtual)
-            ds = dicom.dcmread(diretorio+i+"/"+ArquivoAtual, force=True)
-            SeriesDescription = ds.data_element("SeriesDescription")
-            SeriesDescriptionLimpa1 = str(SeriesDescription).split('LO: ')
-            SeriesDescriptionLimpa2 = str(SeriesDescriptionLimpa1[1]).strip('"')
-        #    print(SeriesDescriptionLimpa2)
-        #    print("Directory:", i, "|| Number of files:", len(os.listdir(diretorio+i)), "||", SeriesDescriptionLimpa2, "\n")
-            lista_compara.append([len(os.listdir(diretorio+i)), i, SeriesDescriptionLimpa2])
-            lista_compara.sort(reverse = True)
-            print(lista_compara)
-
-
-        with open(tmpdirCSV+'/C-Scan_DATA.csv', mode='w') as centroid_file:
-            report_writer = csv.writer(centroid_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            report_writer.writerow(['DIRECTORY', 'NUMBER OF FILES', 'DESCRIPTION'])
-
-
-            for linha in lista_compara:
-                report_writer.writerow([linha[1],linha[0],linha[2]])
-                print("Directory:", linha[1], "|| Number of files", linha[0], "|| Description:", linha[2])
-
         try:
-            if platform.system() == "Linux":
-            #    abrir_diretorio(tmpdir)
-                subprocess.Popen("libreoffice "+tmpdirCSV+"/C-Scan_DATA.csv", shell=True)
+            tmpdirCSV = tempfile.mkdtemp()
 
-            if platform.system() == "Windows":
-            #    abrir_diretorio(tmpdir)
-                subprocess.Popen('cd "C:/Program Files/LibreOffice/program/" & dir & soffice.bin '+tmpdirCSV+"/C-Scan_DATA.csv", shell=True)
+            diretorio = tmpdirTomo+"/"
 
-            if platform.system() == "Darwin":
-            #    abrir_diretorio(tmpdir)
-                subprocess.Popen('/Applications/LibreOffice.app/Contents/MacOS/soffice '+tmpdirCSV+"/C-Scan_DATA.csv", shell=True)
+            lista_compara = []
+
+            lista = [ name for name in os.listdir(diretorio) if os.path.isdir(os.path.join(diretorio, name)) ]
+
+            #print(lista)
+
+            for i in lista:
+            #    print("\n")
+            #    print("Directory:", i)
+            #    print(os.listdir(diretorio+i)[0])
+            #    print("Number of files:", len(os.listdir(diretorio+i)))
+                ArquivoAtual = os.listdir(diretorio+i)[0]
+            #    print(diretorio+i+"/"+ArquivoAtual)
+                ds = dicom.dcmread(diretorio+i+"/"+ArquivoAtual, force=True)
+                SeriesDescription = ds.data_element("SeriesDescription")
+                SeriesDescriptionLimpa1 = str(SeriesDescription).split('LO: ')
+                SeriesDescriptionLimpa2 = str(SeriesDescriptionLimpa1[1]).strip('"')
+            #    print(SeriesDescriptionLimpa2)
+            #    print("Directory:", i, "|| Number of files:", len(os.listdir(diretorio+i)), "||", SeriesDescriptionLimpa2, "\n")
+                lista_compara.append([len(os.listdir(diretorio+i)), i, SeriesDescriptionLimpa2])
+                lista_compara.sort(reverse = True)
+                print(lista_compara)
+
+
+            with open(tmpdirCSV+'/C-Scan_DATA.csv', mode='w') as centroid_file:
+                report_writer = csv.writer(centroid_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                report_writer.writerow(['DIRECTORY', 'NUMBER OF FILES', 'DESCRIPTION'])
+
+
+                for linha in lista_compara:
+                    report_writer.writerow([linha[1],linha[0],linha[2]])
+                    print("Directory:", linha[1], "|| Number of files", linha[0], "|| Description:", linha[2])
+
+            try:
+                if platform.system() == "Linux":
+                #    abrir_diretorio(tmpdir)
+                    subprocess.Popen("libreoffice "+tmpdirCSV+"/C-Scan_DATA.csv", shell=True)
+
+                if platform.system() == "Windows":
+                #    abrir_diretorio(tmpdir)
+                    subprocess.Popen('cd "C:/Program Files/LibreOffice/program/" & dir & soffice.bin '+tmpdirCSV+"/C-Scan_DATA.csv", shell=True)
+
+                if platform.system() == "Darwin":
+                #    abrir_diretorio(tmpdir)
+                    subprocess.Popen('/Applications/LibreOffice.app/Contents/MacOS/soffice '+tmpdirCSV+"/C-Scan_DATA.csv", shell=True)
+            except:
+                print("Não há programa atribuído ao CSV!")
         except:
-            print("Não há programa atribuído ao CSV!")
+            print("Algum problema aconteceu com a leitura dos dados do tomógrafo.")
 
 # Atualiza path
 
