@@ -551,8 +551,6 @@ def GeraNarizDinamicaMole():
         EMPTopHead.hide_viewport=True
         EMPBottomHead.hide_viewport=True
 
-
-
     else:
         print("Falta algum ponto anatômico no processo.")
 
@@ -622,7 +620,7 @@ class ConfiguraDinamicaMole(bpy.types.Operator):
 
         SelectionaObjeto(str(ObjFace.name))
         ConfiguraDinamicaMoleDef(self, context)
-        CorrigeDeformacaoOperacoesDef(self, context)
+        # CorrigeDeformacaoOperacoesDef(self, context) # FAZER MAIS TESTES FUTUROS!
         GeraNarizDinamicaMole()
 
         return {'FINISHED'}
