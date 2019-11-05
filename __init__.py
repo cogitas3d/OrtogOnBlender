@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191104c"
+VERSION = "20191104d"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -477,14 +477,25 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
         col = layout.column(align=True)
         col.prop(scn.my_tool, "path", text="")
 
+        '''
         if platform.system() == "Windows":
             row = layout.row()
             row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
+        '''
 
         row = layout.row()
-        row.operator("object.gera_modelos_tomo_arc", text="Archs Generator", icon="SNAP_FACE")
+        row.operator("object.abre_slicer", text="Open Slicer!", icon="FILE_TICK")
+
+        col = self.layout.column(align = True)
+        col.prop(context.scene, "interesse_arco")
 
         row = layout.row()
+        row.operator("object.gera_modelos_tomo_arc", text="Arch Generator", icon="SNAP_FACE")
+
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Import File:")
+
         row = layout.row()
         row.operator("import_mesh.stl", text="Import STL", icon="IMPORT")
 
@@ -2993,6 +3004,13 @@ def register():
         default = "1430"
       )
     bpy.utils.register_class(ORTOG_PT_GraphicRefs)
+
+    bpy.types.Scene.interesse_arco = bpy.props.StringProperty \
+      (
+        name = "Factor",
+        description = "Fatos interesse arco",
+        default = "226"
+      )
 
     bpy.types.Scene.my_enum_archscollision = bpy.props.EnumProperty(
         name="Select",
