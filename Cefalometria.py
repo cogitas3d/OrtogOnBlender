@@ -1,5 +1,108 @@
 import bpy
 import math
+from .FerrMedidas import *
+
+def CursorToSelectedObjs(objeto1, objeto2):
+
+    context = bpy.context
+    scn = context.scene
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    bpy.data.objects[objeto1].select_set(True)
+    bpy.data.objects[objeto2].select_set(True)
+    context.view_layer.objects.active = bpy.data.objects[objeto1]
+
+    for area in bpy.context.screen.areas:
+        if area.type == 'VIEW_3D':
+            ctx = bpy.context.copy()
+            ctx['area'] = area
+            ctx['region'] = area.regions[-1]
+    #        bpy.ops.view3d.view_selected(ctx)
+            bpy.ops.view3d.snap_cursor_to_selected(ctx)
+            break
+
+def ApagarObjeto(objeto):
+    context = bpy.context
+    scn = context.scene
+    
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects[objeto].select_set(True)
+    context.view_layer.objects.active = bpy.data.objects[objeto]
+    bpy.ops.object.delete(use_global=False)
+
+
+#    CursorLoc = bpy.context.scene.cursor.location
+
+def CalculaPlanoMaxilaClassicoDef():
+
+    FoundT3 = 'Tooth 3' in bpy.data.objects
+    FoundT14 = 'Tooth 14' in bpy.data.objects
+    FoundT8 = 'Tooth 8' in bpy.data.objects
+    FoundT9 = 'Tooth 9' in bpy.data.objects
+
+    if FoundT3 == True and FoundT14 == True and FoundT8 == True and FoundT9 == True:
+        print("Todos os pontos anatômicos presentes presentes!")
+
+        CursorToSelectedObjs("Tooth 14", "Tooth 3")
+        Cursor_1626 = bpy.context.scene.cursor.location
+        print(Cursor_1626)
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "1626"
+
+        CursorToSelectedObjs("Tooth 9", "Tooth 8")
+        Cursor_1121 = bpy.context.scene.cursor.location
+        print(Cursor_1121)
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "1121"
+
+        #PosicaoX = bpy.data.objects["1121"].location[0]
+        #PosicaoY = bpy.data.objects["1626"].location[1]
+        #PosicaoZ = bpy.data.objects["1121"].location[2]
+
+        PosicaoX = bpy.data.objects["1121"].location[0]
+        PosicaoY = bpy.data.objects["1121"].location[1]
+        PosicaoZ = bpy.data.objects["1626"].location[2]
+
+        print(PosicaoX)
+        print(PosicaoY)
+        print(PosicaoZ)
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=(PosicaoX, PosicaoY, PosicaoZ))
+        bpy.context.object.name = "Inter_1626_1121"
+
+        AnguloOcluMaxClass = CalculaAngulo("1121", "1626", "Inter_1626_1121")
+
+        bpy.types.Scene.plano_oclusal_maxila_classico = bpy.props.StringProperty \
+            (
+                name = "Maxillary Occlusal Classic",
+                description = "Classic Max. Occl. Plane",
+                default = str(AnguloOcluMaxClass)
+            )
+
+        ApagarObjeto("1121")
+        ApagarObjeto("1626")
+        ApagarObjeto("Inter_1626_1121")
+
+
+        return str(AnguloOcluMaxClass)
+
+    else:
+        print("Falta algum ponto anatômico dos dentes!")
+
+class CalculaPlanoMaxilaClassico(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.calcula_plano_oclusal_classico"
+    bl_label = "Calc. Max. Occl. Plane Classic"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        CalculaPlanoMaxilaClassicoDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(CalculaPlanoMaxilaClassico)
 
 
 def CalculaAnguloOclusao():

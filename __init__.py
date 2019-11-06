@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191105a"
+VERSION = "20191106a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -1910,6 +1910,108 @@ class ORTOG_PT_PontosAnatomicosMole(bpy.types.Panel):
         row.alignment = 'CENTER'
         row.operator("object.gera_dir_nome_paciente_points_soft", text="SAVE!", icon="FILE_TICK")
 '''
+class ORTOG_PT_MeasuringTools(bpy.types.Panel):
+    bl_label = "Measuring Tools"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Ortog"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        row = layout.row()
+        row.label(text="Mode:")
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+        row = layout.row()
+        row.label(text="Reference Lines:")
+
+        row = layout.row()
+        linha=row.operator("mesh.add_linhabase", text="Vertical Center Line", icon="SORT_DESC")
+        linha.location=(0,-200,0)
+
+        row = layout.row()
+        linha=row.operator("mesh.add_linhabase", text="Horizontal Center Line", icon="FORWARD")
+        linha.location=(0,-200,0)
+        linha.rotation=(0,1.5708,0)
+
+        row = layout.row()
+        linha=row.operator("mesh.add_linhabase", text="Horizontal Side Line", icon="FORWARD")
+        linha.location=(200,30,0)
+        linha.rotation=(1.5708,0,0)
+
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Upper Teeth:")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_8_pt", text="Tooth 8 (11)")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_9_pt", text="Tooth 9 (21)")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_6_pt", text="Tooth 6 (13)")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_11_pt", text="Tooth 11 (23)")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_3_pt", text="Tooth 3 (16)")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_14_pt", text="Tooth 14 (26)")
+
+        # Plano oclusal maxila
+
+       	row = layout.row()
+        row = layout.row()
+        row.label(text="Occlusal Plane:")
+
+#        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.operator("object.calcula_plano_oclusal_classico", text="Calculate!!!", icon="PREFERENCES")
+#        row.scale_y=1.0
+#        row.alignment = 'RIGHT'
+        row = col.row()
+        row.scale_y=1.0
+        row.alignment = 'LEFT'
+        row.prop(context.scene, "plano_oclusal_maxila_classico")
+        row = col.row()
+        row.alignment = 'RIGHT'
+        row.label(text="Women: 4º-12º Men: 4º-12º")
+
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Vertical Measurements:")
+
+        row = layout.row()
+        row.operator("object.medverhor_dentes", text="Create Vertical Measurements", icon="DRIVER_DISTANCE")
+
+        row = layout.row()
+        row.operator("measureit.runopengl", text="Show/Hide Measurements", icon="GHOST_ENABLED")
+
+        row = layout.row()
+        row = layout.row()
+        row.operator("object.apaga_pontos_objetos", text="Delete Measure", icon="CANCEL")
+
+       	row = layout.row()
+        row = layout.row()
+        row.label(text="Parent Points:")
+
+        row = layout.row()
+        circle=row.operator("object.parenteia_emp", text="Parent Points", icon="LINKED")
+
 
 class ORTOG_PT_Cefalometria(bpy.types.Panel):
     bl_label = "Cephalometry"
@@ -2526,88 +2628,6 @@ class ORTOG_PT_ArmatureDynamic(bpy.types.Panel):
         row.alignment = 'CENTER'
         row.operator("object.gera_dir_nome_paciente_dynamic", text="SAVE!", icon="FILE_TICK")
 
-class ORTOG_PT_MeasuringTools(bpy.types.Panel):
-    bl_label = "Measuring Tools"
-    bl_region_type = 'UI'
-    bl_space_type = 'VIEW_3D'
-    bl_options = {'DEFAULT_CLOSED'}
-    bl_category = "Ortog"
-
-    def draw(self, context):
-        layout = self.layout
-
-        context = bpy.context
-        obj = context.object
-        scn = context.scene
-
-        row = layout.row()
-        row.label(text="Mode:")
-
-        row = layout.row()
-        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
-        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
-
-        row = layout.row()
-        row.label(text="Reference Lines:")
-
-        row = layout.row()
-        linha=row.operator("mesh.add_linhabase", text="Vertical Center Line", icon="SORT_DESC")
-        linha.location=(0,-200,0)
-
-        row = layout.row()
-        linha=row.operator("mesh.add_linhabase", text="Horizontal Center Line", icon="FORWARD")
-        linha.location=(0,-200,0)
-        linha.rotation=(0,1.5708,0)
-
-        row = layout.row()
-        linha=row.operator("mesh.add_linhabase", text="Horizontal Side Line", icon="FORWARD")
-        linha.location=(200,30,0)
-        linha.rotation=(1.5708,0,0)
-
-        row = layout.row()
-        row = layout.row()
-        row.label(text="Upper Teeth:")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_8_pt", text="Tooth 8 (11)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_9_pt", text="Tooth 9 (21)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_6_pt", text="Tooth 6 (13)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_11_pt", text="Tooth 11 (23)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_3_pt", text="Tooth 3 (16)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_14_pt", text="Tooth 14 (26)")
-
-       	row = layout.row()
-        row = layout.row()
-        row.label(text="Parent Points:")
-
-        row = layout.row()
-        circle=row.operator("object.parenteia_emp", text="Parent Points", icon="LINKED")
-
-        row = layout.row()
-        row = layout.row()
-        row.label(text="Vertical Measurements:")
-
-        row = layout.row()
-        row.operator("object.medverhor_dentes", text="Create Vertical Measurements", icon="DRIVER_DISTANCE")
-
-        row = layout.row()
-        row.operator("measureit.runopengl", text="Show/Hide Measurements", icon="GHOST_ENABLED")
-
-        row = layout.row()
-        row = layout.row()
-        row.operator("object.apaga_pontos_objetos", text="Delete Measure", icon="CANCEL")
-
-
 class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
     bl_label = "Kinematic"
     bl_region_type = 'UI'
@@ -3046,6 +3066,13 @@ def register():
     bpy.utils.register_class(ORTOG_PT_FotogramModif)
     bpy.utils.register_class(ORTOG_PT_AlinhaFaceCT)
     bpy.utils.register_class(ORTOG_PT_PontosAnatomicos)
+    bpy.types.Scene.plano_oclusal_maxila_classico = bpy.props.StringProperty \
+        (
+            name = "Maxillary Occlusal Classic",
+            description = "Maxilla Occlusal",
+            default = "NONE"
+        )
+    bpy.utils.register_class(ORTOG_PT_MeasuringTools)
     bpy.types.Scene.my_enum_ana = bpy.props.EnumProperty(
         name="Select",
         description= "",
@@ -3072,7 +3099,6 @@ def register():
         description= "",
         items=[(ENUM_VALUES_DYNAMIC.DEFAULT, "DEFAULT", "Default dynamic."), (ENUM_VALUES_DYNAMIC.NOSE, "NOSE EXP.", "Better deformation of nose."), (ENUM_VALUES_DYNAMIC.EXPERIMENTAL, "EXPERIMENTAL SLICES", "Dynamic with indetermined slices.")],)
     bpy.utils.register_class(ORTOG_PT_ArmatureDynamic)
-    bpy.utils.register_class(ORTOG_PT_MeasuringTools)
     bpy.utils.register_class(ORTOG_PT_CinematicaPanel)
     bpy.utils.register_class(ORTOG_PT_FechaLabios)
     bpy.utils.register_class(ORTOG_PT_GuideCreation)
@@ -3220,6 +3246,7 @@ def unregister():
 #    bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosMandibula)
 #    bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosDentes)
 #    bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosMole)
+    bpy.utils.unregister_class(ORTOG_PT_MeasuringTools)
     bpy.utils.unregister_class(ORTOG_PT_Cefalometria)
     bpy.utils.unregister_class(ORTOG_PT_Osteotomia)
     del bpy.types.Scene.medida_real2
@@ -3230,7 +3257,6 @@ def unregister():
     bpy.utils.unregister_class(EMP2b)
     bpy.utils.unregister_class(EMP3b)
     bpy.utils.unregister_class(ORTOG_PT_ArmatureDynamic)
-    bpy.utils.unregister_class(ORTOG_PT_MeasuringTools)
     bpy.utils.unregister_class(ORTOG_PT_CinematicaPanel)
     bpy.utils.unregister_class(ORTOG_PT_GuideCreation)
     bpy.utils.unregister_class(ORTOG_PT_ImportTomoImg)
