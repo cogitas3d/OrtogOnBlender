@@ -2,6 +2,37 @@ import bpy
 import bmesh
 from math import sqrt
 
+# OCULTAR MOSTRAR Pontos
+
+def MostraOcultaNomesDef(self, context):
+
+    ListaPontosNomesShow = ['Orbital right', 'Orbital left', 'N point', 'Po right', 'Po left', 'Pt right', 'Pt left', 'Ba point', 'S point', 'U1 Tip', 'U1 Labial Gengival Border', 'U1 Lingual Gengival Border', 'M U6', 'D U6', 'U6 Occlusal', 'PNS point', 'A point', 'ANS point', 'U1 Root', 'L1 Tip', 'L1 Root', 'L1 Labial Gengival Border', 'L1 Lingual Gengival Border', 'B point', 'M L6', 'L6 Occlusal', 'D L6', 'Mid Ramus right', 'Mid Ramus left', 'R right', 'R left', 'Go right', 'Go left', 'Ar right', 'Ar left', 'Sigmoid right', 'Sigmoid left', 'Co right', 'Co left', 'Pg point', 'Gn point', 'Me point', 'ST Glabella', 'ST Nasion', 'Bridge of Nose', 'Tip of Nose', 'Cheekbone right', 'Cheekbone left', 'Columella', 'Subnasale', 'Subpupil right', 'Subpupil left', 'ST A point', 'Upper Lip', 'Stomion Superius', 'Stomion Inferius', 'Lower Lip', 'ST B point', 'ST Pogonion', 'ST Gnathion', 'ST Menton', 'Throat point', 'CB right', 'CB left', 'OR right', 'OR left', 'SP right', 'SP left', 'AB right', 'AB left', 'Tooth 8', 'Tooth 9', 'Tooth 6', 'Tooth 11', 'Tooth 3', 'Tooth 14', 'Tooth 24', 'Tooth 25', 'Tooth 22', 'Tooth 27', 'Tooth 19', 'Tooth 30', 'Condylar Process right', 'Condylar Process left', 'Coronoid Process left', 'Coronoid Process right', 'Mid Go-Ramus Fracure left', 'Mid Go-Ramus Fracure right', 'Mid Upper Incisors', 'Mid Mandibula Angle left', 'Mid Mandibula Angle right', 'Radix', 'Anterior Nostril left', 'Posterior Nostril left', 'Anterior Nostril right', 'Posterior Nostril right', 'Rhinion', 'Alar Groove right', 'Alar Groove left', 'Supratip', 'Infratip Lobule', 'Columella right', 'Columella left', 'Alar Rim right', 'Alar Rim left', 'Medial Canthus left', 'Medial Canthus right', 'Trichion', 'Submental', 'Supraglabella', 'Glabella']
+
+    for i in ListaPontosNomesShow:
+        try:
+            EstadoVisualiza = bpy.data.objects[i].show_name
+
+            if EstadoVisualiza == True:
+                bpy.data.objects[i].show_name = False
+
+            if EstadoVisualiza == False:
+                bpy.data.objects[i].show_name = True
+        except:
+            print("Ponto", i, "ausente!")
+
+class MostraOcultaNomes(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.mostra_oculta_nomes"
+    bl_label = "Show/Hide Anat. Points"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        MostraOcultaNomesDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(MostraOcultaNomes)
+
+
 def TestaPontoCollDef():
 
     context = bpy.context
@@ -2507,6 +2538,7 @@ class ParenteiaEMP(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.parenteia_emp"
     bl_label = "ParenteiaEMP"
+    bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
         ParenteiaEMPDef(self, context)

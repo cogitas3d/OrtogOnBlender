@@ -282,7 +282,7 @@ class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
         row.label(text="Anatomical Points")
 
         row = layout.row()
-        row.label(text="Calculation Points:")
+        row.label(text="Nose Calculation Points:")
 
         row = layout.row()
         linha=row.operator("object.radix_pt", text="Radix")
@@ -304,6 +304,30 @@ class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("object.posterior_nostril_right_pt", text="Posterior Nostril right")
+
+
+
+        row = layout.row()
+        row.label(text="Facial Analysis Points:")
+
+        row = layout.row()
+        linha=row.operator("object.medial_canthus_right_pt", text="Medial Canthus right")
+
+        row = layout.row()
+        linha=row.operator("object.medial_canthus_left_pt", text="Medial Canthus left")
+
+        row = layout.row()
+        linha=row.operator("object.trichion_pt", text="Trichion")
+
+        row = layout.row()
+        linha=row.operator("object.st_glabella_pt", text="ST Glabella")
+
+        row = layout.row()
+        linha=row.operator("object.subnasale_pt", text="Subnasale")
+
+        row = layout.row()
+        linha=row.operator("object.st_menton_pt", text="ST Menton")
+
 
         row = layout.row()
         row.label(text="Control Points:")
@@ -335,11 +359,6 @@ class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
         row = layout.row()
         linha=row.operator("object.columella_left_pt", text="Columella left")
 
-        row = layout.row()
-        linha=row.operator("object.medial_canthus_right_pt", text="Medial Canthus right")
-
-        row = layout.row()
-        linha=row.operator("object.medial_canthus_left_pt", text="Medial Canthus left")
 
        	row = layout.row()
         row = layout.row()
@@ -383,6 +402,10 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         row = layout.row()
         linha=row.operator("object.rhin_mostra_oculta_pontos", text="Show/Hide Points", icon="GHOST_ENABLED")
 
+
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.mostra_oculta_nomes", text="Show/Hide Anatomical Names", icon="GHOST_ENABLED")
 
 
         row = layout.row()

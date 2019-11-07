@@ -530,6 +530,7 @@ class CopiaFace(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.copia_face"
     bl_label = "Copy Face"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -562,22 +563,23 @@ def CalculaDistsNarizDef():
 
         for i in ListaPontos:
     #            print("HÁ O NOME!", i.name)
-            bpy.ops.object.select_all(action='DESELECT')
-
-            ObjetoAtual = bpy.data.objects[i]
-            ObjetoAtual.select_set(True)
-            bpy.context.view_layer.objects.active = ObjetoAtual
-            bpy.ops.object.duplicate()
-            NovoNome = str(bpy.data.objects[i].name)+"_COPY_MEDIDAS"
-            bpy.context.object.name = NovoNome
-            bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
-            bpy.ops.object.select_all(action='DESELECT')
+            try:
+                bpy.ops.object.select_all(action='DESELECT')
+                ObjetoAtual = bpy.data.objects[i]
+                ObjetoAtual.select_set(True)
+                bpy.context.view_layer.objects.active = ObjetoAtual
+                bpy.ops.object.duplicate()
+                NovoNome = str(bpy.data.objects[i].name)+"_COPY_MEDIDAS"
+                bpy.context.object.name = NovoNome
+                bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+                bpy.ops.object.select_all(action='DESELECT')
+            except:
+                print("Erro ao tentar copiar o objeto:", i)
     except:
         print("Erro ao tentar copiar os objetos.")
 
     try:
 
-        print("TESTEEEEEEEEEEEE")
         print(bpy.data.objects["Radix_COPY_MEDIDAS"].name)
 #        print(bpy.data.objects["Tip of Nose_COPY_MEDIDAS"].name)
         print(bpy.data.objects["Subnasale_COPY_MEDIDAS"].name)
@@ -640,7 +642,6 @@ def CalculaDistsNarizDef():
 
         # CRIA PONTOS PARA CALCULAR ANGULO DIREITO
         bpy.ops.object.select_all(action='DESELECT')
-
         ObjetoAtual = bpy.data.objects["Posterior Nostril right_COPY_MEDIDAS"]
         ObjetoAtual.select_set(True)
         bpy.context.view_layer.objects.active = ObjetoAtual
@@ -652,6 +653,7 @@ def CalculaDistsNarizDef():
 
         # CALCULA ANGULO
         AnguloNasolabial = CalculaAngulo("Anterior Nostril right_COPY_MEDIDAS", "Posterior Nostril right_COPY_MEDIDAS", "Posterior Nostril right_ABAIXO")
+
 
 #        AnguloNasolabial = CalculaAngulo("Radix_COPY_MEDIDAS", "Tip of Nose_COPY_MEDIDAS", "Subnasale_COPY_MEDIDAS")
 
@@ -717,7 +719,11 @@ def CalculaDistsNarizDef():
         NonstrilRightMedia = (AnteriorNostrilRight + PosteriorNostrilRight) / 2
 
         AlarRimRight = bpy.data.objects["Alar Rim right_COPY_MEDIDAS"].location[2]
+        print("AQUI!!!")
+        #print(FatorAlarRimRight)
+
         FatorAlarRimRight = abs(AlarRimRight - NonstrilRightMedia)
+
 
 
         bpy.types.Scene.rhin_alar_rim_med_direito = bpy.props.StringProperty \
@@ -747,14 +753,16 @@ def CalculaDistsNarizDef():
     try:
         for i in ListaPontos:
     #            print("HÁ O NOME!", i.name)
-            bpy.ops.object.select_all(action='DESELECT')
-            NomeAtual = str(bpy.data.objects[i].name)+"_COPY_MEDIDAS"
-            ObjetoAtual = bpy.data.objects[NomeAtual]
-            ObjetoAtual.select_set(True)
-            bpy.context.view_layer.objects.active = ObjetoAtual
-            bpy.ops.object.delete(use_global=False)
-            bpy.ops.object.select_all(action='DESELECT')
-
+            try:
+                bpy.ops.object.select_all(action='DESELECT')
+                NomeAtual = str(bpy.data.objects[i].name)+"_COPY_MEDIDAS"
+                ObjetoAtual = bpy.data.objects[NomeAtual]
+                ObjetoAtual.select_set(True)
+                bpy.context.view_layer.objects.active = ObjetoAtual
+                bpy.ops.object.delete(use_global=False)
+                bpy.ops.object.select_all(action='DESELECT')
+            except:
+                print("Houve problema ao deletar o ponto:", i)
     except:
         print("Houve algum problema ao deletar os pontos.")
 
