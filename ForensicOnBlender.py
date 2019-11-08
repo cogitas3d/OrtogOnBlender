@@ -158,6 +158,10 @@ class FORENSIC_PT_ColocaMarcadores(bpy.types.Panel):
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
 
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Create Custom Marker:")
+
         col = self.layout.column(align = True)
         col.prop(context.scene, "nome_marcador")
 
@@ -165,7 +169,20 @@ class FORENSIC_PT_ColocaMarcadores(bpy.types.Panel):
         col.prop(context.scene, "dimensao_marcador")
 
         row = layout.row()
-        linha=row.operator("object.adiciona_marcador", text="Add Soft Tissue Marker", icon="EMPTY_SINGLE_ARROW")
+        linha=row.operator("object.adiciona_marcador", text="Create Marker", icon="EMPTY_SINGLE_ARROW")
+
+        row = layout.row()
+        row = layout.row()
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Import CSV Sheet:")
+
+        row = layout.row()
+        col = layout.column(align=True)
+        col.prop(scn.my_tool, "filepathcsv", text="")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_cria_botoes", text="Generate Soft Tissue Markers!", icon="EMPTY_SINGLE_ARROW")
 
 bpy.utils.register_class(FORENSIC_PT_ColocaMarcadores)
 
