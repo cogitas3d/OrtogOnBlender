@@ -59,7 +59,8 @@ class ImportaSplint(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.importa_splint"
     bl_label = "Importa Splint"
-
+    bl_options = {'REGISTER', 'UNDO'}
+    
     def execute(self, context):
         ImportaSplintDef(self, context)
         return {'FINISHED'}
@@ -296,6 +297,7 @@ class CriaSplint(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.cria_splint"
     bl_label = "Cria Splint"
+    bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
         CriaSplintDef(self, context)

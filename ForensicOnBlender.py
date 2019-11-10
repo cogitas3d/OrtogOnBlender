@@ -195,8 +195,6 @@ class FORENSIC_PT_ColocaMarcadores(bpy.types.Panel):
         row = layout.row()
         linha=row.operator("object.engrossa_linha", text="Make Tube Line", icon="OUTLINER_OB_CURVE")
 
-
-
 bpy.utils.register_class(FORENSIC_PT_ColocaMarcadores)
 
 bpy.types.Scene.nome_marcador = bpy.props.StringProperty \
@@ -212,3 +210,62 @@ bpy.types.Scene.dimensao_marcador = bpy.props.StringProperty \
     description = "Object Size",
     default = "None"
   )
+
+class FORENSIC_PT_Musculos(bpy.types.Panel):
+    bl_label = "Muscles"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Forensic"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        row = layout.row()
+        linha=row.operator("object.forensic_importa_temporalis", text="Temporalis")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_importa_masseter", text="Masseter")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_importa_orbicularis_oculi", text="Orbicularis Oculi")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_importa_elevator_labii_superioris", text="Elevator Labii Superioris")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_importa_nasalis", text="Nasalis")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_importa_zygomaticus", text="Zygomaticus")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_importa_orbicularis_oris", text="Orbicularis Oris")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_importa_mentalis", text="Mentalis+")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_importa_sternocleidomastoid", text="Sternocleidomastoid+")
+
+        row = layout.row()
+        row.label(text="Deform Muscle:")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_escultura_grab", text="Grab", icon="BRUSH_GRAB")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_escultura_smooth", text="Smooth", icon="BRUSH_SMOOTH")
+
+        row = layout.row()
+        linha=row.operator("object.mode_set", text="OK! (Object Mode)", icon="META_CUBE").mode='OBJECT'
+
+        row = layout.row()
+        linha=row.operator("object.forensic_copia_espelha", text="Copy & Mirror", icon="MOD_TRIANGULATE")
+
+
+bpy.utils.register_class(FORENSIC_PT_Musculos)

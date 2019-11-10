@@ -1,5 +1,6 @@
 import bpy
 import re
+import platform
 
 from .PontosAnatomicos import *
 
@@ -176,3 +177,364 @@ class EngrossaLinha(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class( EngrossaLinha)
+
+
+def ForensicImportaMuscleDef(nome):
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+
+    if platform.system() == "Linux":
+
+        dirScript = bpy.utils.user_resource('SCRIPTS')
+
+        blendfile = dirScript+"addons/OrtogOnBlender-master/ForensicObj.blend"
+#        section   = "\\Collection\\"
+#        object    = "SPLINT"
+        section   = "\\Object\\"
+        object    = nome
+
+    if platform.system() == "Darwin":
+
+        dirScript = bpy.utils.user_resource('SCRIPTS')
+
+        blendfile = dirScript+"addons/OrtogOnBlender-master/ForensicObj.blend"
+        section   = "\\Object\\"
+        object    = nome
+
+    if platform.system() == "Windows":
+
+        dirScript = 'C:/OrtogOnBlender/Blender280/2.80/scripts/'
+
+        blendfile = dirScript+"addons/OrtogOnBlender-master/ForensicObj.blend"
+        section   = "\\Object\\"
+        object    = nome
+
+
+    filepath  = blendfile + section + object
+    directory = blendfile + section
+    filename  = object
+
+    bpy.ops.wm.append(
+        filepath=filepath,
+        filename=filename,
+        directory=directory)
+
+    ObjImportado = bpy.data.objects[nome]
+
+
+    bpy.ops.object.select_all(action='DESELECT')
+    ObjImportado.select_set(True)
+    context.view_layer.objects.active = ObjImportado
+
+
+class ForensicImportaTemporalis(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_importa_temporalis"
+    bl_label = "Import Temporalis"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Temporalis' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        ForensicImportaMuscleDef("Temporalis")
+        return {'FINISHED'}
+
+bpy.utils.register_class(ForensicImportaTemporalis)
+
+
+class ForensicImportaMasseter(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_importa_masseter"
+    bl_label = "Import Masseter"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Masseter' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        ForensicImportaMuscleDef("Masseter")
+        return {'FINISHED'}
+
+bpy.utils.register_class(ForensicImportaMasseter)
+
+
+class ForensicImportaOrbicularisOculi(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_importa_orbicularis_oculi"
+    bl_label = "Import Orbicularis Oculi"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Orbicularis Oculi' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        ForensicImportaMuscleDef("Orbicularis Oculi")
+        return {'FINISHED'}
+
+bpy.utils.register_class(ForensicImportaOrbicularisOculi)
+
+
+class ForensicImportaElevatorLabiiSuperioris(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_importa_elevator_labii_superioris"
+    bl_label = "Import Elevator Labii Superioris"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Elevator Labii Superioris' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        ForensicImportaMuscleDef("Elevator Labii Superioris")
+        return {'FINISHED'}
+
+bpy.utils.register_class(ForensicImportaElevatorLabiiSuperioris)
+
+
+class ForensicImportaNasalis(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_importa_nasalis"
+    bl_label = "Import Nasalis"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Nasalis' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        ForensicImportaMuscleDef("Nasalis")
+        return {'FINISHED'}
+
+bpy.utils.register_class(ForensicImportaNasalis)
+
+class ForensicImportaZygomaticus(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_importa_zygomaticus"
+    bl_label = "Import Zygomaticus"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Zygomaticus' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        ForensicImportaMuscleDef("Zygomaticus")
+        return {'FINISHED'}
+
+bpy.utils.register_class(ForensicImportaZygomaticus)
+
+
+class ForensicImportaOrbicularisOris(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_importa_orbicularis_oris"
+    bl_label = "Import Orbicularis Oris"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Orbicularis Oris' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        ForensicImportaMuscleDef("Orbicularis Oris")
+        return {'FINISHED'}
+
+bpy.utils.register_class(ForensicImportaOrbicularisOris)
+
+
+class ForensicImportaMentalis(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_importa_mentalis"
+    bl_label = "Import Mentalis"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Mentalis+' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        ForensicImportaMuscleDef("Mentalis+")
+        return {'FINISHED'}
+
+bpy.utils.register_class(ForensicImportaMentalis)
+
+
+class ForensicImportaSternocleidomastoid(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_importa_sternocleidomastoid"
+    bl_label = "Import Sternocleidomastoid"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Sternocleidomastoid+' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        ForensicImportaMuscleDef("Sternocleidomastoid+")
+        return {'FINISHED'}
+
+bpy.utils.register_class(ForensicImportaSternocleidomastoid)
+
+def CopiaEspelhaDef():
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.mode_set(mode='OBJECT')
+    bpy.context.scene.tool_settings.transform_pivot_point = 'MEDIAN_POINT'
+    bpy.ops.object.duplicate_move()
+    bpy.ops.transform.mirror(orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+
+class CopiaEspelha(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_copia_espelha"
+    bl_label = "Copy and Mirror"
+    bl_options = {'REGISTER', 'UNDO'}
+
+
+    def execute(self, context):
+        CopiaEspelhaDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(CopiaEspelha)
+
+def ForensicEsculturaGrabDef():
+
+    context = bpy.context
+    scn = context.scene
+
+#    bpy.context.space_data.shading.type = 'MATERIAL'
+    bpy.ops.object.mode_set(mode = 'SCULPT')
+    bpy.ops.wm.tool_set_by_id(name="builtin_brush.Grab")
+    bpy.context.scene.tool_settings.sculpt.use_symmetry_x = False
+
+class ForensicEsculturaGrab(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_escultura_grab"
+    bl_label = "Change to Grab"
+
+    @classmethod
+    def poll(cls, context):
+        o = context.object
+        if o is None:
+            return False
+        else:
+            if o.type == "MESH":
+                if bpy.context.mode == 'OBJECT' or bpy.context.mode == 'SCULPT':
+                    return True
+                else:
+                    return False
+            else:
+                return False
+
+    def execute(self, context):
+        ForensicEsculturaGrabDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(ForensicEsculturaGrab)
+
+
+def ForensicEsculturaSmoothDef():
+
+    context = bpy.context
+    scn = context.scene
+
+#    bpy.context.space_data.shading.type = 'MATERIAL'
+    bpy.ops.object.mode_set(mode = 'SCULPT')
+    bpy.ops.wm.tool_set_by_id(name="builtin_brush.Smooth")
+    bpy.context.scene.tool_settings.sculpt.use_symmetry_x = False
+
+class ForensicEsculturaSmooth(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_escultura_smooth"
+    bl_label = "Change to Smooth"
+
+    @classmethod
+    def poll(cls, context):
+        o = context.object
+        if o is None:
+            return False
+        else:
+            if o.type == "MESH":
+                if bpy.context.mode == 'OBJECT' or bpy.context.mode == 'SCULPT':
+                    return True
+                else:
+                    return False
+            else:
+                return False
+
+    def execute(self, context):
+        ForensicEsculturaSmoothDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(ForensicEsculturaSmooth)
