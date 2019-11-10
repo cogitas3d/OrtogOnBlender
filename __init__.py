@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191107e"
+VERSION = "20191109a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):

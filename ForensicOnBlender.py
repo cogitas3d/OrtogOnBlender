@@ -184,6 +184,19 @@ class FORENSIC_PT_ColocaMarcadores(bpy.types.Panel):
         row = layout.row()
         linha=row.operator("object.forensic_cria_botoes", text="Generate Soft Tissue Markers!", icon="EMPTY_SINGLE_ARROW")
 
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.oculta_nomes", text="Hide Names", icon="HIDE_OFF")
+
+        row = layout.row()
+        linha=row.operator("mesh.add_linhabase", text="Vertical Center Line", icon="SORT_DESC")
+        linha.location=(0,-200,0)
+
+        row = layout.row()
+        linha=row.operator("object.engrossa_linha", text="Make Tube Line", icon="OUTLINER_OB_CURVE")
+
+
+
 bpy.utils.register_class(FORENSIC_PT_ColocaMarcadores)
 
 bpy.types.Scene.nome_marcador = bpy.props.StringProperty \
