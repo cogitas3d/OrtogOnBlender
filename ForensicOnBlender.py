@@ -186,7 +186,7 @@ class FORENSIC_PT_ColocaMarcadores(bpy.types.Panel):
 
         row = layout.row()
         row = layout.row()
-        linha=row.operator("object.oculta_nomes", text="Hide Names", icon="HIDE_OFF")
+        linha=row.operator("object.oculta_nomes", text="Hide Names", icon="HIDE_ON")
 
         row = layout.row()
         linha=row.operator("mesh.add_linhabase", text="Vertical Center Line", icon="SORT_DESC")
@@ -194,6 +194,9 @@ class FORENSIC_PT_ColocaMarcadores(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("object.engrossa_linha", text="Make Tube Line", icon="OUTLINER_OB_CURVE")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_importa_olho", text="Import Eye", icon="HIDE_OFF")
 
 bpy.utils.register_class(FORENSIC_PT_ColocaMarcadores)
 
@@ -245,6 +248,9 @@ class FORENSIC_PT_Musculos(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("object.forensic_importa_orbicularis_oris", text="Orbicularis Oris")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_importa_buccinator", text="Buccinator")
 
         row = layout.row()
         linha=row.operator("object.forensic_importa_mentalis", text="Mentalis+")

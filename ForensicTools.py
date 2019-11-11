@@ -179,11 +179,16 @@ class EngrossaLinha(bpy.types.Operator):
 bpy.utils.register_class( EngrossaLinha)
 
 
-def ForensicImportaMuscleDef(nome):
+def ForensicImportaMuscleDef(nome, colecao):
 
     context = bpy.context
     obj = context.active_object
     scn = context.scene
+
+    try:
+        bpy.ops.object.mode_set(mode='OBJECT')
+    except:
+        print("Erro com o Object Mode!")
 
 
     if platform.system() == "Linux":
@@ -229,6 +234,28 @@ def ForensicImportaMuscleDef(nome):
     ObjImportado.select_set(True)
     context.view_layer.objects.active = ObjImportado
 
+    # Coloca na camada
+    obj2 = bpy.context.view_layer.objects.active
+
+    ListaColl = []
+
+    for i in bpy.data.collections:
+        ListaColl.append(i.name)
+
+    if colecao not in ListaColl:
+
+        myCol = bpy.data.collections.new(colecao)
+        bpy.context.scene.collection.children.link(myCol)
+        bpy.ops.object.collection_link(collection=colecao)
+#        mainCol = bpy.data.collections['Collection']
+#        bpy.context.scene.collection.children.unlink(mainCol)
+        bpy.data.collections['Collection'].objects.unlink(obj2)
+
+    else:
+        bpy.ops.object.collection_link(collection=colecao)
+#        mainCol = bpy.data.collections['Collection']
+#        bpy.context.scene.collection.children.unlink(mainCol)
+        bpy.data.collections['Collection'].objects.unlink(obj2)
 
 class ForensicImportaTemporalis(bpy.types.Operator):
     """Tooltip"""
@@ -248,7 +275,7 @@ class ForensicImportaTemporalis(bpy.types.Operator):
                 return False
 
     def execute(self, context):
-        ForensicImportaMuscleDef("Temporalis")
+        ForensicImportaMuscleDef("Temporalis", "Muscle")
         return {'FINISHED'}
 
 bpy.utils.register_class(ForensicImportaTemporalis)
@@ -272,7 +299,7 @@ class ForensicImportaMasseter(bpy.types.Operator):
                 return False
 
     def execute(self, context):
-        ForensicImportaMuscleDef("Masseter")
+        ForensicImportaMuscleDef("Masseter", "Muscle")
         return {'FINISHED'}
 
 bpy.utils.register_class(ForensicImportaMasseter)
@@ -296,7 +323,7 @@ class ForensicImportaOrbicularisOculi(bpy.types.Operator):
                 return False
 
     def execute(self, context):
-        ForensicImportaMuscleDef("Orbicularis Oculi")
+        ForensicImportaMuscleDef("Orbicularis Oculi", "Muscle")
         return {'FINISHED'}
 
 bpy.utils.register_class(ForensicImportaOrbicularisOculi)
@@ -320,7 +347,7 @@ class ForensicImportaElevatorLabiiSuperioris(bpy.types.Operator):
                 return False
 
     def execute(self, context):
-        ForensicImportaMuscleDef("Elevator Labii Superioris")
+        ForensicImportaMuscleDef("Elevator Labii Superioris", "Muscle")
         return {'FINISHED'}
 
 bpy.utils.register_class(ForensicImportaElevatorLabiiSuperioris)
@@ -344,7 +371,7 @@ class ForensicImportaNasalis(bpy.types.Operator):
                 return False
 
     def execute(self, context):
-        ForensicImportaMuscleDef("Nasalis")
+        ForensicImportaMuscleDef("Nasalis", "Muscle")
         return {'FINISHED'}
 
 bpy.utils.register_class(ForensicImportaNasalis)
@@ -367,7 +394,7 @@ class ForensicImportaZygomaticus(bpy.types.Operator):
                 return False
 
     def execute(self, context):
-        ForensicImportaMuscleDef("Zygomaticus")
+        ForensicImportaMuscleDef("Zygomaticus", "Muscle")
         return {'FINISHED'}
 
 bpy.utils.register_class(ForensicImportaZygomaticus)
@@ -391,10 +418,34 @@ class ForensicImportaOrbicularisOris(bpy.types.Operator):
                 return False
 
     def execute(self, context):
-        ForensicImportaMuscleDef("Orbicularis Oris")
+        ForensicImportaMuscleDef("Orbicularis Oris", "Muscle")
         return {'FINISHED'}
 
 bpy.utils.register_class(ForensicImportaOrbicularisOris)
+
+
+class ForensicImportaBuccinator(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_importa_buccinator"
+    bl_label = "Import Buccinator"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Buccinator' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        ForensicImportaMuscleDef("Buccinator", "Muscle")
+        return {'FINISHED'}
+
+bpy.utils.register_class(ForensicImportaBuccinator)
 
 
 class ForensicImportaMentalis(bpy.types.Operator):
@@ -415,7 +466,7 @@ class ForensicImportaMentalis(bpy.types.Operator):
                 return False
 
     def execute(self, context):
-        ForensicImportaMuscleDef("Mentalis+")
+        ForensicImportaMuscleDef("Mentalis+", "Muscle")
         return {'FINISHED'}
 
 bpy.utils.register_class(ForensicImportaMentalis)
@@ -439,10 +490,35 @@ class ForensicImportaSternocleidomastoid(bpy.types.Operator):
                 return False
 
     def execute(self, context):
-        ForensicImportaMuscleDef("Sternocleidomastoid+")
+        ForensicImportaMuscleDef("Sternocleidomastoid+", "Muscle")
         return {'FINISHED'}
 
 bpy.utils.register_class(ForensicImportaSternocleidomastoid)
+
+
+class ForensicImportaOlho(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_importa_olho"
+    bl_label = "Import Eye"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Eye' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        ForensicImportaMuscleDef("Eye", "Eyes")
+        return {'FINISHED'}
+
+
+bpy.utils.register_class(ForensicImportaOlho)
 
 def CopiaEspelhaDef():
 
