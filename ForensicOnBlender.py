@@ -268,6 +268,9 @@ class FORENSIC_PT_Musculos(bpy.types.Panel):
         linha=row.operator("object.forensic_escultura_smooth", text="Smooth", icon="BRUSH_SMOOTH")
 
         row = layout.row()
+        linha=row.operator("object.forensic_escultura_clay_strips", text="Clay Strips", icon="BRUSH_CLAY_STRIPS")
+
+        row = layout.row()
         linha=row.operator("object.mode_set", text="OK! (Object Mode)", icon="META_CUBE").mode='OBJECT'
 
         row = layout.row()
@@ -275,3 +278,48 @@ class FORENSIC_PT_Musculos(bpy.types.Panel):
 
 
 bpy.utils.register_class(FORENSIC_PT_Musculos)
+
+
+class FORENSIC_PT_FaceBasica(bpy.types.Panel):
+    bl_label = "Basic Face Sculpt"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Forensic"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        row = layout.row()
+        row.label(text="1) Put all structure in the origin of scene.")
+
+        row = layout.row()
+        row.label(text="2) Select all interest muscules.")
+
+        row = layout.row()
+        row.label(text="3) Create Basic Shape!")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_cria_face_basica", text="Create Basic Shape!", icon="MESH_ICOSPHERE")
+
+
+        row = layout.row()
+        row.label(text="Sculpture:")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_escultura_grab", text="Grab", icon="BRUSH_GRAB")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_escultura_smooth", text="Smooth", icon="BRUSH_SMOOTH")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_escultura_clay_strips", text="Clay Strips", icon="BRUSH_CLAY_STRIPS")
+
+        row = layout.row()
+        linha=row.operator("object.mode_set", text="OK! (Object Mode)", icon="META_CUBE").mode='OBJECT'
+
+bpy.utils.register_class(FORENSIC_PT_FaceBasica)

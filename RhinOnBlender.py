@@ -320,7 +320,7 @@ class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
         linha=row.operator("object.trichion_pt", text="Trichion")
 
         row = layout.row()
-        linha=row.operator("object.st_glabella_pt", text="ST Glabella")
+        linha=row.operator("object.glabella_pt", text="ST Glabella")
 
         row = layout.row()
         linha=row.operator("object.subnasale_pt", text="Subnasale")
@@ -673,6 +673,10 @@ class RHIN_PT_GuideCreation(bpy.types.Panel):
         row = layout.row()
         row = layout.row()
         linha=row.operator("object.gera_guia_nariz", text="Create Nose Guide!", icon="PREFERENCES")
+
+        row = layout.row()
+        row = layout.row()
+        row.operator("export_mesh.stl", text="Export STL", icon="TRACKING_REFINE_FORWARDS").use_selection=True#.use_mesh_modifiers=True
 
         row = layout.row()
         row = layout.row()

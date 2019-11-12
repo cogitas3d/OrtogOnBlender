@@ -580,6 +580,42 @@ class ForensicEsculturaGrab(bpy.types.Operator):
 bpy.utils.register_class(ForensicEsculturaGrab)
 
 
+def ForensicEsculturaClayStripsDef():
+
+    context = bpy.context
+    scn = context.scene
+
+#    bpy.context.space_data.shading.type = 'MATERIAL'
+    bpy.ops.object.mode_set(mode = 'SCULPT')
+    bpy.ops.wm.tool_set_by_id(name="builtin_brush.Clay Strips")
+    bpy.context.scene.tool_settings.sculpt.use_symmetry_x = False
+
+class ForensicEsculturaClayStrips(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_escultura_clay_strips"
+    bl_label = "Change to Grab"
+
+    @classmethod
+    def poll(cls, context):
+        o = context.object
+        if o is None:
+            return False
+        else:
+            if o.type == "MESH":
+                if bpy.context.mode == 'OBJECT' or bpy.context.mode == 'SCULPT':
+                    return True
+                else:
+                    return False
+            else:
+                return False
+
+    def execute(self, context):
+        ForensicEsculturaClayStripsDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(ForensicEsculturaClayStrips)
+
+
 def ForensicEsculturaSmoothDef():
 
     context = bpy.context
@@ -614,3 +650,67 @@ class ForensicEsculturaSmooth(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(ForensicEsculturaSmooth)
+
+def GeraBaseSculptDef():
+
+    # Usuário seleciona tudo
+
+    bpy.ops.object.duplicate_move(OBJECT_OT_duplicate={"linked":False, "mode":'TRANSLATION'}, TRANSFORM_OT_translate={"value":(0, 0, 0), "orient_type":'GLOBAL', "orient_matrix":((0, 0, 0), (0, 0, 0), (0, 0, 0)), "orient_matrix_type":'GLOBAL', "constraint_axis":(False, False, False), "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "cursor_transform":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False, "use_accurate":False})
+
+    bpy.ops.object.join()
+
+    bpy.context.object.name = "Muscles"
+
+    # Adiciona esfera
+
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0))
+
+    bpy.ops.transform.resize(value=(180, 180, 180), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=34.004)
+
+    # Joga na colação Face Scupting
+
+    obj2 = bpy.context.view_layer.objects.active
+
+    ListaColl = []
+
+    for i in bpy.data.collections:
+        ListaColl.append(i.name)
+
+    if "Face Sculpting" not in ListaColl:
+
+        myCol = bpy.data.collections.new("Face Sculpting")
+        bpy.context.scene.collection.children.link(myCol)
+        bpy.ops.object.collection_link(collection='Face Sculpting')
+        ColecaoAtual = bpy.context.collection
+        ColecaoAtual.objects.unlink(obj2)
+
+    else:
+        bpy.ops.object.collection_link(collection='Face Sculpting')
+        ColecaoAtual = bpy.context.collection
+        ColecaoAtual.objects.unlink(obj2)
+
+
+    bpy.ops.object.modifier_add(type='SHRINKWRAP')
+    bpy.context.object.modifiers["Shrinkwrap"].target = bpy.data.objects["Muscles"]
+    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Shrinkwrap")
+
+    # Sistema de Escultura
+
+    #bpy.ops.object.mode_set(mode='SCULPT')
+    bpy.ops.object.forensic_escultura_clay_strips()
+    bpy.ops.sculpt.dynamic_topology_toggle()
+    bpy.context.scene.tool_settings.sculpt.detail_size = 3
+
+
+
+class GeraBaseSculpt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_cria_face_basica"
+    bl_label = "Create Basic Face Sculpting"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        GeraBaseSculptDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(GeraBaseSculpt)
