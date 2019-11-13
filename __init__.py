@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191112b"
+VERSION = "20191113a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -2512,6 +2512,11 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
 
             row = layout.row()
             circle=row.operator("object.desenha_linha_vertex_fin", text="Cut Visible Line", icon="SCULPTMODE_HLT")
+
+        row = layout.row()
+        row = layout.row()
+        row = layout.row()
+        circle=row.operator("object.oculta_pontos_anatomicos", text="Hide Anatomical Points", icon="GHOST_ENABLED")
 
         row = layout.row()
         row = layout.row()

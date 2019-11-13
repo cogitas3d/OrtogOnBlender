@@ -1,6 +1,7 @@
 import bpy
 import bmesh
 from math import sqrt
+import fnmatch
 
 # OCULTAR MOSTRAR Pontos
 
@@ -2545,3 +2546,20 @@ class ParenteiaEMP(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(ParenteiaEMP)
+
+def OcultaPontosAnatomicosDef():
+    for i in bpy.data.collections:
+        if fnmatch.fnmatchcase(i.name, "Anatomical Points*"):
+            bpy.data.collections[i.name].hide_viewport=True
+
+class OcultaPontosAnatomicos(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.oculta_pontos_anatomicos"
+    bl_label = "Hide Anatomical Points"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        OcultaPontosAnatomicosDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(OcultaPontosAnatomicos)

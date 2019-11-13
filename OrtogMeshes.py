@@ -19,7 +19,7 @@ def LinhaBaseDef(self, context):
             ]
 
     edges = [[0,1]]
-    
+
     faces = []
 
 
@@ -55,7 +55,7 @@ def CriaMentoDef(self, context):
     mesh.from_pydata(verts, edges, faces)
     object_data_add(context, mesh, operator=self)
 
-    bpy.ops.object.modifier_add(type='SOLIDIFY') 
+    bpy.ops.object.modifier_add(type='SOLIDIFY')
     bpy.context.object.modifiers["Solidify"].thickness = 0.3
     bpy.context.object.modifiers["Solidify"].offset = 0
 
@@ -97,7 +97,7 @@ def CriaRamoDef(self, context):
     mesh.from_pydata(verts, edges, faces)
     object_data_add(context, mesh, operator=self)
 
-    bpy.ops.object.modifier_add(type='SOLIDIFY') 
+    bpy.ops.object.modifier_add(type='SOLIDIFY')
     bpy.context.object.modifiers["Solidify"].thickness = 0.3
     bpy.context.object.modifiers["Solidify"].offset = 0
 
@@ -142,7 +142,7 @@ def CriaMaxilaDef(self, context):
     mesh.from_pydata(verts, edges, faces)
     object_data_add(context, mesh, operator=self)
 
-    bpy.ops.object.modifier_add(type='SOLIDIFY') 
+    bpy.ops.object.modifier_add(type='SOLIDIFY')
     bpy.context.object.modifiers["Solidify"].thickness = 0.3
     bpy.context.object.modifiers["Solidify"].offset = 0
 
@@ -171,7 +171,7 @@ class CriaMaxila(Operator, AddObjectHelper):
 # MALHA ALINHA ORIGEM
 
 def CriaMeshAlinhOrigDef(self, context):
-    
+
     context = bpy.context
 
     vec0 = bpy.data.objects['EMP1a'].location
@@ -211,7 +211,7 @@ class CriaMeshAlinhOrig(Operator, AddObjectHelper):
 # MALHA ALINHA ORIGEM
 
 def CriaMeshAlinhAlinhDef(self, context):
-    
+
     context = bpy.context
 
     vec0 = bpy.data.objects['EMP1b'].location
@@ -269,7 +269,7 @@ def AdicionaPlanosCorteAutoDef():
         for i in ListaPontos1:
             bpy.data.objects[i].select_set(True)
             context.view_layer.objects.active = bpy.data.objects[i]
-            
+
 
         # Cursor to selected
 
@@ -281,14 +281,14 @@ def AdicionaPlanosCorteAutoDef():
         #        bpy.ops.view3d.view_selected(ctx)
                 bpy.ops.view3d.snap_cursor_to_selected(ctx)
                 break
-            
+
         CursorLoc = bpy.context.scene.cursor.location
-            
+
         bpy.ops.mesh.add_maxila(location=(CursorLoc))
         bpy.ops.transform.translate(value=(0, 0, -10))
     except:
         print("Pode estar faltando algum ponto para o plano da Maxila.")
-        
+
     # Plano Mento
 
     try:
@@ -299,7 +299,7 @@ def AdicionaPlanosCorteAutoDef():
         for i in ListaPontos1:
             bpy.data.objects[i].select_set(True)
             context.view_layer.objects.active = bpy.data.objects[i]
-            
+
 
         # Cursor to selected
 
@@ -311,13 +311,13 @@ def AdicionaPlanosCorteAutoDef():
         #        bpy.ops.view3d.view_selected(ctx)
                 bpy.ops.view3d.snap_cursor_to_selected(ctx)
                 break
-            
+
         CursorLoc = bpy.context.scene.cursor.location
-            
+
         bpy.ops.mesh.add_mento(location=(CursorLoc))
     except:
         print("Pode estar faltando algum ponto para o plano do Mento.")
-        
+
     # Ramo Esquerdo
 
     try:
@@ -328,7 +328,7 @@ def AdicionaPlanosCorteAutoDef():
         for i in ListaPontos1:
             bpy.data.objects[i].select_set(True)
             context.view_layer.objects.active = bpy.data.objects[i]
-            
+
 
         # Cursor to selected
 
@@ -340,14 +340,14 @@ def AdicionaPlanosCorteAutoDef():
         #        bpy.ops.view3d.view_selected(ctx)
                 bpy.ops.view3d.snap_cursor_to_selected(ctx)
                 break
-            
+
         CursorLoc = bpy.context.scene.cursor.location
-            
+
         bpy.ops.mesh.add_ramo(location=(CursorLoc))
     except:
         print("Pode estar faltando algum ponto para o plano do Ramo Esquerdo.")
 
-        
+
     # Ramo Direito
 
     try:
@@ -358,7 +358,7 @@ def AdicionaPlanosCorteAutoDef():
         for i in ListaPontos1:
             bpy.data.objects[i].select_set(True)
             context.view_layer.objects.active = bpy.data.objects[i]
-            
+
 
         # Cursor to selected
 
@@ -370,12 +370,14 @@ def AdicionaPlanosCorteAutoDef():
         #        bpy.ops.view3d.view_selected(ctx)
                 bpy.ops.view3d.snap_cursor_to_selected(ctx)
                 break
-            
+
         CursorLoc = bpy.context.scene.cursor.location
-            
+
         bpy.ops.mesh.add_ramo(location=(CursorLoc))
     except:
         print("Pode estar faltando algum ponto para o plano do Ramo Direito.")
+
+    bpy.ops.wm.tool_set_by_id(name="builtin.move")
 
 class AdicionaPlanosCorteAuto(Operator, AddObjectHelper):
     """Create a new Mesh Object"""

@@ -582,7 +582,7 @@ def ConfOsteotomiaAutoDef(self, context):
             bpy.ops.object.select_all(action='DESELECT')
             bpy.data.objects[i].select_set(True)
             bpy.context.view_layer.objects.active = bpy.data.objects[i]
-            bpy.ops.object.transforms_to_deltas(mode='ALL')
+            # bpy.ops.object.transforms_to_deltas(mode='ALL') # Se zerar dá problema no collision futuro.
             bpy.ops.anim.ortog_loc_rot()
             bpy.ops.object.select_all(action='DESELECT')
 
