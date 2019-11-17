@@ -1,4 +1,5 @@
 import bpy
+import fnmatch
 
 def ColisaoArcosDef():
 
@@ -128,6 +129,7 @@ class ColisaoArcos(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.colisao_arcos"
     bl_label = "Archs Collision"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -270,6 +272,7 @@ class ColisaoArcosInverso(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.colisao_arcos_inverso"
     bl_label = "Inverted Archs Collision"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -311,6 +314,7 @@ class AplicaAnimCor(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.aplica_anima_cor"
     bl_label = "Apply Color and Animation"
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -353,7 +357,7 @@ class TravaArco(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.trava_arco"
     bl_label = "Arch Stop"
-
+    bl_options = {'REGISTER', 'UNDO'}
 
 
     # Programação diferente para funcionar!!!
@@ -376,3 +380,105 @@ class TravaArco(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(TravaArco)
+
+
+def PreparaMaxilaMandibulaDef():
+
+    context = bpy.context
+    #obj = context.active_object
+    scn = context.scene
+
+    Maxila = bpy.data.objects['ma']
+    Mandibula = bpy.data.objects['cm']
+
+    bpy.ops.object.select_all(action='DESELECT')
+    Maxila.select_set(True)
+    Mandibula.select_set(True)
+    bpy.context.view_layer.objects.active = Maxila
+
+    bpy.ops.object.duplicate()
+
+    Maxila.hide_viewport=True
+    Mandibula.hide_viewport=True
+
+#    Apagar_Ziga = [obj for obj in bpy.context.scene.objects if fnmatch.fnmatchcase(obj.name, "*Ziga")]
+        #for Ziga in Apagar_Ziga:
+
+
+    for objeto in context.selected_objects:
+        if fnmatch.fnmatchcase(objeto.name, "ma*"):
+            objeto.name = "MaxillaCopyZiga"
+            MaxilaCopia = objeto
+            objeto.animation_data_clear()
+            print("Maxila OK", objeto)
+
+        if fnmatch.fnmatchcase(objeto.name, "cm*"):
+            objeto.name = "MandibleCopyZiga"
+            MandibulaCopia = objeto
+            objeto.animation_data_clear()
+            print("Mandibula OK", objeto)
+
+    #Apagar_Bracket_ref = [obj for obj in bpy.context.scene.objects if fnmatch.fnmatchcase(obj.name, "Bracket_re*")]
+
+class PreparaMaxilaMandibula(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.prepara_maxila_mandibula"
+    bl_label = "Prepares Maxilla & Mandible"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        PreparaMaxilaMandibulaDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(PreparaMaxilaMandibula)
+
+
+def FinalizaColisaoMaxMandDef():
+
+    context = bpy.context
+    scn = context.scene
+
+#    bpy.ops.screen.animation_cancel(restore_frame=True)
+
+#    bpy.ops.screen.animation_cancel()
+
+    bpy.ops.object.trava_arco()
+
+
+    bpy.data.objects['ma'].hide_viewport=False
+    bpy.data.objects['cm'].hide_viewport=False
+    bpy.data.objects['cm'].location = bpy.data.objects['MandibleCopyZiga'].location
+    bpy.data.objects['cm'].rotation_euler = bpy.data.objects['MandibleCopyZiga'].rotation_euler
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects['cm'].select_set(True)
+    bpy.context.view_layer.objects.active = bpy.data.objects['cm']
+    bpy.ops.anim.ortog_loc_rot()
+
+#    bpy.context.scene.frame_end = 100
+#    FrameEnd = bpy.data.scenes["Scene"].frame_end
+#    bpy.context.scene.frame_set(FrameEnd)
+#    bpy.context.scene.frame_current = 100
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects['MaxillaCopyZiga'].select_set(True)
+    bpy.data.objects['MandibleCopyZiga'].select_set(True)
+    bpy.context.view_layer.objects.active = bpy.data.objects['MandibleCopyZiga']
+    bpy.ops.object.delete(use_global=False)
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects['cm'].select_set(True)
+    bpy.context.view_layer.objects.active = bpy.data.objects['cm']
+
+
+class FinalizaColisaoMaxMand(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.finaliza_colisao_max_mand"
+    bl_label = "Apply Maxilla & Mandible Collision"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        FinalizaColisaoMaxMandDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(FinalizaColisaoMaxMand)

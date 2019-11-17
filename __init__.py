@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191113a"
+VERSION = "20191117a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -1546,376 +1546,6 @@ class ORTOG_PT_PontosAnatomicos(bpy.types.Panel):
             row.alignment = 'CENTER'
             row.operator("object.gera_dir_nome_paciente_points_soft", text="SAVE!", icon="FILE_TICK")
 
-'''
-class ORTOG_PT_PontosAnatomicosCabeca(bpy.types.Panel):
-    bl_label = "Anatomical Points - Head"
-    bl_region_type = 'UI'
-    bl_space_type = 'VIEW_3D'
-    bl_options = {'DEFAULT_CLOSED'}
-    bl_category = "Ortog"
-
-    def draw(self, context):
-        layout = self.layout
-
-        context = bpy.context
-        obj = context.object
-        scn = context.scene
-
-        row = layout.row()
-        linha=row.operator("object.orbital_right_pt", text="Orbital right")
-
-        row = layout.row()
-        linha=row.operator("object.orbital_left_pt", text="Orbital left")
-
-        row = layout.row()
-        linha=row.operator("object.n_pt", text="N point")
-
-        row = layout.row()
-        linha=row.operator("object.po_right", text="Po right")
-
-        row = layout.row()
-        linha=row.operator("object.po_left", text="Po left")
-
-        row = layout.row()
-        linha=row.operator("object.pt_right", text="Pt right")
-
-        row = layout.row()
-        linha=row.operator("object.pt_left", text="Pt left")
-
-        row = layout.row()
-        linha=row.operator("object.ba_pt", text="Ba point")
-
-        row = layout.row()
-        linha=row.operator("object.s_pt", text="S point")
-
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.5
-        row.alignment = 'CENTER'
-        row.operator("object.gera_dir_nome_paciente_points_head", text="SAVE!", icon="FILE_TICK")
-
-class ORTOG_PT_PontosAnatomicosMaxila(bpy.types.Panel):
-    bl_label = "Anatomical Points - Maxilla"
-    bl_region_type = 'UI'
-    bl_space_type = 'VIEW_3D'
-    bl_options = {'DEFAULT_CLOSED'}
-    bl_category = "Ortog"
-
-    def draw(self, context):
-        layout = self.layout
-
-        context = bpy.context
-        obj = context.object
-        scn = context.scene
-
-        row = layout.row()
-        linha=row.operator("object.u1_tip_pt", text="U1 Tip")
-
-        row = layout.row()
-        linha=row.operator("object.u1_labgenbor_pt", text="U1 Labial Gengival Border")
-
-        row = layout.row()
-        linha=row.operator("object.u1_lingenbor_pt", text="U1 Lingual Gengival Border")
-
-        row = layout.row()
-        linha=row.operator("object.u1_root_pt", text="U1 Root")
-
-        row = layout.row()
-        linha=row.operator("object.m_u6_pt", text="M U6")
-
-        row = layout.row()
-        linha=row.operator("object.d_u6_pt", text="D U6")
-
-        row = layout.row()
-        linha=row.operator("object.u6_occlusal_pt", text="U6 Occlusal")
-
-        row = layout.row()
-        linha=row.operator("object.pns_pt", text="PNS point")
-
-        row = layout.row()
-        linha=row.operator("object.a_pt", text="A point")
-
-        row = layout.row()
-        linha=row.operator("object.ans_pt", text="ANS point")
-
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.5
-        row.alignment = 'CENTER'
-        row.operator("object.gera_dir_nome_paciente_points_maxilla", text="SAVE!", icon="FILE_TICK")
-
-
-class ORTOG_PT_PontosAnatomicosMandibula(bpy.types.Panel):
-    bl_label = "Anatomical Points - Mandible"
-    bl_region_type = 'UI'
-    bl_space_type = 'VIEW_3D'
-    bl_options = {'DEFAULT_CLOSED'}
-    bl_category = "Ortog"
-
-    def draw(self, context):
-        layout = self.layout
-
-        context = bpy.context
-        obj = context.object
-        scn = context.scene
-
-        row = layout.row()
-        linha=row.operator("object.l1_tip_pt", text="L1 Tip")
-
-        row = layout.row()
-        linha=row.operator("object.l1_labgenbor_pt", text="L1 Labial Gengival Border")
-
-        row = layout.row()
-        linha=row.operator("object.l1_lingenbor_pt", text="L1 Lingual Gengival Border")
-
-        row = layout.row()
-        linha=row.operator("object.l1_root_pt", text="L1 Root")
-
-        row = layout.row()
-        linha=row.operator("object.b_pt", text="B point")
-
-        row = layout.row()
-        linha=row.operator("object.m_l6_pt", text="M L6")
-
-        row = layout.row()
-        linha=row.operator("object.l6_occlusal_pt", text="L6 Occlusal")
-
-        row = layout.row()
-        linha=row.operator("object.d_l6_pt", text="D L6")
-
-        row = layout.row()
-        linha=row.operator("object.mid_ramus_right_pt", text="Mid Ramus right")
-
-        row = layout.row()
-        linha=row.operator("object.mid_ramus_left_pt", text="Mid Ramus left")
-
-        row = layout.row()
-        linha=row.operator("object.r_right_pt", text="R right")
-
-        row = layout.row()
-        linha=row.operator("object.r_left_pt", text="R left")
-
-        row = layout.row()
-        linha=row.operator("object.go_right_pt", text="Go right")
-
-        row = layout.row()
-        linha=row.operator("object.go_left_pt", text="Go left")
-
-        row = layout.row()
-        linha=row.operator("object.ar_right_pt", text="Ar right")
-
-        row = layout.row()
-        linha=row.operator("object.ar_left_pt", text="Ar left")
-
-        row = layout.row()
-        linha=row.operator("object.sigmoid_right_pt", text="Sigmoid right")
-
-        row = layout.row()
-        linha=row.operator("object.sigmoid_left_pt", text="Sigmoid left")
-
-        row = layout.row()
-        linha=row.operator("object.co_right_pt", text="Co right")
-
-        row = layout.row()
-        linha=row.operator("object.co_left_pt", text="Co left")
-
-        row = layout.row()
-        linha=row.operator("object.pg_pt", text="Pg point")
-
-        row = layout.row()
-        linha=row.operator("object.gn_pt", text="Gn point")
-
-        row = layout.row()
-        linha=row.operator("object.me_pt", text="Me point")
-
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.5
-        row.alignment = 'CENTER'
-        row.operator("object.gera_dir_nome_paciente_points_mandible", text="SAVE!", icon="FILE_TICK")
-
-class ORTOG_PT_PontosAnatomicosDentes(bpy.types.Panel):
-    bl_label = "Anatomical Points - Teeth"
-    bl_region_type = 'UI'
-    bl_space_type = 'VIEW_3D'
-    bl_options = {'DEFAULT_CLOSED'}
-    bl_category = "Ortog"
-
-    def draw(self, context):
-        layout = self.layout
-
-        context = bpy.context
-        obj = context.object
-        scn = context.scene
-
-        row = layout.row()
-        row.label(text="Upper Teeth:")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_8_pt", text="Tooth 8 (11)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_9_pt", text="Tooth 9 (21)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_6_pt", text="Tooth 6 (13)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_11_pt", text="Tooth 11 (23)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_3_pt", text="Tooth 3 (16)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_14_pt", text="Tooth 14 (26)")
-
-        row = layout.row()
-        row = layout.row()
-        row.label(text="Lower Teeth:")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_24_pt", text="Tooth 24 (31)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_25_pt", text="Tooth 25 (41)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_22_pt", text="Tooth 22 (33)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_27_pt", text="Tooth 27 (43)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_19_pt", text="Tooth 19 (36)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_30_pt", text="Tooth 30 (46)")
-
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.5
-        row.alignment = 'CENTER'
-        row.operator("object.gera_dir_nome_paciente_points_teeth", text="SAVE!", icon="FILE_TICK")
-
-class ORTOG_PT_PontosAnatomicosMole(bpy.types.Panel):
-    bl_label = "Anatomical Points - Soft Tissue"
-    bl_region_type = 'UI'
-    bl_space_type = 'VIEW_3D'
-    bl_options = {'DEFAULT_CLOSED'}
-    bl_category = "Ortog"
-
-    def draw(self, context):
-        layout = self.layout
-
-        context = bpy.context
-        obj = context.object
-        scn = context.scene
-
-        row = layout.row()
-        linha=row.operator("object.st_glabella_pt", text="ST Glabella")
-
-        row = layout.row()
-        linha=row.operator("object.st_nasion_pt", text="ST Nasion")
-
-        row = layout.row()
-        linha=row.operator("object.bridge_nose_pt", text="Bridge of Nose")
-
-        row = layout.row()
-        linha=row.operator("object.tip_nose_pt", text="Tip of Nose")
-
-        row = layout.row()
-        linha=row.operator("object.columella_pt", text="Columella")
-
-        row = layout.row()
-        linha=row.operator("object.subnasale_pt", text="Subnasale")
-
-        row = layout.row()
-        linha=row.operator("object.st_a_point_pt", text="ST A point")
-
-        row = layout.row()
-        linha=row.operator("object.upper_lip_pt", text="Upper Lip")
-
-        row = layout.row()
-        linha=row.operator("object.stomion_superius_pt", text="Stomion Superius")
-
-        row = layout.row()
-        linha=row.operator("object.stomion_inferius_pt", text="Stomion Inferius")
-
-        row = layout.row()
-        linha=row.operator("object.lower_lip_pt", text="Lower Lip")
-
-        row = layout.row()
-        linha=row.operator("object.st_b_point_pt", text="ST B point")
-
-        row = layout.row()
-        linha=row.operator("object.st_pogonion_pt", text="ST Pogonion")
-
-        row = layout.row()
-        linha=row.operator("object.st_gnathion_pt", text="ST Gnathion")
-
-        row = layout.row()
-        linha=row.operator("object.st_menton_pt", text="ST Menton")
-
-        row = layout.row()
-        linha=row.operator("object.throat_point_pt", text="Throat point")
-
-        row = layout.row()
-        linha=row.operator("object.cb_right_pt", text="CB right")
-
-        row = layout.row()
-        linha=row.operator("object.cb_left_pt", text="CB left")
-
-        row = layout.row()
-        linha=row.operator("object.or_right_pt", text="OR' right")
-
-        row = layout.row()
-        linha=row.operator("object.or_left_pt", text="OR' left")
-
-        row = layout.row()
-        linha=row.operator("object.subpupil_right_pt", text="Subpupil right")
-
-        row = layout.row()
-        linha=row.operator("object.subpupil_left_pt", text="Subpupil left")
-
-        row = layout.row()
-        linha=row.operator("object.cheekbone_right_pt", text="Cheekbone right")
-
-        row = layout.row()
-        linha=row.operator("object.cheekbone_left_pt", text="Cheekbone left")
-
-        row = layout.row()
-        linha=row.operator("object.sp_right_pt", text="SP right")
-
-        row = layout.row()
-        linha=row.operator("object.sp_left_pt", text="SP left")
-
-        row = layout.row()
-        linha=row.operator("object.ab_right_pt", text="AB right")
-
-        row = layout.row()
-        linha=row.operator("object.ab_left_pt", text="AB left")
-
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.5
-        row.alignment = 'CENTER'
-        row.operator("object.gera_dir_nome_paciente_points_soft", text="SAVE!", icon="FILE_TICK")
-'''
 class ORTOG_PT_MeasuringTools(bpy.types.Panel):
     bl_label = "Measuring Tools"
     bl_region_type = 'UI'
@@ -1976,26 +1606,6 @@ class ORTOG_PT_MeasuringTools(bpy.types.Panel):
         row = layout.row()
         linha=row.operator("object.tooth_14_pt", text="Tooth 14 (26)")
 
-        # Plano oclusal maxila
-
-       	row = layout.row()
-        row = layout.row()
-        row.label(text="Occlusal Plane:")
-
-#        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.operator("object.calcula_plano_oclusal_classico", text="Calculate!!!", icon="PREFERENCES")
-#        row.scale_y=1.0
-#        row.alignment = 'RIGHT'
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'LEFT'
-        row.prop(context.scene, "plano_oclusal_maxila_classico")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: 4º-12º Men: 4º-12º")
 
         row = layout.row()
         row = layout.row()
@@ -2018,6 +1628,9 @@ class ORTOG_PT_MeasuringTools(bpy.types.Panel):
         row = layout.row()
         circle=row.operator("object.parenteia_emp", text="Parent Points", icon="LINKED")
 
+class ENUM_VALUES_CEFALOMETRIA:
+    USP = 'USP'
+    ARNETT = 'ARNETT'
 
 class ORTOG_PT_Cefalometria(bpy.types.Panel):
     bl_label = "Cephalometry"
@@ -2036,238 +1649,327 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
-        linha=row.operator("object.calcula_tudo_cefalo", text="Calculate All!!!", icon="PREFERENCES")
+        row.prop(scn, "my_enum_cefalometria")
 
-        row = layout.row()
-        row = layout.row()
+        my_enum_cefalometria = scn.my_enum_cefalometria
+
+        if my_enum_cefalometria == ENUM_VALUES_CEFALOMETRIA.USP:
+
+            # Plano oclusal maxila
+
+            row = layout.row()
+            row.operator("object.calcula_tudo_usp", text="Calculate!!!", icon="PREFERENCES")
 
 
-        row = layout.row()
-        row.label(text="Angles:")
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.operator("object.tooth_8_pt", text="Tooth 8 (11)")
+            row = col.row()
+            linha=row.operator("object.tooth_9_pt", text="Tooth 9 (21)")
+            row = col.row()
+            linha=row.operator("object.tooth_3_pt", text="Tooth 3 (16)")
+            row = col.row()
+            linha=row.operator("object.tooth_14_pt", text="Tooth 14 (26)")
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'CENTER'
+            row.prop(context.scene, "plano_oclusal_maxila_classico")
+            row = col.row()
+            row.alignment = 'CENTER'
+            row.label(text="Women: 4º-12º Men: 4º-12º")
 
-        # Plano oclusal maxila
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "plano_oclusal_maxila")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: 90º-120º Men: 85º-105º")
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            linha=row.operator("object.s_pt", text="S point")
+            row = col.row()
+            linha=row.operator("object.n_pt", text="N point")
+            row = col.row()
+            linha=row.operator("object.a_pt", text="A point")
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'CENTER'
+            row.prop(context.scene, "angulo_sna")
+            row = col.row()
+            row.alignment = 'CENTER'
+            row.label(text="> 82º Prognathic Maxilla (Class 2)")
+            row = col.row()
+            row.alignment = 'CENTER'
+            row.label(text="< 82º Retrognathic Maxilla (Class 3)")
 
-        # Ângulo nasolabial
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "angulo_nasolabial")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: 97.7º - 110.3º    Men: 98.7º - 114.1º") # Calculado
 
-        # Ângulo Gn', Sn, Pog'
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "angulo_GbSnPog")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: 90º-120º Men: 85º-105º")
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            linha=row.operator("object.s_pt", text="S point")
+            row = col.row()
+            linha=row.operator("object.n_pt", text="N point")
+            row = col.row()
+            linha=row.operator("object.b_pt", text="B point")
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'CENTER'
+            row.prop(context.scene, "angulo_snb")
+            row = col.row()
+            row.alignment = 'CENTER'
+            row.label(text="> 80º Prognathic Mandible")
+            row = col.row()
+            row.alignment = 'CENTER'
+            row.label(text="< 80º Retrognathic Mandible")
 
-        row = layout.row()
-        row.label(text="Distances:")
+        if my_enum_cefalometria == ENUM_VALUES_CEFALOMETRIA.ARNETT:
 
-        # Glabella - LVV
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "dist_glabella_tvl")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: -1 to 3 Men: -1 to 3")
+            row = layout.row()
+            linha=row.operator("object.calcula_tudo_cefalo", text="Calculate All!!!", icon="PREFERENCES")
 
-        # Rima Orbital - LVV
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "dist_rima_or_tvl")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: -1 to 3 Men: -1 to 3")
+            row = layout.row()
+            row = layout.row()
 
-        # Mole malar - LVV
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "dist_cheekbone_tvl")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: -1 to 3 Men: -1 to 3")
 
-        # Subpupilar - LVV
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "dist_subpupil_tvl")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: -1 to 3 Men: -1 to 3")
+            row = layout.row()
+            row.label(text="Angles:")
 
-        # Proj. Nasal - LVV
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "dist_proj_nasal_tvl")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: -1 to 3 Men: -1 to 3")
+            # Plano oclusal maxila
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "plano_oclusal_maxila")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: 90º-120º Men: 85º-105º")
 
-        # Base Nasal - LVV
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "dist_base_nasal_tvl")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: -1 to 3 Men: -1 to 3")
+            # Ângulo nasolabial
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "angulo_nasolabial")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: 97.7º - 110.3º    Men: 98.7º - 114.1º") # Calculado
 
-        # A' - LVV
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "dist_a_mole_tvl")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: -1 to 3 Men: -1 to 3")
+            # Ângulo Gn', Sn, Pog'
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "angulo_GbSnPog")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: 90º-120º Men: 85º-105º")
 
-        # Upper Lip - LVV
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "dist_labio_superior_tvl")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: -1 to 3 Men: -1 to 3")
+            row = layout.row()
+            row.label(text="Distances:")
 
-        # L1 - LVV
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "dist_l1_tvl")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: -1 to 3 Men: -1 to 3")
+            # Glabella - LVV
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "dist_glabella_tvl")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: -1 to 3 Men: -1 to 3")
 
-        # U1 - LVV
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "dist_u1_tvl")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: -1 to 3 Men: -1 to 3")
+            # Rima Orbital - LVV
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "dist_rima_or_tvl")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: -1 to 3 Men: -1 to 3")
 
-        # Lábio inferior - LVV
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "dist_labio_inferior_tvl")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: -1 to 3 Men: -1 to 3")
+            # Mole malar - LVV
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "dist_cheekbone_tvl")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: -1 to 3 Men: -1 to 3")
 
-        # B' - LVV
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "dist_b_mole_tvl")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: -1 to 3 Men: -1 to 3")
+            # Subpupilar - LVV
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "dist_subpupil_tvl")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: -1 to 3 Men: -1 to 3")
 
-        # Pog' - LVV
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "dist_pog_mole_tvl")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: -1 to 3 Men: -1 to 3")
+            # Proj. Nasal - LVV
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "dist_proj_nasal_tvl")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: -1 to 3 Men: -1 to 3")
 
-        # Pescoço-Garganta - LVV
-        row = layout.row()
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.0
-        row.alignment = 'RIGHT'
-        row.prop(context.scene, "dist_pescoco_garganta_tvl")
-        row = col.row()
-        row.alignment = 'RIGHT'
-        row.label(text="Women: -1 to 3 Men: -1 to 3")
+            # Base Nasal - LVV
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "dist_base_nasal_tvl")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: -1 to 3 Men: -1 to 3")
+
+            # A' - LVV
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "dist_a_mole_tvl")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: -1 to 3 Men: -1 to 3")
+
+            # Upper Lip - LVV
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "dist_labio_superior_tvl")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: -1 to 3 Men: -1 to 3")
+
+            # L1 - LVV
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "dist_l1_tvl")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: -1 to 3 Men: -1 to 3")
+
+            # U1 - LVV
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "dist_u1_tvl")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: -1 to 3 Men: -1 to 3")
+
+            # Lábio inferior - LVV
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "dist_labio_inferior_tvl")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: -1 to 3 Men: -1 to 3")
+
+            # B' - LVV
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "dist_b_mole_tvl")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: -1 to 3 Men: -1 to 3")
+
+            # Pog' - LVV
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "dist_pog_mole_tvl")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: -1 to 3 Men: -1 to 3")
+
+            # Pescoço-Garganta - LVV
+            row = layout.row()
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'RIGHT'
+            row.prop(context.scene, "dist_pescoco_garganta_tvl")
+            row = col.row()
+            row.alignment = 'RIGHT'
+            row.label(text="Women: -1 to 3 Men: -1 to 3")
+
+bpy.types.Scene.angulo_sna = bpy.props.StringProperty \
+    (
+        name = "SNA Angle",
+        description = "SNA Angle",
+        default = str("NONE")
+    )
+
+bpy.types.Scene.angulo_snb = bpy.props.StringProperty \
+    (
+        name = "SNB Angle",
+        description = "SNB Angle",
+        default = str("NONE")
+    )
 
 bpy.types.Scene.dist_pescoco_garganta_tvl = bpy.props.StringProperty \
     (
@@ -2687,7 +2389,7 @@ class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
 
         object_mode = 'OBJECT' if obj is None else obj.mode
 
-        if object_mode in {'OBJECT', 'EDIT', 'EDIT_GPENCIL', 'SCULPT_GPENCIL'} or has_pose_mode:
+        if object_mode in {'OBJECT', 'EDIT', 'EDIT_GPENCIL', 'SCULPT_GPENCIL', 'WEIGHT_PAINT'} or has_pose_mode:
             layout.prop_with_popover(
                 tool_settings,
                 "transform_pivot_point",
@@ -2709,6 +2411,25 @@ class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
         row.operator("anim.ortog_loc_rot", text="", icon="VIEW_CAMERA")
         row.operator("screen.animation_play", text="", icon="PLAY")
         row.operator("screen.frame_jump", text="End", icon="TRIA_RIGHT_BAR").end=True
+
+        row = layout.row()
+        row.label(text="Mandible Collision:")
+
+        row = layout.row()
+        row.operator("object.prepara_maxila_mandibula", text="Prepares Maxilla & Mandible", icon="SHADERFX")
+
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.colisao_arcos_inverso", text="Solve Collision Inverted", icon="STYLUS_PRESSURE")
+
+        row = layout.row()
+        linha=row.operator("object.aplica_anima_cor", text="Contact Color", icon="COLORSET_01_VEC")
+
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.finaliza_colisao_max_mand", text="Apply!!!", icon="FREEZE")
+
+
 
         row = layout.row()
         row.label(text="Piggyback:")
@@ -3079,7 +2800,7 @@ def register():
     bpy.utils.register_class(ORTOG_PT_PontosAnatomicos)
     bpy.types.Scene.plano_oclusal_maxila_classico = bpy.props.StringProperty \
         (
-            name = "Maxillary Occlusal Classic",
+            name = "Maxillary Occlusal Angle",
             description = "Maxilla Occlusal",
             default = "NONE"
         )
@@ -3093,6 +2814,10 @@ def register():
 #    bpy.utils.register_class(ORTOG_PT_PontosAnatomicosMandibula)
 #    bpy.utils.register_class(ORTOG_PT_PontosAnatomicosDentes)
 #    bpy.utils.register_class(ORTOG_PT_PontosAnatomicosMole)
+    bpy.types.Scene.my_enum_cefalometria = bpy.props.EnumProperty(
+        name="Select",
+        description= "",
+        items=[(ENUM_VALUES_CEFALOMETRIA.USP, "USP", "USP Cephalometry."), (ENUM_VALUES_CEFALOMETRIA.ARNETT, "ARNETT", "ARNETT Cephalometry.")],)
     bpy.utils.register_class(ORTOG_PT_Cefalometria)
     bpy.types.Scene.my_enum_osteotomy = bpy.props.EnumProperty(
         name="Select",
