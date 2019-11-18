@@ -426,6 +426,14 @@ class PreparaMaxilaMandibula(bpy.types.Operator):
     bl_label = "Prepares Maxilla & Mandible"
     bl_options = {'REGISTER', 'UNDO'}
 
+    @classmethod
+    def poll(cls, context):
+
+        if bpy.data.objects['MaxillaCopyZiga'] and bpy.data.objects['MandibleCopyZiga']:
+            return False
+        else:
+            return True
+
     def execute(self, context):
         PreparaMaxilaMandibulaDef()
         return {'FINISHED'}

@@ -2,6 +2,25 @@ import bpy
 import math
 from .FerrMedidas import *
 
+def CursorToSelectedObj(objeto):
+
+    context = bpy.context
+    scn = context.scene
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    bpy.data.objects[objeto].select_set(True)
+    context.view_layer.objects.active = bpy.data.objects[objeto]
+
+    for area in bpy.context.screen.areas:
+        if area.type == 'VIEW_3D':
+            ctx = bpy.context.copy()
+            ctx['area'] = area
+            ctx['region'] = area.regions[-1]
+    #        bpy.ops.view3d.view_selected(ctx)
+            bpy.ops.view3d.snap_cursor_to_selected(ctx)
+            break
+
 def CursorToSelectedObjs(objeto1, objeto2):
 
     context = bpy.context
@@ -25,14 +44,28 @@ def CursorToSelectedObjs(objeto1, objeto2):
 def ApagarObjeto(objeto):
     context = bpy.context
     scn = context.scene
-    
+
     bpy.ops.object.select_all(action='DESELECT')
     bpy.data.objects[objeto].select_set(True)
     context.view_layer.objects.active = bpy.data.objects[objeto]
     bpy.ops.object.delete(use_global=False)
 
 
-#    CursorLoc = bpy.context.scene.cursor.location
+
+class CalculaTudoUSP(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.calcula_tudo_usp"
+    bl_label = "USP Calc All"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        bpy.ops.object.calcula_plano_oclusal_classico()
+        CalculaSNADef()
+        CalculaSNBDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(CalculaTudoUSP)
+
 
 def CalculaPlanoMaxilaClassicoDef():
 
@@ -42,7 +75,7 @@ def CalculaPlanoMaxilaClassicoDef():
     FoundT9 = 'Tooth 9' in bpy.data.objects
 
     if FoundT3 == True and FoundT14 == True and FoundT8 == True and FoundT9 == True:
-        print("Todos os pontos anatômicos presentes presentes!")
+        print("Todos os pontos anatômicos presentes!")
 
         CursorToSelectedObjs("Tooth 14", "Tooth 3")
         Cursor_1626 = bpy.context.scene.cursor.location
@@ -77,7 +110,7 @@ def CalculaPlanoMaxilaClassicoDef():
 
         bpy.types.Scene.plano_oclusal_maxila_classico = bpy.props.StringProperty \
             (
-                name = "Maxillary Occlusal Classic",
+                name = "Maxillary Occlusal Angle",
                 description = "Classic Max. Occl. Plane",
                 default = str(AnguloOcluMaxClass)
             )
@@ -91,6 +124,121 @@ def CalculaPlanoMaxilaClassicoDef():
 
     else:
         print("Falta algum ponto anatômico dos dentes!")
+
+
+def CalculaSNADef():
+
+    FoundS = 'S point' in bpy.data.objects
+    FoundN = 'N point' in bpy.data.objects
+    FoundA = 'A point' in bpy.data.objects
+
+    if FoundS == True and FoundN == True and FoundA == True:
+        print("Todos os pontos anatômicos presentes!")
+
+        CursorToSelectedObj("S point")
+        Cursor_S = bpy.context.scene.cursor.location
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "PontoS"
+        bpy.context.object.location[0] = 0
+
+
+        CursorToSelectedObj("N point")
+        Cursor_S = bpy.context.scene.cursor.location
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "PontoN"
+        bpy.context.object.location[0] = 0
+
+
+        CursorToSelectedObj("A point")
+        Cursor_S = bpy.context.scene.cursor.location
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "PontoA"
+        bpy.context.object.location[0] = 0
+
+        AnguloSNA = CalculaAngulo("PontoS", "PontoN", "PontoA")
+
+        bpy.types.Scene.angulo_sna = bpy.props.StringProperty \
+            (
+                name = "SNA Angle",
+                description = "SNA Angle",
+                default = str(AnguloSNA)
+            )
+
+        ApagarObjeto("PontoS")
+        ApagarObjeto("PontoN")
+        ApagarObjeto("PontoA")
+
+        return str(AnguloSNA)
+
+    else:
+        bpy.types.Scene.angulo_sna = bpy.props.StringProperty \
+            (
+                name = "SNA Angle",
+                description = "SNA Angle",
+                default = "NONE"
+            )
+        print("Falta algum ponto anatômico (SNA)!")
+
+
+def CalculaSNBDef():
+
+    FoundS = 'S point' in bpy.data.objects
+    FoundN = 'N point' in bpy.data.objects
+    FoundB = 'B point' in bpy.data.objects
+
+    if FoundS == True and FoundN == True and FoundB == True:
+        print("Todos os pontos anatômicos presentes!")
+
+        CursorToSelectedObj("S point")
+        Cursor_S = bpy.context.scene.cursor.location
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "PontoS"
+        bpy.context.object.location[0] = 0
+
+
+        CursorToSelectedObj("N point")
+        Cursor_S = bpy.context.scene.cursor.location
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "PontoN"
+        bpy.context.object.location[0] = 0
+
+
+        CursorToSelectedObj("B point")
+        Cursor_S = bpy.context.scene.cursor.location
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "PontoB"
+        bpy.context.object.location[0] = 0
+
+        AnguloSNB = CalculaAngulo("PontoS", "PontoN", "PontoB")
+
+        bpy.types.Scene.angulo_snb = bpy.props.StringProperty \
+            (
+                name = "SNB Angle",
+                description = "SNB Angle",
+                default = str(AnguloSNB)
+            )
+
+        ApagarObjeto("PontoS")
+        ApagarObjeto("PontoN")
+        ApagarObjeto("PontoB")
+
+        return str(AnguloSNB)
+
+    else:
+        bpy.types.Scene.angulo_snb = bpy.props.StringProperty \
+            (
+                name = "SNB Angle",
+                description = "SNB Angle",
+                default = "NONE"
+            )
+        print("Falta algum ponto anatômico (SNB)!")
+
 
 class CalculaPlanoMaxilaClassico(bpy.types.Operator):
     """Tooltip"""
@@ -412,12 +560,7 @@ def DistanciaUnica(ObjDist, ObjBase, Eixo):
             MedidasEixo.append(MedidaAtual)
             ObjetosCopias.append(ObjetoAtual)
 
-
-        print("DESGRACA", MedidasEixo[0])
-        print("DESGRACA2", MedidasEixo[1])
-
         Distancia = abs( MedidasEixo[0] - MedidasEixo[1] )
-        print("DISTANCIA DESSE DIABO", Distancia)
 
 
         # Calcula Posicao
