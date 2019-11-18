@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191118a"
+VERSION = "20191118b"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -154,6 +154,7 @@ class ENUM_VALUES_CTSCAN:
     MANUAL = 'Manual'
     VOXEL = 'Voxel'
     AUTO = 'Auto'
+    CUSTOM = 'Custom'
 
 class ORTOG_PT_CTScanSelect(bpy.types.Panel):
     bl_label = "CT-Scan Reconstruction"
@@ -286,6 +287,72 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
             row.alignment = 'CENTER'
             row.operator("object.gera_dir_nome_paciente_tomo_auto", text="SAVE!", icon="FILE_TICK")
 
+        if my_enum_ct == ENUM_VALUES_CTSCAN.CUSTOM:
+            row = layout.row()
+            row.label(text="CT-Scan Preparing:")
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path", text="")
+    #        layout.prop(rd, "filepath", text="")
+
+            if platform.system() == "Windows":
+                row = layout.row()
+                row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
+
+            row = layout.row()
+            row.operator("object.ajusta_tomo", text="Organize", icon="NODETREE")
+
+
+            row = layout.row()
+            row = layout.row()
+    #        row.label(text="CT-Scan Fix:")
+    #        col = layout.column(align=True)
+    #        col.prop(scn.my_tool, "path", text="")
+    #        row = layout.row()
+    #        row.operator("object.corrige_dicom", text="Fix it!", icon="FILE_TICK")
+
+            row = layout.row()
+            row.label(text="Threshold Setup:")
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path", text="")
+            row = layout.row()
+            row.operator("object.abre_slicer", text="Open Slicer!", icon="FILE_TICK")
+
+
+            row = layout.row()
+            row.label(text="CT-Scan 3D Reconstruction:")
+
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path", text="")
+
+            row = layout.row()
+    #        row.operator("object.tomo_heli", text="CT-Scan")
+    #        row.operator("object.tomo_cone", text="CBCT")
+
+            col = self.layout.column(align = True)
+            col.prop(context.scene, "interesse_geral")
+
+            col = self.layout.column(align = True)
+            col.prop(context.scene, "fator_simplificacao")
+
+            col = self.layout.column(align = True)
+            col.prop(context.scene, "nome_objeto")
+
+            if platform.system() == "Windows":
+                row = layout.row()
+                row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
+
+            row = layout.row()
+    #        row.operator("object.gera_modelos_tomo", text="Convert DICOM to 3D", icon="SNAP_FACE")
+            row.operator("object.gera_modelo_tomo_custom", text="Convert DICOM to 3D", icon="SNAP_FACE")
+
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.5
+            row.alignment = 'CENTER'
+            row.operator("object.gera_dir_nome_paciente_tomo", text="SAVE!", icon="FILE_TICK")
+
 
 class ORTOG_OT_GeraModelosTomoArc(bpy.types.Operator):
     """Tooltip"""
@@ -296,165 +363,6 @@ class ORTOG_OT_GeraModelosTomoArc(bpy.types.Operator):
         GeraModelosTomoArcDef(self, context)
         return {'FINISHED'}
 
-'''
-class ORTOG_PT_CTScanOrgFIX(bpy.types.Panel):
-    bl_label = "CT-Scan Manual Reconstruction"
-    bl_region_type = 'UI'
-    bl_space_type = 'VIEW_3D'
-    bl_options = {'DEFAULT_CLOSED'}
-    bl_category = "Ortog"
-
-    def draw(self, context):
-        layout = self.layout
-
-        context = bpy.context
-        obj = context.object
-        scn = context.scene
-
-#        scene = context.scene
-#        rd = scene.render
-
-        row = layout.row()
-        row.label(text="CT-Scan Preparing:")
-        col = layout.column(align=True)
-        col.prop(scn.my_tool, "path", text="")
-#        layout.prop(rd, "filepath", text="")
-
-        if platform.system() == "Windows":
-            row = layout.row()
-            row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
-
-        row = layout.row()
-        row.operator("object.ajusta_tomo", text="Organize", icon="NODETREE")
-
-
-        row = layout.row()
-        row = layout.row()
-#        row.label(text="CT-Scan Fix:")
-#        col = layout.column(align=True)
-#        col.prop(scn.my_tool, "path", text="")
-#        row = layout.row()
-#        row.operator("object.corrige_dicom", text="Fix it!", icon="FILE_TICK")
-
-        row = layout.row()
-        row.label(text="Threshold Setup:")
-        col = layout.column(align=True)
-        col.prop(scn.my_tool, "path", text="")
-        row = layout.row()
-        row.operator("object.abre_slicer", text="Open Slicer!", icon="FILE_TICK")
-
-
-        row = layout.row()
-        row.label(text="CT-Scan 3D Reconstruction:")
-
-        col = layout.column(align=True)
-        col.prop(scn.my_tool, "path", text="")
-
-        row = layout.row()
-#        row.operator("object.tomo_heli", text="CT-Scan")
-#        row.operator("object.tomo_cone", text="CBCT")
-
-        col = self.layout.column(align = True)
-        col.prop(context.scene, "interesse_ossos")
-
-        col = self.layout.column(align = True)
-        col.prop(context.scene, "interesse_mole")
-
-        col = self.layout.column(align = True)
-        col.prop(context.scene, "interesse_dentes")
-
-        if platform.system() == "Windows":
-            row = layout.row()
-            row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
-
-        row = layout.row()
-#        row.operator("object.gera_modelos_tomo", text="Convert DICOM to 3D", icon="SNAP_FACE")
-        row.operator("object.gera_modelo_tomo_manual", text="Convert DICOM to 3D", icon="SNAP_FACE")
-
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.5
-        row.alignment = 'CENTER'
-        row.operator("object.gera_dir_nome_paciente_tomo", text="SAVE!", icon="FILE_TICK")
-
-class ORTOG_PT_CTScanFerrImg(bpy.types.Panel):
-    bl_label = "CT-Scan Voxel Tools"
-    bl_region_type = 'UI'
-    bl_space_type = 'VIEW_3D'
-    bl_options = {'DEFAULT_CLOSED'}
-    bl_category = "Ortog"
-
-    def draw(self, context):
-        layout = self.layout
-
-        context = bpy.context
-        obj = context.object
-        scn = context.scene
-
-#        scene = context.scene
-#        rd = scene.render
-
-        row = layout.row()
-        row.label(text="CT-Scan Voxel Importing:")
-        col = layout.column(align=True)
-        col.prop(scn.my_tool, "path", text="")
-#        layout.prop(rd, "filepath", text="")
-
-        if platform.system() == "Windows":
-            row = layout.row()
-            row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
-
-        row = layout.row()
-        row.operator("object.importa_fatias_dcm", text="Import DICOM Slices", icon="ALEMBIC")
-
-#        row = layout.row()
-#        prefs = context.preferences
-#        system = prefs.system
-#        row.prop(system, "gl_clip_alpha", slider=True)
-
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.5
-        row.alignment = 'CENTER'
-        row.operator("object.gera_dir_nome_paciente_voxel", text="SAVE!", icon="FILE_TICK")
-
-class ORTOG_PT_CTScanRec(bpy.types.Panel):
-    bl_label = "CT-Scan Auto 3D Reconstruction"
-    bl_region_type = 'UI'
-    bl_space_type = 'VIEW_3D'
-    bl_options = {'DEFAULT_CLOSED'}
-    bl_category = "Ortog"
-
-    def draw(self, context):
-        layout = self.layout
-
-        context = bpy.context
-        obj = context.object
-        scn = context.scene
-
-#        scene = context.scene
-#        rd = scene.render
-
-        row = layout.row()
-        row.label(text="Automatic Reconstruction:")
-
-        col = layout.column(align=True)
-        col.prop(scn.my_tool, "path", text="")
-
-        row = layout.row()
-        row.operator("object.gera_modelos_tomo_auto", text="AUTOMATIC DICOM TO 3D", icon="SNAP_FACE")
-
-        row = layout.row()
-        box = layout.box()
-        col = box.column(align=True)
-        row = col.row()
-        row.scale_y=1.5
-        row.alignment = 'CENTER'
-        row.operator("object.gera_dir_nome_paciente_tomo_auto", text="SAVE!", icon="FILE_TICK")
-'''
 
 class ENUM_VALUES_ARCHSCOLLISION:
     DEFAULT = 'Default'
@@ -2744,10 +2652,33 @@ def register():
     bpy.types.Scene.my_enum_ct = bpy.props.EnumProperty(
         name="Select",
         description= "",
-        items=[(ENUM_VALUES_CTSCAN.MANUAL, "MANUAL", "Manual CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.VOXEL, "VOXEL", "Voxel Data CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.AUTO, "AUTOMATIC", "Automatic CT-Scan Reconstruction")],)
+        items=[(ENUM_VALUES_CTSCAN.MANUAL, "MANUAL", "Manual CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.VOXEL, "VOXEL", "Voxel Data CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.AUTO, "AUTOMATIC", "Automatic CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.CUSTOM, "CUSTOM", "Customized CT-Scan Reconstruction")],)
     bpy.utils.register_class(GeraModelosTomo)
 #    bpy.utils.register_class(ORTOG_PT_CTScanFerrImg)
 #    bpy.utils.register_class(ORTOG_PT_CTScanRec)
+
+
+    bpy.types.Scene.interesse_geral = bpy.props.StringProperty \
+      (
+        name = "Reconst. Factor",
+        description = "Reconstruction Factor",
+        default = "NONE"
+      )
+
+    bpy.types.Scene.fator_simplificacao = bpy.props.StringProperty \
+      (
+        name = "Decimate Factor",
+        description = "Decimate Factor",
+        default = "0.90"
+      )
+
+    bpy.types.Scene.nome_objeto = bpy.props.StringProperty \
+      (
+        name = "Object Name",
+        description = "Object Name",
+        default = "CT-Scan Reconstructed"
+      )
+
     bpy.types.Scene.interesse_ossos = bpy.props.StringProperty \
       (
         name = "Bone Factor",

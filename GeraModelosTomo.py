@@ -3099,3 +3099,115 @@ class GeraModelosTomoManual(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(GeraModelosTomoManual)
+
+
+def GeraModelosTomoCustomlDef():
+
+    context = bpy.context
+    scn = context.scene
+
+    if scn.my_tool.path == "":
+            bpy.ops.object.dialog_operator_informe_dicom('INVOKE_DEFAULT')
+            return {'FINISHED'}
+
+    else:
+
+        homeall = expanduser("~")
+
+        os.chdir(scn.my_tool.path)
+        DirAtual = os.getcwd()
+        ArqAtual = os.listdir(os.getcwd())[0]
+        print("Atual:", os.getcwd())
+        print (os.listdir(os.getcwd())[0])
+
+        # IDENTIFICA TOMOGRAFO
+
+        # Lê arquivo DICOM
+
+
+        ds = pydicom.dcmread(ArqAtual)
+
+        # Separa Manufacturer
+        ManufacturerComplete = ds.data_element("Manufacturer")
+        ManufacturerLimpa1 = str(ManufacturerComplete).split('LO: ')
+        ManufacturerLimpo = str(ManufacturerLimpa1[1]).strip('"')
+
+        print("ManufacturerComplete:", ManufacturerComplete)
+        print("ManufacturerLimpa1:", ManufacturerLimpa1)
+        print("ManufacturerLimpo:", ManufacturerLimpo)
+
+
+        try:
+            # Separa StationName
+            StationNameComplete = ds.data_element("StationName")
+            StationNameLimpa1 = str(StationNameComplete).split('SH: ')
+            StationNameLimpo = str(StationNameLimpa1[1]).strip('"')
+
+            print("StationNameComplete:", StationNameComplete)
+            print("StationNameLimpa1:", StationNameLimpa1)
+            print("StationNameLimpo:", StationNameLimpo)
+        except:
+            print("Sem StationNam")
+
+
+
+        try:
+            # Separa ManufacturerModelName
+            ManufacturerModelNameComplete = ds.data_element("ManufacturerModelName")
+            ManufacturerModelNameLimpa1 = str(ManufacturerModelNameComplete).split('LO: ')
+            ManufacturerModelNameLimpo = str(ManufacturerModelNameLimpa1[1]).strip('"')
+
+            print("ManufacturerModelName:", ManufacturerModelNameComplete)
+            print("ManufacturerModelNameLimpa1:", ManufacturerModelNameLimpa1)
+            print("ManufacturerModelNameLimpo:", ManufacturerModelNameLimpo)
+            return ManufacturerModelName
+        except:
+            print("Sem ManufacturerModelName")
+
+        # GERA MODELOS
+
+        ListaArquivos = sorted(os.listdir(scn.my_tool.path))
+
+        os.chdir(scn.my_tool.path)
+
+        ds = pydicom.dcmread(str(DirAtual+"/"+ArqAtual), force=True)
+        DimPixelsX = ds.Rows
+        DimPixelsY = ds.Columns
+
+        print("TESTA FATIA...")
+        print("DimPixelsX", DimPixelsX)
+        print("DimPixelsY", DimPixelsY)
+
+
+        if DimPixelsX > 512 or DimPixelsY > 512:
+
+            print("MAIOR QUE 512!!! REDUZINDO...")
+
+            bpy.ops.object.corrige_dicom()
+            bpy.ops.object.reduz_dimensao_dicom() # SÓ FUNCIONA SE FOR COMPATIVEL! POR ISSO O FIXED ANTES!!!
+            ReconTomo(scn.my_tool.path, bpy.context.scene.interesse_geral, bpy.context.scene.nome_objeto, bpy.context.scene.fator_simplificacao)
+
+
+        else:
+            print("MENOR OU IGUAL A 512...")
+            bpy.ops.object.corrige_dicom()
+            ReconTomo(scn.my_tool.path, bpy.context.scene.interesse_geral, bpy.context.scene.nome_objeto, bpy.context.scene.fator_simplificacao)
+
+            bpy.ops.transform.rotate(value=3.14159, orient_axis='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+            a = bpy.context.active_object
+            a.location[0] = 0
+            a.location[1] = 0
+            a.location[2] = 0
+            bpy.ops.view3d.view_all(center=False)
+    #            bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
+
+class GeraModelosTomoCustom(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_modelo_tomo_custom"
+    bl_label = "Gera Modelo Tomo Custom"
+
+    def execute(self, context):
+        GeraModelosTomoCustomlDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(GeraModelosTomoCustom)
