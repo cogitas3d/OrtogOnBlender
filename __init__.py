@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191119a"
+VERSION = "20191119c"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -216,13 +216,18 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
     #        row.operator("object.tomo_heli", text="CT-Scan")
     #        row.operator("object.tomo_cone", text="CBCT")
 
+
             col = self.layout.column(align = True)
+            #col.scale_y=1.5
+            col.alignment = 'CENTER'
             col.prop(context.scene, "interesse_ossos")
 
             col = self.layout.column(align = True)
+            col.alignment = 'CENTER'
             col.prop(context.scene, "interesse_mole")
 
             col = self.layout.column(align = True)
+            col.alignment = 'CENTER'
             col.prop(context.scene, "interesse_dentes")
 
             if platform.system() == "Windows":
@@ -329,12 +334,15 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
     #        row.operator("object.tomo_cone", text="CBCT")
 
             col = self.layout.column(align = True)
+            col.alignment = 'CENTER'
             col.prop(context.scene, "interesse_geral")
 
             col = self.layout.column(align = True)
+            col.alignment = 'CENTER'
             col.prop(context.scene, "fator_simplificacao")
 
             col = self.layout.column(align = True)
+            col.alignment = 'CENTER'
             col.prop(context.scene, "nome_objeto")
 
             if platform.system() == "Windows":
@@ -1597,7 +1605,7 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
             row.prop(context.scene, "plano_oclusal_maxila_classico")
             row = col.row()
             row.alignment = 'CENTER'
-            row.label(text="Women: 4º-12º Men: 4º-12º")
+            row.label(text="4º-(8º)-12º")
 
             row = layout.row()
             box = layout.box()
@@ -1639,6 +1647,24 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
             row = col.row()
             row.alignment = 'CENTER'
             row.label(text="< 80º Retrognathic Mandible")
+
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            linha=row.operator("object.go_right_pt", text="Go right")
+            row = col.row()
+            linha=row.operator("object.go_left_pt", text="Go left")
+            row = col.row()
+            linha=row.operator("object.me_pt", text="Me point")
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'CENTER'
+            row.prop(context.scene, "plano_mandibula_usp")
+            row = col.row()
+            row.alignment = 'CENTER'
+            row.label(text="28º-(32º)-36º")
+
 
         if my_enum_cefalometria == ENUM_VALUES_CEFALOMETRIA.ARNETT:
 
@@ -2760,6 +2786,12 @@ def register():
         name="Select",
         description= "",
         items=[(ENUM_VALUES_CEFALOMETRIA.USP, "USP", "USP Cephalometry."), (ENUM_VALUES_CEFALOMETRIA.ARNETT, "ARNETT", "ARNETT Cephalometry.")],)
+    bpy.types.Scene.plano_mandibula_usp = bpy.props.StringProperty \
+        (
+            name = "Mandibular Plane",
+            description = "Mandibular Plane",
+            default = "NONE"
+        )
     bpy.utils.register_class(ORTOG_PT_Cefalometria)
     bpy.types.Scene.my_enum_osteotomy = bpy.props.EnumProperty(
         name="Select",

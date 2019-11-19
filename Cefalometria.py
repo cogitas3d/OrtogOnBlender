@@ -62,6 +62,7 @@ class CalculaTudoUSP(bpy.types.Operator):
         bpy.ops.object.calcula_plano_oclusal_classico()
         CalculaSNADef()
         CalculaSNBDef()
+        CalculaPlanoMandibularDef()
         return {'FINISHED'}
 
 bpy.utils.register_class(CalculaTudoUSP)
@@ -106,6 +107,10 @@ def CalculaPlanoMaxilaClassicoDef():
         bpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=(PosicaoX, PosicaoY, PosicaoZ))
         bpy.context.object.name = "Inter_1626_1121"
 
+        bpy.data.objects["1121"].location[0] = 0
+        bpy.data.objects["1626"].location[0] = 0
+        bpy.data.objects["Inter_1626_1121"].location[0] = 0
+
         AnguloOcluMaxClass = CalculaAngulo("1121", "1626", "Inter_1626_1121")
 
         bpy.types.Scene.plano_oclusal_maxila_classico = bpy.props.StringProperty \
@@ -124,6 +129,65 @@ def CalculaPlanoMaxilaClassicoDef():
 
     else:
         print("Falta algum ponto anatômico dos dentes!")
+
+
+def CalculaPlanoMandibularDef():
+
+    FoundGoleft = 'Go left' in bpy.data.objects
+    FoundGoright = 'Go right' in bpy.data.objects
+    FoundMepoint = 'Me point' in bpy.data.objects
+
+    if FoundGoleft == True and FoundGoright == True and FoundMepoint == True:
+        print("Todos os pontos anatômicos presentes!")
+
+        CursorToSelectedObjs("Go left", "Go left")
+        Cursor_Gonios = bpy.context.scene.cursor.location
+        print(Cursor_Gonios)
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "Gonios"
+
+        CursorToSelectedObj("Me point")
+        Cursor_Mepoint = bpy.context.scene.cursor.location
+        print(Cursor_Mepoint)
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "Mepoint"
+
+
+        PosicaoX = bpy.data.objects["Gonios"].location[0]
+        PosicaoY = bpy.data.objects["Mepoint"].location[1]
+        PosicaoZ = bpy.data.objects["Gonios"].location[2]
+
+        print(PosicaoX)
+        print(PosicaoY)
+        print(PosicaoZ)
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=(PosicaoX, PosicaoY, PosicaoZ))
+        bpy.context.object.name = "Inter_Gonios_Me"
+
+        bpy.data.objects["Gonios"].location[0] = 0
+        bpy.data.objects["Mepoint"].location[0] = 0
+        bpy.data.objects["Inter_Gonios_Me"].location[0] = 0
+
+        AnguloOcluMandUsp = CalculaAngulo("Inter_Gonios_Me", "Gonios", "Mepoint")
+
+        bpy.types.Scene.plano_mandibula_usp = bpy.props.StringProperty \
+            (
+                name = "Mandibular Plane",
+                description = "Mandibular Plane",
+                default = str(AnguloOcluMandUsp)
+            )
+
+        ApagarObjeto("Gonios")
+        ApagarObjeto("Mepoint")
+        ApagarObjeto("Inter_Gonios_Me")
+
+
+        return str(AnguloOcluMandUsp)
+
+    else:
+        print("Falta algum ponto anatômico na mandíbula!")
 
 
 def CalculaSNADef():
@@ -157,6 +221,10 @@ def CalculaSNADef():
         bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
         bpy.context.object.name = "PontoA"
         bpy.context.object.location[0] = 0
+
+        bpy.data.objects["PontoS"].location[0] = 0
+        bpy.data.objects["PontoN"].location[0] = 0
+        bpy.data.objects["PontoA"].location[0] = 0
 
         AnguloSNA = CalculaAngulo("PontoS", "PontoN", "PontoA")
 
@@ -214,6 +282,10 @@ def CalculaSNBDef():
         bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
         bpy.context.object.name = "PontoB"
         bpy.context.object.location[0] = 0
+
+        bpy.data.objects["PontoS"].location[0] = 0
+        bpy.data.objects["PontoN"].location[0] = 0
+        bpy.data.objects["PontoB"].location[0] = 0
 
         AnguloSNB = CalculaAngulo("PontoS", "PontoN", "PontoB")
 
