@@ -8,6 +8,7 @@ import pydicom
 import shutil
 import numpy as np
 from os.path import expanduser
+from random import randint
 
 from .ImportaObjMat import *
 
@@ -3187,6 +3188,17 @@ def GeraModelosTomoCustomlDef():
             bpy.ops.object.reduz_dimensao_dicom() # SÓ FUNCIONA SE FOR COMPATIVEL! POR ISSO O FIXED ANTES!!!
             ReconTomo(scn.my_tool.path, bpy.context.scene.interesse_geral, bpy.context.scene.nome_objeto, bpy.context.scene.fator_simplificacao)
 
+            bpy.ops.transform.rotate(value=3.14159, orient_axis='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+            a = bpy.context.active_object
+            a.location[0] = 0
+            a.location[1] = 0
+            a.location[2] = 0
+            bpy.ops.view3d.view_all(center=False)
+
+            activeObject = bpy.context.active_object
+            mat = bpy.data.materials.new(name=activeObject.name) #set new material to variable
+            activeObject.data.materials.append(mat) #add the material to the object
+            activeObject.active_material.diffuse_color = (randint(20, 100)*.01, randint(20, 100)*.01, randint(20, 100)*.01, 1)
 
         else:
             print("MENOR OU IGUAL A 512...")
@@ -3199,7 +3211,11 @@ def GeraModelosTomoCustomlDef():
             a.location[1] = 0
             a.location[2] = 0
             bpy.ops.view3d.view_all(center=False)
-    #            bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
+
+            activeObject = bpy.context.active_object
+            mat = bpy.data.materials.new(name=activeObject.name) #set new material to variable
+            activeObject.data.materials.append(mat) #add the material to the object
+            activeObject.active_material.diffuse_color = (randint(20, 100)*.01, randint(20, 100)*.01, randint(20, 100)*.01, 1)
 
 class GeraModelosTomoCustom(bpy.types.Operator):
     """Tooltip"""
