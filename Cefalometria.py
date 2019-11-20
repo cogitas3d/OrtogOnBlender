@@ -63,10 +63,111 @@ class CalculaTudoUSP(bpy.types.Operator):
         CalculaSNADef()
         CalculaSNBDef()
         CalculaPlanoMandibularDef()
+        CalculaSNGoGnDef()
         return {'FINISHED'}
 
 bpy.utils.register_class(CalculaTudoUSP)
 
+def CalculaSNGoGnDef():
+
+    FoundS = 'S point' in bpy.data.objects
+    FoundN = 'N point' in bpy.data.objects
+    FoundGoright = 'Go right' in bpy.data.objects
+    FoundGoleft = 'Go left' in bpy.data.objects
+    FoundGnpoint = 'Gn point' in bpy.data.objects
+
+    if FoundS == True and FoundN == True and FoundGoright == True and FoundGoleft == True and FoundGnpoint == True:
+        print("Todos os pontos anatômicos presentes!")
+
+        CursorToSelectedObj("S point")
+        Cursor_S = bpy.context.scene.cursor.location
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "PontoS"
+        bpy.context.object.location[0] = 0
+
+        CursorToSelectedObj("N point")
+        Cursor_S = bpy.context.scene.cursor.location
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "PontoN"
+        bpy.context.object.location[0] = 0
+
+        CursorToSelectedObjs("Go left", "Go left")
+        Cursor_Gonios = bpy.context.scene.cursor.location
+        print(Cursor_Gonios)
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "Gonios"
+        bpy.context.object.location[0] = 0
+
+        CursorToSelectedObj("Gn point")
+        Cursor_Gn = bpy.context.scene.cursor.location
+
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "PontoGn"
+        bpy.context.object.location[0] = 0
+
+
+        def line_intersection(line1, line2):
+            xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
+            ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1])
+
+            def det(a, b):
+                return a[0] * b[1] - a[1] * b[0]
+
+            div = det(xdiff, ydiff)
+            if div == 0:
+               raise Exception('As linhas tê intersecção!')
+
+            d = (det(*line1), det(*line2))
+            x = det(d, xdiff) / div
+            y = det(d, ydiff) / div
+            return x, y
+
+        PontoS = bpy.data.objects['PontoS']
+        PontoN = bpy.data.objects['PontoN']
+        Gonios = bpy.data.objects['Gonios']
+        PontoGn = bpy.data.objects['PontoGn']
+
+        Linha1 = [(PontoS.location[1], PontoS.location[2]), (PontoN.location[1], PontoN.location[2])]
+        Linha2 = [(Gonios.location[1], Gonios.location[2]), (PontoGn.location[1],PontoGn.location[2])]
+
+        EncontroYZ = line_intersection(Linha1, Linha2)
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "ProjSNGoGn"
+        bpy.context.object.location[0] = 0
+        bpy.context.object.location[1] = EncontroYZ[0]
+        bpy.context.object.location[2] = EncontroYZ[1]
+
+
+        AnguloSNGoGn = CalculaAngulo("PontoN", "ProjSNGoGn", "PontoGn")
+
+        bpy.types.Scene.angulo_sngogn = bpy.props.StringProperty \
+            (
+                name = "SNGoGn Angle",
+                description = "SNGoGn Angle",
+                default = str(AnguloSNGoGn)
+            )
+
+        ApagarObjeto("PontoS")
+        ApagarObjeto("PontoN")
+        ApagarObjeto("Gonios")
+        ApagarObjeto("PontoGn")
+        ApagarObjeto("ProjSNGoGn")
+
+        return str(AnguloSNGoGn)
+
+    else:
+        bpy.types.Scene.angulo_sngogn = bpy.props.StringProperty \
+            (
+                name = "SNGoGn Angle",
+                description = "SNGoGn Angle",
+                default = "NONE"
+            )
+        print("Falta algum ponto anatômico (SNGoGn)!")
 
 def CalculaPlanoMaxilaClassicoDef():
 

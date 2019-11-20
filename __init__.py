@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191119c"
+VERSION = "20191120a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -1666,6 +1666,28 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
             row.label(text="28º-(32º)-36º")
 
 
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            linha=row.operator("object.s_pt", text="S point")
+            row = col.row()
+            linha=row.operator("object.n_pt", text="N point")
+            row = col.row()
+            linha=row.operator("object.go_right_pt", text="Go right")
+            row = col.row()
+            linha=row.operator("object.go_left_pt", text="Go left")
+            row = col.row()
+            linha=row.operator("object.gn_pt", text="Gn point")
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'CENTER'
+            row.prop(context.scene, "angulo_sngogn")
+            row = col.row()
+            row.alignment = 'CENTER'
+            row.label(text="28º-(32º)-36º")
+
+
         if my_enum_cefalometria == ENUM_VALUES_CEFALOMETRIA.ARNETT:
 
             row = layout.row()
@@ -1902,6 +1924,12 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
             row.alignment = 'RIGHT'
             row.label(text="Women: -1 to 3 Men: -1 to 3")
 
+bpy.types.Scene.angulo_sngogn = bpy.props.StringProperty \
+    (
+        name = "SNGoGn Angle",
+        description = "SNGoGn Angle",
+        default = "NONE"
+    )
 bpy.types.Scene.angulo_sna = bpy.props.StringProperty \
     (
         name = "SNA Angle",
