@@ -60,7 +60,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191120b"
+VERSION = "20191122a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -1652,6 +1652,41 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
             box = layout.box()
             col = box.column(align=True)
             row = col.row()
+            linha=row.operator("object.a_pt", text="A point")
+            row = col.row()
+            linha=row.operator("object.n_pt", text="N point")
+            row = col.row()
+            linha=row.operator("object.b_pt", text="B point")
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'CENTER'
+            row.prop(context.scene, "angulo_anb")
+            row = col.row()
+            row.alignment = 'CENTER'
+            row.label(text="0º-(2º)-4º")
+
+
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            linha=row.operator("object.s_pt", text="S point")
+            row = col.row()
+            linha=row.operator("object.n_pt", text="N point")
+            row = col.row()
+            linha=row.operator("object.gn_pt", text="Gn point")
+            row = col.row()
+            row.scale_y=1.0
+            row.alignment = 'CENTER'
+            row.prop(context.scene, "angulo_sngn")
+            row = col.row()
+            row.alignment = 'CENTER'
+            row.label(text="65º-(67º)-69º")
+
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
             linha=row.operator("object.go_right_pt", text="Go right")
             row = col.row()
             linha=row.operator("object.go_left_pt", text="Go left")
@@ -1942,6 +1977,21 @@ bpy.types.Scene.angulo_snb = bpy.props.StringProperty \
         name = "SNB Angle",
         description = "SNB Angle",
         default = str("NONE")
+    )
+
+bpy.types.Scene.angulo_anb = bpy.props.StringProperty \
+    (
+        name = "ANB Angle",
+        description = "ANB Angle",
+        default = "NONE"
+    )
+print("Falta algum ponto anatômico (ANB)!")
+
+bpy.types.Scene.angulo_sngn = bpy.props.StringProperty \
+    (
+        name = "SNGn Angle",
+        description = "SNGn Angle",
+        default = "NONE"
     )
 
 bpy.types.Scene.dist_pescoco_garganta_tvl = bpy.props.StringProperty \

@@ -2393,6 +2393,31 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+    if ManufacturerLimpo == "'Imaging Sciences International'" and StationNameLimpo == "'IMAGE-1856355FD'" and ManufacturerModelNameLimpo == "'i-CAT'":
+        print("SÉRIE 1")
+        print("Bone: 390")
+        print("SoftTissue: -600")
+        print("Teeth: 870")
+
+        os.chdir(scn.my_tool.path+"/1")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "390"
+        bpy.context.scene.interesse_mole = "-600"
+        bpy.context.scene.interesse_dentes = "870"
+
+        bpy.ops.object.gera_modelos_tomo()
+
 
     if ManufacturerLimpo == "'Imaging Sciences International'" and StationNameLimpo == "'ICAT'":
         print("SÉRIE 0")
