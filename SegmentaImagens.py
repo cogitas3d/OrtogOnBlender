@@ -44,7 +44,10 @@ def SegmentacaoImagemFaceDef():
         ScriptF.write("    out_face = np.zeros_like(image)\n")
         ScriptF.write("\n")
         ScriptF.write("    detector = dlib.get_frontal_face_detector()\n")
-        ScriptF.write("    predictor = dlib.shape_predictor('/home/linux3dcs/Programs/OrtogOnBlender/SegmentaImagens/shape_predictor_81_face_landmarks.dat')\n")
+        if platform.system() == "Linux":
+            ScriptF.write("    predictor = dlib.shape_predictor('/home/linux3dcs/Programs/OrtogOnBlender/SegmentaImagens/shape_predictor_81_face_landmarks.dat')\n")
+        if platform.system() == "Windows":
+            ScriptF.write("    predictor = dlib.shape_predictor('C:\OrtogOnBlender\SegmentaImagens\shape_predictor_81_face_landmarks.dat')\n")
         ScriptF.write("\n")
         ScriptF.write("    rects = detector(gray, 1)\n")
         ScriptF.write("\n")
@@ -99,6 +102,11 @@ def SegmentacaoImagemFaceDef():
         scn.my_tool.path_photo = TmpDirSegFace+"/SegmentedPhotos/"
         abrir_diretorio(TmpDirSegFace+"/SegmentedPhotos/")
 
+    if platform.system() == "Windows":
+        os.system('C:\OrtogOnBlender\Python36\python3 '+TmpDirSegFace+'/SegmentaFace.py')
+        scn.my_tool.path_photo = TmpDirSegFace+"/SegmentedPhotos/"
+        abrir_diretorio(TmpDirSegFace+"/SegmentedPhotos/")        
+        
 class SegmentacaoImagemFace(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.segmenta_imagem_face"
