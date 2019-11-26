@@ -84,10 +84,19 @@ def SegmentacaoImagemFaceDef():
         ScriptF.write("        subprocess.call(['C:\OrtogOnBlender\ExitTool\exiftool.exe', '-overwrite_original', '-Model=\"Z00AD\"', '-FocalLength=4', diretorioFinalFotos+'*'])\n")
         ScriptF.write("\n")
         ScriptF.write("dirOrigi = '/home/linux3dcs/prj/Estudos/DLIB/ROSTO/'\n")
-        ScriptF.write("os.mkdir('"+TmpDirSegFace+"/SegmentedPhotos')\n")
-        ScriptF.write("dirFinal = '"+TmpDirSegFace+"/SegmentedPhotos/'\n")
+        if platform.system() == "Linux":
+            ScriptF.write("os.mkdir('"+TmpDirSegFace+"/SegmentedPhotos')\n")
+        if platform.system() == "Windows":
+            ScriptF.write("os.mkdir(r'"+TmpDirSegFace+"/SegmentedPhotos')\n")
+        if platform.system() == "Linux":
+            ScriptF.write("dirFinal = '"+TmpDirSegFace+"/SegmentedPhotos/'\n")
+        if platform.system() == "Windows":
+            ScriptF.write("dirFinal = r'"+TmpDirSegFace+"/SegmentedPhotos/'\n")
         ScriptF.write("\n")
-        ScriptF.write("mypath = '"+scn.my_tool.path_photo+"'\n")
+        if platform.system() == "Linux":
+            ScriptF.write("mypath = '"+scn.my_tool.path_photo+"'\n")
+        if platform.system() == "Windows":
+            ScriptF.write("mypath = '"+scn.my_tool.path_photo+"\\'\n")
         ScriptF.write("\n")
         ScriptF.write("onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]\n")
         ScriptF.write("\n")
@@ -103,7 +112,7 @@ def SegmentacaoImagemFaceDef():
         abrir_diretorio(TmpDirSegFace+"/SegmentedPhotos/")
 
     if platform.system() == "Windows":
-        os.system('C:\OrtogOnBlender\Python36\python3 '+TmpDirSegFace+'/SegmentaFace.py')
+        os.system('C:\OrtogOnBlender\Python36\python '+TmpDirSegFace+'/SegmentaFace.py')
         scn.my_tool.path_photo = TmpDirSegFace+"/SegmentedPhotos/"
         abrir_diretorio(TmpDirSegFace+"/SegmentedPhotos/")        
         
