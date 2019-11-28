@@ -61,7 +61,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191128a"
+VERSION = "20191128b"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -2606,6 +2606,16 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
 
         row = layout.row()
         row.operator("object.cria_splint", text="Create Splint", icon="OUTLINER_OB_CURVE")
+
+        row = layout.row()
+        row.operator("object.duplica_max_mand", text="Prepares Maxilla & Mandible", icon="SHADERFX")
+
+        row = layout.row()
+        circle=row.operator("object.booleana_osteo_geral", text="Boolean Difference", icon="MOD_BOOLEAN")
+
+        row = layout.row()
+        row.operator("object.visualiza_max_mand", text="View Maxilla & Mandible", icon="VISIBLE_IPO_ON")
+
 
         row = layout.row()
         row = layout.row()

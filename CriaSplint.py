@@ -1,5 +1,7 @@
 import bpy
 import platform
+import time
+from random import randint
 
 # IMPORTA SPLINT COM ARMATURE
 
@@ -60,7 +62,7 @@ class ImportaSplint(bpy.types.Operator):
     bl_idname = "object.importa_splint"
     bl_label = "Importa Splint"
     bl_options = {'REGISTER', 'UNDO'}
-    
+
     def execute(self, context):
         ImportaSplintDef(self, context)
         return {'FINISHED'}
@@ -299,6 +301,17 @@ class CriaSplint(bpy.types.Operator):
     bl_label = "Cria Splint"
     bl_options = {'REGISTER', 'UNDO'}
 
+    @classmethod
+    def poll(cls, context):
+
+        found = 'SPLINT_pronto' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
     def execute(self, context):
         CriaSplintDef(self, context)
 
@@ -328,3 +341,84 @@ class CriaSplint(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(CriaSplint)
+
+
+def DuplicaMaxMandDef():
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    if bpy.data.objects.get("MaxillaMand") is not None:
+        bpy.data.objects['MaxillaMand'].name = "Deletar"
+
+
+    bpy.data.objects['ma'].select_set(True)
+    bpy.data.objects['cm'].select_set(True)
+    bpy.context.view_layer.objects.active = bpy.data.objects['ma']
+
+    bpy.ops.object.duplicate()
+    bpy.ops.object.join()
+    NomeMaterial = "MaxillaMand"+time.strftime("%Y%m%d%H%M%S")
+
+    bpy.context.object.name = "MaxillaMand"
+
+    # Deleta todos os objetos
+    for x in bpy.context.object.material_slots:
+        bpy.context.object.active_material_index = 0
+        bpy.ops.object.material_slot_remove()
+
+    activeObject = bpy.data.objects["MaxillaMand"] #Set active object to variable
+    mat = bpy.data.materials.new(name=NomeMaterial) #set new material to variable
+    activeObject.data.materials.append(mat) #add the material to the object
+    activeObject.active_material.diffuse_color = (randint(20, 100)*.01, randint(20, 100)*.01, randint(20, 100)*.01, 1)
+
+    bpy.data.objects['ma'].hide_set(True)
+    bpy.data.objects['cm'].hide_set(True)
+
+
+class DuplicaMaxMand(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.duplica_max_mand"
+    bl_label = "Maxilla Mandible Duplication"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'MaxillaMand' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        DuplicaMaxMandDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(DuplicaMaxMand)
+
+
+def VisualizaMaxMandDef():
+
+    if bpy.data.objects.get("SPLINT_pronto") is not None:
+        bpy.data.objects['SPLINT_pronto'].name = "SPLINT_ready"
+
+    if bpy.data.objects.get("MaxillaMand") is not None:
+        bpy.data.objects['MaxillaMand'].name = "Deletar"
+
+    bpy.data.objects['ma'].hide_set(False)
+    bpy.data.objects['cm'].hide_set(False)
+
+
+class VisualizaMaxMand(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.visualiza_max_mand"
+    bl_label = "Maxilla Mandible View"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        VisualizaMaxMandDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(VisualizaMaxMand)
