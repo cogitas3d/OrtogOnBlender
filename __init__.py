@@ -61,7 +61,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191126c"
+VERSION = "20191128a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -593,17 +593,10 @@ class ORTOG_PT_GraphicRefs(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("object.orbital_right_pt", text="Orbital right")
-
-        row = layout.row()
         linha=row.operator("object.orbital_left_pt", text="Orbital left")
 
         row = layout.row()
         linha=row.operator("object.n_pt", text="N point")
-
-#        row = layout.row()
-#        linha=row.operator("object.po_right", text="Po right")
-
-        row = layout.row()
         linha=row.operator("object.po_left", text="Po left")
 
         row = layout.row()
@@ -1103,17 +1096,20 @@ class ORTOG_PT_AlinhaFaceCT(bpy.types.Panel):
         linha=row.operator("object.emp1a", text="Point 1a - Origin", icon="SORTBYEXT")
 
         row = layout.row()
-        linha=row.operator("object.emp2a", text="Point 2a - Origin", icon="SORTBYEXT")
-
-        row = layout.row()
-        linha=row.operator("object.emp3a", text="Point 3a - Origin", icon="SORTBYEXT")
-
-        row = layout.row()
-        row = layout.row()
         linha=row.operator("object.emp1b", text="Point 1b - Align", icon="SORTBYEXT")
 
         row = layout.row()
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.emp2a", text="Point 2a - Origin", icon="SORTBYEXT")
+
+        row = layout.row()
         linha=row.operator("object.emp2b", text="Point 2b - Align", icon="SORTBYEXT")
+
+        row = layout.row()
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.emp3a", text="Point 3a - Origin", icon="SORTBYEXT")
 
         row = layout.row()
         linha=row.operator("object.emp3b", text="Point 3b - Align", icon="SORTBYEXT")
@@ -1531,20 +1527,14 @@ class ORTOG_PT_MeasuringTools(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("object.tooth_8_pt", text="Tooth 8 (11)")
-
-        row = layout.row()
         linha=row.operator("object.tooth_9_pt", text="Tooth 9 (21)")
 
         row = layout.row()
         linha=row.operator("object.tooth_6_pt", text="Tooth 6 (13)")
-
-        row = layout.row()
         linha=row.operator("object.tooth_11_pt", text="Tooth 11 (23)")
 
         row = layout.row()
         linha=row.operator("object.tooth_3_pt", text="Tooth 3 (16)")
-
-        row = layout.row()
         linha=row.operator("object.tooth_14_pt", text="Tooth 14 (26)")
 
 
@@ -1614,11 +1604,9 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
             col = box.column(align=True)
             row = col.row()
             row.operator("object.tooth_8_pt", text="Tooth 8 (11)")
-            row = col.row()
             linha=row.operator("object.tooth_9_pt", text="Tooth 9 (21)")
             row = col.row()
             linha=row.operator("object.tooth_3_pt", text="Tooth 3 (16)")
-            row = col.row()
             linha=row.operator("object.tooth_14_pt", text="Tooth 14 (26)")
             row = col.row()
             row.scale_y=1.0
@@ -1633,9 +1621,7 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
             col = box.column(align=True)
             row = col.row()
             linha=row.operator("object.s_pt", text="S point")
-            row = col.row()
             linha=row.operator("object.n_pt", text="N point")
-            row = col.row()
             linha=row.operator("object.a_pt", text="A point")
             row = col.row()
             row.scale_y=1.0
@@ -1654,9 +1640,7 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
             col = box.column(align=True)
             row = col.row()
             linha=row.operator("object.s_pt", text="S point")
-            row = col.row()
             linha=row.operator("object.n_pt", text="N point")
-            row = col.row()
             linha=row.operator("object.b_pt", text="B point")
             row = col.row()
             row.scale_y=1.0
@@ -1674,9 +1658,7 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
             col = box.column(align=True)
             row = col.row()
             linha=row.operator("object.a_pt", text="A point")
-            row = col.row()
             linha=row.operator("object.n_pt", text="N point")
-            row = col.row()
             linha=row.operator("object.b_pt", text="B point")
             row = col.row()
             row.scale_y=1.0
@@ -1692,9 +1674,7 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
             col = box.column(align=True)
             row = col.row()
             linha=row.operator("object.s_pt", text="S point")
-            row = col.row()
             linha=row.operator("object.n_pt", text="N point")
-            row = col.row()
             linha=row.operator("object.gn_pt", text="Gn point")
             row = col.row()
             row.scale_y=1.0
@@ -1709,9 +1689,7 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
             col = box.column(align=True)
             row = col.row()
             linha=row.operator("object.go_right_pt", text="Go right")
-            row = col.row()
             linha=row.operator("object.go_left_pt", text="Go left")
-            row = col.row()
             linha=row.operator("object.me_pt", text="Me point")
             row = col.row()
             row.scale_y=1.0
@@ -1727,13 +1705,10 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
             col = box.column(align=True)
             row = col.row()
             linha=row.operator("object.s_pt", text="S point")
-            row = col.row()
             linha=row.operator("object.n_pt", text="N point")
             row = col.row()
             linha=row.operator("object.go_right_pt", text="Go right")
-            row = col.row()
             linha=row.operator("object.go_left_pt", text="Go left")
-            row = col.row()
             linha=row.operator("object.gn_pt", text="Gn point")
             row = col.row()
             row.scale_y=1.0
@@ -2167,29 +2142,17 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
 
             row = layout.row()
             linha=row.operator("object.orbital_right_pt", text="Orbital right")
-
-            row = layout.row()
             linha=row.operator("object.orbital_left_pt", text="Orbital left")
-
-            row = layout.row()
             linha=row.operator("object.a_pt", text="A point")
 
             row = layout.row()
             linha=row.operator("object.tooth_30_pt", text="Tooth 30 (46)")
-
-            row = layout.row()
             linha=row.operator("object.go_right_pt", text="Go right")
-
-            row = layout.row()
             linha=row.operator("object.tooth_19_pt", text="Tooth 19 (36)")
 
             row = layout.row()
             linha=row.operator("object.go_left_pt", text="Go left")
-
-            row = layout.row()
             linha=row.operator("object.b_pt", text="B point")
-
-            row = layout.row()
             linha=row.operator("object.me_pt", text="Me point")
 
             row = layout.row()
@@ -2607,6 +2570,36 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
         row = layout.row()
         row = layout.row()
         circle=row.operator("object.booleana_union_multipla", text="MULTIPLE UNION", icon="STICKY_UVS_LOC")
+
+        row = layout.row()
+        row.label(text="Teeth Points:")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_8_pt", text="Tooth 8 (11)")
+        linha=row.operator("object.tooth_9_pt", text="Tooth 9 (21)")
+        row = layout.row()
+        linha=row.operator("object.tooth_6_pt", text="Tooth 6 (13)")
+        linha=row.operator("object.tooth_11_pt", text="Tooth 11 (23)")
+        row = layout.row()
+        linha=row.operator("object.tooth_3_pt", text="Tooth 3 (16)")
+        linha=row.operator("object.tooth_14_pt", text="Tooth 14 (26)")
+
+        row = layout.row()
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.tooth_24_pt", text="Tooth 24 (31)")
+        linha=row.operator("object.tooth_25_pt", text="Tooth 25 (41)")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_22_pt", text="Tooth 22 (33)")
+        linha=row.operator("object.tooth_27_pt", text="Tooth 27 (43)")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_19_pt", text="Tooth 19 (36)")
+        linha=row.operator("object.tooth_30_pt", text="Tooth 30 (46)")
+
+        row = layout.row()
+        circle=row.operator("object.parenteia_emp", text="Parent Points", icon="LINKED")
 
         row = layout.row()
         row.label(text="Splint:")

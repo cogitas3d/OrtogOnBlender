@@ -62,11 +62,89 @@ class CalculaTudoUSP(bpy.types.Operator):
         bpy.ops.object.calcula_plano_oclusal_classico()
         CalculaSNADef()
         CalculaSNBDef()
+        CalculaANBDef()
         CalculaPlanoMandibularDef()
         CalculaSNGoGnDef()
+        CalculaSNGnDef()
         return {'FINISHED'}
 
 bpy.utils.register_class(CalculaTudoUSP)
+
+def CalculaSNGnDef():
+
+    FoundA = 'S point' in bpy.data.objects
+    FoundN = 'N point' in bpy.data.objects
+    FoundB = 'Gn point' in bpy.data.objects
+
+    context = bpy.context
+    objInicial = context.object
+
+    CursorInicial = []
+
+    for i in bpy.context.scene.cursor.location:
+        CursorInicial.append(i)
+
+    if FoundA == True and FoundN == True and FoundB == True:
+        print("SNGn - Todos os pontos anatômicos presentes!")
+
+        CursorToSelectedObj("S point")
+        Cursor_S = bpy.context.scene.cursor.location
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "PontoS"
+        bpy.context.object.location[0] = 0
+
+
+        CursorToSelectedObj("N point")
+        Cursor_S = bpy.context.scene.cursor.location
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "PontoN"
+        bpy.context.object.location[0] = 0
+
+
+        CursorToSelectedObj("Gn point")
+        Cursor_S = bpy.context.scene.cursor.location
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "PontoGn"
+        bpy.context.object.location[0] = 0
+
+        bpy.data.objects["PontoS"].location[0] = 0
+        bpy.data.objects["PontoN"].location[0] = 0
+        bpy.data.objects["PontoGn"].location[0] = 0
+
+        AnguloSNGn = CalculaAngulo("PontoN", "PontoS", "PontoGn")
+        print("Ângulo SNGn:", AnguloSNGn)
+
+        bpy.types.Scene.angulo_sngn = bpy.props.StringProperty \
+            (
+                name = "SNGn Angle",
+                description = "SNGn Angle",
+                default = str(AnguloSNGn)
+            )
+
+        ApagarObjeto("PontoS")
+        ApagarObjeto("PontoN")
+        ApagarObjeto("PontoGn")
+
+        context.scene.cursor.location = CursorInicial
+
+        if objInicial != None:
+            bpy.ops.object.select_all(action='DESELECT')
+            objInicial.select_set(True)
+            context.view_layer.objects.active = objInicial
+
+        return str(AnguloSNGn)
+
+    else:
+        bpy.types.Scene.angulo_sngn = bpy.props.StringProperty \
+            (
+                name = "SNGn Angle",
+                description = "SNGn Angle",
+                default = "NONE"
+            )
+        print("Falta algum ponto anatômico (SNGn)!")
 
 def CalculaSNGoGnDef():
 
@@ -75,6 +153,15 @@ def CalculaSNGoGnDef():
     FoundGoright = 'Go right' in bpy.data.objects
     FoundGoleft = 'Go left' in bpy.data.objects
     FoundGnpoint = 'Gn point' in bpy.data.objects
+
+    context = bpy.context
+    objInicial = context.object
+
+    CursorInicial = []
+
+    for i in bpy.context.scene.cursor.location:
+        CursorInicial.append(i)
+
 
     if FoundS == True and FoundN == True and FoundGoright == True and FoundGoleft == True and FoundGnpoint == True:
         print("Todos os pontos anatômicos presentes!")
@@ -158,6 +245,13 @@ def CalculaSNGoGnDef():
         ApagarObjeto("PontoGn")
         ApagarObjeto("ProjSNGoGn")
 
+        context.scene.cursor.location = CursorInicial
+
+        if objInicial != None:
+            bpy.ops.object.select_all(action='DESELECT')
+            objInicial.select_set(True)
+            context.view_layer.objects.active = objInicial
+
         return str(AnguloSNGoGn)
 
     else:
@@ -175,6 +269,15 @@ def CalculaPlanoMaxilaClassicoDef():
     FoundT14 = 'Tooth 14' in bpy.data.objects
     FoundT8 = 'Tooth 8' in bpy.data.objects
     FoundT9 = 'Tooth 9' in bpy.data.objects
+
+    context = bpy.context
+    objInicial = context.object
+
+    CursorInicial = []
+
+    for i in bpy.context.scene.cursor.location:
+        CursorInicial.append(i)
+
 
     if FoundT3 == True and FoundT14 == True and FoundT8 == True and FoundT9 == True:
         print("Todos os pontos anatômicos presentes!")
@@ -225,6 +328,12 @@ def CalculaPlanoMaxilaClassicoDef():
         ApagarObjeto("1626")
         ApagarObjeto("Inter_1626_1121")
 
+        context.scene.cursor.location = CursorInicial
+
+        if objInicial != None:
+            bpy.ops.object.select_all(action='DESELECT')
+            objInicial.select_set(True)
+            context.view_layer.objects.active = objInicial
 
         return str(AnguloOcluMaxClass)
 
@@ -237,6 +346,15 @@ def CalculaPlanoMandibularDef():
     FoundGoleft = 'Go left' in bpy.data.objects
     FoundGoright = 'Go right' in bpy.data.objects
     FoundMepoint = 'Me point' in bpy.data.objects
+
+    context = bpy.context
+    objInicial = context.object
+
+    CursorInicial = []
+
+    for i in bpy.context.scene.cursor.location:
+        CursorInicial.append(i)
+
 
     if FoundGoleft == True and FoundGoright == True and FoundMepoint == True:
         print("Todos os pontos anatômicos presentes!")
@@ -284,12 +402,93 @@ def CalculaPlanoMandibularDef():
         ApagarObjeto("Mepoint")
         ApagarObjeto("Inter_Gonios_Me")
 
+        context.scene.cursor.location = CursorInicial
+
+        if objInicial != None:
+            bpy.ops.object.select_all(action='DESELECT')
+            objInicial.select_set(True)
+            context.view_layer.objects.active = objInicial
 
         return str(AnguloOcluMandUsp)
 
     else:
         print("Falta algum ponto anatômico na mandíbula!")
 
+def CalculaANBDef():
+
+    FoundA = 'A point' in bpy.data.objects
+    FoundN = 'N point' in bpy.data.objects
+    FoundB = 'B point' in bpy.data.objects
+
+    context = bpy.context
+    objInicial = context.object
+
+    CursorInicial = []
+
+    for i in bpy.context.scene.cursor.location:
+        CursorInicial.append(i)
+
+    if FoundA == True and FoundN == True and FoundB == True:
+        print("SNA - Todos os pontos anatômicos presentes!")
+
+        CursorToSelectedObj("A point")
+        Cursor_S = bpy.context.scene.cursor.location
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "PontoA"
+        bpy.context.object.location[0] = 0
+
+
+        CursorToSelectedObj("N point")
+        Cursor_S = bpy.context.scene.cursor.location
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "PontoN"
+        bpy.context.object.location[0] = 0
+
+
+        CursorToSelectedObj("B point")
+        Cursor_S = bpy.context.scene.cursor.location
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+        bpy.context.object.name = "PontoB"
+        bpy.context.object.location[0] = 0
+
+        bpy.data.objects["PontoA"].location[0] = 0
+        bpy.data.objects["PontoN"].location[0] = 0
+        bpy.data.objects["PontoB"].location[0] = 0
+
+        AnguloANB = CalculaAngulo("PontoA", "PontoN", "PontoB")
+        print("Ângulo ANB:", AnguloANB)
+
+        bpy.types.Scene.angulo_anb = bpy.props.StringProperty \
+            (
+                name = "ANB Angle",
+                description = "ANB Angle",
+                default = str(AnguloANB)
+            )
+
+        ApagarObjeto("PontoA")
+        ApagarObjeto("PontoN")
+        ApagarObjeto("PontoB")
+
+        context.scene.cursor.location = CursorInicial
+
+        if objInicial != None:
+            bpy.ops.object.select_all(action='DESELECT')
+            objInicial.select_set(True)
+            context.view_layer.objects.active = objInicial
+
+        return str(AnguloANB)
+
+    else:
+        bpy.types.Scene.angulo_anb = bpy.props.StringProperty \
+            (
+                name = "ANB Angle",
+                description = "ANB Angle",
+                default = "NONE"
+            )
+        print("Falta algum ponto anatômico (ANB)!")
 
 def CalculaSNADef():
 
@@ -297,8 +496,17 @@ def CalculaSNADef():
     FoundN = 'N point' in bpy.data.objects
     FoundA = 'A point' in bpy.data.objects
 
+    context = bpy.context
+    objInicial = context.object
+
+    CursorInicial = []
+
+    for i in bpy.context.scene.cursor.location:
+        CursorInicial.append(i)
+
+
     if FoundS == True and FoundN == True and FoundA == True:
-        print("Todos os pontos anatômicos presentes!")
+        print("SNA - Todos os pontos anatômicos presentes!")
 
         CursorToSelectedObj("S point")
         Cursor_S = bpy.context.scene.cursor.location
@@ -328,6 +536,7 @@ def CalculaSNADef():
         bpy.data.objects["PontoA"].location[0] = 0
 
         AnguloSNA = CalculaAngulo("PontoS", "PontoN", "PontoA")
+        print("Ângulo SNA:", AnguloSNA)
 
         bpy.types.Scene.angulo_sna = bpy.props.StringProperty \
             (
@@ -339,6 +548,14 @@ def CalculaSNADef():
         ApagarObjeto("PontoS")
         ApagarObjeto("PontoN")
         ApagarObjeto("PontoA")
+
+        context.scene.cursor.location = CursorInicial
+
+        if objInicial != None:
+            bpy.ops.object.select_all(action='DESELECT')
+            objInicial.select_set(True)
+            context.view_layer.objects.active = objInicial
+
 
         return str(AnguloSNA)
 
@@ -358,8 +575,17 @@ def CalculaSNBDef():
     FoundN = 'N point' in bpy.data.objects
     FoundB = 'B point' in bpy.data.objects
 
+    context = bpy.context
+    objInicial = context.object
+
+    CursorInicial = []
+
+    for i in bpy.context.scene.cursor.location:
+        CursorInicial.append(i)
+
+
     if FoundS == True and FoundN == True and FoundB == True:
-        print("Todos os pontos anatômicos presentes!")
+        print("SNB - Todos os pontos anatômicos presentes!")
 
         CursorToSelectedObj("S point")
         Cursor_S = bpy.context.scene.cursor.location
@@ -389,6 +615,7 @@ def CalculaSNBDef():
         bpy.data.objects["PontoB"].location[0] = 0
 
         AnguloSNB = CalculaAngulo("PontoS", "PontoN", "PontoB")
+        print("Ângulo SNB:", AnguloSNB)
 
         bpy.types.Scene.angulo_snb = bpy.props.StringProperty \
             (
@@ -400,6 +627,13 @@ def CalculaSNBDef():
         ApagarObjeto("PontoS")
         ApagarObjeto("PontoN")
         ApagarObjeto("PontoB")
+
+        context.scene.cursor.location = CursorInicial
+
+        if objInicial != None:
+            bpy.ops.object.select_all(action='DESELECT')
+            objInicial.select_set(True)
+            context.view_layer.objects.active = objInicial
 
         return str(AnguloSNB)
 
@@ -430,6 +664,15 @@ def CalculaAnguloOclusao():
     found_U6_Oc = 'U6 Occlusal' in bpy.data.objects
     found_U1_Tp = 'U1 Tip' in bpy.data.objects
 
+    context = bpy.context
+    objInicial = context.object
+
+    CursorInicial = []
+
+    for i in bpy.context.scene.cursor.location:
+        CursorInicial.append(i)
+
+
     if found_U6_Oc == True and found_U1_Tp == True:
         print("U6 Occlusal e U1 Tip presentes!")
 
@@ -459,6 +702,13 @@ def CalculaAnguloOclusao():
             description = "Maxillary Occlusal Plane",
             default = str(GrauOclusao)+"º"
         )
+
+        context.scene.cursor.location = CursorInicial
+
+        if objInicial != None:
+            bpy.ops.object.select_all(action='DESELECT')
+            objInicial.select_set(True)
+            context.view_layer.objects.active = objInicial
 
         return str(GrauOclusao)+"º"
 
