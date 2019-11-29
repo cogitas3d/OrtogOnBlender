@@ -61,7 +61,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191128b"
+VERSION = "20191128c"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -2572,6 +2572,36 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
         circle=row.operator("object.booleana_union_multipla", text="MULTIPLE UNION", icon="STICKY_UVS_LOC")
 
         row = layout.row()
+        row = layout.row()
+        row.label(text="Boolean Segmentation:")
+
+        row = layout.row()
+#        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+        row.operator("object.linha_corte_fora_a_fora", icon='LINE_DATA', text="Draw Line")
+
+        row = layout.row()
+        row = layout.row()
+        circle=row.operator("object.desenha_booleana_dentro", text="Subtract IN", icon="LIGHTPROBE_CUBEMAP")
+
+        row = layout.row()
+        circle=row.operator("object.desenha_booleana_fora", text="Subtract OUT", icon="MESH_CUBE")
+
+        row = layout.row()
+        row.label(text="Sculpture:")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_escultura_grab", text="Grab", icon="BRUSH_GRAB")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_escultura_smooth", text="Smooth", icon="BRUSH_SMOOTH")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_escultura_clay_strips", text="Clay Strips", icon="BRUSH_CLAY_STRIPS")
+
+        row = layout.row()
+        linha=row.operator("object.mode_set", text="OK! (Object Mode)", icon="META_CUBE").mode='OBJECT'
+
+        row = layout.row()
         row.label(text="Teeth Points:")
 
         row = layout.row()
@@ -2607,11 +2637,11 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
         row = layout.row()
         row.operator("object.cria_splint", text="Create Splint", icon="OUTLINER_OB_CURVE")
 
-        row = layout.row()
-        row.operator("object.duplica_max_mand", text="Prepares Maxilla & Mandible", icon="SHADERFX")
+#        row = layout.row()
+#        row.operator("object.duplica_max_mand", text="Prepares Maxilla & Mandible", icon="SHADERFX")
 
         row = layout.row()
-        circle=row.operator("object.booleana_osteo_geral", text="Boolean Difference", icon="MOD_BOOLEAN")
+        circle=row.operator("object.boolean_splint", text="Boolean Difference", icon="MOD_BOOLEAN")
 
         row = layout.row()
         row.operator("object.visualiza_max_mand", text="View Maxilla & Mandible", icon="VISIBLE_IPO_ON")

@@ -401,8 +401,11 @@ bpy.utils.register_class(DuplicaMaxMand)
 
 def VisualizaMaxMandDef():
 
+    if bpy.data.objects.get("Splint_result") is not None:
+        bpy.data.objects['Splint_result'].name = "SPLINT_ready"
+
     if bpy.data.objects.get("SPLINT_pronto") is not None:
-        bpy.data.objects['SPLINT_pronto'].name = "SPLINT_ready"
+        bpy.data.objects['SPLINT_pronto'].name = "SPLINT_del"
 
     if bpy.data.objects.get("MaxillaMand") is not None:
         bpy.data.objects['MaxillaMand'].name = "Deletar"
@@ -422,3 +425,36 @@ class VisualizaMaxMand(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(VisualizaMaxMand)
+
+
+def BooleanSplintDef():
+
+    bpy.data.objects['MaxillaMand'].select_set(True)
+    bpy.data.objects['SPLINT_pronto'].select_set(True)
+    bpy.context.view_layer.objects.active = bpy.data.objects['MaxillaMand']
+    bpy.ops.object.booleana_osteo_geral()
+    bpy.context.object.name = "Splint_result"
+
+class BooleanSplint(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.boolean_splint"
+    bl_label = "Boolean Splint"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Splint_result' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        bpy.ops.object.duplica_max_mand()
+        BooleanSplintDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(BooleanSplint)
