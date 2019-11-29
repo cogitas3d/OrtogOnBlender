@@ -446,6 +446,9 @@ def FinalizaColisaoMaxMandDef():
     context = bpy.context
     scn = context.scene
 
+    bpy.context.scene.frame_end = 100
+    bpy.context.scene.frame_current = 100
+
 #    bpy.ops.screen.animation_cancel(restore_frame=True)
 
 #    bpy.ops.screen.animation_cancel()
