@@ -2563,3 +2563,21 @@ class OcultaPontosAnatomicos(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(OcultaPontosAnatomicos)
+
+def MostraPontosAnatomicosDef():
+    for i in bpy.data.collections:
+        if fnmatch.fnmatchcase(i.name, "Anatomical Points*"):
+            bpy.data.collections[i.name].hide_viewport=False
+
+
+class MostraPontosAnatomicos(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.mostra_pontos_anatomicos"
+    bl_label = "Show Anatomical Points"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        MostraPontosAnatomicosDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(MostraPontosAnatomicos)

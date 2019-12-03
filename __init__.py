@@ -61,7 +61,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191129a"
+VERSION = "20191203a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -373,10 +373,6 @@ class ORTOG_OT_GeraModelosTomoArc(bpy.types.Operator):
         return {'FINISHED'}
 
 
-class ENUM_VALUES_ARCHSCOLLISION:
-    DEFAULT = 'Default'
-    INVERTED = 'Inverted'
-
 class ORTOG_PT_ImportaArc(bpy.types.Panel):
     bl_label = "Import Archs"
     bl_region_type = 'UI'
@@ -430,49 +426,6 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
-        row.label(text="Archs Collision:")
-
-# ----------------------
-
-        row = layout.row()
-        row.prop(scn, "my_enum_archscollision")
-
-        my_enum_ct = scn.my_enum_archscollision
-
-        if my_enum_ct == ENUM_VALUES_ARCHSCOLLISION.DEFAULT:
-
-            row = layout.row()
-            linha=row.operator("object.colisao_arcos", text="Solve Collision Default", icon="STYLUS_PRESSURE")
-
-            row = layout.row()
-            row = layout.row()
-            linha=row.operator("object.aplica_anima_cor", text="Contact Color", icon="COLORSET_01_VEC")
-
-            row = layout.row()
-            row.label(text="Press ESC to enable Apply!")
-
-            row = layout.row()
-            linha=row.operator("object.trava_arco", text="Apply!", icon="FREEZE")
-
-
-        if my_enum_ct == ENUM_VALUES_ARCHSCOLLISION.INVERTED:
-
-            row = layout.row()
-            linha=row.operator("object.colisao_arcos_inverso", text="Solve Collision Inverted", icon="STYLUS_PRESSURE")
-
-            row = layout.row()
-            row = layout.row()
-            linha=row.operator("object.aplica_anima_cor", text="Contact Color", icon="COLORSET_01_VEC")
-
-            row = layout.row()
-            row.label(text="Press ESC to enable Apply!")
-
-            row = layout.row()
-            linha=row.operator("object.trava_arco", text="Apply!", icon="FREEZE")
-
-# ----------------------
-
-        row = layout.row()
         row = layout.row()
         row.label(text="Alignment:")
 
@@ -514,28 +467,28 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
 
         row = layout.row()
         row = layout.row()
-        row.label(text="Boolean Segmentation:")
+        row.label(text="Segmentation:")
 
         row = layout.row()
         row.operator("object.prepara_impressao_3d", text="Close Holes (Remesh)?", icon="META_CUBE")
 
         row = layout.row()
+        row = layout.row()
+        row = layout.row()
 #        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
         row.operator("object.linha_corte_fora_a_fora", icon='LINE_DATA', text="Draw Line")
 
-        row = layout.row()
+
         row = layout.row()
         circle=row.operator("object.desenha_booleana_dentro", text="Subtract IN", icon="LIGHTPROBE_CUBEMAP")
 
         row = layout.row()
         circle=row.operator("object.desenha_booleana_fora", text="Subtract OUT", icon="MESH_CUBE")
 
-        row = layout.row()
-        row = layout.row()
-        circle=row.operator("object.booleana_union_multipla", text="MULTIPLE UNION", icon="STICKY_UVS_LOC")
 
         row = layout.row()
-        row.label(text="Segmentation and Boolean:")
+        row = layout.row()
+        linha=row.operator("object.entra_editmode_limpo", text="Edit Mode Clean", icon="UV_VERTEXSEL")
 
         row = layout.row()
         linha=row.operator("mesh.select_more", text="Sel. More", icon="ADD")
@@ -548,6 +501,29 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
         row = layout.row()
         row = layout.row()
         circle=row.operator("object.booleana_osteo_union", text="Union", icon="MOD_CAST")
+
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+        
+        row = layout.row()
+        row.label(text="Pivot Rotation:")
+
+
+        obj = context.active_object
+        tool_settings = context.tool_settings
+
+        object_mode = 'OBJECT' if obj is None else obj.mode
+
+        if object_mode in {'OBJECT', 'EDIT', 'EDIT_GPENCIL', 'SCULPT_GPENCIL'} or has_pose_mode:
+            layout.prop_with_popover(
+                tool_settings,
+                "transform_pivot_point",
+                text="",
+                icon_only=False,
+                panel="VIEW3D_PT_pivot_point",
+            )
 
 
         row = layout.row()
@@ -592,6 +568,9 @@ class ORTOG_PT_GraphicRefs(bpy.types.Panel):
         row.label(text="Frankfurt Alignment:")
 
         row = layout.row()
+        linha=row.operator("object.oculta_mole", text="Hide Face (CT-Scan)", icon="HIDE_ON")
+
+        row = layout.row()
         linha=row.operator("object.orbital_right_pt", text="Orbital right")
         linha=row.operator("object.orbital_left_pt", text="Orbital left")
 
@@ -620,6 +599,10 @@ class ORTOG_PT_GraphicRefs(bpy.types.Panel):
         linha=row.operator("mesh.add_linhabase", text="Horizontal Side Line", icon="FORWARD")
         linha.location=(200,30,0)
         linha.rotation=(1.5708,0,0)
+
+        row = layout.row()
+        row = layout.row()
+        circle=row.operator("object.oculta_pontos_anatomicos", text="Hide Anatomical Points", icon="GHOST_DISABLED")
 
         row = layout.row()
         row = layout.row()
@@ -808,6 +791,9 @@ class ORTOG_PT_Segmentation(bpy.types.Panel):
         linha=row.operator("object.segmenta_desenho", text="Cut Draw!", icon="FCURVE")
 
         row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.entra_editmode_limpo", text="Edit Mode Clean", icon="UV_VERTEXSEL")
+
         row = layout.row()
         linha=row.operator("mesh.select_more", text="Sel. More", icon="ADD")
 
@@ -1483,81 +1469,11 @@ class ORTOG_PT_PontosAnatomicos(bpy.types.Panel):
             row.alignment = 'CENTER'
             row.operator("object.gera_dir_nome_paciente_points_soft", text="SAVE!", icon="FILE_TICK")
 
-class ORTOG_PT_MeasuringTools(bpy.types.Panel):
-    bl_label = "Measuring Tools"
-    bl_region_type = 'UI'
-    bl_space_type = 'VIEW_3D'
-    bl_options = {'DEFAULT_CLOSED'}
-    bl_category = "Ortog"
-
-    def draw(self, context):
-        layout = self.layout
-
-        context = bpy.context
-        obj = context.object
-        scn = context.scene
+        row = layout.row()
+        circle=row.operator("object.oculta_pontos_anatomicos", text="Hide Anatomical Points", icon="GHOST_DISABLED")
 
         row = layout.row()
-        row.label(text="Mode:")
-
-        row = layout.row()
-        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
-        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
-
-        row = layout.row()
-        row.label(text="Reference Lines:")
-
-        row = layout.row()
-        linha=row.operator("mesh.add_linhabase", text="Vertical Center Line", icon="SORT_DESC")
-        linha.location=(0,-200,0)
-
-        row = layout.row()
-        linha=row.operator("mesh.add_linhabase", text="Horizontal Center Line", icon="FORWARD")
-        linha.location=(0,-200,0)
-        linha.rotation=(0,1.5708,0)
-
-        row = layout.row()
-        linha=row.operator("mesh.add_linhabase", text="Horizontal Side Line", icon="FORWARD")
-        linha.location=(200,30,0)
-        linha.rotation=(1.5708,0,0)
-
-        row = layout.row()
-        row = layout.row()
-        row.label(text="Upper Teeth:")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_8_pt", text="Tooth 8 (11)")
-        linha=row.operator("object.tooth_9_pt", text="Tooth 9 (21)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_6_pt", text="Tooth 6 (13)")
-        linha=row.operator("object.tooth_11_pt", text="Tooth 11 (23)")
-
-        row = layout.row()
-        linha=row.operator("object.tooth_3_pt", text="Tooth 3 (16)")
-        linha=row.operator("object.tooth_14_pt", text="Tooth 14 (26)")
-
-
-        row = layout.row()
-        row = layout.row()
-        row.label(text="Vertical Measurements:")
-
-        row = layout.row()
-        row.operator("object.medverhor_dentes", text="Create Vertical Measurements", icon="DRIVER_DISTANCE")
-
-        row = layout.row()
-        row.operator("measureit.runopengl", text="Show/Hide Measurements", icon="GHOST_ENABLED")
-
-        row = layout.row()
-        row = layout.row()
-        row.operator("object.apaga_pontos_objetos", text="Delete Measure", icon="CANCEL")
-
-       	row = layout.row()
-        row = layout.row()
-        row.label(text="Parent Points:")
-
-        row = layout.row()
-        circle=row.operator("object.parenteia_emp", text="Parent Points", icon="LINKED")
+        circle=row.operator("object.mostra_pontos_anatomicos", text="Show Anatomical Points", icon="GHOST_ENABLED")
 
 class ENUM_VALUES_CEFALOMETRIA:
     USP = 'USP'
@@ -1594,6 +1510,9 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
         if my_enum_cefalometria == ENUM_VALUES_CEFALOMETRIA.USP:
 
             # Plano oclusal maxila
+
+            row = layout.row()
+            circle=row.operator("object.mostra_pontos_anatomicos", text="Show Anatomical Points", icon="GHOST_ENABLED")
 
             row = layout.row()
             row.operator("object.calcula_tudo_usp", text="Calculate!!!", icon="PREFERENCES")
@@ -2225,7 +2144,7 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
         row = layout.row()
         row = layout.row()
         row = layout.row()
-        circle=row.operator("object.oculta_pontos_anatomicos", text="Hide Anatomical Points", icon="GHOST_ENABLED")
+        circle=row.operator("object.oculta_pontos_anatomicos", text="Hide Anatomical Points", icon="GHOST_DISABLED")
 
         row = layout.row()
         row = layout.row()
@@ -2235,6 +2154,10 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
         row.scale_y=1.5
         row.alignment = 'CENTER'
         row.operator("object.gera_dir_nome_paciente_osteotomy", text="SAVE!", icon="FILE_TICK")
+
+
+
+
 
 class ENUM_VALUES_DYNAMIC:
     DEFAULT = 'Default'
@@ -2367,6 +2290,78 @@ class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
         linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
+        row = layout.row()
+        row.label(text="Pivot Rotation:")
+
+
+        obj = context.active_object
+        tool_settings = context.tool_settings
+
+        object_mode = 'OBJECT' if obj is None else obj.mode
+
+        if object_mode in {'OBJECT', 'EDIT', 'EDIT_GPENCIL', 'SCULPT_GPENCIL', 'WEIGHT_PAINT'} or has_pose_mode:
+            layout.prop_with_popover(
+                tool_settings,
+                "transform_pivot_point",
+                text="",
+                icon_only=False,
+                panel="VIEW3D_PT_pivot_point",
+            )
+
+        row = layout.row()
+        row.label(text="Reference Lines:")
+
+        row = layout.row()
+        linha=row.operator("mesh.add_linhabase", text="Vertical Center Line", icon="SORT_DESC")
+        linha.location=(0,-200,0)
+
+        row = layout.row()
+        linha=row.operator("mesh.add_linhabase", text="Horizontal Center Line", icon="FORWARD")
+        linha.location=(0,-200,0)
+        linha.rotation=(0,1.5708,0)
+
+        row = layout.row()
+        linha=row.operator("mesh.add_linhabase", text="Horizontal Side Line", icon="FORWARD")
+        linha.location=(200,30,0)
+        linha.rotation=(1.5708,0,0)
+
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Upper Teeth:")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_8_pt", text="Tooth 8 (11)")
+        linha=row.operator("object.tooth_9_pt", text="Tooth 9 (21)")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_6_pt", text="Tooth 6 (13)")
+        linha=row.operator("object.tooth_11_pt", text="Tooth 11 (23)")
+
+        row = layout.row()
+        linha=row.operator("object.tooth_3_pt", text="Tooth 3 (16)")
+        linha=row.operator("object.tooth_14_pt", text="Tooth 14 (26)")
+
+
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Vertical Measurements:")
+
+        row = layout.row()
+        row.operator("object.medverhor_dentes", text="Create Vertical Measurements", icon="DRIVER_DISTANCE")
+
+        row = layout.row()
+        row.operator("measureit.runopengl", text="Show/Hide Measurements", icon="GHOST_ENABLED")
+
+        row = layout.row()
+        row = layout.row()
+        row.operator("object.apaga_pontos_objetos", text="Delete Measure", icon="CANCEL")
+
+       	row = layout.row()
+        row = layout.row()
+        row.label(text="Parent Points:")
+
+        row = layout.row()
+        circle=row.operator("object.parenteia_emp", text="Parent Points", icon="LINKED")
 
 #        row = layout.row()
 #        row.operator("object.transforms_to_deltas", text="PUT Loc/Rot/Scale TO ZERO", icon="EMPTY_AXIS").mode='ALL'
@@ -2386,24 +2381,6 @@ class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
             layout.prop(cursor, "rotation_mode", text="")
         except:
             print("Selectione objeto!")
-
-        row = layout.row()
-        row.label(text="Pivot Rotation:")
-
-
-        obj = context.active_object
-        tool_settings = context.tool_settings
-
-        object_mode = 'OBJECT' if obj is None else obj.mode
-
-        if object_mode in {'OBJECT', 'EDIT', 'EDIT_GPENCIL', 'SCULPT_GPENCIL', 'WEIGHT_PAINT'} or has_pose_mode:
-            layout.prop_with_popover(
-                tool_settings,
-                "transform_pivot_point",
-                text="",
-                icon_only=False,
-                panel="VIEW3D_PT_pivot_point",
-            )
 
 #bpy.context.scene.tool_settings.transform_pivot_point = 'CURSOR'
 #bpy.context.scene.tool_settings.transform_pivot_point = 'MEDIAN_POINT'
@@ -2522,7 +2499,9 @@ class ORTOG_PT_FechaLabios(bpy.types.Panel):
                 row = layout.row()
                 linha=row.operator("object.mode_set", text="OK! (Object Mode)", icon="META_CUBE").mode='OBJECT'
 
-
+class ENUM_VALUES_ARCHSCOLLISION:
+    DEFAULT = 'Default'
+    INVERTED = 'Inverted'
 
 class ORTOG_PT_GuideCreation(bpy.types.Panel):
     bl_label = "Guide and Splint Creation"
@@ -2532,6 +2511,10 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
     bl_category = "Ortog"
 
     def draw(self, context):
+
+        context = bpy.context
+        scn = context.scene
+
         layout = self.layout
 
         row = layout.row()
@@ -2646,7 +2629,51 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
         row = layout.row()
         row.operator("object.visualiza_max_mand", text="View Maxilla & Mandible", icon="VISIBLE_IPO_ON")
 
+# ----------------------
+        row = layout.row()
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Collision Test:")
 
+        row = layout.row()
+        row.prop(scn, "my_enum_archscollision")
+
+        my_enum_ct = scn.my_enum_archscollision
+
+        if my_enum_ct == ENUM_VALUES_ARCHSCOLLISION.DEFAULT:
+
+            row = layout.row()
+            linha=row.operator("object.colisao_arcos", text="Solve Collision Default", icon="STYLUS_PRESSURE")
+
+            row = layout.row()
+            row = layout.row()
+            linha=row.operator("object.aplica_anima_cor", text="Contact Color", icon="COLORSET_01_VEC")
+
+            row = layout.row()
+            row.label(text="Press ESC to enable Apply!")
+
+            row = layout.row()
+            linha=row.operator("object.trava_arco", text="Apply!", icon="FREEZE")
+
+
+        if my_enum_ct == ENUM_VALUES_ARCHSCOLLISION.INVERTED:
+
+            row = layout.row()
+            linha=row.operator("object.colisao_arcos_inverso", text="Solve Collision Inverted", icon="STYLUS_PRESSURE")
+
+            row = layout.row()
+            row = layout.row()
+            linha=row.operator("object.aplica_anima_cor", text="Contact Color", icon="COLORSET_01_VEC")
+
+            row = layout.row()
+            row.label(text="Press ESC to enable Apply!")
+
+            row = layout.row()
+            linha=row.operator("object.trava_arco", text="Apply!", icon="FREEZE")
+
+# ----------------------
+        row = layout.row()
+        row = layout.row()
         row = layout.row()
         row = layout.row()
         row.operator("object.prepara_impressao_3d", text="Prepares 3D Printing", icon="META_CUBE")
@@ -2904,7 +2931,6 @@ def register():
             description = "Maxilla Occlusal",
             default = "NONE"
         )
-    bpy.utils.register_class(ORTOG_PT_MeasuringTools)
     bpy.types.Scene.my_enum_ana = bpy.props.EnumProperty(
         name="Select",
         description= "",
@@ -3088,7 +3114,6 @@ def unregister():
 #    bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosMandibula)
 #    bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosDentes)
 #    bpy.utils.unregister_class(ORTOG_PT_PontosAnatomicosMole)
-    bpy.utils.unregister_class(ORTOG_PT_MeasuringTools)
     bpy.utils.unregister_class(ORTOG_PT_Cefalometria)
     bpy.utils.unregister_class(ORTOG_PT_Osteotomia)
     del bpy.types.Scene.medida_real2

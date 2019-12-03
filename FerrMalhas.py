@@ -82,9 +82,24 @@ class CriaShapeKeys(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.cria_shape_keys"
     bl_label = "Cria ShapeKeys Def"
+    bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
         CriaShapeKeysDef()
         return {'FINISHED'}
 
 bpy.utils.register_class(CriaShapeKeys)
+
+
+class EntraEditModeLimpo(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.entra_editmode_limpo"
+    bl_label = "Cria ShapeKeys Def"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.select_all(action='DESELECT')
+        return {'FINISHED'}
+
+bpy.utils.register_class(EntraEditModeLimpo)

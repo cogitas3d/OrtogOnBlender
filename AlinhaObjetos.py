@@ -787,3 +787,16 @@ class AlinhaCranioFrankfurt(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(AlinhaCranioFrankfurt)
+
+
+class OcultaMole(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.oculta_mole"
+    bl_label = "Hide Face"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        bpy.data.objects['SoftTissue'].hide_viewport=True
+        return {'FINISHED'}
+
+bpy.utils.register_class(OcultaMole)
