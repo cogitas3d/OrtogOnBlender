@@ -247,7 +247,7 @@ def ReconTomo(pathdir, interes, saida, simplif):
 
         if platform.system() == "Darwin":
 
-            dicom2DtlPath = '/OrtogOnBlender/DicomToMeshMAC/dicom2mesh'
+            dicom2DtlPath = homeall+'/Programs/OrtogOnBlender/DicomToMeshMAC/dicom2mesh'
 
 
         subprocess.call([dicom2DtlPath, '-i',  pathdir, '-r', simplif, '-s', '-t', interes, '-o', tmpSTL])
@@ -1524,6 +1524,32 @@ def IdentificaTomografo(Arquivo):
         bpy.context.scene.interesse_dentes = "1430"
 
         bpy.ops.object.gera_modelos_tomo()
+
+    if ManufacturerLimpo == "'Xoran Technologies ®'" and StationNameLimpo == "'FNL-TOMO08'" and ManufacturerModelNameLimpo == "'17-19'":
+        print("SÉRIE 1")
+        print("Bone: 310")
+        print("SoftTissue: -540")
+        print("Teeth: 860")
+
+        os.chdir(scn.my_tool.path+"/1")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "310"
+        bpy.context.scene.interesse_mole = "-540"
+        bpy.context.scene.interesse_dentes = "860"
+
+        bpy.ops.object.gera_modelos_tomo()
+
 
     if ManufacturerLimpo == "'Xoran Technologies ®'" and StationNameLimpo == "'IMAGE-1856355FD'":
         print("SÉRIE 1")
