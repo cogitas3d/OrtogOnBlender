@@ -506,7 +506,7 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
-        
+
         row = layout.row()
         row.label(text="Pivot Rotation:")
 
@@ -1515,6 +1515,9 @@ class ORTOG_PT_Cefalometria(bpy.types.Panel):
             circle=row.operator("object.mostra_pontos_anatomicos", text="Show Anatomical Points", icon="GHOST_ENABLED")
 
             row = layout.row()
+            circle=row.operator("object.oculta_pontos_anatomicos", text="Hide Anatomical Points", icon="GHOST_DISABLED")
+
+            row = layout.row()
             row.operator("object.calcula_tudo_usp", text="Calculate!!!", icon="PREFERENCES")
 
 
@@ -2056,6 +2059,12 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
         if my_enum_ct == ENUM_VALUES_OSTEOTOMY.AUTO:
 
             row = layout.row()
+            circle=row.operator("object.mostra_pontos_anatomicos", text="Show Anatomical Points", icon="GHOST_ENABLED")
+
+            row = layout.row()
+            circle=row.operator("object.oculta_pontos_anatomicos", text="Hide Anatomical Points", icon="GHOST_DISABLED")
+
+            row = layout.row()
             linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
             linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
@@ -2077,6 +2086,25 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
             row = layout.row()
             row = layout.row()
             circle=row.operator("object.adiciona_planos_corte_auto", text="Create Cut Planes!", icon="AXIS_TOP")
+
+
+            row = layout.row()
+            row.label(text="Pivot:")
+
+
+            obj = context.active_object
+            tool_settings = context.tool_settings
+
+            object_mode = 'OBJECT' if obj is None else obj.mode
+
+            if object_mode in {'OBJECT', 'EDIT', 'EDIT_GPENCIL', 'SCULPT_GPENCIL', 'WEIGHT_PAINT'} or has_pose_mode:
+                layout.prop_with_popover(
+                    tool_settings,
+                    "transform_pivot_point",
+                    text="",
+                    icon_only=False,
+                    panel="VIEW3D_PT_pivot_point",
+                )
 
             row = layout.row()
             row = layout.row()
@@ -2140,11 +2168,6 @@ class ORTOG_PT_Osteotomia(bpy.types.Panel):
 
             row = layout.row()
             circle=row.operator("object.desenha_linha_vertex_fin", text="Cut Visible Line", icon="SCULPTMODE_HLT")
-
-        row = layout.row()
-        row = layout.row()
-        row = layout.row()
-        circle=row.operator("object.oculta_pontos_anatomicos", text="Hide Anatomical Points", icon="GHOST_DISABLED")
 
         row = layout.row()
         row = layout.row()
