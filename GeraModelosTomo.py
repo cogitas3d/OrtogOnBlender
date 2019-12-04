@@ -721,9 +721,56 @@ def IdentificaTomografo(Arquivo):
     if ManufacturerLimpo == "'PreXion'" and StationNameLimpo == "'CT-02'":
         print("SÉRIE 1000")
         print("Bone: 287")
-        print("SoftTissue: 724")
+        print("SoftTissue: -724")
         print("Teeth: 1807")
         print("Condylus: APENAS DENTES, ÁREA LIMITADA.")
+
+        os.chdir(scn.my_tool.path+"/1000")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "287"
+        bpy.context.scene.interesse_mole = "-724"
+        bpy.context.scene.interesse_dentes = "1807"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+
+    if ManufacturerLimpo == "'PreXion'" and StationNameLimpo == "'CT-01'" and ManufacturerModelNameLimpo == "'PreXion3D'":
+        print("SÉRIE 1000")
+        print("Bone: 340")
+        print("SoftTissue: -650")
+        print("Teeth: 1200")
+        print("Condylus: APENAS DENTES, ÁREA LIMITADA.")
+
+        os.chdir(scn.my_tool.path+"/1000")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "340"
+        bpy.context.scene.interesse_mole = "-650"
+        bpy.context.scene.interesse_dentes = "1200"
+
+        bpy.ops.object.gera_modelos_tomo()
+
 
     if ManufacturerLimpo == "'TOSHIBA'" and StationNameLimpo == "'Alexion 16'":
         print("USA FIXED!")
@@ -2946,6 +2993,11 @@ def GeraModeloTomoAutoDef(self, context):
 	    os.chdir(scn.my_tool.path+"/700")
     except:
         print("Dir 700 doesn't exist")
+
+    try:
+	    os.chdir(scn.my_tool.path+"/1000")
+    except:
+        print("Dir 1000 doesn't exist")
 
     try:
 	    os.chdir(scn.my_tool.path+"/1005")
