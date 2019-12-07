@@ -153,8 +153,6 @@ class RHIN_PT_AlinhaFace(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
-
-        row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
@@ -274,8 +272,6 @@ class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
-
-        row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
@@ -320,7 +316,7 @@ class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
         linha=row.operator("object.trichion_pt", text="Trichion")
 
         row = layout.row()
-        linha=row.operator("object.glabella_pt", text="ST Glabella")
+        linha=row.operator("object.st_glabella_pt", text="ST Glabella")
 
         row = layout.row()
         linha=row.operator("object.subnasale_pt", text="Subnasale")
@@ -368,6 +364,20 @@ class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
         circle=row.operator("object.parenteia_emp", text="Parent Points", icon="LINKED")
 
         row = layout.row()
+        circle=row.operator("object.oculta_pontos_anatomicos", text="Hide Anatomical Points", icon="GHOST_DISABLED")
+
+        row = layout.row()
+        circle=row.operator("object.mostra_pontos_anatomicos", text="Show Anatomical Points", icon="GHOST_ENABLED")
+
+
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.pontos_oculta_nomes", text="Hide Names", icon="GHOST_DISABLED")
+
+        row = layout.row()
+        linha=row.operator("object.pontos_mostra_nomes", text="Show Names", icon="GHOST_ENABLED")
+
+        row = layout.row()
         row = layout.row()
         box = layout.box()
         col = box.column(align=True)
@@ -392,6 +402,33 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+        row = layout.row()
+        row.label(text="Facial Analysis Points:")
+
+        row = layout.row()
+        linha=row.operator("object.medial_canthus_right_pt", text="Medial Canthus right")
+
+        row = layout.row()
+        linha=row.operator("object.medial_canthus_left_pt", text="Medial Canthus left")
+
+        row = layout.row()
+        linha=row.operator("object.trichion_pt", text="Trichion")
+
+        row = layout.row()
+        linha=row.operator("object.st_glabella_pt", text="ST Glabella")
+
+        row = layout.row()
+        linha=row.operator("object.subnasale_pt", text="Subnasale")
+
+        row = layout.row()
+        linha=row.operator("object.st_menton_pt", text="ST Menton")
+
+        row = layout.row()
+        row = layout.row()
+        row = layout.row()
         linha=row.operator("object.rhin_visualiza_gl", text="View Lines!", icon="HIDE_OFF")
 
         row = layout.row()
@@ -400,17 +437,29 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
 
         row = layout.row()
         row = layout.row()
-        linha=row.operator("object.rhin_mostra_oculta_pontos", text="Show/Hide Points", icon="GHOST_ENABLED")
+        circle=row.operator("object.oculta_pontos_anatomicos", text="Hide Anatomical Points", icon="GHOST_DISABLED")
+
+        row = layout.row()
+        circle=row.operator("object.mostra_pontos_anatomicos", text="Show Anatomical Points", icon="GHOST_ENABLED")
 
 
         row = layout.row()
         row = layout.row()
-        linha=row.operator("object.mostra_oculta_nomes", text="Show/Hide Anatomical Names", icon="GHOST_ENABLED")
+        linha=row.operator("object.pontos_oculta_nomes", text="Hide Names", icon="GHOST_DISABLED")
 
+        row = layout.row()
+        linha=row.operator("object.pontos_mostra_nomes", text="Show Names", icon="GHOST_ENABLED")
+
+        row = layout.row()
+        circle=row.operator("object.parenteia_emp", text="Parent Points", icon="LINKED")
 
         row = layout.row()
         row = layout.row()
         linha=row.operator("object.dist_nariz", text="CALC ALL!", icon="PREFERENCES")
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
         row.label(text="Results:")
@@ -418,8 +467,13 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         # Proporção do nariz
         row = layout.row()
         row = layout.row()
+
         box = layout.box()
         col = box.column(align=True)
+        row = col.row()
+        linha=row.operator("object.radix_pt", text="Radix")
+        linha=row.operator("object.tip_nose_pt", text="Tip of Nose")
+        linha=row.operator("object.subnasale_pt", text="Subnasale")
         row = col.row()
         row.scale_y=1.0
         row.alignment = 'RIGHT'
@@ -434,6 +488,9 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         box = layout.box()
         col = box.column(align=True)
         row = col.row()
+        linha=row.operator("object.anterior_nostril_left_pt", text="Ant. Nostril left")
+        linha=row.operator("object.posterior_nostril_left_pt", text="Post. Nostril left")
+        row = col.row()
         row.scale_y=1.0
         row.alignment = 'RIGHT'
         row.prop(context.scene, "rhin_angulo_nasolabial_esquerdo")
@@ -447,6 +504,9 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         box = layout.box()
         col = box.column(align=True)
         row = col.row()
+        linha=row.operator("object.anterior_nostril_right_pt", text="Ant. Nostril right")
+        linha=row.operator("object.posterior_nostril_right_pt", text="Post. Nostril right")
+        row = col.row()
         row.scale_y=1.0
         row.alignment = 'RIGHT'
         row.prop(context.scene, "rhin_angulo_nasolabial_direito")
@@ -459,6 +519,12 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         row = layout.row()
         box = layout.box()
         col = box.column(align=True)
+        row = col.row()
+        linha=row.operator("object.anterior_nostril_left_pt", text="Ant. Nostril left")
+        linha=row.operator("object.posterior_nostril_left_pt", text="Post. Nostril left")
+        row = col.row()
+        linha=row.operator("object.alar_rim_left_pt", text="Alar Rim left")
+        linha=row.operator("object.columella_left_pt", text="Columella left")
         row = col.row()
         row.scale_y=1.0
         row.alignment = 'RIGHT'
@@ -475,6 +541,12 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         row = layout.row()
         box = layout.box()
         col = box.column(align=True)
+        row = col.row()
+        linha=row.operator("object.anterior_nostril_right_pt", text="Ant. Nostril right")
+        linha=row.operator("object.posterior_nostril_right_pt", text="Post. Nostril right")
+        row = col.row()
+        linha=row.operator("object.alar_rim_right_pt", text="Alar Rim right")
+        linha=row.operator("object.columella_right_pt", text="Columella right")
         row = col.row()
         row.scale_y=1.0
         row.alignment = 'RIGHT'
@@ -513,30 +585,30 @@ bpy.types.Scene.rhin_angulo_nasolabial_direito = bpy.props.StringProperty \
 # Alar Rim - Columella left
 bpy.types.Scene.rhin_alar_rim_med_esquerdo = bpy.props.StringProperty \
     (
-        name = "Alar Rim - Nonstrill",
-        description = "Alar Rim - Nonstrill",
+        name = "Alar Rim - Nostril",
+        description = "Alar Rim - Nostril",
         default = "NONE"
     )
 
 bpy.types.Scene.rhin_columella_med_esquerdo = bpy.props.StringProperty \
     (
-        name = "Columella - Nonstrill",
-        description = "Columella - Nonstrill",
+        name = "Columella - Nostril",
+        description = "Columella - Nostril",
         default = "NONE"
     )
 
 # Alar Rim - Columella right
 bpy.types.Scene.rhin_alar_rim_med_direito = bpy.props.StringProperty \
     (
-        name = "Alar Rim - Nonstrill",
-        description = "Alar Rim - Nonstrill",
+        name = "Alar Rim - Nostril",
+        description = "Alar Rim - Nostril",
         default = "NONE"
     )
 
 bpy.types.Scene.rhin_columella_med_direito = bpy.props.StringProperty \
     (
-        name = "Columella - Nonstrill",
-        description = "Columella - Nonstrill",
+        name = "Columella - Nostril",
+        description = "Columella - Nostril",
         default = "NONE"
     )
 
@@ -636,9 +708,23 @@ class RHIN_PT_GuideCreation(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
-        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+        row = layout.row()
+        circle=row.operator("object.oculta_pontos_anatomicos", text="Hide Anatomical Points", icon="GHOST_DISABLED")
+
+        row = layout.row()
+        circle=row.operator("object.mostra_pontos_anatomicos", text="Show Anatomical Points", icon="GHOST_ENABLED")
+
+
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.pontos_oculta_nomes", text="Hide Names", icon="GHOST_DISABLED")
+
+        row = layout.row()
+        linha=row.operator("object.pontos_mostra_nomes", text="Show Names", icon="GHOST_ENABLED")
+
 
         row = layout.row()
         row.label(text="Anatomical Points")
@@ -647,7 +733,7 @@ class RHIN_PT_GuideCreation(bpy.types.Panel):
         linha=row.operator("object.supraglabella_pt", text="Supraglabella")
 
         row = layout.row()
-        linha=row.operator("object.glabella_pt", text="Glabella")
+        linha=row.operator("object.st_glabella_pt", text="ST Glabella")
 
         row = layout.row()
         linha=row.operator("object.radix_pt", text="Radix")

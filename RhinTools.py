@@ -682,28 +682,28 @@ def CalculaDistsNarizDef():
         AnteriorNostrilLeft = bpy.data.objects["Anterior Nostril left_COPY_MEDIDAS"].location[2]
         PosteriorNostrilLeft = bpy.data.objects["Posterior Nostril left_COPY_MEDIDAS"].location[2]
 
-        NonstrilLeftMedia = (AnteriorNostrilLeft + PosteriorNostrilLeft) / 2
+        NostrileftMedia = (AnteriorNostrilLeft + PosteriorNostrilLeft) / 2
 
         AlarRimLeft = bpy.data.objects["Alar Rim left_COPY_MEDIDAS"].location[2]
-        FatorAlarRimLeft = abs(AlarRimLeft - NonstrilLeftMedia)
+        FatorAlarRimLeft = abs(AlarRimLeft - NostrileftMedia)
 
 
         bpy.types.Scene.rhin_alar_rim_med_esquerdo = bpy.props.StringProperty \
             (
-                name = "Alar Rim - Nonstrill",
-                description = "Alar Rim - Nonstrill",
+                name = "Alar Rim - Nostril",
+                description = "Alar Rim - Nostril",
                 default = str(round(FatorAlarRimLeft, 2))
             )
 
 
         ColumellaLeft = bpy.data.objects["Columella left_COPY_MEDIDAS"].location[2]
-        FatorColumellaLeft = abs(ColumellaLeft - NonstrilLeftMedia)
+        FatorColumellaLeft = abs(ColumellaLeft - NostrileftMedia)
         print("FatoColumellaLeft:", FatorColumellaLeft)
 
         bpy.types.Scene.rhin_columella_med_esquerdo = bpy.props.StringProperty \
             (
-                name = "Columella - Nonstrill",
-                description = "Columella - Nonstrill",
+                name = "Columella - Nostril",
+                description = "Columella - Nostril",
                 default = str(round(FatorColumellaLeft, 2))
             )
 
@@ -728,8 +728,8 @@ def CalculaDistsNarizDef():
 
         bpy.types.Scene.rhin_alar_rim_med_direito = bpy.props.StringProperty \
             (
-                name = "Alar Rim - Nonstrill",
-                description = "Alar Rim - Nonstrill",
+                name = "Alar Rim - Nostril",
+                description = "Alar Rim - Nostril",
                 default = str(round(FatorAlarRimRight, 2))
             )
 
@@ -740,8 +740,8 @@ def CalculaDistsNarizDef():
 
         bpy.types.Scene.rhin_columella_med_direito = bpy.props.StringProperty \
             (
-                name = "Columella - Nonstrill",
-                description = "Columella - Nonstrill",
+                name = "Columella - Nostril",
+                description = "Columella - Nostril",
                 default = str(round(FatorColumellaRight, 2))
             )
 
@@ -831,7 +831,7 @@ def GeraGuiaNarizDef():
 
     Rosto = bpy.data.objects["SoftTissueDynamic"]
 
-    Pontos = ['Supraglabella', 'Glabella', 'Radix', 'Rhinion', 'Supratip', 'Tip of Nose', 'Columella', 'Subnasale', 'Upper Lip']
+    Pontos = ['Supraglabella', 'ST Glabella', 'Radix', 'Rhinion', 'Supratip', 'Tip of Nose', 'Columella', 'Subnasale', 'Upper Lip']
 
     coords = []
 
@@ -932,6 +932,12 @@ def GeraGuiaNarizDef():
     bpy.context.view_layer.objects.active = bpy.data.objects[NomeFaceNova]
 
     bpy.ops.object.booleana_osteo_geral()
+
+    bpy.ops.object.modifier_add(type='REMESH')
+    bpy.context.object.modifiers["Remesh"].mode = 'SMOOTH'
+    bpy.context.object.modifiers["Remesh"].octree_depth = 8
+    bpy.context.object.modifiers["Remesh"].scale = 0.99
+    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Remesh")
 
 
 
