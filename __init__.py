@@ -61,7 +61,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191207a"
+VERSION = "20191208a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -2695,9 +2695,12 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
             linha=row.operator("object.trava_arco", text="Apply!", icon="FREEZE")
 
 # ----------------------
+
+
         row = layout.row()
         row = layout.row()
-        row = layout.row()
+        row.label(text="Finishing")
+
         row = layout.row()
         row.operator("object.prepara_impressao_3d", text="Prepares 3D Printing", icon="META_CUBE")
 
