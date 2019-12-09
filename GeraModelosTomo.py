@@ -3145,9 +3145,9 @@ def DesagrupaTomoDef(self, context):
 
         bpy.ops.object.select_all(action='DESELECT')
 
-        a.hide_set(False)
-        b.hide_set(False)
-        c.hide_set(False)
+        bpy.data.objects['SoftTissue'].hide_viewport = False
+        bpy.data.objects['Bones'].hide_viewport = False
+        bpy.data.objects['Teeth'].hide_viewport = False
 
         a.select_set(True)
         b.select_set(True)
@@ -3159,9 +3159,6 @@ def DesagrupaTomoDef(self, context):
 
         bpy.ops.object.select_all(action='DESELECT')
 
-        bpy.data.objects['SoftTissue'].hide_viewport = False
-        bpy.data.objects['Bones'].hide_viewport = False
-        bpy.data.objects['Teeth'].hide_viewport = False
     else:
         bpy.ops.object.dialog_operator_falta_objeto('INVOKE_DEFAULT')
         #return {'FINISHED'}
