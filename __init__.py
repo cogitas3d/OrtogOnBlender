@@ -61,7 +61,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191209b"
+VERSION = "20191210a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -2609,6 +2609,12 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
 
         row = layout.row()
         row.label(text="Teeth Points:")
+
+        row = layout.row()
+        circle=row.operator("object.oculta_pontos_anatomicos", text="Hide Anatomical Points", icon="GHOST_DISABLED")
+
+        row = layout.row()
+        circle=row.operator("object.mostra_pontos_anatomicos", text="Show Anatomical Points", icon="GHOST_ENABLED")
 
         row = layout.row()
         linha=row.operator("object.tooth_8_pt", text="Tooth 8 (11)")
