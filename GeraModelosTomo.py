@@ -452,14 +452,15 @@ def IdentificaTomografo(Arquivo):
 
     if ManufacturerLimpo == "'TOSHIBA'" and StationNameLimpo == "'ID_STATION'" and ManufacturerModelNameLimpo == "'Activion16'":
         print("USA FIXED!")
-        print("SÉRIE 6")
+        print("SÉRIE 5") # ou 6
         print("Bone: 200")
         print("SoftTissue: -300")
         print("Teeth: 1430")
         print("Condylus: 655")
 
         # Seleciona diretório e corrige biblio
-        os.chdir(scn.my_tool.path+"/6")
+        #os.chdir(scn.my_tool.path+"/6") # outra configuração
+        os.chdir(scn.my_tool.path+"/5")
 
 
         scn.my_tool.path = os.getcwd()
