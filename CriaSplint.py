@@ -458,3 +458,90 @@ class BooleanSplint(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(BooleanSplint)
+
+def SplintMantemKeyStart(objeto, quadro):
+
+    scn = bpy.context.scene
+    obj = bpy.data.objects[objeto]
+
+    animData = obj.animation_data
+    action = animData.action
+    fcurves = action.fcurves
+    current_frame = scn.frame_current
+
+    for i in fcurves:
+        i.keyframe_points.insert(quadro, i.keyframe_points[0].co.y) # Primeiro keyframe
+        i.keyframe_points[0].co.y += 0 # Atualiza a animação!
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+
+def SplintMantemKeyEnd(objeto, quadro):
+
+    scn = bpy.context.scene
+    obj = bpy.data.objects[objeto]
+
+    animData = obj.animation_data
+    action = animData.action
+    fcurves = action.fcurves
+    current_frame = scn.frame_current
+
+    for i in fcurves:
+        i.keyframe_points.insert(quadro, i.keyframe_points[1].co.y) # Primeiro keyframe
+        i.keyframe_points[1].co.y += 0 # Atualiza a animação!
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+
+def SplintMaxilaOrigiMandFinalDef():
+
+        context = bpy.context
+        scn = context.scene
+
+        SplintMantemKeyStart('ma', 110)
+        SplintMantemKeyEnd('cm', 110)
+
+        SplintMantemKeyEnd('ma', 120)
+        SplintMantemKeyEnd('cm', 120)
+
+        bpy.context.scene.tool_settings.transform_pivot_point = 'CURSOR'
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+
+        bpy.ops.object.select_all(action='DESELECT')
+        bpy.data.objects['Condyle Rotation Point'].select_set(True)
+        context.view_layer.objects.active = bpy.data.objects['Condyle Rotation Point']
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+
+        for area in bpy.context.screen.areas:
+            if area.type == 'VIEW_3D':
+                ctx = bpy.context.copy()
+                ctx['area'] = area
+                ctx['region'] = area.regions[-1]
+        #        bpy.ops.view3d.view_selected(ctx)
+                bpy.ops.view3d.snap_cursor_to_selected(ctx)
+                break
+                bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+
+        bpy.ops.object.select_all(action='DESELECT')
+        bpy.data.objects['cm'].select_set(True)
+        context.view_layer.objects.active = bpy.data.objects['cm']
+
+
+class SplintMaxilaOrigiMandFinal(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.splint_maxila_origi_mand_final"
+    bl_label = "Splint Maxilla Origin Mandible Final"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Condyle Rotation Point' in bpy.data.objects
+
+        if found == False:
+            return False
+        else:
+            if found == True:
+                return True
+
+    def execute(self, context):
+        SplintMaxilaOrigiMandFinalDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(SplintMaxilaOrigiMandFinal)

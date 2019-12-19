@@ -61,7 +61,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191216a"
+VERSION = "20191219a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -2617,6 +2617,20 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
         circle=row.operator("object.mostra_pontos_anatomicos", text="Show Anatomical Points", icon="GHOST_ENABLED")
 
         row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.pontos_oculta_nomes", text="Hide Names", icon="GHOST_DISABLED")
+
+        row = layout.row()
+        linha=row.operator("object.pontos_mostra_nomes", text="Show Names", icon="GHOST_ENABLED")
+
+        row = layout.row()
+        row.label(text="Mode:")
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+        row = layout.row()
         linha=row.operator("object.tooth_8_pt", text="Tooth 8 (11)")
         linha=row.operator("object.tooth_9_pt", text="Tooth 9 (21)")
         row = layout.row()
@@ -2641,10 +2655,25 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
         linha=row.operator("object.tooth_30_pt", text="Tooth 30 (46)")
 
         row = layout.row()
+        linha=row.operator("object.head_of_condyle_pt", text="Condyle Rotation Point")
+
+        row = layout.row()
+        row = layout.row()
+        row = layout.row()
         circle=row.operator("object.parenteia_emp", text="Parent Points", icon="LINKED")
 
         row = layout.row()
         row.label(text="Splint:")
+
+        row = layout.row()
+        row.operator("object.splint_maxila_origi_mand_final", text="Maxilla-Origin Mandible-Final", icon="GROUP_BONE")
+
+        row = layout.row()
+        row.operator("screen.frame_jump", text="Start", icon="TRIA_LEFT_BAR").end=False
+        row.operator("screen.animation_play", text="", icon="PLAY_REVERSE").reverse=True
+        row.operator("anim.ortog_loc_rot", text="", icon="VIEW_CAMERA")
+        row.operator("screen.animation_play", text="", icon="PLAY")
+        row.operator("screen.frame_jump", text="End", icon="TRIA_RIGHT_BAR").end=True
 
         row = layout.row()
         row.operator("object.cria_splint", text="Create Splint", icon="OUTLINER_OB_CURVE")

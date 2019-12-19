@@ -7,7 +7,7 @@ import fnmatch
 
 def PontosMostraNomesDef(self, context):
 
-    ListaPontosNomesShow = ['Orbital right', 'Orbital left', 'N point', 'Po right', 'Po left', 'Pt right', 'Pt left', 'Ba point', 'S point', 'U1 Tip', 'U1 Labial Gengival Border', 'U1 Lingual Gengival Border', 'M U6', 'D U6', 'U6 Occlusal', 'PNS point', 'A point', 'ANS point', 'U1 Root', 'L1 Tip', 'L1 Root', 'L1 Labial Gengival Border', 'L1 Lingual Gengival Border', 'B point', 'M L6', 'L6 Occlusal', 'D L6', 'Mid Ramus right', 'Mid Ramus left', 'R right', 'R left', 'Go right', 'Go left', 'Ar right', 'Ar left', 'Sigmoid right', 'Sigmoid left', 'Co right', 'Co left', 'Pg point', 'Gn point', 'Me point', 'ST Glabella', 'ST Nasion', 'Bridge of Nose', 'Tip of Nose', 'Cheekbone right', 'Cheekbone left', 'Columella', 'Subnasale', 'Subpupil right', 'Subpupil left', 'ST A point', 'Upper Lip', 'Stomion Superius', 'Stomion Inferius', 'Lower Lip', 'ST B point', 'ST Pogonion', 'ST Gnathion', 'ST Menton', 'Throat point', 'CB right', 'CB left', 'OR right', 'OR left', 'SP right', 'SP left', 'AB right', 'AB left', 'Tooth 8', 'Tooth 9', 'Tooth 6', 'Tooth 11', 'Tooth 3', 'Tooth 14', 'Tooth 24', 'Tooth 25', 'Tooth 22', 'Tooth 27', 'Tooth 19', 'Tooth 30', 'Condylar Process right', 'Condylar Process left', 'Coronoid Process left', 'Coronoid Process right', 'Mid Go-Ramus Fracure left', 'Mid Go-Ramus Fracure right', 'Mid Upper Incisors', 'Mid Mandibula Angle left', 'Mid Mandibula Angle right', 'Radix', 'Anterior Nostril left', 'Posterior Nostril left', 'Anterior Nostril right', 'Posterior Nostril right', 'Rhinion', 'Alar Groove right', 'Alar Groove left', 'Supratip', 'Infratip Lobule', 'Columella right', 'Columella left', 'Alar Rim right', 'Alar Rim left', 'Medial Canthus left', 'Medial Canthus right', 'Trichion', 'Submental', 'Supraglabella', 'Glabella']
+    ListaPontosNomesShow = ['Orbital right', 'Orbital left', 'N point', 'Po right', 'Po left', 'Pt right', 'Pt left', 'Ba point', 'S point', 'U1 Tip', 'U1 Labial Gengival Border', 'U1 Lingual Gengival Border', 'M U6', 'D U6', 'U6 Occlusal', 'PNS point', 'A point', 'ANS point', 'U1 Root', 'L1 Tip', 'L1 Root', 'L1 Labial Gengival Border', 'L1 Lingual Gengival Border', 'B point', 'M L6', 'L6 Occlusal', 'D L6', 'Mid Ramus right', 'Mid Ramus left', 'R right', 'R left', 'Go right', 'Go left', 'Ar right', 'Ar left', 'Sigmoid right', 'Sigmoid left', 'Co right', 'Co left', 'Pg point', 'Gn point', 'Me point', 'ST Glabella', 'ST Nasion', 'Bridge of Nose', 'Tip of Nose', 'Cheekbone right', 'Cheekbone left', 'Columella', 'Subnasale', 'Subpupil right', 'Subpupil left', 'ST A point', 'Upper Lip', 'Stomion Superius', 'Stomion Inferius', 'Lower Lip', 'ST B point', 'ST Pogonion', 'ST Gnathion', 'ST Menton', 'Throat point', 'CB right', 'CB left', 'OR right', 'OR left', 'SP right', 'SP left', 'AB right', 'AB left', 'Tooth 8', 'Tooth 9', 'Tooth 6', 'Tooth 11', 'Tooth 3', 'Tooth 14', 'Tooth 24', 'Tooth 25', 'Tooth 22', 'Tooth 27', 'Tooth 19', 'Tooth 30', 'Condylar Process right', 'Condylar Process left', 'Coronoid Process left', 'Coronoid Process right', 'Mid Go-Ramus Fracure left', 'Mid Go-Ramus Fracure right', 'Mid Upper Incisors', 'Mid Mandibula Angle left', 'Mid Mandibula Angle right', 'Radix', 'Anterior Nostril left', 'Posterior Nostril left', 'Anterior Nostril right', 'Posterior Nostril right', 'Rhinion', 'Alar Groove right', 'Alar Groove left', 'Supratip', 'Infratip Lobule', 'Columella right', 'Columella left', 'Alar Rim right', 'Alar Rim left', 'Medial Canthus left', 'Medial Canthus right', 'Trichion', 'Submental', 'Supraglabella', 'Glabella', 'Condyle Rotation Point']
 
     for i in ListaPontosNomesShow:
         try:
@@ -31,7 +31,7 @@ bpy.utils.register_class(PontosMostraNomes)
 
 def PontosOcultaNomesDef(self, context):
 
-    ListaPontosNomesShow = ['Orbital right', 'Orbital left', 'N point', 'Po right', 'Po left', 'Pt right', 'Pt left', 'Ba point', 'S point', 'U1 Tip', 'U1 Labial Gengival Border', 'U1 Lingual Gengival Border', 'M U6', 'D U6', 'U6 Occlusal', 'PNS point', 'A point', 'ANS point', 'U1 Root', 'L1 Tip', 'L1 Root', 'L1 Labial Gengival Border', 'L1 Lingual Gengival Border', 'B point', 'M L6', 'L6 Occlusal', 'D L6', 'Mid Ramus right', 'Mid Ramus left', 'R right', 'R left', 'Go right', 'Go left', 'Ar right', 'Ar left', 'Sigmoid right', 'Sigmoid left', 'Co right', 'Co left', 'Pg point', 'Gn point', 'Me point', 'ST Glabella', 'ST Nasion', 'Bridge of Nose', 'Tip of Nose', 'Cheekbone right', 'Cheekbone left', 'Columella', 'Subnasale', 'Subpupil right', 'Subpupil left', 'ST A point', 'Upper Lip', 'Stomion Superius', 'Stomion Inferius', 'Lower Lip', 'ST B point', 'ST Pogonion', 'ST Gnathion', 'ST Menton', 'Throat point', 'CB right', 'CB left', 'OR right', 'OR left', 'SP right', 'SP left', 'AB right', 'AB left', 'Tooth 8', 'Tooth 9', 'Tooth 6', 'Tooth 11', 'Tooth 3', 'Tooth 14', 'Tooth 24', 'Tooth 25', 'Tooth 22', 'Tooth 27', 'Tooth 19', 'Tooth 30', 'Condylar Process right', 'Condylar Process left', 'Coronoid Process left', 'Coronoid Process right', 'Mid Go-Ramus Fracure left', 'Mid Go-Ramus Fracure right', 'Mid Upper Incisors', 'Mid Mandibula Angle left', 'Mid Mandibula Angle right', 'Radix', 'Anterior Nostril left', 'Posterior Nostril left', 'Anterior Nostril right', 'Posterior Nostril right', 'Rhinion', 'Alar Groove right', 'Alar Groove left', 'Supratip', 'Infratip Lobule', 'Columella right', 'Columella left', 'Alar Rim right', 'Alar Rim left', 'Medial Canthus left', 'Medial Canthus right', 'Trichion', 'Submental', 'Supraglabella', 'Glabella']
+    ListaPontosNomesShow = ['Orbital right', 'Orbital left', 'N point', 'Po right', 'Po left', 'Pt right', 'Pt left', 'Ba point', 'S point', 'U1 Tip', 'U1 Labial Gengival Border', 'U1 Lingual Gengival Border', 'M U6', 'D U6', 'U6 Occlusal', 'PNS point', 'A point', 'ANS point', 'U1 Root', 'L1 Tip', 'L1 Root', 'L1 Labial Gengival Border', 'L1 Lingual Gengival Border', 'B point', 'M L6', 'L6 Occlusal', 'D L6', 'Mid Ramus right', 'Mid Ramus left', 'R right', 'R left', 'Go right', 'Go left', 'Ar right', 'Ar left', 'Sigmoid right', 'Sigmoid left', 'Co right', 'Co left', 'Pg point', 'Gn point', 'Me point', 'ST Glabella', 'ST Nasion', 'Bridge of Nose', 'Tip of Nose', 'Cheekbone right', 'Cheekbone left', 'Columella', 'Subnasale', 'Subpupil right', 'Subpupil left', 'ST A point', 'Upper Lip', 'Stomion Superius', 'Stomion Inferius', 'Lower Lip', 'ST B point', 'ST Pogonion', 'ST Gnathion', 'ST Menton', 'Throat point', 'CB right', 'CB left', 'OR right', 'OR left', 'SP right', 'SP left', 'AB right', 'AB left', 'Tooth 8', 'Tooth 9', 'Tooth 6', 'Tooth 11', 'Tooth 3', 'Tooth 14', 'Tooth 24', 'Tooth 25', 'Tooth 22', 'Tooth 27', 'Tooth 19', 'Tooth 30', 'Condylar Process right', 'Condylar Process left', 'Coronoid Process left', 'Coronoid Process right', 'Mid Go-Ramus Fracure left', 'Mid Go-Ramus Fracure right', 'Mid Upper Incisors', 'Mid Mandibula Angle left', 'Mid Mandibula Angle right', 'Radix', 'Anterior Nostril left', 'Posterior Nostril left', 'Anterior Nostril right', 'Posterior Nostril right', 'Rhinion', 'Alar Groove right', 'Alar Groove left', 'Supratip', 'Infratip Lobule', 'Columella right', 'Columella left', 'Alar Rim right', 'Alar Rim left', 'Medial Canthus left', 'Medial Canthus right', 'Trichion', 'Submental', 'Supraglabella', 'Glabella', 'Condyle Rotation Point']
 
     for i in ListaPontosNomesShow:
         try:
@@ -60,7 +60,7 @@ def TestaPontoCollDef():
     scn = context.scene
 
     #Teste se há algum objeto ponto na cena aqui!
-    ListaPontos = ['Orbital right', 'Orbital left', 'N point', 'Po right', 'Po left', 'Pt right', 'Pt left', 'Ba point', 'S point', 'U1 Tip', 'U1 Labial Gengival Border', 'U1 Lingual Gengival Border', 'M U6', 'D U6', 'U6 Occlusal', 'PNS point', 'A point', 'ANS point', 'U1 Root', 'L1 Tip', 'L1 Root', 'L1 Labial Gengival Border', 'L1 Lingual Gengival Border', 'B point', 'M L6', 'L6 Occlusal', 'D L6', 'Mid Ramus right', 'Mid Ramus left', 'R right', 'R left', 'Go right', 'Go left', 'Ar right', 'Ar left', 'Sigmoid right', 'Sigmoid left', 'Co right', 'Co left', 'Pg point', 'Gn point', 'Me point', 'ST Glabella', 'ST Nasion', 'Bridge of Nose', 'Tip of Nose', 'Cheekbone right', 'Cheekbone left', 'Columella', 'Subnasale', 'Subpupil right', 'Subpupil left', 'ST A point', 'Upper Lip', 'Stomion Superius', 'Stomion Inferius', 'Lower Lip', 'ST B point', 'ST Pogonion', 'ST Gnathion', 'ST Menton', 'Throat point', 'CB right', 'CB left', 'OR right', 'OR left', 'SP right', 'SP left', 'AB right', 'AB left', 'Tooth 8', 'Tooth 9', 'Tooth 6', 'Tooth 11', 'Tooth 3', 'Tooth 14', 'Tooth 24', 'Tooth 25', 'Tooth 22', 'Tooth 27', 'Tooth 19', 'Tooth 30', 'Condylar Process right', 'Condylar Process left', 'Coronoid Process left', 'Coronoid Process right', 'Mid Go-Ramus Fracure left', 'Mid Go-Ramus Fracure right', 'Mid Upper Incisors', 'Mid Mandibula Angle left', 'Mid Mandibula Angle right', 'Radix', 'Anterior Nostril left', 'Posterior Nostril left', 'Anterior Nostril right', 'Posterior Nostril right', 'Rhinion', 'Alar Groove right', 'Alar Groove left', 'Supratip', 'Infratip Lobule', 'Columella right', 'Columella left', 'Alar Rim right', 'Alar Rim left', 'Medial Canthus left', 'Medial Canthus right', 'Trichion', 'Submental', 'Supraglabella', 'Glabella']
+    ListaPontos = ['Orbital right', 'Orbital left', 'N point', 'Po right', 'Po left', 'Pt right', 'Pt left', 'Ba point', 'S point', 'U1 Tip', 'U1 Labial Gengival Border', 'U1 Lingual Gengival Border', 'M U6', 'D U6', 'U6 Occlusal', 'PNS point', 'A point', 'ANS point', 'U1 Root', 'L1 Tip', 'L1 Root', 'L1 Labial Gengival Border', 'L1 Lingual Gengival Border', 'B point', 'M L6', 'L6 Occlusal', 'D L6', 'Mid Ramus right', 'Mid Ramus left', 'R right', 'R left', 'Go right', 'Go left', 'Ar right', 'Ar left', 'Sigmoid right', 'Sigmoid left', 'Co right', 'Co left', 'Pg point', 'Gn point', 'Me point', 'ST Glabella', 'ST Nasion', 'Bridge of Nose', 'Tip of Nose', 'Cheekbone right', 'Cheekbone left', 'Columella', 'Subnasale', 'Subpupil right', 'Subpupil left', 'ST A point', 'Upper Lip', 'Stomion Superius', 'Stomion Inferius', 'Lower Lip', 'ST B point', 'ST Pogonion', 'ST Gnathion', 'ST Menton', 'Throat point', 'CB right', 'CB left', 'OR right', 'OR left', 'SP right', 'SP left', 'AB right', 'AB left', 'Tooth 8', 'Tooth 9', 'Tooth 6', 'Tooth 11', 'Tooth 3', 'Tooth 14', 'Tooth 24', 'Tooth 25', 'Tooth 22', 'Tooth 27', 'Tooth 19', 'Tooth 30', 'Condylar Process right', 'Condylar Process left', 'Coronoid Process left', 'Coronoid Process right', 'Mid Go-Ramus Fracure left', 'Mid Go-Ramus Fracure right', 'Mid Upper Incisors', 'Mid Mandibula Angle left', 'Mid Mandibula Angle right', 'Radix', 'Anterior Nostril left', 'Posterior Nostril left', 'Anterior Nostril right', 'Posterior Nostril right', 'Rhinion', 'Alar Groove right', 'Alar Groove left', 'Supratip', 'Infratip Lobule', 'Columella right', 'Columella left', 'Alar Rim right', 'Alar Rim left', 'Medial Canthus left', 'Medial Canthus right', 'Trichion', 'Submental', 'Supraglabella', 'Glabella', 'Condyle Rotation Point']
 
 
     ObjetosColletion = bpy.data.collections['Collection'].objects
@@ -2356,6 +2356,32 @@ class AB_left_pt(bpy.types.Operator):
 
 bpy.utils.register_class(AB_left_pt)
 
+
+class Head_of_Condyle_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.head_of_condyle_pt"
+    bl_label = "Condyle Rotation Point"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Condyle Rotation Point' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Condyle Rotation Point', 'Anatomical Points - Mandible')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Head_of_Condyle_pt)
+
 # Parenteia pontos duro
 
 def ParenteiaPonto(ponto):
@@ -2423,6 +2449,7 @@ def ParenteiaPonto(ponto):
     bpy.context.view_layer.objects.active = ObjPai
     bpy.ops.object.parent_set()
     bpy.ops.object.select_all(action='DESELECT')
+    #bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
 # Parenteia pontos mole
 
@@ -2533,7 +2560,7 @@ def ParenteiaEMPDef(self, context):
 
 	# Lista com todos os pontos
 
-	ListaPontos = ['Orbital right', 'Orbital left', 'N point', 'Po right', 'Po left', 'Pt right', 'Pt left', 'Ba point', 'S point', 'U1 Tip', 'U1 Labial Gengival Border', 'U1 Lingual Gengival Border', 'M U6', 'D U6', 'U6 Occlusal', 'PNS point', 'A point', 'ANS point', 'U1 Root', 'L1 Tip', 'L1 Root', 'L1 Labial Gengival Border', 'L1 Lingual Gengival Border', 'B point', 'M L6', 'L6 Occlusal', 'D L6', 'Mid Ramus right', 'Mid Ramus left', 'R right', 'R left', 'Go right', 'Go left', 'Ar right', 'Ar left', 'Sigmoid right', 'Sigmoid left', 'Co right', 'Co left', 'Pg point', 'Gn point', 'Me point', 'Tooth 8', 'Tooth 9', 'Tooth 6', 'Tooth 11', 'Tooth 3', 'Tooth 14', 'Tooth 24', 'Tooth 25', 'Tooth 22', 'Tooth 27', 'Tooth 19', 'Tooth 30']
+	ListaPontos = ['Orbital right', 'Orbital left', 'N point', 'Po right', 'Po left', 'Pt right', 'Pt left', 'Ba point', 'S point', 'U1 Tip', 'U1 Labial Gengival Border', 'U1 Lingual Gengival Border', 'M U6', 'D U6', 'U6 Occlusal', 'PNS point', 'A point', 'ANS point', 'U1 Root', 'L1 Tip', 'L1 Root', 'L1 Labial Gengival Border', 'L1 Lingual Gengival Border', 'B point', 'M L6', 'L6 Occlusal', 'D L6', 'Mid Ramus right', 'Mid Ramus left', 'R right', 'R left', 'Go right', 'Go left', 'Ar right', 'Ar left', 'Sigmoid right', 'Sigmoid left', 'Co right', 'Co left', 'Pg point', 'Gn point', 'Me point', 'Tooth 8', 'Tooth 9', 'Tooth 6', 'Tooth 11', 'Tooth 3', 'Tooth 14', 'Tooth 24', 'Tooth 25', 'Tooth 22', 'Tooth 27', 'Tooth 19', 'Tooth 30', 'Condyle Rotation Point']
 
 	ListaPontosMole = [ 'ST Glabella', 'ST Nasion', 'Bridge of Nose', 'Tip of Nose', 'Cheekbone right', 'Cheekbone left', 'Columella', 'Subnasale', 'Subpupil right', 'Subpupil left' ,'ST A point', 'Upper Lip', 'Stomion Superius', 'Stomion Inferius', 'Lower Lip', 'ST B point', 'ST Pogonion', 'ST Gnathion', 'ST Menton', 'Throat point', 'CB right', 'CB left', 'OR right', 'OR left', 'SP right', 'SP left', 'AB right', 'AB left', 'Radix', 'Anterior Nostril left', 'Posterior Nostril left', 'Anterior Nostril right', 'Posterior Nostril right','Rhinion', 'Alar Groove right', 'Alar Groove left', 'Supratip', 'Infratip Lobule', 'Alar Rim right', 'Alar Rim left', 'Columella right', 'Columella left', 'Alar Rim right', 'Alar Rim left', 'Medial Canthus left', 'Medial Canthus right', 'Trichion', 'Submental', 'Supraglabella', 'Glabella']
 
