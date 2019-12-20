@@ -1729,6 +1729,31 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+    if ManufacturerLimpo == "'Xoran Technologies ®'" and StationNameLimpo == "'FEN-TOMO08'" and ManufacturerModelNameLimpo == "'17-19'":
+        print("SÉRIE 1")
+        print("Bone: 270")
+        print("SoftTissue: -550")
+        print("Teeth: 690")
+
+        os.chdir(scn.my_tool.path+"/1")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "270"
+        bpy.context.scene.interesse_mole = "-550"
+        bpy.context.scene.interesse_dentes = "690"
+
+        bpy.ops.object.gera_modelos_tomo()
+
     if ManufacturerLimpo == "'Xoran Technologies ®'" and StationNameLimpo == "'ICAT_TOMO2'" and ManufacturerModelNameLimpo == "'17-19'":
         print("SÉRIE 1")
         print("Bone: 300")
@@ -2022,6 +2047,32 @@ def IdentificaTomografo(Arquivo):
 
         # TAMBÉM FUNCIONA O 201
         os.chdir(scn.my_tool.path+"/201")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "200"
+        bpy.context.scene.interesse_mole = "-300"
+        bpy.context.scene.interesse_dentes = "1430"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+    if ManufacturerLimpo == "'SIEMENS'" and StationNameLimpo == "'CT48679'" and ManufacturerModelNameLimpo == "'Biograph 16'":
+        print("SÉRIE 3")
+        print("Bone: 200")
+        print("SoftTissue: -300")
+        print("Teeth: 1430")
+
+        # TAMBÉM FUNCIONA O 201
+        os.chdir(scn.my_tool.path+"/3")
         scn.my_tool.path = os.getcwd()
         bpy.ops.object.corrige_dicom()
 
