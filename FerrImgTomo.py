@@ -186,6 +186,7 @@ def ImportaFatiasDef():
     EscalaX = DimensaoLateralX * RowsPixels
     EscalaY = DimensaoLateralY * ColumnsPixels
 
+    bpy.context.space_data.shading.type = 'MATERIAL' # Descobri sozinho!
 
     for Arquivo in ListaArquivos:
 
@@ -195,6 +196,15 @@ def ImportaFatiasDef():
 
         bpy.ops.transform.resize(value=(EscalaX, EscalaY, 0), constraint_axis=(False, False, False), mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
         bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+
+        #bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+
+        for area in bpy.context.screen.areas:
+            if area.type == 'VIEW_3D':
+                for region in area.regions:
+                    if region.type == 'WINDOW':
+                        override = {'area': area, 'region': region, 'edit_object': bpy.context.edit_object}
+                        bpy.ops.view3d.view_all(override)
 
         print(Arquivo)
 
@@ -240,6 +250,8 @@ def ImportaFatiasDef():
 
         bpy.context.object.active_material.blend_method = 'BLEND' # Descobri sozinho!
 
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+
         # ENVIA COLLECTION
 
         ListaColl = []
@@ -262,9 +274,27 @@ def ImportaFatiasDef():
             bpy.data.collections['Collection'].objects.unlink(obj)
 
 
-    bpy.ops.view3d.view_all(center=False)
+    # Agrupa e ajusta posição
 
-    bpy.context.space_data.shading.type = 'MATERIAL' # Descobri sozinho!
+    bpy.ops.object.select_all(action='DESELECT')
+
+    for Arquivo in ListaArquivos:
+        bpy.data.objects[str(Arquivo).strip('.png')].select_set(True)
+        bpy.context.view_layer.objects.active = bpy.data.objects[str(Arquivo).strip('.png')]
+
+    bpy.ops.object.join()
+
+    bpy.ops.transform.mirror(orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+
+    # Centraliza
+    for area in bpy.context.screen.areas:
+        if area.type == 'VIEW_3D':
+            for region in area.regions:
+                if region.type == 'WINDOW':
+                    override = {'area': area, 'region': region, 'edit_object': bpy.context.edit_object}
+                    bpy.ops.view3d.view_all(override)
+
+#    bpy.context.space_data.shading.type = 'MATERIAL' # Descobri sozinho!
 
 
 
@@ -536,7 +566,7 @@ def AbreSlicerDef(self, context):
             subprocess.call('START /B C:/OrtogOnBlender/Slicer410/Slicer.exe '+str(DirAtual+"/"+ArqAtual), shell=True)
 
         if platform.system() == "Darwin":
-            subprocess.call('/OrtogOnBlender/Slicer/Slicer.app/Contents/MacOS/Slicer '+str(DirAtual+"/"+ArqAtual+" &"), shell=True)
+            subprocess.call(homeall+'/Programs/OrtogOnBlender/Slicer/Slicer.app/Contents/MacOS/Slicer '+str(DirAtual+"/"+ArqAtual+" &"), shell=True)
 
 class AbreSlicer(bpy.types.Operator):
     """Tooltip"""

@@ -61,7 +61,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191220a"
+VERSION = "20191223a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -248,6 +248,14 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
             row.operator("object.gera_dir_nome_paciente_tomo", text="SAVE!", icon="FILE_TICK")
 
         if my_enum_ct == ENUM_VALUES_CTSCAN.VOXEL:
+
+            row = layout.row()
+            row.label(text="CT-Scan Preparing:")
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path", text="")
+            row = layout.row()
+            row.operator("object.ajusta_tomo", text="Organize", icon="NODETREE")
+
 
             row = layout.row()
             row.label(text="CT-Scan Voxel Importing:")
