@@ -1208,3 +1208,26 @@ class MaterialOpacoDois(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(MaterialOpacoDois)
+
+def RhinFotogrametriaDecDef():
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    bpy.ops.object.gera_modelo_foto()
+
+    bpy.ops.object.modifier_add(type='DECIMATE')
+    bpy.context.object.modifiers["Decimate"].ratio = 0.5
+    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Decimate")
+
+
+class RhinFotogrametriaDec(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.rhin_fotogrametria_dec"
+    bl_label = "Rhin Photogrammetry Decimate"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        RhinFotogrametriaDecDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(RhinFotogrametriaDec)

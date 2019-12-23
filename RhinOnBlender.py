@@ -96,7 +96,7 @@ class RHIN_PT_Fotogrametria(bpy.types.Panel):
                 row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
 
             row = layout.row()
-            row.operator("object.gera_modelo_foto", text="Start Photogrammetry!", icon="IMAGE_DATA")
+            row.operator("object.rhin_fotogrametria_dec", text="Start Photogrammetry!", icon="IMAGE_DATA")
 
         if my_enum == ENUM_VALUES_PHOTOGRAMMETRY.SMVS:
 
