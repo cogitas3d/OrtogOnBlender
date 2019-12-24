@@ -136,7 +136,7 @@ def GeraModeloFotoDef(self, context):
                 os.system('cd '+mypath+' && '+homeall+'/Programs/OrtogOnBlender/openMVG/ExifTool.sh')
 
             if platform.system() == "Darwin":
-                os.system('cd '+mypath+' && /OrtogOnBlender/openMVGMACelcap/ExifTool.sh')
+                os.system('cd '+mypath+' && '+homeall+'/Programs/OrtogOnBlender/openMVGMACelcap/ExifTool.sh')
 
             if platform.system() == "Windows":
                 print(mypath)
@@ -157,7 +157,7 @@ def GeraModeloFotoDef(self, context):
             camDatabase = homeall+"/Programs/OrtogOnBlender/openMVG/sensor_width_camera_database.txt"
 
         if platform.system() == "Darwin":
-            camDatabase = "/OrtogOnBlender/openMVGMACelcap/sensor_width_camera_database.txt"
+            camDatabase = homeall+"/Programs/OrtogOnBlender/openMVGMACelcap/sensor_width_camera_database.txt"
 
 
         if platform.system() == "Windows":
@@ -235,8 +235,8 @@ def GeraModeloFotoDef(self, context):
         #            else:
         #                OpenMVGPath = '/OrtogOnBlender/openMVGMAC/SfM_SequentialPipeline.py'
         #                OpenMVSPath = '/OrtogOnBlender/openMVSMAC/openMVSMAC.sh'
-            OpenMVGPath = '/OrtogOnBlender/openMVGMACelcap/SfM_SequentialPipeline.py'
-            OpenMVSPath = '/OrtogOnBlender/openMVSMACelcap/openMVSMAC.sh'
+            OpenMVGPath = homeall+'/Programs/OrtogOnBlender/openMVGMACelcap/SfM_SequentialPipeline.py'
+            OpenMVSPath = homeall+'/Programs/OrtogOnBlender/openMVSMACelcap/openMVSMAC.sh'
 
             shutil.rmtree(tmpdir+'/OpenMVG', ignore_errors=True)
             shutil.rmtree(tmpdir+'/MVS', ignore_errors=True)
@@ -269,7 +269,7 @@ def GeraModeloFotoDef(self, context):
 
         if platform.system() == "Darwin":
 
-            subprocess.call('cd '+tmpdir+' && mkdir MVS && /OrtogOnBlender/openMVGMACelcap/openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && /OrtogOnBlender/openMVSMACelcap/./DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && /OrtogOnBlender/openMVSMACelcap/./ReconstructMesh -d '+dFactor+' --smooth '+smoothFactor+' '+tmpdir+'/MVS/scene_dense.mvs && /OrtogOnBlender/openMVSMACelcap/./TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
+            subprocess.call('cd '+tmpdir+' && mkdir MVS && '+homeall+'/Programs/OrtogOnBlender/openMVGMACelcap/openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && '+homeall+'/Programs/OrtogOnBlender/openMVSMACelcap/./DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && '+homeall+'/Programs/OrtogOnBlender/openMVSMACelcap/./ReconstructMesh -d '+dFactor+' --smooth '+smoothFactor+' '+tmpdir+'/MVS/scene_dense.mvs && '+homeall+'/Programs/OrtogOnBlender/openMVSMACelcap/./TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
 
         if platform.system() == "Windows":
 
@@ -302,7 +302,17 @@ def GeraModeloFotoDef(self, context):
             #    bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Smooth")
 
         bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
-        bpy.ops.view3d.view_all(center=False)
+        #bpy.ops.view3d.view_all(center=False)
+
+        # Centraliza zoom
+        for area in bpy.context.screen.areas:
+            if area.type == 'VIEW_3D':
+                for region in area.regions:
+                    if region.type == 'WINDOW':
+                        override = {'area': area, 'region': region, 'edit_object': bpy.context.edit_object}
+                        bpy.ops.view3d.view_all(override)
+
+
         bpy.ops.file.pack_all()
 
         bpy.ops.object.modifier_add(type='SMOOTH')
