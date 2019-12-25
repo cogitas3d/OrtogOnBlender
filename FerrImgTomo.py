@@ -320,6 +320,7 @@ class ImportaFatias(bpy.types.Operator):
     bl_label = "Importa fatias de tomografia DICOM"
 
     def execute(self, context):
+       bpy.ops.object.corrige_dicom()
        ImportaFatiasDef()
        return {'FINISHED'}
 
