@@ -17,6 +17,7 @@ if "bpy" in locals():
     print("Reloaded multifiles")
 else:
     from .SegmentaImagens import *
+    from .CompareOnBlender import *
     from .RhinOnBlender import *
     from .ForensicOnBlender import *
     from .NomePaciente import *
@@ -61,7 +62,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20191225a"
+VERSION = "20200101a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):

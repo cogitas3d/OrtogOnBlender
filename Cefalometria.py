@@ -1218,3 +1218,15 @@ class CalculaTudoCefalometria(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(CalculaTudoCefalometria)
+
+
+def CalculaDistanciaObjetos(ObjA, ObjB):
+
+    A = bpy.data.objects[ObjA]
+    B = bpy.data.objects[ObjB]
+
+    Distancia = math.sqrt(( (B.location[0] - A.location[0])**2 ) + ( (B.location[1] - A.location[1])**2 ) + ( (B.location[2] - A.location[2])**2 ))
+
+    print("A distância entre '"+ObjA+"' e '"+ObjB+"' é de", round(Distancia, 2))
+
+    return round(Distancia, 2)
