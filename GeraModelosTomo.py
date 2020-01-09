@@ -1729,6 +1729,32 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+    if ManufacturerLimpo == "'Xoran Technologies ®'" and StationNameLimpo == "'LAUDO002'" and ManufacturerModelNameLimpo == "'17-19'":
+        print("SÉRIE 1")
+        print("Bone: 245")
+        print("SoftTissue: -615")
+        print("Teeth: 580")
+
+        os.chdir(scn.my_tool.path+"/1")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "245"
+        bpy.context.scene.interesse_mole = "-615"
+        bpy.context.scene.interesse_dentes = "580"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+
     if ManufacturerLimpo == "'Xoran Technologies ®'" and StationNameLimpo == "'EXAME-02'" and ManufacturerModelNameLimpo == "'i-CAT\\x99 3D Dental Imaging System'": # i-CAT\x99 (Original) --> i-CAT\\x99 (Modificado)
         print("SÉRIE 1")
         print("Bone: 250")
@@ -2820,6 +2846,32 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+    if ManufacturerLimpo == "'SIEMENS'" and StationNameLimpo == "'CTAWP65950'" and ManufacturerModelNameLimpo == "'SOMATOM Definition AS'":
+        print("SÉRIE 3") # Pode ser o 2
+        print("Bone: 200")
+        print("SoftTissue: -300")
+        print("Teeth: 1430")
+
+        # TAMBÉM FUNCIONA O 201
+        os.chdir(scn.my_tool.path+"/3")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "200"
+        bpy.context.scene.interesse_mole = "-300"
+        bpy.context.scene.interesse_dentes = "1430"
+
+        bpy.ops.object.gera_modelos_tomo()
+
     if ManufacturerLimpo == "'SIEMENS'" and StationNameLimpo == "'CT29290'":
 
 
@@ -3316,6 +3368,34 @@ def IdentificaTomografo(Arquivo):
         bpy.context.scene.interesse_dentes = "1350"
 
         bpy.ops.object.gera_modelos_tomo()
+
+
+    if ManufacturerLimpo == "'NewTom'" and StationNameLimpo == "'NT'" and ManufacturerModelNameLimpo == "'NT5G'":
+        print("SÉRIE 1")
+        print("Bone: 520")
+        print("SoftTissue: -440")
+        print("Teeth: 950")
+
+        # TAMBÉM FUNCIONA O 201
+        os.chdir(scn.my_tool.path+"/1")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "520"
+        bpy.context.scene.interesse_mole = "-440"
+        bpy.context.scene.interesse_dentes = "950"
+
+        bpy.ops.object.gera_modelos_tomo()
+
 
     if ManufacturerLimpo == "'NewTom'" and ManufacturerModelNameLimpo == "'NT5GXL'":
         print("SÉRIE 81")
