@@ -3207,32 +3207,32 @@ def IdentificaTomografo(Arquivo):
         bpy.ops.object.gera_modelos_tomo()
 
 
-if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'TC_100'" and ManufacturerModelNameLimpo == "'Revolution EVO'":
-    print("SÉRIE 2")
-    print("Bone: 275")
-    print("SoftTissue: -815")
-    print("Teeth: 3064")
-    print("Condylus: 655")
+    if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'TC_100'" and ManufacturerModelNameLimpo == "'Revolution EVO'":
+        print("SÉRIE 2")
+        print("Bone: 275")
+        print("SoftTissue: -815")
+        print("Teeth: 3064")
+        print("Condylus: 655")
 
-    # TAMBÉM FUNCIONA O 201
-    os.chdir(scn.my_tool.path+"/2")
-    scn.my_tool.path = os.getcwd()
-    bpy.ops.object.corrige_dicom()
+        # TAMBÉM FUNCIONA O 201
+        os.chdir(scn.my_tool.path+"/2")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
 
-#        bpy.ops.object.reduz_dimensao_dicom()
+    #        bpy.ops.object.reduz_dimensao_dicom()
 
-    # Copia para o diretório
-    try:
-        CopiaTomoDir(scn.my_tool.path)
-    except:
-        print("Doesn't have Patient Dir")
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
 
-    # Gera o 3D
-    bpy.context.scene.interesse_ossos = "275"
-    bpy.context.scene.interesse_mole = "-815"
-    bpy.context.scene.interesse_dentes = "3064"
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "275"
+        bpy.context.scene.interesse_mole = "-815"
+        bpy.context.scene.interesse_dentes = "3064"
 
-    bpy.ops.object.gera_modelos_tomo()
+        bpy.ops.object.gera_modelos_tomo()
 
 
     if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'CT'" and ManufacturerModelNameLimpo == "'HiSpeed'":
