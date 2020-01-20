@@ -105,12 +105,23 @@ def GeraModeloFotoDef(self, context):
             subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && for i in *; do cp $i $i.jpg; done && mv *.jpg '+tmpdir+'/JPG/', shell=True)
             scn.my_tool.path_photo = tmpdir+'/JPG/'
 
+        if platform.system() == "Windows" :
+ 
+            subprocess.call('mkdir '+tmpdir+'\JPG & cd '+mypath+' & for %f in (*) do copy %f %f.jpg & move *.jpg '+tmpdir+'\JPG', shell=True)
+            scn.my_tool.path_photo = tmpdir+'\JPG\\' # Se não colocar as duas barras não funciona!
+
+
     TestaJPEG = ".JPEG" in FotoTeste
 
     if TestaJPEG == True:
         if platform.system() == "Linux" or platform.system() == "Darwin":
             subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && for i in *; do cp $i $i.jpg; done && mv *.jpg '+tmpdir+'/JPG/', shell=True)
             scn.my_tool.path_photo = tmpdir+'/JPG/'
+            
+        if platform.system() == "Windows" :
+ 
+            subprocess.call('mkdir '+tmpdir+'\JPG & cd '+mypath+' & for %f in (*) do copy %f %f.jpg & move *.jpg '+tmpdir+'\JPG', shell=True)
+            scn.my_tool.path_photo = tmpdir+'\JPG\\' # Se não colocar as duas barras não funciona!
 
     # TESTA CAMERA
 
