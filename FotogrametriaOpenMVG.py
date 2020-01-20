@@ -98,7 +98,14 @@ def GeraModeloFotoDef(self, context):
             subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && mogrify -format jpg *.HEIC && mv *.jpg '+tmpdir+'/JPG/', shell=True)
             scn.my_tool.path_photo = tmpdir+'/JPG/'
 
-    TestaJPEG = ".jpeg" in FotoTeste
+    Testajpeg = ".jpeg" in FotoTeste
+
+    if Testajpeg == True:
+        if platform.system() == "Linux" or platform.system() == "Darwin":
+            subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && for i in *; do cp $i $i.jpg; done && mv *.jpg '+tmpdir+'/JPG/', shell=True)
+            scn.my_tool.path_photo = tmpdir+'/JPG/'
+
+    TestaJPEG = ".JPEG" in FotoTeste
 
     if TestaJPEG == True:
         if platform.system() == "Linux" or platform.system() == "Darwin":
