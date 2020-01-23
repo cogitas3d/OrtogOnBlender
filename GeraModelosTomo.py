@@ -1592,18 +1592,18 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
-    if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'ct01'":
+    if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'ct01'" and ManufacturerModelNameLimpo == "' Revolution ACT'":
 #        print("USA FIXED!")
         print("SÉRIE 4")
         print("Bone: 200")
         print("SoftTissue: -300")
-        print("Teeth: 1430")
+        print("Teeth: 900") # 1430
         print("Condylus: 655")
 
 
         os.chdir(scn.my_tool.path+"/4")
         scn.my_tool.path = os.getcwd()
- #       bpy.ops.object.corrige_dicom()
+        bpy.ops.object.corrige_dicom()
 
 #        bpy.ops.object.reduz_dimensao_dicom()
 
@@ -1613,7 +1613,7 @@ def IdentificaTomografo(Arquivo):
         # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
-        bpy.context.scene.interesse_dentes = "1430"
+        bpy.context.scene.interesse_dentes = "900" # 1430
 
         bpy.ops.object.gera_modelos_tomo()
 
