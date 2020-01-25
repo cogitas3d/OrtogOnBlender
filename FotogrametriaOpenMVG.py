@@ -194,6 +194,15 @@ def GeraModeloFotoDef(self, context):
         #bpy.data.images[ArquivoAtual].save()
 
             bpy.context.scene.my_tool.path_photo = tmpdirIMagemgick+"/"
+            
+
+            if platform.system() == "Windows":
+                    subprocess.call('C:\OrtogOnBlender\ImageMagick\convert -resize '+str(100/FatorDivisao)+'% '+tmpdirFotos+'\\'+ArquivoAtual+' '+tmpdirIMagemgick+'\\'+ArquivoAtual, shell=True)
+
+        #bpy.data.images[ArquivoAtual].save()
+
+            bpy.context.scene.my_tool.path_photo = tmpdirIMagemgick+"/"
+
 
     # TESTA CAMERA
 
