@@ -6,6 +6,7 @@ import shutil
 import tempfile
 from os import listdir
 from os.path import isfile, join
+import multiprocessing
 import exifread
 import re
 import os
@@ -71,7 +72,7 @@ def GeraModeloFotoDef(self, context):
     scn = context.scene
 
 
-    #CRIA OU SETA DIETÓRIO TEMPORÁRIO
+    #CRIA OU SETA DIRETÓRIO TEMPORÁRIO
 #    if platform.system() == "Linux":
     tmpdir = tempfile.mkdtemp()
 #    else:
@@ -106,7 +107,7 @@ def GeraModeloFotoDef(self, context):
             scn.my_tool.path_photo = tmpdir+'/JPG/'
 
         if platform.system() == "Windows" :
- 
+
             subprocess.call('mkdir '+tmpdir+'\JPG & cd '+mypath+' & for %f in (*) do copy %f %f.jpg & move *.jpg '+tmpdir+'\JPG', shell=True)
             scn.my_tool.path_photo = tmpdir+'\JPG\\' # Se não colocar as duas barras não funciona!
 
@@ -117,11 +118,80 @@ def GeraModeloFotoDef(self, context):
         if platform.system() == "Linux" or platform.system() == "Darwin":
             subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && for i in *; do cp $i $i.jpg; done && mv *.jpg '+tmpdir+'/JPG/', shell=True)
             scn.my_tool.path_photo = tmpdir+'/JPG/'
-            
+
         if platform.system() == "Windows" :
- 
+
             subprocess.call('mkdir '+tmpdir+'\JPG & cd '+mypath+' & for %f in (*) do copy %f %f.jpg & move *.jpg '+tmpdir+'\JPG', shell=True)
             scn.my_tool.path_photo = tmpdir+'\JPG\\' # Se não colocar as duas barras não funciona!
+
+    # REDUZ FOTOS
+
+    print("REDUZ FOTOS")
+    print("bpy.context.scene.my_tool.path_photo", bpy.context.scene.my_tool.path_photo)
+
+    tmpdirFotos = tempfile.mkdtemp()
+
+    Origem = bpy.context.scene.my_tool.path_photo
+
+    # Copia imagens para temporário
+    ListaImagens = sorted(os.listdir(Origem))
+
+    ImagContador = 0
+
+    for ImagemAtual in ListaImagens:
+        shutil.copyfile(Origem+ImagemAtual, tmpdirFotos+"/"+str(ImagContador)+".jpg")
+        ImagContador += 1
+
+
+        print("Copiando:", Origem+ImagemAtual, "para:", tmpdirFotos+"/"+str(ImagContador)+".jpg")
+
+
+    # Reduz imagens
+    ListaArquivos = sorted(os.listdir(tmpdirFotos))
+
+#    print("ORIGEM:", Origem)
+
+    print("FOOOOOOOOOOOOOOOOI")
+
+    tmpdirIMagemgick = tempfile.mkdtemp()
+
+
+    for ArquivoAtual in ListaArquivos:
+
+        print("Reduzindo",ArquivoAtual)
+
+        bpy.ops.image.open(filepath=tmpdirFotos+ArquivoAtual, directory=tmpdirFotos, files=[{"name":ArquivoAtual, "name":ArquivoAtual}], relative_path=False, show_multiview=False)
+
+        ImgDim0 = bpy.data.images[ArquivoAtual].size[0]
+        ImgDim1 = bpy.data.images[ArquivoAtual].size[1]
+
+        LadoMaior = max(ImgDim0, ImgDim1)
+
+        CpuNum = multiprocessing.cpu_count()
+
+        if CpuNum >= 8:
+            FatorPixel = 2536
+
+        if CpuNum == 4:
+            FatorPixel = 2536
+
+        if CpuNum == 2:
+            FatorPixel = 2048
+
+        if CpuNum == 1:
+            FatorPixel = 1500
+
+        if LadoMaior > FatorPixel:
+            print("Maior que "+str(FatorPixel)+"!")
+            FatorDivisao = LadoMaior/FatorPixel
+#            bpy.data.images[ArquivoAtual].scale( int(ImgDim0/FatorDivisao), int(ImgDim1/FatorDivisao) )
+
+            if platform.system() == "Linux" or platform.system() == "Darwin":
+                    subprocess.call('convert -resize '+str(100/FatorDivisao)+'% '+tmpdirFotos+"/"+ArquivoAtual+' '+tmpdirIMagemgick+"/"+ArquivoAtual, shell=True)
+
+        #bpy.data.images[ArquivoAtual].save()
+
+        bpy.context.scene.my_tool.path_photo = tmpdirIMagemgick+"/"
 
     # TESTA CAMERA
 
@@ -166,7 +236,6 @@ def GeraModeloFotoDef(self, context):
             tags = exifread.process_file(f_jpg, details=True)
             print (tags['Image Model'])
             CamModel = str(tags['Image Model'])+";"
-
 
 
         # TESTA MODELO CAMERA
