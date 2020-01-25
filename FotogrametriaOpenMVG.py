@@ -145,6 +145,7 @@ def GeraModeloFotoDef(self, context):
 
         print("Copiando:", Origem+ImagemAtual, "para:", tmpdirFotos+"/"+str(ImagContador)+".jpg")
 
+    bpy.context.scene.my_tool.path_photo = Origem
 
     # Reduz imagens
     ListaArquivos = sorted(os.listdir(tmpdirFotos))
@@ -167,19 +168,20 @@ def GeraModeloFotoDef(self, context):
 
         LadoMaior = max(ImgDim0, ImgDim1)
 
+        
         CpuNum = multiprocessing.cpu_count()
 
         if CpuNum >= 8:
             FatorPixel = 2536
 
         if CpuNum == 4:
-            FatorPixel = 2536
+            FatorPixel = 2400
 
         if CpuNum == 2:
-            FatorPixel = 2048
+            FatorPixel = 2200
 
         if CpuNum == 1:
-            FatorPixel = 1500
+            FatorPixel = 2200
 
         if LadoMaior > FatorPixel:
             print("Maior que "+str(FatorPixel)+"!")
@@ -191,7 +193,7 @@ def GeraModeloFotoDef(self, context):
 
         #bpy.data.images[ArquivoAtual].save()
 
-        bpy.context.scene.my_tool.path_photo = tmpdirIMagemgick+"/"
+            bpy.context.scene.my_tool.path_photo = tmpdirIMagemgick+"/"
 
     # TESTA CAMERA
 
