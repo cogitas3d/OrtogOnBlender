@@ -420,6 +420,32 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+    # TOMO FAKE
+
+    if ManufacturerLimpo == "'Unknown manufacturer'" and ManufacturerModelNameLimpo == "'Unknown model'":
+        print("FAKE CT-SCAN")
+
+
+        os.chdir(scn.my_tool.path+"/1")
+        scn.my_tool.path = os.getcwd()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "100"
+        bpy.context.scene.interesse_mole = "65"
+        bpy.context.scene.interesse_dentes = "200"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+        # ROTACIONA
+
+        bpy.ops.transform.rotate(value=3.14159, orient_axis='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+
     if ManufacturerLimpo == "'TOSHIBA'" and StationNameLimpo == "'ID_STATION'" and ManufacturerModelNameLimpo == "'Aquilion Lightning'":
         print("USA FIXED!")
         print("SÉRIE 3")
@@ -1592,18 +1618,18 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
-    if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'ct01'" and ManufacturerModelNameLimpo == "' Revolution ACT'":
+    if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'ct01'":
 #        print("USA FIXED!")
         print("SÉRIE 4")
         print("Bone: 200")
         print("SoftTissue: -300")
-        print("Teeth: 900") # 1430
+        print("Teeth: 1430")
         print("Condylus: 655")
 
 
         os.chdir(scn.my_tool.path+"/4")
         scn.my_tool.path = os.getcwd()
-        bpy.ops.object.corrige_dicom()
+ #       bpy.ops.object.corrige_dicom()
 
 #        bpy.ops.object.reduz_dimensao_dicom()
 
@@ -1613,7 +1639,7 @@ def IdentificaTomografo(Arquivo):
         # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
-        bpy.context.scene.interesse_dentes = "900" # 1430
+        bpy.context.scene.interesse_dentes = "1430"
 
         bpy.ops.object.gera_modelos_tomo()
 
