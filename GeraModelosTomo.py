@@ -1755,6 +1755,32 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+    if ManufacturerLimpo == "'Xoran Technologies ®'" and StationNameLimpo == "'FEN-TOMO16'" and ManufacturerModelNameLimpo == "'17-19'":
+        print("SÉRIE 1")
+        print("Bone: 180")
+        print("SoftTissue: -545")
+        print("Teeth: 585")
+
+        os.chdir(scn.my_tool.path+"/1")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "180"
+        bpy.context.scene.interesse_mole = "-545"
+        bpy.context.scene.interesse_dentes = "585"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+
     if ManufacturerLimpo == "'Xoran Technologies ®'" and StationNameLimpo == "'LAUDO002'" and ManufacturerModelNameLimpo == "'17-19'":
         print("SÉRIE 1")
         print("Bone: 245")
