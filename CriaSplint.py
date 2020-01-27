@@ -426,14 +426,38 @@ class VisualizaMaxMand(bpy.types.Operator):
 
 bpy.utils.register_class(VisualizaMaxMand)
 
+class MessageNaoConstaSplintPronto(bpy.types.Operator):
+    bl_idname = "object.dialog_operator_falta_splint_pronto"
+    bl_label = "Doesn't have SPLINT_pronto, rename it!"
+
+    def execute(self, context):
+        message = ("Doesn't have SPLINT_pronto, rename it!")
+        self.report({'INFO'}, message)
+        return {'FINISHED'}
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        return wm.invoke_props_dialog(self)
+
+bpy.utils.register_class(MessageNaoConstaSplintPronto)
 
 def BooleanSplintDef():
 
-    bpy.data.objects['MaxillaMand'].select_set(True)
+    bpy.ops.object.select_all(action='DESELECT')
     bpy.data.objects['SPLINT_pronto'].select_set(True)
+    bpy.context.view_layer.objects.active = bpy.data.objects['SPLINT_pronto']
+    bpy.context.object.name = "Splint_usado"
+    bpy.context.object.name = "Splint_usado"
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects['MaxillaMand'].select_set(True)
+    bpy.data.objects['Splint_usado'].select_set(True)
+
     bpy.context.view_layer.objects.active = bpy.data.objects['MaxillaMand']
     bpy.ops.object.booleana_osteo_geral()
     bpy.context.object.name = "Splint_result"
+
+
 
 class BooleanSplint(bpy.types.Operator):
     """Tooltip"""
@@ -453,8 +477,16 @@ class BooleanSplint(bpy.types.Operator):
                 return False
 
     def execute(self, context):
-        bpy.ops.object.duplica_max_mand()
-        BooleanSplintDef()
+
+        found = 'SPLINT_pronto' in bpy.data.objects
+
+        if found == True:
+            bpy.ops.object.duplica_max_mand()
+            BooleanSplintDef()
+
+        if found == False:
+            bpy.ops.object.dialog_operator_falta_splint_pronto('INVOKE_DEFAULT')
+
         return {'FINISHED'}
 
 bpy.utils.register_class(BooleanSplint)
