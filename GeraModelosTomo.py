@@ -3197,6 +3197,10 @@ def IdentificaTomografo(Arquivo):
         except:
             print("Doesn't have Patient Dir")
 
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "200"
+        bpy.context.scene.interesse_mole = "-300"
+        bpy.context.scene.interesse_dentes = "1430"
 
         bpy.ops.object.gera_modelos_tomo()
 
@@ -3248,6 +3252,10 @@ def IdentificaTomografo(Arquivo):
         except:
             print("Doesn't have Patient Dir")
 
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "200"
+        bpy.context.scene.interesse_mole = "-300"
+        bpy.context.scene.interesse_dentes = "1430"
 
         bpy.ops.object.gera_modelos_tomo()
 
@@ -3778,7 +3786,7 @@ def IdentificaTomografo(Arquivo):
 
         # Gera o 3D
         bpy.context.scene.interesse_ossos = "446"
-        bpy.context.scene.interesse_mole = "536"
+        bpy.context.scene.interesse_mole = "-536"
         bpy.context.scene.interesse_dentes = "982"
 
         bpy.ops.object.gera_modelos_tomo()
