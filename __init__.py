@@ -62,7 +62,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20200201a"
+VERSION = "20200204a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -2357,10 +2357,18 @@ class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
         linha.location=(200,30,0)
         linha.rotation=(1.5708,0,0)
 
+
         row = layout.row()
         row = layout.row()
         row.label(text="Upper Teeth:")
 
+        row = layout.row()
+        circle=row.operator("object.oculta_pontos_anatomicos", text="Hide Anatomical Points", icon="GHOST_DISABLED")
+
+        row = layout.row()
+        circle=row.operator("object.mostra_pontos_anatomicos", text="Show Anatomical Points", icon="GHOST_ENABLED")
+
+        row = layout.row()
         row = layout.row()
         linha=row.operator("object.tooth_8_pt", text="Tooth 8 (11)")
         linha=row.operator("object.tooth_9_pt", text="Tooth 9 (21)")
