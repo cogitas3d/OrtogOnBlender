@@ -1361,6 +1361,27 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+    if ManufacturerLimpo == "'SIEMENS'" and StationNameLimpo == "'CTAWP96809'" and ManufacturerModelNameLimpo == "'SOMATOM Definition AS+'":
+
+        os.chdir(scn.my_tool.path+"/2")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "450"
+        bpy.context.scene.interesse_mole = "-500"
+        bpy.context.scene.interesse_dentes = "1600"
+
+        bpy.ops.object.gera_modelos_tomo()
+
     if ManufacturerLimpo == "'SIEMENS'" and StationNameLimpo == "'CT2SQ'" and ManufacturerModelNameLimpo == "'SOMATOM Definition AS+'":
         print("SÉRIE 3")
         print("Bone: 200")
