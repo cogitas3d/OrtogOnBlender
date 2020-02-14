@@ -1,5 +1,6 @@
 import bpy
 from .PontosAnatomicos import *
+from .Cefalometria import *
 from .FerrMedidas import *
 from .FerrImgTomo import * # Importa tratamento de materiais
 from math import sqrt
@@ -9,6 +10,58 @@ from mathutils import Matrix, Vector
 from time import gmtime, strftime
 
 # PONTOS ANATOMICOS
+
+class Alar_Cheek_Groove_right_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.alar_cheek_groove_right_pt"
+    bl_label = "Alar Cheek Groove right"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Alar Cheek Groove right' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Alar Cheek Groove right', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Alar_Cheek_Groove_right_pt)
+
+
+class Alar_Cheek_Groove_left_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.alar_cheek_groove_left_pt"
+    bl_label = "Alar Cheek Groove left"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Alar Cheek Groove left' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoDef('Alar Cheek Groove left', 'Anatomical Points - Soft Tissue')
+        TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Alar_Cheek_Groove_left_pt)
+
 
 class Medial_Canthus_right_pt(bpy.types.Operator):
     """Tooltip"""
@@ -559,7 +612,7 @@ def CalculaDistsNarizDef():
         print("Já em modo objeto.")
 
     try:
-        ListaPontos = ['Tip of Nose', 'Subnasale','Radix', 'Anterior Nostril left', 'Posterior Nostril left', 'Anterior Nostril right', 'Posterior Nostril right','Rhinion', 'Alar Groove right', 'Alar Groove left', 'Supratip', 'Infratip Lobule', 'Alar Rim right', 'Alar Rim left', 'Columella right', 'Columella left']
+        ListaPontos = ['Tip of Nose', 'Subnasale','Radix', 'Anterior Nostril left', 'Posterior Nostril left', 'Anterior Nostril right', 'Posterior Nostril right','Rhinion', 'Alar Groove right', 'Alar Groove left', 'Supratip', 'Infratip Lobule', 'Alar Rim right', 'Alar Rim left', 'Columella right', 'Columella left', 'Alar Cheek Groove right', 'Alar Cheek Groove left']
 
         for i in ListaPontos:
     #            print("HÁ O NOME!", i.name)
@@ -580,15 +633,19 @@ def CalculaDistsNarizDef():
 
     try:
 
-        print(bpy.data.objects["Radix_COPY_MEDIDAS"].name)
-#        print(bpy.data.objects["Tip of Nose_COPY_MEDIDAS"].name)
-        print(bpy.data.objects["Subnasale_COPY_MEDIDAS"].name)
-        DistRadixTip = DistanciaObjetos("Radix_COPY_MEDIDAS", "Tip of Nose_COPY_MEDIDAS")
-        DistTipSub = DistanciaObjetos("Radix_COPY_MEDIDAS", "Subnasale_COPY_MEDIDAS")
-        print("DistRadixTip:", DistRadixTip)
-        print("DistTipSub:", DistTipSub)
 
-        ProporcaoNariz = DistRadixTip / DistTipSub
+        DistRadixTip = DistanciaObjetos("Radix_COPY_MEDIDAS", "Tip of Nose_COPY_MEDIDAS")
+
+        CursorToSelectedObjs("Alar Cheek Groove right", "Alar Cheek Groove left")
+
+        print("HHHHHHHHAAHAHAHHAHAHA")
+
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1, view_align=False, enter_editmode=False)
+        bpy.context.object.name = "Alar Cheek Groove MEIO"
+
+        DistTipAlar = DistanciaObjetos("Tip of Nose_COPY_MEDIDAS", "Alar Cheek Groove MEIO")
+
+        ProporcaoNariz = DistTipAlar / DistRadixTip
         print("ProporcaoNariz", ProporcaoNariz)
 
         bpy.types.Scene.rhin_prop_nariz = bpy.props.StringProperty \
@@ -597,6 +654,15 @@ def CalculaDistsNarizDef():
                 description = "Nose Proportion",
                 default = str(round(ProporcaoNariz, 2))
             )
+
+        # Apaga objeto criados
+
+        bpy.ops.object.select_all(action='DESELECT')
+        ObjetoAtual = bpy.data.objects["Alar Cheek Groove MEIO"]
+        ObjetoAtual.select_set(True)
+        bpy.context.view_layer.objects.active = ObjetoAtual
+        bpy.ops.object.delete(use_global=False)
+
     except:
         print("Problemas ao calcular a proporção do nariz.")
 
