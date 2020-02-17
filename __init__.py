@@ -62,7 +62,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20200214a"
+VERSION = "20200217a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -2435,6 +2435,47 @@ class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
         row.operator("anim.ortog_loc_rot", text="", icon="VIEW_CAMERA")
         row.operator("screen.animation_play", text="", icon="PLAY")
         row.operator("screen.frame_jump", text="End", icon="TRIA_RIGHT_BAR").end=True
+
+        row = layout.row()
+        row.label(text="Align with Models:")
+
+        row = layout.row()
+        linha=row.operator("object.prepara_mandibula_cm", text="Prepare Mandible", icon="MESH_DATA")
+
+        row = layout.row()
+        row.operator("import_mesh.stl", text="Import STL", icon="IMPORT")
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+        row = layout.row()
+        linha=row.operator("object.emp1a", text="Point 1a - Origin", icon="SORTBYEXT")
+
+        row = layout.row()
+        linha=row.operator("object.emp1b", text="Point 1b - Align", icon="SORTBYEXT")
+
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.emp2a", text="Point 2a - Origin", icon="SORTBYEXT")
+
+        row = layout.row()
+        linha=row.operator("object.emp2b", text="Point 2b - Align", icon="SORTBYEXT")
+
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.emp3a", text="Point 3a - Origin", icon="SORTBYEXT")
+
+        row = layout.row()
+        linha=row.operator("object.emp3b", text="Point 3b - Align", icon="SORTBYEXT")
+
+        row = layout.row()
+        linha=row.operator("object.alinha_tres_pontos", text="ALIGN!", icon="MESH_DATA")
+
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.finaliza_mandibula_cm", text="Finish Mandible", icon="MESH_DATA")
+
 
         row = layout.row()
         row.label(text="Mandible Collision:")

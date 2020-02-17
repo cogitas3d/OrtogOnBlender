@@ -1,6 +1,8 @@
 import bpy
 import math
 
+from .FerrMalhas import *
+
 # MENSAGENS
 
 class MessageSelecioneObjAlinhar(bpy.types.Operator):
@@ -800,3 +802,93 @@ class OcultaMole(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(OcultaMole)
+
+def PreparaMandibulaCmDef():
+
+    SelecionaObjeto("cm")
+
+    bpy.ops.object.duplicate()
+    bpy.context.object.name = "cm_COPY"
+
+    objeto = bpy.data.objects["cm_COPY"]
+    objeto.animation_data_clear()
+
+    bpy.data.objects["cm"].hide_viewport = True
+
+    ListaMateriais = []
+    MateriaisCena = bpy.data.materials
+
+    for i in MateriaisCena:
+        ListaMateriais.append(i.name)
+
+    for x in objeto.material_slots:
+        objeto.active_material_index = 0
+        bpy.ops.object.material_slot_remove()
+
+    if 'MatMandibulaAlinha' in ListaMateriais:
+        activeObject = objeto
+        mat = bpy.data.materials["MatMandibulaAlinha"]
+        activeObject.data.materials.append(mat)
+        bpy.context.object.active_material.diffuse_color = (0.19, 0.5, 0.8, 1)
+    else:
+        activeObject = objeto
+        mat = bpy.data.materials.new(name="MatMandibulaAlinha")
+        activeObject.data.materials.append(mat)
+        bpy.context.object.active_material.diffuse_color = (0.19, 0.5, 0.8, 1)
+
+class PreparaMandibulaCm(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.prepara_mandibula_cm"
+    bl_label = "Prepare Mandible cm"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'cm_COPY' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        PreparaMandibulaCmDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(PreparaMandibulaCm)
+
+
+def FinalizaMandibulaCmDef():
+
+    bpy.context.scene.frame_current = 100
+
+    bpy.data.objects["cm"].hide_viewport = False
+
+    SelecionaObjeto("cm")
+
+    cmCopyLoc = bpy.data.objects['cm_COPY'].location
+    cmCopyRoc = bpy.data.objects['cm_COPY'].rotation_euler
+
+    cm = bpy.data.objects['cm']
+    cm.location = cmCopyLoc
+    cm.rotation_euler = cmCopyRoc
+
+    bpy.ops.anim.ortog_loc_rot()
+
+    SelecionaObjeto("cm_COPY")
+    bpy.ops.object.delete(use_global=False)
+
+
+class FinalizaMandibulaCm(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.finaliza_mandibula_cm"
+    bl_label = "Finish Mandible cm"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        FinalizaMandibulaCmDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(FinalizaMandibulaCm)

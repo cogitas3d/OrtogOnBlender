@@ -103,3 +103,14 @@ class EntraEditModeLimpo(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(EntraEditModeLimpo)
+
+
+def SelecionaObjeto(NomeObjeto):
+
+    context = bpy.context
+    scn = context.scene
+
+    objeto = bpy.data.objects[NomeObjeto]
+    bpy.ops.object.select_all(action='DESELECT')
+    objeto.select_set(True)
+    context.view_layer.objects.active = objeto
