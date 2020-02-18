@@ -476,6 +476,27 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+    if ManufacturerLimpo == "'J.Morita.Mfg.Corp.'":
+
+        os.chdir(scn.my_tool.path+"/1007002")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "245"
+        bpy.context.scene.interesse_mole = "-315"
+        bpy.context.scene.interesse_dentes = "585"
+
+        bpy.ops.object.gera_modelos_tomo()
+
     if ManufacturerLimpo == "'TOSHIBA'" and StationNameLimpo == "'ID_STATION'" and ManufacturerModelNameLimpo == "'Activion16'":
         print("USA FIXED!")
         print("SÉRIE 5") # ou 6
@@ -3994,6 +4015,18 @@ def GeraModeloTomoAutoDef(self, context):
 	    os.chdir(scn.my_tool.path+"/35881")
     except:
         print("Dir 1005 doesn't exist")
+
+    try:
+	    os.chdir(scn.my_tool.path+"/1007002")
+    except:
+        print("Dir 1007002 doesn't exist")
+
+    try:
+	    os.chdir(scn.my_tool.path+"/001006002")
+    except:
+        print("Dir 001006002 doesn't exist")
+
+
 
     # Não usar o 1, dá erro!
 
