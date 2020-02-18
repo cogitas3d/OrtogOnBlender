@@ -2473,8 +2473,12 @@ class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
         linha=row.operator("object.alinha_tres_pontos", text="ALIGN!", icon="MESH_DATA")
 
         row = layout.row()
+        linha=row.operator("object.force_icp", text="Force ICP Align (Slow)", icon="TRACKING_REFINE_FORWARDS")
+
+        row = layout.row()
         row = layout.row()
         linha=row.operator("object.finaliza_mandibula_cm", text="Finish Mandible", icon="MESH_DATA")
+
 
 
         row = layout.row()
