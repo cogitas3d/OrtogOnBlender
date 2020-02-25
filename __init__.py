@@ -62,7 +62,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20200221b"
+VERSION = "20200225a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -2728,8 +2728,12 @@ class ORTOG_PT_GuideCreation(bpy.types.Panel):
         row.label(text="Splint:")
 
         row = layout.row()
+        row = layout.row()
         row.operator("object.splint_maxila_origi_mand_final", text="Maxilla-Origin Mandible-Final", icon="GROUP_BONE")
+        row = layout.row()
+        row.operator("object.splint_mand_origi_maxila_final", text="Mandible-Origin Maxilla-Final", icon="GROUP_BONE")
 
+        row = layout.row()
         row = layout.row()
         row.operator("screen.frame_jump", text="Start", icon="TRIA_LEFT_BAR").end=False
         row.operator("screen.animation_play", text="", icon="PLAY_REVERSE").reverse=True

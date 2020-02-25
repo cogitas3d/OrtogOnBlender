@@ -577,3 +577,61 @@ class SplintMaxilaOrigiMandFinal(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(SplintMaxilaOrigiMandFinal)
+
+
+def SplintMandOrigiMaxilaFinalDef():
+
+        context = bpy.context
+        scn = context.scene
+
+        SplintMantemKeyStart('cm', 110)
+        SplintMantemKeyEnd('ma', 110)
+
+        SplintMantemKeyEnd('ma', 120)
+        SplintMantemKeyEnd('cm', 120)
+
+        bpy.context.scene.tool_settings.transform_pivot_point = 'CURSOR'
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+
+        bpy.ops.object.select_all(action='DESELECT')
+        bpy.data.objects['Condyle Rotation Point'].select_set(True)
+        context.view_layer.objects.active = bpy.data.objects['Condyle Rotation Point']
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+
+        for area in bpy.context.screen.areas:
+            if area.type == 'VIEW_3D':
+                ctx = bpy.context.copy()
+                ctx['area'] = area
+                ctx['region'] = area.regions[-1]
+        #        bpy.ops.view3d.view_selected(ctx)
+                bpy.ops.view3d.snap_cursor_to_selected(ctx)
+                break
+                bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+
+        bpy.ops.object.select_all(action='DESELECT')
+        bpy.data.objects['cm'].select_set(True)
+        context.view_layer.objects.active = bpy.data.objects['cm']
+
+
+class SplintMandOrigiMaxilaFinal(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.splint_mand_origi_maxila_final"
+    bl_label = "Splint Mandible Origin Maxilla Final"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Condyle Rotation Point' in bpy.data.objects
+
+        if found == False:
+            return False
+        else:
+            if found == True:
+                return True
+
+    def execute(self, context):
+        SplintMandOrigiMaxilaFinalDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(SplintMandOrigiMaxilaFinal)
