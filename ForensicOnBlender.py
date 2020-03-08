@@ -22,7 +22,7 @@ class FORENSIC_PT_Fotogrametria(bpy.types.Panel):
 
         row = layout.row()
         col = layout.column(align=True)
-        col.prop(scn.my_tool, "path", text="")
+        col.prop(scn.my_tool, "path_photo", text="")
 
         col = self.layout.column(align = True)
         col.alignment = 'RIGHT'
@@ -86,19 +86,20 @@ class FORENSIC_PT_AlinhaFace(bpy.types.Panel):
         row.label(text="Align Points:")
 
         row = layout.row()
-        linha=row.operator("object.emp1b", text="Cantal Lateral Right", icon="SORTBYEXT")
+        linha=row.operator("object.emp1b", text="Point A", icon="SORTBYEXT")
 
         row = layout.row()
-        linha=row.operator("object.emp2b", text="Cantal Lateral Left", icon="SORTBYEXT")
+        linha=row.operator("object.emp2b", text="Point B", icon="SORTBYEXT")
 
         row = layout.row()
-        linha=row.operator("object.emp3b", text="Down Point", icon="SORTBYEXT")
+        linha=row.operator("object.emp3b", text="Align Point", icon="SORTBYEXT")
 
 #        row = layout.row()
 #        row.operator("object.cria_tres_pontos", text="3 Points Click", icon="OUTLINER_OB_MESH")
 
-        col = self.layout.column(align = True)
-        col.prop(context.scene, "medida_real2")
+        row = self.layout.row(align = True)
+        row.label(text="Distance A<>B:")
+        row.prop(context.scene, "medida_real2")
 
         row = layout.row()
         row.operator("object.alinha_forca", text="Align and Resize!", icon="ORIENTATION_LOCAL")
@@ -131,6 +132,33 @@ class FORENSIC_PT_AlinhaFace(bpy.types.Panel):
         circle=row.operator("object.bezier_corta_dupla", text="Cut Line Double!", icon="MOD_THICKNESS")
 
         row = layout.row()
+        row.label(text="Frankfurt Alignment:")
+
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+        row = layout.row()
+        circle=row.operator("object.renomeia_cranio", text="RENAME TO Bones!", icon="BONE_DATA")
+
+        row = layout.row()
+        row = layout.row()
+        linha=row.operator("object.orbital_right_pt", text="Orbital right")
+        linha=row.operator("object.orbital_left_pt", text="Orbital left")
+
+        row = layout.row()
+        linha=row.operator("object.n_pt", text="N point")
+        linha=row.operator("object.po_left", text="Po left")
+
+        row = layout.row()
+        row.operator("object.alinha_cranio_frankfurt", text="Align!", icon="ORIENTATION_LOCAL")
+
+        row = layout.row()
+        row = layout.row()
+        circle=row.operator("object.oculta_pontos_anatomicos", text="Hide Anatomical Points", icon="GHOST_DISABLED")
+
+        row = layout.row()
         row = layout.row()
         box = layout.box()
         col = box.column(align=True)
@@ -140,6 +168,7 @@ class FORENSIC_PT_AlinhaFace(bpy.types.Panel):
         row.operator("object.gera_dir_nome_paciente_alinha_face", text="SAVE!", icon="FILE_TICK")
 
 bpy.utils.register_class(FORENSIC_PT_AlinhaFace)
+
 
 class FORENSIC_PT_ColocaMarcadores(bpy.types.Panel):
     bl_label = "Soft Tissue Markers"
@@ -194,6 +223,12 @@ class FORENSIC_PT_ColocaMarcadores(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("object.engrossa_linha", text="Make Tube Line", icon="OUTLINER_OB_CURVE")
+
+        row = layout.row()
+        linha=row.operator("object.forensic_importa_luzes", text="ILLUMINATE!", icon="LIGHT_DATA")
+
+        row = layout.row()
+        linha=row.operator("object.ajusta_material_cranio", text="Skull Material Adjustment", icon="OUTLINER_OB_CURVE")
 
         row = layout.row()
         linha=row.operator("object.forensic_importa_olho", text="Import Eye", icon="HIDE_OFF")

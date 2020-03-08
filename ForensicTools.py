@@ -3,6 +3,7 @@ import re
 import platform
 
 from .PontosAnatomicos import *
+from .FerrImgTomo import *
 
 def AdicionaMarcadorDef(nome, distancia):
 
@@ -714,3 +715,134 @@ class GeraBaseSculpt(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(GeraBaseSculpt)
+
+
+class RenomeiaCranio(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.renomeia_cranio"
+    bl_label = "Rename Skull"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Bones' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        bpy.context.object.name = "Bones"
+        return {'FINISHED'}
+
+bpy.utils.register_class(RenomeiaCranio)
+
+class ForensicImportaLuzes(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_importa_luzes"
+    bl_label = "Import Forensic Lights"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    '''
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Temporalis' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+    '''
+
+    def execute(self, context):
+        ForensicImportaMuscleDef("ForensicLight", "Lights")
+        ForensicImportaMuscleDef("ForensicLight.001", "Lights")
+        ForensicImportaMuscleDef("ForensicLight.002", "Lights")
+        ForensicImportaMuscleDef("ForensicLight.003", "Lights")
+        ForensicImportaMuscleDef("ForensicLight.004", "Lights")
+
+        bpy.context.scene.eevee.use_gtao = True
+        bpy.context.scene.eevee.gtao_distance = 8
+        bpy.context.scene.eevee.use_gtao_bent_normals = False
+        # bpy.context.scene.eevee.use_bloom = True # NÃO FICA BOM!
+        bpy.context.scene.eevee.use_sss = True
+        bpy.context.scene.eevee.use_ssr = True
+        bpy.context.scene.eevee.use_ssr_refraction = True
+        bpy.context.scene.eevee.ssr_thickness = 3
+        bpy.context.scene.render.hair_type = 'STRIP'
+        bpy.context.scene.eevee.shadow_method = 'ESM'
+        bpy.context.scene.eevee.shadow_cube_size = '512'
+        bpy.context.scene.eevee.shadow_cascade_size = '512'
+        bpy.context.scene.eevee.use_soft_shadows = True
+        bpy.context.scene.eevee.light_threshold = 0.013
+        bpy.context.scene.view_settings.exposure = 0.2
+
+        bpy.context.space_data.shading.type = 'RENDERED'
+        return {'FINISHED'}
+
+bpy.utils.register_class(ForensicImportaLuzes)
+
+
+def CriaMaterialOssosDef():
+
+    m = Material()
+#    m.set_cycles()
+    # from chapter 1 of [DRM protected book, could not copy author/title]
+    m.make_material("Final_Bones")
+
+#    image_path = TmpDirPNG+"/"+Arquivo
+
+    ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
+    ImageTexture.image = bpy.data.images["scene_dense_mesh_texture_material_0_map_Kd.jpg"]
+
+
+    diffuseBSDF = m.nodes['Principled BSDF']
+    diffuseBSDF.inputs["Base Color"].default_value = [0.2, 0.2, 0.2, 1]
+    materialOutput = m.nodes['Material Output']
+
+    mixShader = m.makeNode('ShaderNodeMixShader', 'Mix Shader')
+    m.dump_node(mixShader)
+    mixShader.inputs['Fac'].default_value = 0.3
+
+    mixShader2 = m.makeNode('ShaderNodeMixShader', 'Mix Shader 2')
+    mixShader2.inputs['Fac'].default_value = 0.015
+
+    sssShader = m.makeNode('ShaderNodeSubsurfaceScattering', 'Subsurface Scattering')
+    sssShader.inputs[1].default_value = 20
+
+    glossyShader = m.makeNode('ShaderNodeBsdfGlossy', 'Glossy BSDF')
+    glossyShader.inputs[1].default_value = .15
+
+    m.link(diffuseBSDF, 'BSDF', mixShader, 2)
+    m.link(sssShader, 'BSSRDF', mixShader, 1)
+    m.link(glossyShader, 'BSDF', mixShader2, 2)
+    m.link(mixShader, 'Shader', mixShader2, 1)
+    m.link(mixShader2, 'Shader', materialOutput, 'Surface')
+    m.link(ImageTexture, 'Color', diffuseBSDF, 'Base Color')
+    m.link(ImageTexture, 'Color', sssShader, 'Color')
+
+    bpy.ops.object.material_slot_remove()
+    bpy.ops.object.material_slot_add()
+
+    bpy.data.objects["Bones"].active_material = bpy.data.materials["Final_Bones"]
+
+#    bpy.data.objects[bpy.context.view_layer.objects.active.name].active_material = bpy.data.materials["Final_Bones"]
+
+
+class CriaMaterialOssos(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.ajusta_material_cranio"
+    bl_label = "Skull Material Adjustament"
+    bl_options = {'REGISTER', 'UNDO'}
+
+
+    def execute(self, context):
+        CriaMaterialOssosDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(CriaMaterialOssos)
