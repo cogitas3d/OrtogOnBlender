@@ -168,7 +168,7 @@ def GeraModeloFotoDef(self, context):
 
         LadoMaior = max(ImgDim0, ImgDim1)
 
-        
+
         CpuNum = multiprocessing.cpu_count()
 
         if CpuNum >= 8:
@@ -194,7 +194,7 @@ def GeraModeloFotoDef(self, context):
         #bpy.data.images[ArquivoAtual].save()
 
             bpy.context.scene.my_tool.path_photo = tmpdirIMagemgick+"/"
-            
+
 
             if platform.system() == "Windows":
                     subprocess.call('C:\OrtogOnBlender\ImageMagick\convert -resize '+str(100/FatorDivisao)+'% '+tmpdirFotos+'\\'+ArquivoAtual+' '+tmpdirIMagemgick+'\\'+ArquivoAtual, shell=True) # O convert zoa os dados do EXIF no Windows!
@@ -239,7 +239,7 @@ def GeraModeloFotoDef(self, context):
 
             if platform.system() == "Windows":
                 print(mypath)
-                
+
                 subprocess.call(['C:\OrtogOnBlender\ExitTool\exiftool.exe', '-all=', mypath]) # Necessário pq o convert zoa os dados do EXIF no Windows!
                 print("Exif apagado tudo!")
                 subprocess.call(['C:\OrtogOnBlender\ExitTool\exiftool.exe', '-overwrite_original', '-Model=Z00AD', '-FocalLength=4', mypath+'*']) # Solução colocando o 4 sem as aspas duplas!

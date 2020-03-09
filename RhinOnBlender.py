@@ -2,6 +2,7 @@ import bpy
 import platform
 from .__init__ import *
 from .RhinTools import *
+from .Version import *
 from .RhinOpenGL import *
 
 class RHIN_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -287,6 +288,12 @@ class RHIN_PT_PontosAnatomicos(bpy.types.Panel):
         linha=row.operator("object.tip_nose_pt", text="Tip of Nose")
 
         row = layout.row()
+        linha=row.operator("object.alar_cheek_groove_right_pt", text="Alar Cheek Groove right")
+
+        row = layout.row()
+        linha=row.operator("object.alar_cheek_groove_left_pt", text="Alar Cheek Groove left")
+
+        row = layout.row()
         linha=row.operator("object.subnasale_pt", text="Subnasale")
 
         row = layout.row()
@@ -473,7 +480,11 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         row = col.row()
         linha=row.operator("object.radix_pt", text="Radix")
         linha=row.operator("object.tip_nose_pt", text="Tip of Nose")
-        linha=row.operator("object.subnasale_pt", text="Subnasale")
+#        linha=row.operator("object.subnasale_pt", text="Subnasale")
+        row = col.row()
+        linha=row.operator("object.alar_cheek_groove_right_pt", text="Alar Cheek Groove right")
+        row = col.row()
+        linha=row.operator("object.alar_cheek_groove_left_pt", text="Alar Cheek Groove left")
         row = col.row()
         row.scale_y=1.0
         row.alignment = 'RIGHT'

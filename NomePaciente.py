@@ -8,7 +8,7 @@ class PatientName(bpy.types.Operator):
     bl_idname = "object.dialog_operator_patient_name"
     bl_label = "Please, write the patient's name and surname to save!"
 
-  
+
     def execute(self, context):
         message = ("Teste")
         self.report({'INFO'}, message)
@@ -31,7 +31,7 @@ def NomePacienteDef(self, context):
     obj = context.object
     scn = context.scene
 
-    
+
 #    scene = context.scene
 #    rd = scene.render
 
@@ -52,7 +52,7 @@ def NomePacienteDef(self, context):
             os.mkdir(NomePacienteDir)
             bpy.ops.wm.save_as_mainfile(filepath=homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Base-"+NomePaciente+"_"+SobrenomePaciente+".blend")
             print("Diretorio "+NomePaciente+"_"+SobrenomePaciente+" criado!")
-    
+
     else:
         bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
 
@@ -69,7 +69,7 @@ class NomePaciente(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -86,7 +86,7 @@ class NomePaciente(bpy.types.Operator):
         else:
             if os.path.exists(NomePacienteDir):
                 return False
-    
+
     def execute(self, context):
         NomePacienteDef(self, context)
         return {'FINISHED'}
@@ -100,7 +100,7 @@ def NomePacienteVoxelDef(self, context):
     obj = context.object
     scn = context.scene
 
-    
+
 #    scene = context.scene
 #    rd = scene.render
 
@@ -133,7 +133,7 @@ class NomePacienteVoxel(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -169,7 +169,7 @@ def NomePacienteTomoDef(self, context):
     obj = context.object
     scn = context.scene
 
-    
+
 #    scene = context.scene
 #    rd = scene.render
 
@@ -202,7 +202,7 @@ class NomePacienteTomo(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -234,7 +234,7 @@ def NomePacienteTomoAutoDef(self, context):
     obj = context.object
     scn = context.scene
 
-    
+
 #    scene = context.scene
 #    rd = scene.render
 
@@ -267,7 +267,7 @@ class NomePacienteTomoAuto(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -327,7 +327,7 @@ class NomePacienteArc(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -387,7 +387,7 @@ class NomePacienteRef(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -447,7 +447,7 @@ class NomePacienteSeg(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -507,7 +507,7 @@ class NomePacienteFotogram(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -567,7 +567,7 @@ class NomePacienteAlinhaFace(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -627,7 +627,7 @@ class NomePacienteAlinhaFotoTomo(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -659,7 +659,7 @@ def NomePacientePointsHeadDef(self, context):
     obj = context.object
     scn = context.scene
 
-    
+
 #    scene = context.scene
 #    rd = scene.render
 
@@ -692,7 +692,7 @@ class NomePacientePointsHead(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -727,7 +727,7 @@ def NomePacientePointsMaxillaDef(self, context):
     obj = context.object
     scn = context.scene
 
-    
+
 #    scene = context.scene
 #    rd = scene.render
 
@@ -760,7 +760,7 @@ class NomePacientePointsMaxilla(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -794,7 +794,7 @@ def NomePacientePointsMandibleDef(self, context):
     obj = context.object
     scn = context.scene
 
-    
+
 #    scene = context.scene
 #    rd = scene.render
 
@@ -827,7 +827,7 @@ class NomePacientePointsMandible(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -861,7 +861,7 @@ def NomePacientePointsTeethDef(self, context):
     obj = context.object
     scn = context.scene
 
-    
+
 #    scene = context.scene
 #    rd = scene.render
 
@@ -894,7 +894,7 @@ class NomePacientePointsTeeth(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -928,7 +928,7 @@ def NomePacientePointsSoftDef(self, context):
     obj = context.object
     scn = context.scene
 
-    
+
 #    scene = context.scene
 #    rd = scene.render
 
@@ -961,7 +961,7 @@ class NomePacientePointsSoft(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -995,7 +995,7 @@ def NomePacienteOsteotomyDef(self, context):
     obj = context.object
     scn = context.scene
 
-    
+
 #    scene = context.scene
 #    rd = scene.render
 
@@ -1028,7 +1028,7 @@ class NomePacienteOsteotomy(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -1062,7 +1062,7 @@ def NomePacienteDynamicDef(self, context):
     obj = context.object
     scn = context.scene
 
-    
+
 #    scene = context.scene
 #    rd = scene.render
 
@@ -1095,7 +1095,7 @@ class NomePacienteDynamic(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -1129,7 +1129,7 @@ def NomePacienteKinematicDef(self, context):
     obj = context.object
     scn = context.scene
 
-    
+
 #    scene = context.scene
 #    rd = scene.render
 
@@ -1162,7 +1162,7 @@ class NomePacienteKinematic(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -1197,7 +1197,7 @@ def NomePacienteGuideDef(self, context):
     obj = context.object
     scn = context.scene
 
-    
+
 #    scene = context.scene
 #    rd = scene.render
 
@@ -1230,7 +1230,7 @@ class NomePacienteGuide(bpy.types.Operator):
         obj = context.object
         scn = context.scene
 
-        
+
     #    scene = context.scene
     #    rd = scene.render
 
@@ -1254,6 +1254,206 @@ class NomePacienteGuide(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(NomePacienteGuide)
+
+
+def NomePacienteMarkersDef(self, context):
+
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+
+#    scene = context.scene
+#    rd = scene.render
+
+    homeDir = expanduser("~")
+
+    NomePaciente = bpy.context.scene.nome_paciente
+    SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+    if NomePaciente == "" and SobrenomePaciente == "":
+        bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
+
+    else:
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Markers-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+        if not os.path.exists(NomePacienteFile):
+            bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
+            print("Arquivo da tomografia criado!")
+
+
+class NomePacienteMarkers(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_dir_nome_paciente_markers"
+    bl_label = "Gera Nome Dir Nome Paciente Markers"
+
+    @classmethod
+    def poll(cls, context):
+
+#        found = 'Orbital right' in bpy.data.objects
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+
+    #    scene = context.scene
+    #    rd = scene.render
+
+        homeDir = expanduser("~")
+
+        NomePaciente = bpy.context.scene.nome_paciente
+        SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Markers-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+#        if found == False:
+        if not os.path.exists(NomePacienteFile):
+            return True
+        else:
+            if os.path.exists(NomePacienteFile):
+                return False
+
+
+    def execute(self, context):
+        NomePacienteMarkersDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(NomePacienteMarkers)
+
+
+def NomePacienteMusclesDef(self, context):
+
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+
+#    scene = context.scene
+#    rd = scene.render
+
+    homeDir = expanduser("~")
+
+    NomePaciente = bpy.context.scene.nome_paciente
+    SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+    if NomePaciente == "" and SobrenomePaciente == "":
+        bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
+
+    else:
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Muscles-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+        if not os.path.exists(NomePacienteFile):
+            bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
+            print("Arquivo da tomografia criado!")
+
+
+class NomePacienteMuscles(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_dir_nome_paciente_muscles"
+    bl_label = "Gera Nome Dir Nome Paciente Muscles"
+
+    @classmethod
+    def poll(cls, context):
+
+#        found = 'Orbital right' in bpy.data.objects
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+
+    #    scene = context.scene
+    #    rd = scene.render
+
+        homeDir = expanduser("~")
+
+        NomePaciente = bpy.context.scene.nome_paciente
+        SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Muscles-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+#        if found == False:
+        if not os.path.exists(NomePacienteFile):
+            return True
+        else:
+            if os.path.exists(NomePacienteFile):
+                return False
+
+
+    def execute(self, context):
+        NomePacienteMusclesDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(NomePacienteMuscles)
+
+
+
+def NomePacienteSculptDef(self, context):
+
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+
+#    scene = context.scene
+#    rd = scene.render
+
+    homeDir = expanduser("~")
+
+    NomePaciente = bpy.context.scene.nome_paciente
+    SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+    if NomePaciente == "" and SobrenomePaciente == "":
+        bpy.ops.object.dialog_operator_patient_name('INVOKE_DEFAULT')
+
+    else:
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Sculpt-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+        if not os.path.exists(NomePacienteFile):
+            bpy.ops.wm.save_as_mainfile(filepath=NomePacienteFile)
+            print("Arquivo da tomografia criado!")
+
+
+class NomePacienteSculpt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_dir_nome_paciente_sculpt"
+    bl_label = "Gera Nome Dir Nome Paciente Sculpt"
+
+    @classmethod
+    def poll(cls, context):
+
+#        found = 'Orbital right' in bpy.data.objects
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+
+    #    scene = context.scene
+    #    rd = scene.render
+
+        homeDir = expanduser("~")
+
+        NomePaciente = bpy.context.scene.nome_paciente
+        SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+        NomePacienteFile = str(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Sculpt-"+NomePaciente+"_"+SobrenomePaciente+".blend")
+
+#        if found == False:
+        if not os.path.exists(NomePacienteFile):
+            return True
+        else:
+            if os.path.exists(NomePacienteFile):
+                return False
+
+
+    def execute(self, context):
+        NomePacienteSculptDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(NomePacienteSculpt)
+
 
 bpy.utils.register_class(NomePaciente)
 bpy.utils.register_class(NomePacienteTomo)

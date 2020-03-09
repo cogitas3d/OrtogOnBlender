@@ -1,7 +1,74 @@
 import bpy
 import platform
-
+from .__init__ import *
 from .ForensicTools import *
+from .Version import *
+
+class FORENSIC_PT_AtualizaAddonSec(bpy.types.Panel):
+    bl_label = "Upgrade Script"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Forensic"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        row = layout.row()
+        row.label(text="VERSION: "+VERSION)
+
+        row = layout.row()
+        row.operator("object.atualiza_script", text="UPGRADE FORENSIC!", icon="RECOVER_LAST")
+
+bpy.utils.register_class(FORENSIC_PT_AtualizaAddonSec)
+
+
+class FORENSIC_PT_NomePaciente(bpy.types.Panel):
+    bl_label = "Patient's Name"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Forensic"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+#        scene = context.scene
+#        rd = scene.render
+
+#        row = layout.row()
+#        row.label(text="CT-Scan Reconstruction:")
+
+#        col = layout.column(align=True)
+#        col.prop(scn.my_tool, "path", text="")
+
+        row = layout.row()
+#        row.operator("object.tomo_heli", text="CT-Scan")
+#        row.operator("object.tomo_cone", text="CBCT")
+
+        col = self.layout.column(align = True)
+        col.prop(context.scene, "nome_paciente")
+
+        col = self.layout.column(align = True)
+        col.prop(context.scene, "sobrenome_paciente")
+
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente", text="SAVE!", icon="FILE_TICK")
+
+bpy.utils.register_class(FORENSIC_PT_NomePaciente)
+
 
 class FORENSIC_PT_Fotogrametria(bpy.types.Panel):
     bl_label = "Photogrammetry Start"
@@ -233,7 +300,17 @@ class FORENSIC_PT_ColocaMarcadores(bpy.types.Panel):
         row = layout.row()
         linha=row.operator("object.forensic_importa_olho", text="Import Eye", icon="HIDE_OFF")
 
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente_markers", text="SAVE!", icon="FILE_TICK")
+
 bpy.utils.register_class(FORENSIC_PT_ColocaMarcadores)
+
 
 bpy.types.Scene.nome_marcador = bpy.props.StringProperty \
   (
@@ -311,6 +388,14 @@ class FORENSIC_PT_Musculos(bpy.types.Panel):
         row = layout.row()
         linha=row.operator("object.forensic_copia_espelha", text="Copy & Mirror", icon="MOD_TRIANGULATE")
 
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente_muscles", text="SAVE!", icon="FILE_TICK")
 
 bpy.utils.register_class(FORENSIC_PT_Musculos)
 
@@ -356,5 +441,14 @@ class FORENSIC_PT_FaceBasica(bpy.types.Panel):
 
         row = layout.row()
         linha=row.operator("object.mode_set", text="OK! (Object Mode)", icon="META_CUBE").mode='OBJECT'
+
+        row = layout.row()
+        row = layout.row()
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.scale_y=1.5
+        row.alignment = 'CENTER'
+        row.operator("object.gera_dir_nome_paciente_sculpt", text="SAVE!", icon="FILE_TICK")
 
 bpy.utils.register_class(FORENSIC_PT_FaceBasica)

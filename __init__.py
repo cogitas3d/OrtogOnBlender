@@ -24,6 +24,7 @@ else:
     from .GeraModelosTomo import *
     from .AjustaTomo import *
     from .OrtogMeshes import *
+    from .Version import *
     from .FerrSegmentacao import *
     from .FerrMedidas import *
     from .BooleanaOsteo import *
@@ -62,7 +63,7 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-VERSION = "20200308a"
+# VERSION = "20200309a"
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):

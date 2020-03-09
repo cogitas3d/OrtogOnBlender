@@ -527,6 +527,8 @@ def CopiaEspelhaDef():
     obj = context.active_object
     scn = context.scene
 
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+
     bpy.ops.object.mode_set(mode='OBJECT')
     bpy.context.scene.tool_settings.transform_pivot_point = 'MEDIAN_POINT'
     bpy.ops.object.duplicate_move()
@@ -652,6 +654,8 @@ class ForensicEsculturaSmooth(bpy.types.Operator):
 
 bpy.utils.register_class(ForensicEsculturaSmooth)
 
+
+
 def GeraBaseSculptDef():
 
     # Usuário seleciona tudo
@@ -740,24 +744,24 @@ class RenomeiaCranio(bpy.types.Operator):
 
 bpy.utils.register_class(RenomeiaCranio)
 
+
+
 class ForensicImportaLuzes(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.forensic_importa_luzes"
     bl_label = "Import Forensic Lights"
     bl_options = {'REGISTER', 'UNDO'}
 
-    '''
     @classmethod
     def poll(cls, context):
 
-        found = 'Temporalis' in bpy.data.objects
+        found = 'ForensicLight' in bpy.data.objects
 
         if found == False:
             return True
         else:
             if found == True:
                 return False
-    '''
 
     def execute(self, context):
         ForensicImportaMuscleDef("ForensicLight", "Lights")
@@ -840,6 +844,16 @@ class CriaMaterialOssos(bpy.types.Operator):
     bl_label = "Skull Material Adjustament"
     bl_options = {'REGISTER', 'UNDO'}
 
+    @classmethod
+    def poll(cls, context):
+
+        found = bpy.data.objects["Bones"].active_material.name
+
+        if found == "Final_Bones":
+            return False
+        else:
+            if found != "Final_Bones":
+                return True
 
     def execute(self, context):
         CriaMaterialOssosDef()
