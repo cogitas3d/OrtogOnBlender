@@ -4,13 +4,14 @@ import os.path
 import json
 import re
 import shutil
-from datetime import datetime
+# from datetime import datetime
 import tempfile
 import os
 import platform
 import subprocess
 import pydicom as dicom
 import csv
+from os.path import expanduser
 
 from .GeraModelosTomo import *
 
@@ -336,6 +337,8 @@ def CorrigeDicomDef(self, context):
 
     scn = context.scene
 
+    homeall = expanduser("~")
+
     if scn.my_tool.path == "":
         bpy.ops.object.dialog_operator_informe_dicom('INVOKE_DEFAULT')
         return {'FINISHED'}
@@ -353,7 +356,7 @@ def CorrigeDicomDef(self, context):
     #        print("TOMO AJUSTADA PELO GDCM")
 
         if platform.system() == "Darwin":
-            os.system("/OrtogOnBlender/vtk-dicom/./dicomtodicom --verbose -o FIXED *")
+            os.system(homeall+"/Programs/OrtogOnBlender/vtk-dicom/./dicomtodicom --verbose -o FIXED *")
         print("DICOM FIXED")
 
         if platform.system() == "Windows":

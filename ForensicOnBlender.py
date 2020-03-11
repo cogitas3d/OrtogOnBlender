@@ -27,8 +27,8 @@ class FORENSIC_PT_AtualizaAddonSec(bpy.types.Panel):
 bpy.utils.register_class(FORENSIC_PT_AtualizaAddonSec)
 
 
-class FORENSIC_PT_NomePaciente(bpy.types.Panel):
-    bl_label = "Patient's Name"
+class FORENSIC_PT_NomeReconstrucao(bpy.types.Panel):
+    bl_label = "Reconstruction Data"
     bl_region_type = 'UI'
     bl_space_type = 'VIEW_3D'
     bl_options = {'DEFAULT_CLOSED'}
@@ -67,7 +67,7 @@ class FORENSIC_PT_NomePaciente(bpy.types.Panel):
         row.alignment = 'CENTER'
         row.operator("object.gera_dir_nome_paciente", text="SAVE!", icon="FILE_TICK")
 
-bpy.utils.register_class(FORENSIC_PT_NomePaciente)
+bpy.utils.register_class(FORENSIC_PT_NomeReconstrucao)
 
 
 class FORENSIC_PT_Fotogrametria(bpy.types.Panel):
@@ -452,3 +452,23 @@ class FORENSIC_PT_FaceBasica(bpy.types.Panel):
         row.operator("object.gera_dir_nome_paciente_sculpt", text="SAVE!", icon="FILE_TICK")
 
 bpy.utils.register_class(FORENSIC_PT_FaceBasica)
+
+
+class FORENSIC_PT_Importa(bpy.types.Panel):
+    bl_label = "Import Face"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Forensic"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        row = layout.row()
+        row.operator("object.forensic_gera_imagem", text="Render Viewport", icon="IMAGE_RGB_ALPHA")
+
+bpy.utils.register_class(FORENSIC_PT_Importa)

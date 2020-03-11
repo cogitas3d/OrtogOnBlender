@@ -1,6 +1,9 @@
 import bpy
 import re
 import platform
+import subprocess
+
+from datetime import datetime
 
 from .PontosAnatomicos import *
 from .FerrImgTomo import *
@@ -860,3 +863,68 @@ class CriaMaterialOssos(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(CriaMaterialOssos)
+
+
+def ForensicGeraImagemDef():
+
+
+    context = bpy.context
+    scn = context.scene
+
+    homeDir = expanduser("~")
+
+    NomeArquivoImagem = "IMG_"+str(datetime.now()).replace(",","").replace(":","").replace(".","-").replace(" ","-")+".png"
+
+    NomePaciente = bpy.context.scene.nome_paciente
+    SobrenomePaciente = bpy.context.scene.sobrenome_paciente
+
+    NomePacienteDir = homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Render"
+
+#        if found == False:
+    if not os.path.exists(NomePacienteDir):
+        print("Patience Dir does not exist!")
+        try:
+            os.mkdir(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Render")
+            bpy.ops.render.opengl()
+
+            bpy.data.images['Render Result'].save_render(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Render/"+NomeArquivoImagem)
+
+            CaminhoCompletoImagem = homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Render/"+NomeArquivoImagem
+
+            if platform.system() == 'Darwin':
+                subprocess.call(('open', CaminhoCompletoImagem))
+            elif platform.system() == 'Windows':
+                os.startfile(CaminhoCompletoImagem)
+            else:
+                subprocess.call(('xdg-open', CaminhoCompletoImagem))
+
+        except:
+            print("Não rolou a renderização!")
+    else:
+        if os.path.exists(NomePacienteDir):
+            #shutil.copytree(Origem, NomePacienteDir+"/Render")
+
+            bpy.ops.render.opengl()
+
+            bpy.data.images['Render Result'].save_render(homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Render/"+NomeArquivoImagem)
+
+            CaminhoCompletoImagem = homeDir+"/OrtogOnBlenderDir/"+NomePaciente+"_"+SobrenomePaciente+"/Render/"+NomeArquivoImagem
+
+            if platform.system() == 'Darwin':
+                subprocess.call(('open', CaminhoCompletoImagem))
+            elif platform.system() == 'Windows':
+                os.startfile(CaminhoCompletoImagem)
+            else:
+                subprocess.call(('xdg-open', CaminhoCompletoImagem))
+
+class ForensicGeraImagem(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_gera_imagem"
+    bl_label = "Forensic Render Image"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        ForensicGeraImagemDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(ForensicGeraImagem)

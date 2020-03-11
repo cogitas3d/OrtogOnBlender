@@ -989,8 +989,9 @@ class ORTOG_PT_AlinhaFace(bpy.types.Panel):
 #        row = layout.row()
 #        row.operator("object.cria_tres_pontos", text="3 Points Click", icon="OUTLINER_OB_MESH")
 
-        col = self.layout.column(align = True)
-        col.prop(context.scene, "medida_real2")
+        row = self.layout.row(align = True)
+        row.label(text="Real Size:")
+        row.prop(context.scene, "medida_real2")
 
         row = layout.row()
         row.operator("object.alinha_forca", text="Align and Resize!", icon="ORIENTATION_LOCAL")
@@ -3086,7 +3087,7 @@ def register():
     bpy.utils.register_class(ORTOG_PT_Osteotomia)
     bpy.types.Scene.medida_real2 = bpy.props.StringProperty \
       (
-        name = "Real Size",
+        name = "",
         description = "Real size distance between eyes",
         default = "None"
       )
