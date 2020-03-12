@@ -928,3 +928,135 @@ class ForensicGeraImagem(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(ForensicGeraImagem)
+
+def ForensicImportaOBJDef():
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    bpy.ops.import_scene.obj(filepath=scn.my_tool.filepathobj, filter_glob="*.obj;*.mtl", use_edges=True, use_smooth_groups=True, use_split_objects=True, use_split_groups=False, use_groups_as_vgroups=False, use_image_search=True, split_mode='ON', global_clight_size=0, axis_forward='-Z', axis_up='Y')
+
+    bpy.ops.transform.resize(value=(101, 101, 101), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+
+    NomeOBJ = scn.my_tool.filepathobj.split("/")[-1].split(".")[0] # Separa o nome do objeto
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects[NomeOBJ].select_set(True)
+    context.view_layer.objects.active = bpy.data.objects[NomeOBJ]
+
+    bpy.ops.transform.translate(value=(0, 0, -1481.77), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(False, False, True), mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+
+    # Apaga olhos
+
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='DESELECT')
+
+    ListaMaterial = []
+
+    for i in bpy.data.objects['mulher3'].material_slots:
+        ListaMaterial.append(i.name)
+
+    IndexMaterial = ListaMaterial.index('Eye_brown')
+
+    bpy.data.objects['mulher3'].active_material_index = IndexMaterial
+    bpy.ops.object.material_slot_select()
+    bpy.ops.mesh.delete(type='VERT')
+    bpy.ops.object.mode_set(mode='OBJECT')
+
+    # Atribui modificadores
+
+    bpy.ops.object.shade_smooth()
+    bpy.ops.object.modifier_add(type='MULTIRES')
+    bpy.ops.object.multires_subdivide(modifier="Multires")
+
+
+    bpy.ops.view3d.view_all(center=False)
+
+    # Criando material da pele
+
+    bpy.data.objects['mulher3'].active_material_index = 0
+    MaterialPeleNativo = bpy.data.objects['mulher3'].active_material
+    NomeTextura = MaterialPeleNativo.node_tree.nodes['Image Texture'].image.name
+
+#    mat = bpy.data.materials.get(MaterialPeleNativo)
+#    nodes = mat.node_tree.nodes
+#    node = nodes.new('ShaderNodeSubsurfaceScattering')
+
+
+
+    m = Material()
+#    m.set_cycles()
+    # from chapter 1 of [DRM protected book, could not copy author/title]
+    m.make_material("Final_Skin")
+
+#    image_path = TmpDirPNG+"/"+Arquivo
+
+
+    ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
+    ImageTexture.image = bpy.data.images[NomeTextura]
+
+
+    diffuseBSDF = m.nodes['Principled BSDF']
+    diffuseBSDF.inputs["Base Color"].default_value = [0.2, 0.2, 0.2, 1]
+    materialOutput = m.nodes['Material Output']
+
+    mixShader = m.makeNode('ShaderNodeMixShader', 'Mix Shader')
+    m.dump_node(mixShader)
+    mixShader.inputs['Fac'].default_value = 0.3
+
+    mixShader2 = m.makeNode('ShaderNodeMixShader', 'Mix Shader 2')
+    mixShader2.inputs['Fac'].default_value = 0.07 # Glossy
+
+    sssShader = m.makeNode('ShaderNodeSubsurfaceScattering', 'Subsurface Scattering')
+    sssShader.inputs[1].default_value = 20
+
+    glossyShader = m.makeNode('ShaderNodeBsdfGlossy', 'Glossy BSDF')
+    glossyShader.inputs[1].default_value = .35
+
+    m.link(diffuseBSDF, 'BSDF', mixShader, 2)
+    m.link(sssShader, 'BSSRDF', mixShader, 1)
+    m.link(glossyShader, 'BSDF', mixShader2, 2)
+    m.link(mixShader, 'Shader', mixShader2, 1)
+    m.link(mixShader2, 'Shader', materialOutput, 'Surface')
+    m.link(ImageTexture, 'Color', diffuseBSDF, 'Base Color')
+    m.link(ImageTexture, 'Color', sssShader, 'Color')
+
+    bpy.ops.object.material_slot_add()
+
+    bpy.data.objects[NomeOBJ].active_material = bpy.data.materials["Final_Skin"]
+
+    # Atribui material
+
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='DESELECT')
+
+    bpy.data.objects['mulher3'].active_material_index = 0
+    bpy.ops.object.material_slot_select()
+
+    ListaMaterial2 = []
+
+    for i in bpy.data.objects['mulher3'].material_slots:
+        ListaMaterial2.append(i.name)
+
+    IndexMaterial2 = ListaMaterial2.index('Final_Skin')
+
+    bpy.data.objects['mulher3'].active_material_index = IndexMaterial2
+
+    bpy.ops.object.material_slot_assign()
+
+    bpy.ops.object.mode_set(mode='OBJECT')
+
+
+
+class ForensicImportaOBJ(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.forensic_importa_obj"
+    bl_label = "Forensic Import OBJ"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        ForensicImportaOBJDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(ForensicImportaOBJ)

@@ -471,4 +471,15 @@ class FORENSIC_PT_Importa(bpy.types.Panel):
         row = layout.row()
         row.operator("object.forensic_gera_imagem", text="Render Viewport", icon="IMAGE_RGB_ALPHA")
 
+        row = layout.row()
+        row.label(text="Import OBJ:")
+
+        row = layout.row()
+        col = layout.column(align=True)
+        col.prop(scn.my_tool, "filepathobj", text="")
+
+        row = layout.row()
+        row.operator("object.forensic_importa_obj", text="Import MakeHuman OBJ", icon="SCENE_DATA")
+
+
 bpy.utils.register_class(FORENSIC_PT_Importa)

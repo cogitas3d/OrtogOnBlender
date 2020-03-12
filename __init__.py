@@ -151,6 +151,12 @@ class ORTOG_UI_Local(PropertyGroup):
         maxlen=1024,
         subtype='FILE_PATH')
 
+    filepathobj = StringProperty(
+        name="",
+        description="Select File",
+        maxlen=1024,
+        subtype='FILE_PATH')
+
 # IMPORTA TOMO MOLDES
 
 class ENUM_VALUES_CTSCAN:
