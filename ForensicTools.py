@@ -954,12 +954,12 @@ def ForensicImportaOBJDef():
 
     ListaMaterial = []
 
-    for i in bpy.data.objects['mulher3'].material_slots:
+    for i in bpy.data.objects[NomeOBJ].material_slots:
         ListaMaterial.append(i.name)
 
     IndexMaterial = ListaMaterial.index('Eye_brown')
 
-    bpy.data.objects['mulher3'].active_material_index = IndexMaterial
+    bpy.data.objects[NomeOBJ].active_material_index = IndexMaterial
     bpy.ops.object.material_slot_select()
     bpy.ops.mesh.delete(type='VERT')
     bpy.ops.object.mode_set(mode='OBJECT')
@@ -975,27 +975,15 @@ def ForensicImportaOBJDef():
 
     # Criando material da pele
 
-    bpy.data.objects['mulher3'].active_material_index = 0
-    MaterialPeleNativo = bpy.data.objects['mulher3'].active_material
+    bpy.data.objects[NomeOBJ].active_material_index = 0
+    MaterialPeleNativo = bpy.data.objects[NomeOBJ].active_material
     NomeTextura = MaterialPeleNativo.node_tree.nodes['Image Texture'].image.name
 
-#    mat = bpy.data.materials.get(MaterialPeleNativo)
-#    nodes = mat.node_tree.nodes
-#    node = nodes.new('ShaderNodeSubsurfaceScattering')
-
-
-
     m = Material()
-#    m.set_cycles()
-    # from chapter 1 of [DRM protected book, could not copy author/title]
     m.make_material("Final_Skin")
-
-#    image_path = TmpDirPNG+"/"+Arquivo
-
 
     ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
     ImageTexture.image = bpy.data.images[NomeTextura]
-
 
     diffuseBSDF = m.nodes['Principled BSDF']
     diffuseBSDF.inputs["Base Color"].default_value = [0.2, 0.2, 0.2, 1]
@@ -1031,22 +1019,187 @@ def ForensicImportaOBJDef():
     bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.mesh.select_all(action='DESELECT')
 
-    bpy.data.objects['mulher3'].active_material_index = 0
+    bpy.data.objects[NomeOBJ].active_material_index = 0
     bpy.ops.object.material_slot_select()
 
     ListaMaterial2 = []
 
-    for i in bpy.data.objects['mulher3'].material_slots:
+    for i in bpy.data.objects[NomeOBJ].material_slots:
         ListaMaterial2.append(i.name)
 
     IndexMaterial2 = ListaMaterial2.index('Final_Skin')
 
-    bpy.data.objects['mulher3'].active_material_index = IndexMaterial2
+    bpy.data.objects[NomeOBJ].active_material_index = IndexMaterial2
 
     bpy.ops.object.material_slot_assign()
 
     bpy.ops.object.mode_set(mode='OBJECT')
 
+
+    # Criando material dos cílios
+
+    bpy.data.objects[NomeOBJ].active_material_index = 4
+    MaterialSobrancelhaNativo = bpy.data.objects[NomeOBJ].active_material
+    NomeTextura = MaterialSobrancelhaNativo.node_tree.nodes['Image Texture'].image.name
+
+    m = Material()
+    m.make_material("Final_Eyelashes")
+
+    ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
+    ImageTexture.image = bpy.data.images[NomeTextura]
+
+    diffuseBSDF = m.nodes['Principled BSDF']
+    materialOutput = m.nodes['Material Output']
+
+
+
+    transpBSDF = m.makeNode('ShaderNodeBsdfTransparent', 'Transparent BSDF')
+
+    mixShader = m.makeNode('ShaderNodeMixShader', 'Mix Shader')
+
+    m.link(diffuseBSDF, 'BSDF', mixShader, 2)
+    m.link(ImageTexture, 'Color', diffuseBSDF, 'Base Color')
+    m.link(transpBSDF, 'BSDF', mixShader, 1)
+    m.link(ImageTexture, 'Alpha', mixShader, 0)
+    m.link(mixShader, 'Shader', materialOutput, 'Surface')
+
+    bpy.ops.object.material_slot_add()
+
+    bpy.data.objects[NomeOBJ].active_material = bpy.data.materials["Final_Eyelashes"]
+
+    bpy.context.object.active_material.blend_method = 'BLEND'
+    bpy.context.object.active_material.shadow_method = 'NONE'
+
+    # Atribui material
+
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='DESELECT')
+
+    bpy.data.objects[NomeOBJ].active_material_index = 4
+    bpy.ops.object.material_slot_select()
+
+    ListaMaterial3 = []
+
+    for i in bpy.data.objects[NomeOBJ].material_slots:
+        ListaMaterial3.append(i.name)
+
+    IndexMaterial3 = ListaMaterial3.index('Final_Eyelashes')
+
+    bpy.data.objects[NomeOBJ].active_material_index = IndexMaterial3
+
+    bpy.ops.object.material_slot_assign()
+
+    bpy.ops.object.mode_set(mode='OBJECT')
+
+
+    # Criando material da sobrancelha
+
+    bpy.data.objects[NomeOBJ].active_material_index = 3
+    MaterialSobrancelhaNativo = bpy.data.objects[NomeOBJ].active_material
+    NomeTextura = MaterialSobrancelhaNativo.node_tree.nodes['Image Texture'].image.name
+
+    m = Material()
+    m.make_material("Final_Eyebrow")
+
+    ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
+    ImageTexture.image = bpy.data.images[NomeTextura]
+
+    diffuseBSDF = m.nodes['Principled BSDF']
+    materialOutput = m.nodes['Material Output']
+
+    transpBSDF = m.makeNode('ShaderNodeBsdfTransparent', 'Transparent BSDF')
+
+    mixShader = m.makeNode('ShaderNodeMixShader', 'Mix Shader')
+
+    m.link(diffuseBSDF, 'BSDF', mixShader, 2)
+    m.link(ImageTexture, 'Color', diffuseBSDF, 'Base Color')
+    m.link(transpBSDF, 'BSDF', mixShader, 1)
+    m.link(ImageTexture, 'Alpha', mixShader, 0)
+    m.link(mixShader, 'Shader', materialOutput, 'Surface')
+
+    bpy.ops.object.material_slot_add()
+
+    bpy.data.objects[NomeOBJ].active_material = bpy.data.materials["Final_Eyebrow"]
+
+    bpy.context.object.active_material.blend_method = 'BLEND'
+    bpy.context.object.active_material.shadow_method = 'NONE'
+
+    # Atribui material
+
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='DESELECT')
+
+    bpy.data.objects[NomeOBJ].active_material_index = 3
+    bpy.ops.object.material_slot_select()
+
+    ListaMaterial4 = []
+
+    for i in bpy.data.objects[NomeOBJ].material_slots:
+        ListaMaterial4.append(i.name)
+
+    IndexMaterial4 = ListaMaterial4.index('Final_Eyebrow')
+
+    bpy.data.objects[NomeOBJ].active_material_index = IndexMaterial4
+
+    bpy.ops.object.material_slot_assign()
+
+    bpy.ops.object.mode_set(mode='OBJECT')
+
+
+    # Criando material dos cabelos
+
+    bpy.data.objects[NomeOBJ].active_material_index = 1
+    MaterialSobrancelhaNativo = bpy.data.objects[NomeOBJ].active_material
+    NomeTextura = MaterialSobrancelhaNativo.node_tree.nodes['Image Texture'].image.name
+
+    m = Material()
+    m.make_material("Final_Hair")
+
+    ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
+    ImageTexture.image = bpy.data.images[NomeTextura]
+
+    diffuseBSDF = m.nodes['Principled BSDF']
+    diffuseBSDF.inputs["Specular"].default_value = 0.0
+
+    materialOutput = m.nodes['Material Output']
+
+    transpBSDF = m.makeNode('ShaderNodeBsdfTransparent', 'Transparent BSDF')
+
+    mixShader = m.makeNode('ShaderNodeMixShader', 'Mix Shader')
+
+    m.link(diffuseBSDF, 'BSDF', mixShader, 2)
+    m.link(ImageTexture, 'Color', diffuseBSDF, 'Base Color')
+    m.link(transpBSDF, 'BSDF', mixShader, 1)
+    m.link(ImageTexture, 'Alpha', mixShader, 0)
+    m.link(mixShader, 'Shader', materialOutput, 'Surface')
+
+    bpy.ops.object.material_slot_add()
+
+    bpy.data.objects[NomeOBJ].active_material = bpy.data.materials["Final_Hair"]
+
+    bpy.context.object.active_material.blend_method = 'CLIP'
+    bpy.context.object.active_material.shadow_method = 'NONE'
+
+    # Atribui material
+
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='DESELECT')
+
+    bpy.data.objects[NomeOBJ].active_material_index = 1
+    bpy.ops.object.material_slot_select()
+
+    ListaMaterial5 = []
+
+    for i in bpy.data.objects[NomeOBJ].material_slots:
+        ListaMaterial5.append(i.name)
+
+    IndexMaterial5 = ListaMaterial5.index('Final_Hair')
+
+    bpy.data.objects[NomeOBJ].active_material_index = IndexMaterial5
+
+    bpy.ops.object.material_slot_assign()
+
+    bpy.ops.object.mode_set(mode='OBJECT')
 
 
 class ForensicImportaOBJ(bpy.types.Operator):
