@@ -157,6 +157,12 @@ class ORTOG_UI_Local(PropertyGroup):
         maxlen=1024,
         subtype='FILE_PATH')
 
+    filepathvideo = StringProperty(
+        name="",
+        description="Select File",
+        maxlen=1024,
+        subtype='FILE_PATH')
+
 # IMPORTA TOMO MOLDES
 
 class ENUM_VALUES_CTSCAN:
@@ -872,6 +878,27 @@ class ORTOG_PT_SegmentacaoFace(bpy.types.Panel):
 
         row = layout.row()
         row.operator("object.segmenta_imagem_face", text="Start Segmentation!", icon="USER")
+
+class ORTOG_PT_Converte_Video(bpy.types.Panel):
+    bl_label = "Video to Images"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Ortog"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        row = layout.row()
+        col = layout.column(align=True)
+        col.prop(scn.my_tool, "filepathvideo", text="")
+
+        row = layout.row()
+        row.operator("object.converte_video_imagem", text="Convert Video to Images!", icon="RENDER_STILL")
 
 class ENUM_VALUES_PHOTOGRAMMETRY:
     OPENMVG = 'OpenMVG+OpenMVS'
@@ -3037,6 +3064,7 @@ def register():
     bpy.utils.register_class(ORTOG_OT_GeraModelosTomoArc)
     bpy.utils.register_class(ORTOG_PT_Segmentation)
     bpy.utils.register_class(ORTOG_PT_SegmentacaoFace)
+    bpy.utils.register_class(ORTOG_PT_Converte_Video)
     bpy.types.Scene.d_factor = bpy.props.StringProperty \
       (
         name = "D Factor",

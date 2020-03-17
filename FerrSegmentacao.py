@@ -1,7 +1,43 @@
 
 import bpy
 import bmesh
+import tempfile
+import subprocess
+import platform
+
+#from .__init__ import *
+
+from .AjustaTomo import *
+
 from math import sqrt
+
+
+def ConverteVideoImagemDef():
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    tmpdir = tempfile.mkdtemp()
+
+    try:
+        subprocess.call("ffmpeg -i "+scn.my_tool.filepathvideo+" -quality 100 "+tmpdir+"/pic_%04d.jpg", shell=True)
+        abrir_diretorio(tmpdir)
+    except:
+        print("Algo deu errado com o arquivo de vídeo!")
+
+class ConverteVideoImagem(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.converte_video_imagem"
+    bl_label = "Convert Video to Image"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        ConverteVideoImagemDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(ConverteVideoImagem)
+
 
 def SegmentaLinkedDef(self, context):
 
@@ -14,11 +50,11 @@ def SegmentaLinkedDef(self, context):
 #    obj = bpy.context.scene.objects.active
 
     obj = bpy.context.view_layer.objects.active
-    
+
     # Duplica objeto
     bpy.ops.object.duplicate()
     obj2 = bpy.context.view_layer.objects.active
-    
+
     # Joga outro layer
 
     #TESTA SE HÁ Copied_Objects
@@ -62,51 +98,51 @@ def SegmentaLinkedDef(self, context):
 
             # Todos os vértices por vetor
 #    verts = [obj.matrix_world * vert.co for vert in vertices]
-    verts = [obj.matrix_world @ vert.co for vert in vertices] 
+    verts = [obj.matrix_world @ vert.co for vert in vertices]
 
             # Captura vetor do objeto
 
     referencia = bpy.context.scene.cursor.location
-    
+
             # Calcula distância pontos
 
     def DistanciaObjs(obj1, obj2):
         objA = referencia
         objB = obj2
-                
+
         distancia = sqrt( (objB[0] - objA[0])**2 + (objB[1] - objA[1])**2 + (objB[2] - objA[2])**2 )
-                
+
         return distancia
-                
+
 
     for i in range(len(verts)):
 
         vertAtual = verts[i]
-            
+
         distanciaVert = DistanciaObjs(ponto, vertAtual)
 
         listaDist.append([distanciaVert, i])
-                
-                
+
+
 
     listaFin = sorted(listaDist)
     print("MAIS PRÓXIMO!", listaFin[0])
-    
+
 
 
     bpy.ops.object.select_all(action='DESELECT')
     obj.select_set(True)
     bpy.context.view_layer.objects.active = obj
 
-    bpy.ops.object.mode_set(mode = 'EDIT') 
+    bpy.ops.object.mode_set(mode = 'EDIT')
     bpy.ops.mesh.select_mode(type="VERT")
     bpy.ops.mesh.select_all(action = 'DESELECT')
     bpy.ops.object.mode_set(mode = 'OBJECT')
     obj.data.vertices[listaFin[0][1]].select = True
     bpy.ops.object.mode_set(mode = 'EDIT')
-    
+
     bpy.ops.mesh.select_linked()
-    
+
     bpy.ops.mesh.select_all(action='INVERT')
 
     bpy.ops.mesh.delete(type='VERT')
@@ -118,7 +154,7 @@ class SegmentaLinked(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.segmenta_linked"
     bl_label = "SegmentaLinked"
-    
+
     def execute(self, context):
         SegmentaLinkedDef(self, context)
         return {'FINISHED'}
@@ -193,7 +229,7 @@ class MantemPintado(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.mantem_pintado"
     bl_label = "MantemPintado"
-    
+
     def execute(self, context):
         MantemPintadoDef(self, context)
         return {'FINISHED'}
@@ -236,7 +272,7 @@ class ApagaPintado(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.apaga_pintado"
     bl_label = "ApagaPintado"
-    
+
     def execute(self, context):
         ApagaPintadoDef(self, context)
         return {'FINISHED'}
@@ -260,7 +296,7 @@ def SegmentaDesenhoDef(self, context):
     bpy.ops.gpencil.convert(type='POLY', use_timing_data=True)
 
     # Seleciona linha e converte em mesh
-    
+
     bpy.ops.object.select_all(action='DESELECT')
     linha = bpy.data.objects['Note']
     linha.select_set(True)
@@ -275,7 +311,7 @@ def SegmentaDesenhoDef(self, context):
 #    bpy.ops.object.mode_set(mode='EDIT')
 
     bpy.ops.object.select_all(action='DESELECT')
-    linha.select_set(True) 
+    linha.select_set(True)
     obj.select_set(True)
     bpy.context.view_layer.objects.active = obj
     bpy.ops.object.mode_set(mode='EDIT')
@@ -287,7 +323,7 @@ def SegmentaDesenhoDef(self, context):
         v.select = True
 #        v.select = True
     bpy.context.view_layer.objects.active = bpy.context.view_layer.objects.active # Atualiza viewport
-   
+
 #    bpy.ops.mesh.flip_normals() # Inverter para funcionar o Knife fora a fora
     bpy.ops.mesh.select_all(action = 'DESELECT')
 
@@ -317,13 +353,13 @@ def SegmentaDesenhoDef(self, context):
 
 
 #    bpy.ops.object.delete()
-    
+
 
 class SegmentaDesenho(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.segmenta_desenho"
     bl_label = "Segmenta Desenho"
-    
+
     def execute(self, context):
         SegmentaDesenhoDef(self, context)
         return {'FINISHED'}
@@ -349,7 +385,7 @@ def DesenhaBooleanaDentroDef(self, context):
 
 
     # Seleciona linha e converte em mesh
-    
+
     bpy.ops.object.select_all(action='DESELECT')
     linha = bpy.data.objects['Note']
     linha.select_set(True)
@@ -380,8 +416,8 @@ def DesenhaBooleanaDentroDef(self, context):
 
     bpy.ops.mesh.edge_face_add()
 #    bpy.ops.mesh.fill()
-    
-    bpy.ops.mesh.extrude_faces_move(MESH_OT_extrude_faces_indiv={"mirror":False}, TRANSFORM_OT_shrink_fatten={"value":300, "use_even_offset":False, "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "release_confirm":False, "use_accurate":False})    
+
+    bpy.ops.mesh.extrude_faces_move(MESH_OT_extrude_faces_indiv={"mirror":False}, TRANSFORM_OT_shrink_fatten={"value":300, "use_even_offset":False, "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "release_confirm":False, "use_accurate":False})
 
 
     bpy.ops.mesh.select_all(action='SELECT')
@@ -398,7 +434,7 @@ def DesenhaBooleanaDentroDef(self, context):
 
     bpy.ops.object.booleana_osteo_geral()
 
-    bpy.ops.wm.tool_set_by_id(name="builtin.select_box")  
+    bpy.ops.wm.tool_set_by_id(name="builtin.select_box")
 
     '''
 #    bpy.ops.gpencil.layer_remove()
@@ -406,7 +442,7 @@ def DesenhaBooleanaDentroDef(self, context):
 #    bpy.ops.object.mode_set(mode='EDIT')
 
     bpy.ops.object.select_all(action='DESELECT')
-    linha.select_set(True) 
+    linha.select_set(True)
     obj.select_set(True)
     bpy.context.view_layer.objects.active = obj
     bpy.ops.object.mode_set(mode='EDIT')
@@ -418,7 +454,7 @@ def DesenhaBooleanaDentroDef(self, context):
         v.select = True
 #        v.select = True
     bpy.context.view_layer.objects.active = bpy.context.view_layer.objects.active # Atualiza viewport
-   
+
 #    bpy.ops.mesh.flip_normals() # Inverter para funcionar o Knife fora a fora
     bpy.ops.mesh.select_all(action = 'DESELECT')
 
@@ -446,7 +482,7 @@ class DesenhaBooleanaDentro(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.desenha_booleana_dentro"
     bl_label = "Segmenta Desenho"
-    
+
     def execute(self, context):
         DesenhaBooleanaDentroDef(self, context)
         return {'FINISHED'}
@@ -475,7 +511,7 @@ def DesenhaBooleanaForaDef(self, context):
 
 
     # Seleciona linha e converte em mesh
-    
+
     bpy.ops.object.select_all(action='DESELECT')
     linha = bpy.data.objects['Note']
     linha.select_set(True)
@@ -506,8 +542,8 @@ def DesenhaBooleanaForaDef(self, context):
 
     bpy.ops.mesh.edge_face_add()
 #    bpy.ops.mesh.fill()
-    
-    bpy.ops.mesh.extrude_faces_move(MESH_OT_extrude_faces_indiv={"mirror":False}, TRANSFORM_OT_shrink_fatten={"value":300, "use_even_offset":False, "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "release_confirm":False, "use_accurate":False})    
+
+    bpy.ops.mesh.extrude_faces_move(MESH_OT_extrude_faces_indiv={"mirror":False}, TRANSFORM_OT_shrink_fatten={"value":300, "use_even_offset":False, "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "release_confirm":False, "use_accurate":False})
 
 
     bpy.ops.mesh.select_all(action='SELECT')
@@ -524,7 +560,7 @@ def DesenhaBooleanaForaDef(self, context):
 
     bpy.ops.object.booleana_osteo_inter()
 
-    bpy.ops.wm.tool_set_by_id(name="builtin.select_box")  
+    bpy.ops.wm.tool_set_by_id(name="builtin.select_box")
 
     '''
 #    bpy.ops.gpencil.layer_remove()
@@ -532,7 +568,7 @@ def DesenhaBooleanaForaDef(self, context):
 #    bpy.ops.object.mode_set(mode='EDIT')
 
     bpy.ops.object.select_all(action='DESELECT')
-    linha.select_set(True) 
+    linha.select_set(True)
     obj.select_set(True)
     bpy.context.view_layer.objects.active = obj
     bpy.ops.object.mode_set(mode='EDIT')
@@ -544,7 +580,7 @@ def DesenhaBooleanaForaDef(self, context):
         v.select = True
 #        v.select = True
     bpy.context.view_layer.objects.active = bpy.context.view_layer.objects.active # Atualiza viewport
-   
+
 #    bpy.ops.mesh.flip_normals() # Inverter para funcionar o Knife fora a fora
     bpy.ops.mesh.select_all(action = 'DESELECT')
 
@@ -572,7 +608,7 @@ class DesenhaBooleanaFora(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.desenha_booleana_fora"
     bl_label = "Segmenta Desenho Fora"
-    
+
     def execute(self, context):
         DesenhaBooleanaForaDef(self, context)
         return {'FINISHED'}
@@ -605,14 +641,14 @@ def ImportaSeparaMandibulaDef(self, context):
         blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
         section   = "\\Collection\\"
         object    = "Separa_Mandibula"
-        
+
     if platform.system() == "Windows":
 
         dirScript = 'C:/OrtogOnBlender/Blender280/2.80/scripts/'
 
         blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
         section   = "\\Collection\\"
-        object    = "Separa_Mandibula"    
+        object    = "Separa_Mandibula"
 
 
 #    if platform.system() == "Darwin":
@@ -629,7 +665,7 @@ def ImportaSeparaMandibulaDef(self, context):
     filename  = object
 
     bpy.ops.wm.append(
-        filepath=filepath, 
+        filepath=filepath,
         filename=filename,
         directory=directory)
 
@@ -640,7 +676,7 @@ class ImportaSeparaMandibula(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.importa_separa_mandibula"
     bl_label = "Importa Separa Mandíbula"
-    
+
     def execute(self, context):
         ImportaSeparaMandibulaDef(self, context)
         return {'FINISHED'}
@@ -659,7 +695,7 @@ def MovePara(objOrigem, objMove):
     ObjetoMove.location[1] = ObjetoOrigem.location[1]
     ObjetoMove.location[2] = ObjetoOrigem.location[2]
 
-def AjustaMandibula():   
+def AjustaMandibula():
     MovePara("Condylar Process left", "EMP_Proc_Cond_esq")
     MovePara("Condylar Process right", "EMP_Proc_Cond_dir")
 
@@ -688,7 +724,7 @@ def BooleanSeparaMandibula():
 
     MandibulaBase = bpy.data.objects['MandibulaBase']
 
-    MandibulaBase.select_set(True) 
+    MandibulaBase.select_set(True)
     bpy.context.view_layer.objects.active = MandibulaBase
 
     obj = context.active_object
@@ -701,7 +737,7 @@ def BooleanSeparaMandibula():
     Cranio = bpy.data.objects['Bones']
     MandibulaBase = bpy.data.objects['MandibulaBase']
 
-    Cranio.select_set(True) 
+    Cranio.select_set(True)
     MandibulaBase.select_set(True)
 
     bpy.context.view_layer.objects.active = MandibulaBase
@@ -714,8 +750,8 @@ def BooleanSeparaMandibula():
     ListaObjetos = ['EMP_Proc_Cor_dir', 'EMP_Proc_Cond_dir', 'EMP_Proc_Cor_esq', 'EMP_Proc_Cond_esq', 'EMP_Gon_dir', 'EMP_Ang_Mand_dir', 'EMP_Gon_esq', 'EMP_Ang_Mand_esq', 'EMP_Meio_Mand_esq', 'EMP_Meio_Mand_dir', 'EMP_Protuberancia_down', 'EMP_Protuberancia', 'EMP_Protuberancia_up', 'ArmatureMandibula', 'Condylar Process right', 'Coronoid Process right', 'Condylar Process left', 'Coronoid Process left', 'Mid Go-Ramus Fracure right', 'Go right', 'Mid Go-Ramus Fracure left', 'Go left', 'Mid Mandibula Angle right', 'Mid Mandibula Angle left', 'Gn point', 'B point', 'Mid Upper Incisors']
 
 
-    for i in ListaObjetos:   
- 
+    for i in ListaObjetos:
+
         bpy.data.objects[i].select_set(True)
         bpy.context.view_layer.objects.active = bpy.data.objects[i]
         bpy.ops.object.delete(use_global=False)
@@ -762,7 +798,7 @@ class SeparacaoMandibula(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.separacao_mandibula"
     bl_label = "Importa Separa Mandíbula"
-    
+
     def execute(self, context):
         ImportaSeparaMandibulaDef(self, context)
         AjustaMandibula()
@@ -795,8 +831,8 @@ def SeparaMandibulaCranioDef():
 
     Cranio = bpy.data.objects['Bones']
 
-    Cranio.select_set(True) 
-    Mandibula.select_set(True)    
+    Cranio.select_set(True)
+    Mandibula.select_set(True)
 
     bpy.context.view_layer.objects.active = Mandibula
 
@@ -806,7 +842,7 @@ class SeparaMandibulaCranio(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.separacao_mandibula_cranio"
     bl_label = "Importa Separa Mandíbula Crânio"
-    
+
     def execute(self, context):
         SeparaMandibulaCranioDef()
         return {'FINISHED'}
@@ -818,7 +854,7 @@ class PreparaImpressao3D(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.prepara_impressao_3d"
     bl_label = "Prepara Impressão 3D"
-    
+
     def execute(self, context):
         bpy.ops.object.modifier_add(type='REMESH')
         bpy.context.object.modifiers["Remesh"].mode = 'SMOOTH'
@@ -840,7 +876,7 @@ class FecharBuracosTodos(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.fecha_buraco_todos"
     bl_label = "Prepara Impressão 3D"
-    
+
     def execute(self, context):
         FecharBuracosTodosDef()
         return {'FINISHED'}
@@ -880,4 +916,3 @@ class SeparaObjeto(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(SeparaObjeto)
-
