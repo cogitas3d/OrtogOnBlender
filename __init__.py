@@ -566,7 +566,7 @@ class ORTOG_PT_ImportaArc(bpy.types.Panel):
         row.operator("object.gera_dir_nome_paciente_arc", text="SAVE!", icon="FILE_TICK")
 
 class ORTOG_PT_GraphicRefs(bpy.types.Panel):
-    bl_label = "Graphic Rerefences"
+    bl_label = "Graphic References"
     bl_region_type = 'UI'
     bl_space_type = 'VIEW_3D'
     bl_options = {'DEFAULT_CLOSED'}

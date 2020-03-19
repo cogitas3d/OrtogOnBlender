@@ -1073,6 +1073,28 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+    if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'ctbay99'" and ManufacturerModelNameLimpo == "'LightSpeed VCT'":
+
+        os.chdir(scn.my_tool.path+"/601")
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+#        bpy.ops.object.reduz_dimensao_dicom()
+
+        # Copia para o diretório
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        # Gera o 3D
+        bpy.context.scene.interesse_ossos = "200"
+        bpy.context.scene.interesse_mole = "-300"
+        bpy.context.scene.interesse_dentes = "1430"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+
     if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'CTGE'":
         print("SÉRIE 3")
         print("Bone: 200")
@@ -4021,6 +4043,11 @@ def GeraModeloTomoAutoDef(self, context):
 	    os.chdir(scn.my_tool.path+"/303")
     except:
         print("Dir 303 doesn't exist")
+
+    try:
+	    os.chdir(scn.my_tool.path+"/601")
+    except:
+        print("Dir 601 doesn't exist")
 
     try:
 	    os.chdir(scn.my_tool.path+"/700")
