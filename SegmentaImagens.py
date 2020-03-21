@@ -45,7 +45,8 @@ def SegmentacaoImagemFaceDef():
         ScriptF.write("\n")
         ScriptF.write("    detector = dlib.get_frontal_face_detector()\n")
         if platform.system() == "Linux":
-            ScriptF.write("    predictor = dlib.shape_predictor('/home/linux3dcs/Programs/OrtogOnBlender/SegmentaImagens/shape_predictor_81_face_landmarks.dat')\n")
+            homeall = expanduser('~')
+            ScriptF.write("    predictor = dlib.shape_predictor('{}/Programs/OrtogOnBlender/SegmentaImagens/shape_predictor_81_face_landmarks.dat')\n".format(homeall))
         if platform.system() == "Windows":
             ScriptF.write("    predictor = dlib.shape_predictor('C:\OrtogOnBlender\SegmentaImagens\shape_predictor_81_face_landmarks.dat')\n")
         ScriptF.write("\n")
