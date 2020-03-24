@@ -24,7 +24,7 @@ def ConverteVideoImagemDef():
         if platform.system() == "Linux" or platform.system() == "Darwin":
             subprocess.call("ffmpeg -i "+scn.my_tool.filepathvideo+" -quality 100 "+tmpdir+"/pic_%04d.jpg", shell=True)
             abrir_diretorio(tmpdir)
-            
+
         if platform.system() == "Windows":
             subprocess.call('C:\\OrtogOnBlender\\ffmpeg\\ffmpeg.exe -i '+scn.my_tool.filepathvideo+" -quality 100 "+tmpdir+"\pic_%04d.jpg", shell=True)
             #subprocess.call(['C:\OrtogOnBlender\ffmpeg\ffmpeg.exe','-i', scn.my_tool.filepathvideo, '-quality', '100', tmpdir+"\pic_%04d.jpg" ])
