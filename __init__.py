@@ -20,6 +20,7 @@ else:
     from .CompareOnBlender import *
     from .RhinOnBlender import *
     from .ForensicOnBlender import *
+    from .OtherOnBlender import *
     from .NomePaciente import *
     from .GeraModelosTomo import *
     from .AjustaTomo import *
@@ -139,11 +140,23 @@ class ORTOG_UI_Local(PropertyGroup):
         maxlen=1024,
         subtype='DIR_PATH')
 
+    path_slices_img = StringProperty(
+        name="",
+        description="Path to Directory",
+        maxlen=1024,
+        subtype='DIR_PATH')
+
     path_photo = StringProperty(
         name="",
         description="Path to Directory",
         maxlen=1024,
         subtype='DIR_PATH')
+
+    filepathmha = StringProperty(
+        name="",
+        description="Select File",
+        maxlen=1024,
+        subtype='FILE_PATH')
 
     filepathcsv = StringProperty(
         name="",

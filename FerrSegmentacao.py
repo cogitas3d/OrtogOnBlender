@@ -11,6 +11,79 @@ from .AjustaTomo import *
 
 from math import sqrt
 
+def ConverteImagensTomoDef():
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    s1 = bpy.context.scene.S1
+    s2 = bpy.context.scene.S2
+    s3 = bpy.context.scene.S3
+
+    print("s1: ", s1)
+    print("s2: ", s2)
+    print("s3: ", s3)
+
+    try:
+        tmpdir = tempfile.mkdtemp()
+        subprocess.call('cd '+scn.my_tool.path_slices_img+' && mkdir '+tmpdir+'/GREY && for i in *.jpg; do convert $i -type Grayscale -depth 8 -quality 100 '+tmpdir+'/GREY/${i%.png}.jpg; done', shell=True)
+
+        subprocess.call('mkdir '+tmpdir+'/DCM && python2.7 ~/Programs/tfmoraes-img2dcm-449b9de0b58e/img2dcm.py -t jpg -i '+tmpdir+'/GREY/ -o '+tmpdir+'/DCM/ -s '+str(s1)+' '+str(s2)+' '+str(s3), shell=True)
+
+        #abrir_diretorio(tmpdir)
+
+        subprocess.call('~/Programs/VolView-3.4-Linux-x86_64/bin/VolView '+tmpdir+'/DCM/0000.dcm &', shell=True)
+
+
+    except:
+        print("Não consegui converter as imagens em GREY!")
+
+class ConverteImagensTomo(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.converte_imagens_tomo"
+    bl_label = "Convert Images to CT-Scan"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        ConverteImagensTomoDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(ConverteImagensTomo)
+
+
+
+def CalculaDimensaoDCMDef():
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+#    FatorEscalaDCM = bpy.context.scene.FatorEscalaDCM
+#    MedidaRealDCM = bpy.context.scene.MedidaRealDCM
+#    MedidaAtualDCM = bpy.context.scene.MedidaAtualDCM
+
+    FatorEscala = float(bpy.context.scene.MedidaRealDCM) / float(bpy.context.scene.MedidaAtualDCM)
+
+    bpy.types.Scene.FatorEscalaDCM = bpy.props.StringProperty \
+    (
+     name = "",
+     description = "Scale Factor",
+     default = str(round((FatorEscala),2))
+    )
+
+class CalculaDimensaoDCM(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.calcula_dimensao_dcm"
+    bl_label = "Calc CT-Scan Dimension"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        CalculaDimensaoDCMDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(CalculaDimensaoDCM)
+
 
 def ConverteVideoImagemDef():
 
@@ -23,12 +96,16 @@ def ConverteVideoImagemDef():
     try:
         if platform.system() == "Linux" or platform.system() == "Darwin":
             subprocess.call("ffmpeg -i "+scn.my_tool.filepathvideo+" -quality 100 "+tmpdir+"/pic_%04d.jpg", shell=True)
+            subprocess.call("cd "+tmpdir+" && mkdir SELECTED", shell=True)
             abrir_diretorio(tmpdir)
+            scn.my_tool.path_slices_img = tmpdir+"/SELECTED"
 
         if platform.system() == "Windows":
             subprocess.call('C:\\OrtogOnBlender\\ffmpeg\\ffmpeg.exe -i '+scn.my_tool.filepathvideo+" -quality 100 "+tmpdir+"\pic_%04d.jpg", shell=True)
             #subprocess.call(['C:\OrtogOnBlender\ffmpeg\ffmpeg.exe','-i', scn.my_tool.filepathvideo, '-quality', '100', tmpdir+"\pic_%04d.jpg" ])
             abrir_diretorio(tmpdir)
+            scn.my_tool.path_slices_img = tmpdir+"/SELECTED"
+
     except:
         print("Algo deu errado com o arquivo de vídeo!")
 

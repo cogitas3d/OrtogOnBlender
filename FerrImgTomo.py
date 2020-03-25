@@ -579,3 +579,31 @@ class AbreSlicer(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(AbreSlicer)
+
+
+def AbreSlicerMHADef(self, context):
+
+    context = bpy.context
+    scn = context.scene
+
+    homeall = expanduser("~")
+
+    if platform.system() == "Linux":
+        subprocess.call(homeall+'/Programs/OrtogOnBlender/Slicer481/./Slicer '+scn.my_tool.filepathmha+" &", shell=True)
+
+    if platform.system() == "Windows":
+        subprocess.call('START /B C:/OrtogOnBlender/Slicer410/Slicer.exe '+scn.my_tool.filepathmha, shell=True)
+
+    if platform.system() == "Darwin":
+        subprocess.call(homeall+'/Programs/OrtogOnBlender/Slicer/Slicer.app/Contents/MacOS/Slicer '+scn.my_tool.filepathmha+" &", shell=True)
+
+class AbreSlicerMHA(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.abre_slicer_mha"
+    bl_label = "Open Slicer MHA"
+
+    def execute(self, context):
+        AbreSlicerMHADef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(AbreSlicerMHA)
