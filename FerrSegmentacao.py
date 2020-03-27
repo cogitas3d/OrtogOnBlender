@@ -11,6 +11,7 @@ from .AjustaTomo import *
 
 from math import sqrt
 
+
 def ConverteImagensTomoDef():
 
     context = bpy.context
@@ -29,11 +30,13 @@ def ConverteImagensTomoDef():
         tmpdir = tempfile.mkdtemp()
         subprocess.call('cd '+scn.my_tool.path_slices_img+' && mkdir '+tmpdir+'/GREY && for i in *.jpg; do convert $i -type Grayscale -depth 8 -quality 100 '+tmpdir+'/GREY/${i%.png}.jpg; done', shell=True)
 
-        subprocess.call('mkdir '+tmpdir+'/DCM && python2.7 ~/Programs/tfmoraes-img2dcm-449b9de0b58e/img2dcm.py -t jpg -i '+tmpdir+'/GREY/ -o '+tmpdir+'/DCM/ -s '+str(s1)+' '+str(s2)+' '+str(s3), shell=True)
 
-        #abrir_diretorio(tmpdir)
+        #subprocess.call('mkdir '+tmpdir+'/DCM && python2.7 ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -t jpg -i '+tmpdir+'/GREY/ -o '+tmpdir+'/DCM/ -s '+str(s1)+' '+str(s2)+' '+str(s3), shell=True)
 
-        subprocess.call('~/Programs/VolView-3.4-Linux-x86_64/bin/VolView '+tmpdir+'/DCM/0000.dcm &', shell=True)
+        subprocess.call('python ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -i '+tmpdir+'/GREY/ -o '+tmpdir+'/DCM/ -s '+str(s1)+' '+str(s2)+' '+str(s3)+' -t jpg', shell=True)
+        print("DICOM BASE GERADO!!!")
+
+        subprocess.call('~/Programs/OrtogOnBlender/VolView/bin/VolView '+tmpdir+'/DCM/0000.dcm &', shell=True)
 
 
     except:
