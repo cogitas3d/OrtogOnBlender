@@ -1,3 +1,3 @@
 import bpy
 
-VERSION = "20200327a"
+VERSION = "20200327b"

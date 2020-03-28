@@ -45,8 +45,17 @@ class OTHER_PT_Converte_Video(bpy.types.Panel):
         col = layout.column(align=True)
         col.prop(scn.my_tool, "filepathvideo", text="")
 
-        row = layout.row()
-        row.operator("object.converte_video_imagem", text="Convert Video to Images!", icon="RENDER_STILL")
+
+        if platform.system() == "Linux":
+
+            row = layout.row()
+            row.operator("object.converte_video_imagem", text="Convert Video to Images!", icon="RENDER_STILL")
+
+
+        if platform.system() == "Windows":
+
+            row = layout.row()
+            row.operator("object.converte_video_imagem_win", text="Convert Video to Images!", icon="RENDER_STILL")
 
 bpy.utils.register_class(OTHER_PT_Converte_Video)
 

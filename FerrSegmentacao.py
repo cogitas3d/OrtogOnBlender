@@ -28,15 +28,46 @@ def ConverteImagensTomoDef():
 
     try:
         tmpdir = tempfile.mkdtemp()
-        subprocess.call('cd '+scn.my_tool.path_slices_img+' && mkdir '+tmpdir+'/GREY && for i in *.jpg; do convert $i -type Grayscale -depth 8 -quality 100 '+tmpdir+'/GREY/${i%.png}.jpg; done', shell=True)
+        print("Criei tmp")
+        
+        if platform.system() == "Linux":
+        
+            subprocess.call('cd '+scn.my_tool.path_slices_img+' && mkdir '+tmpdir+'/GREY && for i in *.jpg; do convert $i -type Grayscale -depth 8 -quality 100 '+tmpdir+'/GREY/${i%.png}.jpg; done', shell=True)
+
+            #subprocess.call('mkdir '+tmpdir+'/DCM && python2.7 ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -t jpg -i '+tmpdir+'/GREY/ -o '+tmpdir+'/DCM/ -s '+str(s1)+' '+str(s2)+' '+str(s3), shell=True)
+
+            subprocess.call('python ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -i '+tmpdir+'/GREY/ -o '+tmpdir+'/DCM/ -s '+str(s1)+' '+str(s2)+' '+str(s3)+' -t jpg', shell=True)
+            print("DICOM BASE GERADO!!!")
+
+            subprocess.call('~/Programs/OrtogOnBlender/VolView/bin/VolView '+tmpdir+'/DCM/0000.dcm &', shell=True)
 
 
-        #subprocess.call('mkdir '+tmpdir+'/DCM && python2.7 ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -t jpg -i '+tmpdir+'/GREY/ -o '+tmpdir+'/DCM/ -s '+str(s1)+' '+str(s2)+' '+str(s3), shell=True)
+        if platform.system() == "Windows":
+        
+            os.chdir(scn.my_tool.path_slices_img)
+        
 
-        subprocess.call('python ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -i '+tmpdir+'/GREY/ -o '+tmpdir+'/DCM/ -s '+str(s1)+' '+str(s2)+' '+str(s3)+' -t jpg', shell=True)
-        print("DICOM BASE GERADO!!!")
+            subprocess.call('C:\OrtogOnBlender\ImageMagick\mogrify -type Grayscale -format jpg *.png && mkdir GREY && move *.jpg GREY', shell=True)
 
-        subprocess.call('~/Programs/OrtogOnBlender/VolView/bin/VolView '+tmpdir+'/DCM/0000.dcm &', shell=True)
+
+            #subprocess.call('python ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -i '+tmpdir+'/GREY/ -o '+tmpdir+'/DCM/ -s '+str(s1)+' '+str(s2)+' '+str(s3)+' -t jpg', shell=True)
+            #print("DICOM BASE GERADO!!!")
+            
+            ListaArquivos = sorted(os.listdir(scn.my_tool.path_slices_img+"/GREY/"))
+
+            os.chdir(scn.my_tool.path_slices_img+"/GREY/")
+            
+            subprocess.call('mkdir DCM', shell=True)
+
+            for arquivo in ListaArquivos:
+                subprocess.call('C:\OrtogOnBlender\dcmtk\img2dcm '+arquivo+' DCM\\'+arquivo+'.dcm', shell=True)
+                print("Convertendo para DCM:", arquivo)
+            print("Arquivo "+arquivo+" gerado!")
+
+            print("C:\\OrtogOnBlender\\VolView\\bin\\VolView "+scn.my_tool.path_slices_img+"\\GREY\\DCM\\"+str(ListaArquivos[0])+".dcm &")
+            
+            subprocess.call("C:\\OrtogOnBlender\\VolView\\bin\\VolView "+scn.my_tool.path_slices_img+"\\GREY\\DCM\\"+str(ListaArquivos[0])+".dcm &", shell=True)
+
 
 
     except:
@@ -123,6 +154,41 @@ class ConverteVideoImagem(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(ConverteVideoImagem)
+
+
+def ConverteVideoImagemWINDef():
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    tmpdir = tempfile.mkdtemp()
+
+    try:
+        if platform.system() == "Windows":
+            subprocess.call('C:\\OrtogOnBlender\\ffmpeg\\ffmpeg.exe -i '+scn.my_tool.filepathvideo+" "+tmpdir+"\pic_%04d.png", shell=True)
+
+            subprocess.call("cd "+tmpdir+" && mkdir SELECTED", shell=True)
+
+            abrir_diretorio(tmpdir)
+            scn.my_tool.path_slices_img = tmpdir+"/SELECTED"
+
+    except:
+        print("Algo deu errado com o arquivo de vídeo!")
+
+
+class ConverteVideoImagemWIN(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.converte_video_imagem_win"
+    bl_label = "Convert Video to Image"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        ConverteVideoImagemWINDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(ConverteVideoImagemWIN)
+
 
 
 def SegmentaLinkedDef(self, context):

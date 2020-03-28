@@ -452,7 +452,7 @@ def ExportaSeqTomoDef(self, context):
 # Converte slices em PNGs e depois o PNGs em JPGs monocromaticos
 #        subprocess.call('for %f in (*); do C:\OrtogOnBlender\ImageMagick\magick %f -type Grayscale -depth 8 -quality 100 %f.jpg; done && mkdir GREY && move *.jpg GREY', shell=True)
 
-        subprocess.call('C:\OrtogOnBlender\ImageMagick\mogrify -format jpg *.png && mkdir GREY && move *.jpg GREY', shell=True)
+        subprocess.call('C:\OrtogOnBlender\ImageMagick\mogrify -type Grayscale -format jpg *.png && mkdir GREY && move *.jpg GREY', shell=True)
 
         print("JPEGs GERADOS!!!")
         scn.my_tool.path = IMGDir
