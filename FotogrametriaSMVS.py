@@ -55,11 +55,40 @@ def GeraModeloFotoSMVSDef(self, context):
         if platform.system() == "Windows":
             SMVSPath = 'C:/OrtogOnBlender/SMVS/'
 #            shutil.rmtree(tmpdir+'/scene')
-            subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path_photo, tmpdir+'/scene'])
-            subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
-            subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
+
+            SMVSPathLinux = 'C:/OrtogOnBlender/SMVSlinux/'
+
+            Fotos = str(scn.my_tool.path_photo).replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
+            print("FOTOS: ", Fotos)
+            
+            Saida = str(tmpdir).replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
+
+            # subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path_photo, tmpdir+'/scene'])
+            subprocess.call("wsl \"/mnt/c/OrtogOnBlender/SMVSlinux/makescene\" -i \""+Fotos+"\" \""+Saida+"/scene\"", shell=True)
+            
+            #subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
+            subprocess.call("wsl \"/mnt/c/OrtogOnBlender/SMVSlinux/sfmrecon\" \""+Saida+"/scene\"", shell=True)
+                        
+            #subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
+            subprocess.call("wsl \"/mnt/c/OrtogOnBlender/SMVSlinux/smvsrecon\" -s2 \""+Saida+"/scene\"", shell=True)
+                        
             subprocess.call([SMVSPath+'./fssrecon', tmpdir+'/scene/smvs-B2.ply', tmpdir+'/scene/smvs-surface.ply'])
             subprocess.call([SMVSPath+'./meshclean', '-p10', tmpdir+'/scene/smvs-surface.ply', tmpdir+'/scene/smvs-surface-clean.ply'])
+            
+            #subprocess.call('C:\OrtogOnBlender\MeshLab\meshlabserver -i '+tmpdir+'/scene/smvs-B2.ply -o '+tmpdir+'/scene/meshlab.ply -s '+SMVSPathLinux+'SMVSmeshlab.mlx', shell=True)
+            
+            
+            subprocess.call("wsl \"/mnt/c/OrtogOnBlender/SMVSlinux/texrecon\" \"--data_term=area\" \"--skip_global_seam_leveling\" \"--outlier_removal=gauss_damping\" \""+Saida+"/scene::undistorted\" \""+Saida+"/scene/smvs-surface-clean.ply\" \""+Saida+"/scene/scene_dense_mesh_texture2\"", shell=True)
+            
+            bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
+            scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.context.view_layer.objects.active = scene_dense_mesh_texture2
+            bpy.data.objects['scene_dense_mesh_texture2'].select_set(True)
+            bpy.ops.view3d.view_all(center=False)
+            bpy.ops.file.pack_all()
+
+            '''
             tmpPLYface = tmpdir+'/scene/smvs-surface-clean.ply'        
             bpy.ops.import_mesh.ply(filepath=tmpPLYface, filter_glob="*.ply")
             smvs_surface_clean = bpy.data.objects['smvs-surface-clean']
@@ -68,11 +97,11 @@ def GeraModeloFotoSMVSDef(self, context):
             bpy.data.objects['smvs-surface-clean'].select_set(True)
             bpy.ops.view3d.view_all(center=False)
             bpy.ops.file.pack_all()        
-
+            '''
 
         if platform.system() == "Darwin":
             homemac = expanduser("~")
-            SMVSPath = '/OrtogOnBlender/SMVSMAC/'
+            SMVSPath = homemac+'/Programs/OrtogOnBlender/SMVSMAC/'
 
             subprocess.call(['rm', '-Rf', tmpdir+'/scene'])
             subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path_photo, tmpdir+'/scene'])
@@ -216,7 +245,7 @@ def GeraModeloFotoSMVSDef(self, context):
 
 
 
-    bpy.data.images['UV_FACE'].pack()
+    bpy.data.images['UV_FACE'].pack(as_png=True)
     bpy.ops.file.pack_all()
 
 

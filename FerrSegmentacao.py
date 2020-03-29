@@ -45,17 +45,32 @@ def ConverteImagensTomoDef():
         if platform.system() == "Windows":
         
             os.chdir(scn.my_tool.path_slices_img)
-        
+            print("Entrrei")
 
             subprocess.call('C:\OrtogOnBlender\ImageMagick\mogrify -type Grayscale -format jpg *.png && mkdir GREY && move *.jpg GREY', shell=True)
-
+            print("Rodei")
 
             #subprocess.call('python ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -i '+tmpdir+'/GREY/ -o '+tmpdir+'/DCM/ -s '+str(s1)+' '+str(s2)+' '+str(s3)+' -t jpg', shell=True)
             #print("DICOM BASE GERADO!!!")
             
+            Entrada = str(scn.my_tool.path_slices_img+"/GREY").replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
+            Saida = str(scn.my_tool.path_slices_img+"/DCM").replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
+            
+            subprocess.call("mkdir DCM", shell=True)
+            print("Criei DCM")
+            
+            print("wsl python \"/mnt/c/OrtogOnBlender/Img2Dcm/img2dcm.py\" -i \""+Entrada+"\" -o \""+Saida+"\" -t jpg")
+            
+            subprocess.call("wsl python \"/mnt/c/OrtogOnBlender/Img2Dcm/img2dcm.py\" -i \""+Entrada+"\" -o \""+Saida+"\" -s "+str(s1)+" "+str(s2)+" "+str(s3)+" -t jpg", shell=True)
+            
+
+            
+            '''
+            
             ListaArquivos = sorted(os.listdir(scn.my_tool.path_slices_img+"/GREY/"))
 
             os.chdir(scn.my_tool.path_slices_img+"/GREY/")
+            
             
             subprocess.call('mkdir DCM', shell=True)
 
@@ -65,8 +80,10 @@ def ConverteImagensTomoDef():
             print("Arquivo "+arquivo+" gerado!")
 
             print("C:\\OrtogOnBlender\\VolView\\bin\\VolView "+scn.my_tool.path_slices_img+"\\GREY\\DCM\\"+str(ListaArquivos[0])+".dcm &")
+            '''
             
-            subprocess.call("C:\\OrtogOnBlender\\VolView\\bin\\VolView "+scn.my_tool.path_slices_img+"\\GREY\\DCM\\"+str(ListaArquivos[0])+".dcm &", shell=True)
+            
+            subprocess.call("C:\\OrtogOnBlender\\VolView\\bin\\VolView "+scn.my_tool.path_slices_img+"\\DCM\\0000.dcm &", shell=True)
 
 
 
