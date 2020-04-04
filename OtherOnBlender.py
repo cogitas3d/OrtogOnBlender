@@ -91,7 +91,7 @@ class OTHER_PT_Converte_Img_Tomo(bpy.types.Panel):
         row.prop(context.scene, "S3")
 
         row = layout.row()
-        row.operator("object.converte_imagens_tomo", text="Convert Images to CE-Scan!", icon="RENDER_STILL")
+        row.operator("object.converte_imagens_tomo", text="Convert Images to CT-Scan!", icon="RENDER_STILL")
 
         row = layout.row()
         row = layout.row()
