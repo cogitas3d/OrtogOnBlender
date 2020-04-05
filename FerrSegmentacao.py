@@ -12,6 +12,44 @@ from .AjustaTomo import *
 from math import sqrt
 
 
+def Converte3DparaVoxelDef():
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    tmpdir = tempfile.mkdtemp()
+
+    bpy.ops.export_mesh.stl(filepath=tmpdir+"/Model.stl", check_existing=True, filter_glob="*.stl", use_selection=True, global_scale=1, use_scene_unit=False, ascii=False, use_mesh_modifiers=True, batch_mode='OFF', axis_forward='Y', axis_up='Z')
+
+    if platform.system() == "Linux":
+
+        # Converte objeto em slices de imagens
+        subprocess.call('cd '+tmpdir+' && mkdir '+tmpdir+'/VOXEL && python3 ~/Programs/OrtogOnBlender/StlToVoxel/stltovoxel.py '+tmpdir+'/Model.stl '+tmpdir+'/VOXEL/img.png', shell=True)
+
+        # Converte em greyscale
+        subprocess.call('cd '+tmpdir+'/VOXEL && mkdir '+tmpdir+'/VOXEL/GREY && for i in *.png; do convert $i -type Grayscale -depth 8 '+tmpdir+'/VOXEL/GREY/${i%.png}.png; done', shell=True)
+
+        # Converte em DICOM
+        subprocess.call('cd '+tmpdir+'/VOXEL/GREY && mkdir '+tmpdir+'/VOXEL/GREY/DCM/ && python ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -i '+tmpdir+'/VOXEL/GREY/ -o '+tmpdir+'/VOXEL/GREY/DCM/ -s 0.588 0.588 0.588 -t png', shell=True)
+        print("DICOM BASE GERADO!!!")
+
+        subprocess.call('~/Programs/OrtogOnBlender/VolView/bin/VolView '+tmpdir+'/VOXEL/GREY/DCM/0000.dcm &', shell=True)
+
+class Converte3DparaVoxel(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.converte_3d_voxel"
+    bl_label = "Convert 3D to Voxel"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        Converte3DparaVoxelDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Converte3DparaVoxel)
+
+
+
 def ConverteImagensTomoDef():
 
     context = bpy.context
@@ -29,9 +67,9 @@ def ConverteImagensTomoDef():
     try:
         tmpdir = tempfile.mkdtemp()
         print("Criei tmp")
-        
+
         if platform.system() == "Linux":
-        
+
             subprocess.call('cd '+scn.my_tool.path_slices_img+' && mkdir '+tmpdir+'/GREY && for i in *.jpg; do convert $i -type Grayscale -depth 8 -quality 100 '+tmpdir+'/GREY/${i%.png}.jpg; done', shell=True)
 
             #subprocess.call('mkdir '+tmpdir+'/DCM && python2.7 ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -t jpg -i '+tmpdir+'/GREY/ -o '+tmpdir+'/DCM/ -s '+str(s1)+' '+str(s2)+' '+str(s3), shell=True)
@@ -43,7 +81,7 @@ def ConverteImagensTomoDef():
 
 
         if platform.system() == "Windows":
-        
+
             os.chdir(scn.my_tool.path_slices_img)
             print("Entrrei")
 
@@ -52,26 +90,26 @@ def ConverteImagensTomoDef():
 
             #subprocess.call('python ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -i '+tmpdir+'/GREY/ -o '+tmpdir+'/DCM/ -s '+str(s1)+' '+str(s2)+' '+str(s3)+' -t jpg', shell=True)
             #print("DICOM BASE GERADO!!!")
-            
+
             Entrada = str(scn.my_tool.path_slices_img+"/GREY").replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
             Saida = str(scn.my_tool.path_slices_img+"/DCM").replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
-            
+
             subprocess.call("mkdir DCM", shell=True)
             print("Criei DCM")
-            
-            print("wsl python \"/mnt/c/OrtogOnBlender/Img2Dcm/img2dcm.py\" -i \""+Entrada+"\" -o \""+Saida+"\" -t jpg")
-            
-            subprocess.call("wsl python \"/mnt/c/OrtogOnBlender/Img2Dcm/img2dcm.py\" -i \""+Entrada+"\" -o \""+Saida+"\" -s "+str(s1)+" "+str(s2)+" "+str(s3)+" -t jpg", shell=True)
-            
 
-            
+            print("wsl python \"/mnt/c/OrtogOnBlender/Img2Dcm/img2dcm.py\" -i \""+Entrada+"\" -o \""+Saida+"\" -t jpg")
+
+            subprocess.call("wsl python \"/mnt/c/OrtogOnBlender/Img2Dcm/img2dcm.py\" -i \""+Entrada+"\" -o \""+Saida+"\" -s "+str(s1)+" "+str(s2)+" "+str(s3)+" -t jpg", shell=True)
+
+
+
             '''
-            
+
             ListaArquivos = sorted(os.listdir(scn.my_tool.path_slices_img+"/GREY/"))
 
             os.chdir(scn.my_tool.path_slices_img+"/GREY/")
-            
-            
+
+
             subprocess.call('mkdir DCM', shell=True)
 
             for arquivo in ListaArquivos:
@@ -81,8 +119,8 @@ def ConverteImagensTomoDef():
 
             print("C:\\OrtogOnBlender\\VolView\\bin\\VolView "+scn.my_tool.path_slices_img+"\\GREY\\DCM\\"+str(ListaArquivos[0])+".dcm &")
             '''
-            
-            
+
+
             subprocess.call("C:\\OrtogOnBlender\\VolView\\bin\\VolView "+scn.my_tool.path_slices_img+"\\DCM\\0000.dcm &", shell=True)
 
 

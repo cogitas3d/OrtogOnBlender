@@ -168,3 +168,42 @@ bpy.types.Scene.MedidaAtualDCM = bpy.props.StringProperty \
  description = "Current Measure",
  default = "NONE"
 )
+
+
+class OTHER_PT_Objeto_para_Dicom(bpy.types.Panel):
+    bl_label = "3D Object to CT-Scan"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Others"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+#        row = layout.row()
+#        row.label(text="Dimensions:")
+
+#       Add Volume Area
+
+        row = layout.row()
+        row.label(text="Convert 3D to Voxel:")
+
+        row = layout.row()
+        row.operator("object.converte_3d_voxel", text="Convert to DICOM!", icon="ALEMBIC")
+
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Convert MHA to DICOM:")
+
+        row = layout.row()
+        col = layout.column(align=True)
+        col.prop(scn.my_tool, "filepathmha", text="")
+
+        row = layout.row()
+        row.operator("object.abre_slicer_mha", text="Open Slicer", icon="RENDER_STILL")
+
+bpy.utils.register_class(OTHER_PT_Objeto_para_Dicom)
