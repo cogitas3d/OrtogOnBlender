@@ -521,7 +521,10 @@ class ModalTimerOperator(bpy.types.Operator):
         context = bpy.context
         obj = context.active_object
 
+        context.view_layer.active_layer_collection = context.view_layer.layer_collection.children[0]
+
         bpy.ops.wm.tool_set_by_id(name="builtin.cursor")
+
 
         if event.type in {'RIGHTMOUSE', 'ESC'}:
             self.cancel(context)
@@ -570,6 +573,19 @@ class ModalTimerOperator(bpy.types.Operator):
         return {'PASS_THROUGH'}
 
     def execute(self, context):
+
+        try:
+            PontosDel = [obj for obj in bpy.context.scene.objects if fnmatch.fnmatchcase(obj.name, "PT_Linh*")]
+
+            for i in PontosDel:
+                i.name = 'del'
+
+        except:
+            print("Não conta nenhum ponto PT_Linha!")
+
+        # Torna Collection active
+        context.view_layer.active_layer_collection = context.view_layer.layer_collection.children[0]
+
         if context.area.type != 'VIEW_3D':
             print("Must use in a 3d region")
             return {'CANCELLED'}
