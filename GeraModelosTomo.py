@@ -446,6 +446,27 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.transform.rotate(value=3.14159, orient_axis='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
 
+
+    if ManufacturerLimpo == "'GE MEDICAL SYSTEMS'" and StationNameLimpo == "'TC01'" and ManufacturerModelNameLimpo == "'BrightSpeed'":
+
+        os.chdir(scn.my_tool.path+"/3")
+
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        bpy.context.scene.interesse_ossos = "200"
+        bpy.context.scene.interesse_mole = "-300"
+        bpy.context.scene.interesse_dentes = "1430"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+
     if ManufacturerLimpo == "'TOSHIBA'" and StationNameLimpo == "'ID_STATION'" and ManufacturerModelNameLimpo == "'Aquilion Lightning'":
         print("USA FIXED!")
         print("SÉRIE 3")
@@ -4310,9 +4331,50 @@ def GeraModelosTomoManualDef(self, context):
                 ModeloTomografo.write('bpy.context.scene.interesse_mole = '+'"'+str(FatorMole)+'"'+"\n")
                 ModeloTomografo.write('bpy.context.scene.interesse_dentes = '+'"'+str(FatorDentes)+'"'+"\n")
                 ModeloTomografo.write('DiretorioTomo == '+str(DiretorioTomo))
+
+                # SCRIPT
+
+                ModeloTomografo.write("\n")
+                ModeloTomografo.write("\n")
+                ModeloTomografo.write("    "+'if ManufacturerLimpo == '+'"'+str(ManufacturerLimpo)+'" and StationNameLimpo == '+'"'+str(StationNameLimpo)+'" and ManufacturerModelNameLimpo == '+'"'+str(ManufacturerModelNameLimpo)+'":'+"\n")
+
+                ModeloTomografo.write("\n")
+                ModeloTomografo.write("        "+'os.chdir(scn.my_tool.path+"'+"/"+str(DiretorioTomo).split('/')[-2]+'")'+"\n")
+
+                ModeloTomografo.write("\n")
+                ModeloTomografo.write("        "+'scn.my_tool.path = os.getcwd()'+"\n")
+                ModeloTomografo.write("        "+'bpy.ops.object.corrige_dicom()'+"\n")
+
+                ModeloTomografo.write("\n")
+                if DimPixelsX > 512 or DimPixelsY > 512:
+                    ModeloTomografo.write("        "+'bpy.ops.object.reduz_dimensao_dicom()'+"\n")
+
+                ModeloTomografo.write("\n")
+                ModeloTomografo.write("        "+'try:'+"\n")
+                ModeloTomografo.write("            "+'CopiaTomoDir(scn.my_tool.path)'+"\n")
+                ModeloTomografo.write("        "+'except:'+"\n")
+                ModeloTomografo.write("            "+'print("Doesn\'t have Patient Dir")'+"\n")
+
+
+                ModeloTomografo.write(''+"\n")
+
+                ModeloTomografo.write("        "+'bpy.context.scene.interesse_ossos = "'+str(FatorOssos)+'"'+"\n")
+                ModeloTomografo.write("        "+'bpy.context.scene.interesse_mole = "'+str(FatorMole)+'"'+"\n")
+                ModeloTomografo.write("        "+'bpy.context.scene.interesse_dentes = "'+str(FatorDentes)+'"'+"\n")
+
+                ModeloTomografo.write(''+"\n")
+                ModeloTomografo.write("        "+'bpy.ops.object.gera_modelos_tomo()'+"\n")
+
                 ModeloTomografo.close()
+
         except:
             print("Não consta dados do tomógrafo.")
+
+
+
+
+
+
 
         # ABRE DIRETÓRIO
 
