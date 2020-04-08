@@ -23,15 +23,15 @@ def GeraModeloFotoSMVSDef(self, context):
     context = bpy.context
     obj = context.active_object
     scn = context.scene
-        
+
     tmpdir = tempfile.mkdtemp()
     tmpOBJface = tmpdir+'/scene/scene_dense_mesh_texture2.obj'
 #    subprocess.call(['rm /tmp/DIRETORIO_FOTOS.txt'],  shell=True)
 
     homeall = expanduser("~")
-    
+
     if scn.my_tool.path_photo == "":
-        ERROTermFoto()        
+        ERROTermFoto()
         bpy.context.window_manager.popup_menu(ERROruntimeFotosDef, title="Attention!", icon='INFO')
 
     else:
@@ -60,26 +60,26 @@ def GeraModeloFotoSMVSDef(self, context):
 
             Fotos = str(scn.my_tool.path_photo).replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
             print("FOTOS: ", Fotos)
-            
+
             Saida = str(tmpdir).replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
 
             # subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path_photo, tmpdir+'/scene'])
             subprocess.call("wsl \"/mnt/c/OrtogOnBlender/SMVSlinux/makescene\" -i \""+Fotos+"\" \""+Saida+"/scene\"", shell=True)
-            
+
             #subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
             subprocess.call("wsl \"/mnt/c/OrtogOnBlender/SMVSlinux/sfmrecon\" \""+Saida+"/scene\"", shell=True)
-                        
+
             #subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
             subprocess.call("wsl \"/mnt/c/OrtogOnBlender/SMVSlinux/smvsrecon\" -s2 \""+Saida+"/scene\"", shell=True)
-                        
+
             subprocess.call([SMVSPath+'./fssrecon', tmpdir+'/scene/smvs-B2.ply', tmpdir+'/scene/smvs-surface.ply'])
             subprocess.call([SMVSPath+'./meshclean', '-p10', tmpdir+'/scene/smvs-surface.ply', tmpdir+'/scene/smvs-surface-clean.ply'])
-            
+
             #subprocess.call('C:\OrtogOnBlender\MeshLab\meshlabserver -i '+tmpdir+'/scene/smvs-B2.ply -o '+tmpdir+'/scene/meshlab.ply -s '+SMVSPathLinux+'SMVSmeshlab.mlx', shell=True)
-            
-            
+
+
             subprocess.call("wsl \"/mnt/c/OrtogOnBlender/SMVSlinux/texrecon\" \"--data_term=area\" \"--skip_global_seam_leveling\" \"--outlier_removal=gauss_damping\" \""+Saida+"/scene::undistorted\" \""+Saida+"/scene/smvs-surface-clean.ply\" \""+Saida+"/scene/scene_dense_mesh_texture2\"", shell=True)
-            
+
             bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
             scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
             bpy.ops.object.select_all(action='DESELECT')
@@ -89,14 +89,14 @@ def GeraModeloFotoSMVSDef(self, context):
             bpy.ops.file.pack_all()
 
             '''
-            tmpPLYface = tmpdir+'/scene/smvs-surface-clean.ply'        
+            tmpPLYface = tmpdir+'/scene/smvs-surface-clean.ply'
             bpy.ops.import_mesh.ply(filepath=tmpPLYface, filter_glob="*.ply")
             smvs_surface_clean = bpy.data.objects['smvs-surface-clean']
             bpy.ops.object.select_all(action='DESELECT')
             bpy.context.view_layer.objects.active = smvs_surface_clean
             bpy.data.objects['smvs-surface-clean'].select_set(True)
             bpy.ops.view3d.view_all(center=False)
-            bpy.ops.file.pack_all()        
+            bpy.ops.file.pack_all()
             '''
 
         if platform.system() == "Darwin":
@@ -153,7 +153,7 @@ def GeraModeloFotoSMVSDef(self, context):
     for v in mesh.verts:
         v.select = True
 
-    # Cria UV map com espaço entre os grupos    
+    # Cria UV map com espaço entre os grupos
     bpy.ops.uv.smart_project(island_margin=0.03)
 #    bpy.ops.uv.smart_project(island_margin=0.3)
 
@@ -202,7 +202,7 @@ def GeraModeloFotoSMVSDef(self, context):
     photogrammetry_original.select_set(True)
 
     bpy.ops.object.bake(type='DIFFUSE')
-    
+
     # Oculta original
     photogrammetry_original.hide_viewport=True
 
@@ -244,8 +244,15 @@ def GeraModeloFotoSMVSDef(self, context):
     bpy.context.space_data.shading.type = 'MATERIAL'
 
 
+    if platform.system() == "Linux" or platform.system() == "Darwin":
+        bpy.data.images['UV_FACE'].pack()
+        print("Empacotou as imagens!")
 
-    bpy.data.images['UV_FACE'].pack(as_png=True)
+    if platform.system() == "Windows":
+        bpy.data.images['UV_FACE'].pack(as_png=True)
+        print("Empacotou as imagens!")
+
+
     bpy.ops.file.pack_all()
 
 
@@ -254,7 +261,7 @@ class GeraModeloFotoSMVS(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.gera_modelo_foto_smvs"
     bl_label = "Gera Modelos Foto"
-    
+
     def execute(self, context):
         GeraModeloFotoSMVSDef(self, context)
         return {'FINISHED'}
@@ -265,11 +272,9 @@ class DisplaceSMVS(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.displace_smvs"
     bl_label = "Displace SMVS"
-    
+
     def execute(self, context):
         DisplaceSMVSDef(self, context)
         return {'FINISHED'}
 
 bpy.utils.register_class(DisplaceSMVS)
-
-
