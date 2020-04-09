@@ -281,7 +281,7 @@ def AjustaTomoDef(self, context):
             try:
                 for i in lista_compara:
                     print("Comecou a comparar!")
-                    if fnmatch.fnmatchcase(str(i[2]), "*PM*"):
+                    if fnmatch.fnmatchcase(str(i[2]), "*PM*") or fnmatch.fnmatchcase(str(i[2]), "*Sft Tissue*"):
                             lista_diretorios_mole.append(i[1])
 
     #                    scn.my_tool.path = Endereco+"/"+lisa_diretorios_mole[0]
