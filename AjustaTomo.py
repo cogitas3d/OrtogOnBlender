@@ -11,6 +11,7 @@ import platform
 import subprocess
 import pydicom as dicom
 import csv
+import fnmatch
 from os.path import expanduser
 
 from .GeraModelosTomo import *
@@ -271,8 +272,28 @@ def AjustaTomoDef(self, context):
             #    print("Directory:", i, "|| Number of files:", len(os.listdir(diretorio+i)), "||", SeriesDescriptionLimpa2, "\n")
                 lista_compara.append([len(os.listdir(diretorio+i)), i, SeriesDescriptionLimpa2])
                 lista_compara.sort(reverse = True)
+                print("LISTA COMPARA!!!")
                 print(lista_compara)
 
+
+            lista_diretorios_mole = []
+
+            try:
+                for i in lista_compara:
+                    print("Comecou a comparar!")
+                    if fnmatch.fnmatchcase(str(i[2]), "*PM*"):
+                            lista_diretorios_mole.append(i[1])
+
+    #                    scn.my_tool.path = Endereco+"/"+lisa_diretorios_mole[0]
+                    print("Diretorio final:", lista_diretorios_mole[0] )
+                    print("Comparou!")
+
+                    global diretorio_final_reconstruir_mole
+                    diretorio_final_reconstruir_mole = lista_diretorios_mole[0]
+
+
+            except:
+                print("Problema para encontrar diretório com tecido mole na tomo!")
 
             with open(tmpdirCSV+'/C-Scan_DATA.csv', mode='w') as centroid_file:
                 report_writer = csv.writer(centroid_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -305,6 +326,16 @@ def AjustaTomoDef(self, context):
 #        abrir_diretorio(tmpdirTomo)
 
         scn.my_tool.path = tmpdirTomo+"/"
+
+
+        try:
+            with open(tmpdirTomo+'/AUTOEXPDIR.txt', "a") as arq:
+                arq.write(tmpdirTomo+"/"+diretorio_final_reconstruir_mole)
+                arq.close()
+
+        except:
+            print("Algum problema com a variável global do tecido mole!")
+
 
 class AjustaTomo(bpy.types.Operator):
     """Tooltip"""

@@ -11,8 +11,40 @@ from os.path import expanduser
 from random import randint
 
 from .ImportaObjMat import *
+from .AjustaTomo import *
 
 # MENSAGENS
+
+def GeraModeloTomoAutoMoleDef():
+
+    context = bpy.context
+    #obj = context.object
+    scn = context.scene
+
+    # Organiza a tomografia e fornece os dados pelas variáveis globais
+    bpy.ops.object.ajusta_tomo()
+
+    # Puxa as variáveis globais do ajusta_tomo para fornecer o endereço das fatias do mole
+    arquivo = open(scn.my_tool.path+'/AUTOEXPDIR.txt', 'r')
+    endereco = arquivo.readline()
+
+    scn.my_tool.path = endereco
+
+    bpy.ops.object.gera_modelo_tomo_manual()
+
+
+class GeraModeloTomoAutoMole(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.gera_modelotomo_auto_mole"
+    bl_label = "CT-Scan reconstruction automatic SoftTissue"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        GeraModeloTomoAutoMoleDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(GeraModeloTomoAutoMole)
+
 
 class MessageFaltaDICOM(bpy.types.Operator):
     bl_idname = "object.dialog_operator_informe_dicom"
