@@ -272,25 +272,36 @@ def AjustaTomoDef(self, context):
             #    print("Directory:", i, "|| Number of files:", len(os.listdir(diretorio+i)), "||", SeriesDescriptionLimpa2, "\n")
                 lista_compara.append([len(os.listdir(diretorio+i)), i, SeriesDescriptionLimpa2])
                 lista_compara.sort(reverse = True)
-                print("LISTA COMPARA!!!")
-                print(lista_compara)
+                #print("LISTA COMPARA!!!")
+                #print(lista_compara)
 
 
             lista_diretorios_mole = []
 
             try:
+                print("lista compara:",lista_compara)
                 for i in lista_compara:
                     print("Comecou a comparar!")
-                    if fnmatch.fnmatchcase(str(i[2]), "*PM*") or fnmatch.fnmatchcase(str(i[2]), "*Sft Tissue*"):
+                    print("i Atual:", i)
+                    if fnmatch.fnmatchcase(str(i[2]), "*PM*") or fnmatch.fnmatchcase(str(i[2]), "*Sft Tissue*") or fnmatch.fnmatchcase(str(i[2]), "*PARTES MOLES*") or fnmatch.fnmatchcase(str(i[2]), "*Head*"):
+                            print("Encontrou!")
                             lista_diretorios_mole.append(i[1])
-
-    #                    scn.my_tool.path = Endereco+"/"+lisa_diretorios_mole[0]
-                    print("Diretorio final:", lista_diretorios_mole[0] )
-                    print("Comparou!")
+                    else:
+                        print("Não encontrou!")
 
                     global diretorio_final_reconstruir_mole
-                    diretorio_final_reconstruir_mole = lista_diretorios_mole[0]
 
+                    try:
+                        print("Diretorio final:", lista_diretorios_mole[0] )
+                        print("Comparou!")
+
+                        diretorio_final_reconstruir_mole = lista_diretorios_mole[0]
+
+                    except:
+                        print("Diretorio final:", lista_diretorios_mole ) # Não sei pq!!! Se coloco index dá erro!
+                        print("Comparou!")
+
+                        diretorio_final_reconstruir_mole = lista_diretorios_mole
 
             except:
                 print("Problema para encontrar diretório com tecido mole na tomo!")
