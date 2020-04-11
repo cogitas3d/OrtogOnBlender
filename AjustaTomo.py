@@ -283,7 +283,7 @@ def AjustaTomoDef(self, context):
                 for i in lista_compara:
                     print("Comecou a comparar!")
                     print("i Atual:", i)
-                    if fnmatch.fnmatchcase(str(i[2]), "*PM*") or fnmatch.fnmatchcase(str(i[2]), "*Soft*") or fnmatch.fnmatchcase(str(i[2]), "*Sft Tissue*") or fnmatch.fnmatchcase(str(i[2]), "*STD*") or fnmatch.fnmatchcase(str(i[2]), "*PARTES MOLES*") or fnmatch.fnmatchcase(str(i[2]), "*Head*") or fnmatch.fnmatchcase(str(i[2]), "*FACE*") or fnmatch.fnmatchcase(str(i[2]), "*ARQUIVO*") or fnmatch.fnmatchcase(str(i[2]), "*RECON*") or fnmatch.fnmatchcase(str(i[2]), "*Cranio*") or fnmatch.fnmatchcase(str(i[2]), "*VOLUME STD*")  or fnmatch.fnmatchcase(str(i[2]), "*VOL*") or fnmatch.fnmatchcase(str(i[2]), "*Imagens Processadas*"):
+                    if fnmatch.fnmatchcase(str(i[2]), "*PM*") or fnmatch.fnmatchcase(str(i[2]), "*Soft*") or fnmatch.fnmatchcase(str(i[2]), "*Sft Tissue*") or fnmatch.fnmatchcase(str(i[2]), "*STD*") or fnmatch.fnmatchcase(str(i[2]), "*PARTES MOLES*") or fnmatch.fnmatchcase(str(i[2]), "*Head*") or fnmatch.fnmatchcase(str(i[2]), "*FACE*") or fnmatch.fnmatchcase(str(i[2]), "*Recon 3*") or fnmatch.fnmatchcase(str(i[2]), "*ARQUIVO*") or fnmatch.fnmatchcase(str(i[2]), "*RECON*") or fnmatch.fnmatchcase(str(i[2]), "*Cranio*") or fnmatch.fnmatchcase(str(i[2]), "*VOLUME STD*")  or fnmatch.fnmatchcase(str(i[2]), "*VOL*") or fnmatch.fnmatchcase(str(i[2]), "*Imagens Processadas*"):
                             print("Encontrou!")
                             lista_diretorios_mole.append(i[1])
                     else:
