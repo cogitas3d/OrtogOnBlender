@@ -241,7 +241,7 @@ bpy.utils.register_class(OTHER_PT_Objeto_para_Dicom)
 
 
 class OTHER_PT_PontoAnatomicoCustom(bpy.types.Panel):
-    bl_label = "3D Object to CT-Scan"
+    bl_label = "Custom Anatomical Point"
     bl_region_type = 'UI'
     bl_space_type = 'VIEW_3D'
     bl_options = {'DEFAULT_CLOSED'}
@@ -263,6 +263,31 @@ class OTHER_PT_PontoAnatomicoCustom(bpy.types.Panel):
         row.label(text="Select an object before!")
 
         row = layout.row()
+        if context.window_manager.measureit_run_opengl is False:
+            icon = 'PLAY'
+            txt = 'Show'
+        else:
+            icon = "PAUSE"
+            txt = 'Hide'
+        row.operator("measureit.runopengl", text=txt, icon=icon)
+        row.prop(scn, "measureit_gl_ghost", text="", icon='GHOST_ENABLED')
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+        col = self.layout.column(align = True)
+        col.alignment = 'CENTER'
+        col.prop(context.scene, "nome_ponto_customizado")
+
+        row = layout.row()
         row.operator("object.cria_ponto_medida", text="Create Custom Point!", icon="SHADING_RENDERED")
 
 bpy.utils.register_class(OTHER_PT_PontoAnatomicoCustom)
+
+bpy.types.Scene.nome_ponto_customizado = bpy.props.StringProperty \
+  (
+    name = "Object Name",
+    description = "Object Name",
+    default = "MeasurePoint"
+  )

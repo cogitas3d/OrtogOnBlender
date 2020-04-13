@@ -9,8 +9,9 @@ def CriaPontoMedidasDef():
     scn = context.scene
 
     bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
-    bpy.context.object.name = "MeasurePoint"
-    bpy.context.object.show_name = True
+
+    bpy.context.object.name = bpy.context.scene.nome_ponto_customizado
+    #bpy.context.object.show_name = True
 
     obj = context.active_object # Muda para o ponto
 
@@ -24,12 +25,180 @@ def CriaPontoMedidasDef():
         activeObject = bpy.context.active_object #Set active object to variable
         mat = bpy.data.materials["MatCustomPoints"] #set new material to variable
         activeObject.data.materials.append(mat) #add the material to the object
-        bpy.context.object.active_material.diffuse_color = (0.45, 0.0, 0.9, 1)
+        bpy.context.object.active_material.diffuse_color = (0.8, 0.7, 0, 1)
     else:
         activeObject = bpy.context.active_object #Set active object to variable
         mat = bpy.data.materials.new(name="MatCustomPoints") #set new material to variable
         activeObject.data.materials.append(mat) #add the material to the object
-        bpy.context.object.active_material.diffuse_color = (0.45, 0.0, 0.9, 1)
+        bpy.context.object.active_material.diffuse_color = (0.8, 0.70, 0, 1)
+
+        bpy.ops.object.duplicate_move()
+        bpy.context.object.name = bpy.context.scene.nome_ponto_customizado+"Parent"
+        objParent = context.active_object
+
+        bpy.ops.object.select_all(action='DESELECT')
+
+        # Parenteia cópia a osteotomia
+        objInicial.select_set(True)
+        objParent.select_set(True)
+        bpy.context.view_layer.objects.active = objInicial
+        bpy.ops.object.parent_set()
+        bpy.ops.object.select_all(action='DESELECT')
+
+        # Cria objeto X
+        obj.select_set(True)
+        bpy.context.view_layer.objects.active = obj
+
+        bpy.ops.object.duplicate_move()
+        bpy.context.object.name = bpy.context.scene.nome_ponto_customizado+"X"
+        objX = context.active_object
+
+        # Apaga todos os Materiais do objeto
+
+        for ob in bpy.context.selected_editable_objects:
+            ob.active_material_index = 0
+            for i in range(len(ob.material_slots)):
+                bpy.ops.object.material_slot_remove({'object': ob})
+
+        # Cria e atribui material
+        ListaMateriais = []
+        MateriaisCena = bpy.data.materials
+
+        for i in MateriaisCena:
+            ListaMateriais.append(i.name)
+
+        if 'MatCustomPointsX' in ListaMateriais:
+            activeObject = bpy.context.active_object #Set active object to variable
+            mat = bpy.data.materials["MatCustomPointsX"] #set new material to variable
+            activeObject.data.materials.append(mat) #add the material to the object
+            bpy.context.object.active_material.diffuse_color = (0.8, 0, 0, 1)
+        else:
+            activeObject = bpy.context.active_object #Set active object to variable
+            mat = bpy.data.materials.new(name="MatCustomPointsX") #set new material to variable
+            activeObject.data.materials.append(mat) #add the material to the object
+            bpy.context.object.active_material.diffuse_color = (0.8, 0, 0, 1)
+
+        # Atribui constraint X
+        bpy.ops.object.constraint_add(type='COPY_LOCATION')
+        bpy.context.object.constraints["Copy Location"].target = objParent
+        bpy.context.object.constraints["Copy Location"].use_y = False
+        bpy.context.object.constraints["Copy Location"].use_z = False
+
+        # Atribui medida X
+        bpy.ops.object.select_all(action='DESELECT')
+        obj.select_set(True)
+        objX.select_set(True)
+        bpy.context.view_layer.objects.active = obj
+
+        bpy.context.scene.measureit_default_color = (1, 0.210597, 0.00242219, 1)
+        bpy.context.scene.measureit_font_size = 22
+        bpy.ops.measureit.addlink()
+        bpy.ops.object.select_all(action='DESELECT')
+
+
+        # Cria objeto Y
+        bpy.ops.object.select_all(action='DESELECT')
+        obj.select_set(True)
+        bpy.context.view_layer.objects.active = obj
+
+        bpy.ops.object.duplicate_move()
+        bpy.context.object.name = bpy.context.scene.nome_ponto_customizado+"Y"
+        objY = context.active_object
+
+        # Apaga todos os Materiais do objeto
+
+        for ob in bpy.context.selected_editable_objects:
+            ob.active_material_index = 0
+            for i in range(len(ob.material_slots)):
+                bpy.ops.object.material_slot_remove({'object': ob})
+
+        # Cria e atribui material
+        ListaMateriais = []
+        MateriaisCena = bpy.data.materials
+
+        for i in MateriaisCena:
+            ListaMateriais.append(i.name)
+
+        if 'MatCustomPointsY' in ListaMateriais:
+            activeObject = bpy.context.active_object #Set active object to variable
+            mat = bpy.data.materials["MatCustomPointsY"] #set new material to variable
+            activeObject.data.materials.append(mat) #add the material to the object
+            bpy.context.object.active_material.diffuse_color = (0, 0.8, 0, 1)
+        else:
+            activeObject = bpy.context.active_object #Set active object to variable
+            mat = bpy.data.materials.new(name="MatCustomPointsY") #set new material to variable
+            activeObject.data.materials.append(mat) #add the material to the object
+            bpy.context.object.active_material.diffuse_color = (0, 0.8, 0, 1)
+
+        # Atribui constraint Y
+        bpy.ops.object.constraint_add(type='COPY_LOCATION')
+        bpy.context.object.constraints["Copy Location"].target = objParent
+        bpy.context.object.constraints["Copy Location"].use_x = False
+        bpy.context.object.constraints["Copy Location"].use_z = False
+
+        # Atribui medida Y
+        bpy.ops.object.select_all(action='DESELECT')
+        obj.select_set(True)
+        objY.select_set(True)
+        bpy.context.view_layer.objects.active = obj
+
+        bpy.context.scene.measureit_default_color = (0.393438, 1, 0.265891, 1)
+        bpy.context.scene.measureit_font_size = 22
+        bpy.ops.measureit.addlink()
+
+
+
+        # Cria objeto Z
+        bpy.ops.object.select_all(action='DESELECT')
+        obj.select_set(True)
+        bpy.context.view_layer.objects.active = obj
+
+        bpy.ops.object.duplicate_move()
+        bpy.context.object.name = bpy.context.scene.nome_ponto_customizado+"Z"
+        objZ = context.active_object
+
+        # Apaga todos os Materiais do objeto
+
+        for ob in bpy.context.selected_editable_objects:
+            ob.active_material_index = 0
+            for i in range(len(ob.material_slots)):
+                bpy.ops.object.material_slot_remove({'object': ob})
+
+        # Cria e atribui material
+        ListaMateriais = []
+        MateriaisCena = bpy.data.materials
+
+        for i in MateriaisCena:
+            ListaMateriais.append(i.name)
+
+        if 'MatCustomPointsZ' in ListaMateriais:
+            activeObject = bpy.context.active_object #Set active object to variable
+            mat = bpy.data.materials["MatCustomPointsZ"] #set new material to variable
+            activeObject.data.materials.append(mat) #add the material to the object
+            bpy.context.object.active_material.diffuse_color = (0, 0, 0.8, 1)
+        else:
+            activeObject = bpy.context.active_object #Set active object to variable
+            mat = bpy.data.materials.new(name="MatCustomPointsZ") #set new material to variable
+            activeObject.data.materials.append(mat) #add the material to the object
+            bpy.context.object.active_material.diffuse_color = (0, 0, 0.8, 1)
+
+        # Atribui constraint Z
+        bpy.ops.object.constraint_add(type='COPY_LOCATION')
+        bpy.context.object.constraints["Copy Location"].target = objParent
+        bpy.context.object.constraints["Copy Location"].use_x = False
+        bpy.context.object.constraints["Copy Location"].use_y = False
+
+        # Atribui medida Z
+        bpy.ops.object.select_all(action='DESELECT')
+        obj.select_set(True)
+        objZ.select_set(True)
+        bpy.context.view_layer.objects.active = obj
+
+        bpy.context.scene.measureit_default_color = (0.49548, 0.676547, 1, 1)
+        bpy.context.scene.measureit_font_size = 22
+        bpy.ops.measureit.addlink()
+
+        bpy.ops.object.select_all(action='DESELECT')
 
 
 class CriaPontoMedida(bpy.types.Operator):
