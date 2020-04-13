@@ -22,7 +22,7 @@ class OTHER_PT_AtualizaAddonSec(bpy.types.Panel):
         row.label(text="VERSION: "+VERSION)
 
         row = layout.row()
-        row.operator("object.atualiza_script", text="UPGRADE FORENSIC!", icon="RECOVER_LAST")
+        row.operator("object.atualiza_script", text="UPGRADE OTHERTOOLS!", icon="RECOVER_LAST")
 
 bpy.utils.register_class(OTHER_PT_AtualizaAddonSec)
 
@@ -190,7 +190,38 @@ class OTHER_PT_Objeto_para_Dicom(bpy.types.Panel):
 #       Add Volume Area
 
         row = layout.row()
+        row.label(text="Setup Structure:")
+
+        row = layout.row()
+        row.operator("object.importa_voxelcube", text="Import VoxelCube", icon="MESH_CUBE")
+
+        row = layout.row()
+        row = layout.row()
+        row.operator("object.cria_voxelcube_planos", text="Create VoxelCube Planes", icon="SNAP_VOLUME")
+
+
+        row = layout.row()
+        row = layout.row()
+        circle=row.operator("object.booleana_osteo_geral", text="Difference", icon="MOD_BOOLEAN")
+
+        row = layout.row()
+        circle=row.operator("object.booleana_osteo_union", text="Union", icon="MOD_CAST")
+
+        row = layout.row()
+        circle=row.operator("object.booleana_osteo_inter", text="Intersect", icon="MOD_MASK")
+
+        row = layout.row()
+        circle=row.operator("object.booleana_union_multipla", text="MULTIPLE UNION", icon="STICKY_UVS_LOC")
+
+
+        row = layout.row()
         row.label(text="Convert 3D to Voxel:")
+
+        row = layout.row()
+        row.label(text="1) Import VoxelCube.")
+
+        row = layout.row()
+        row.label(text="2) Select one or more objects.")
 
         row = layout.row()
         row.operator("object.converte_3d_voxel", text="Convert to DICOM!", icon="ALEMBIC")
@@ -207,3 +238,31 @@ class OTHER_PT_Objeto_para_Dicom(bpy.types.Panel):
         row.operator("object.abre_slicer_mha", text="Open Slicer", icon="RENDER_STILL")
 
 bpy.utils.register_class(OTHER_PT_Objeto_para_Dicom)
+
+
+class OTHER_PT_PontoAnatomicoCustom(bpy.types.Panel):
+    bl_label = "3D Object to CT-Scan"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Others"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+#        row = layout.row()
+#        row.label(text="Dimensions:")
+
+#       Add Volume Area
+
+        row = layout.row()
+        row.label(text="Select an object before!")
+
+        row = layout.row()
+        row.operator("object.cria_ponto_medida", text="Create Custom Point!", icon="SHADING_RENDERED")
+
+bpy.utils.register_class(OTHER_PT_PontoAnatomicoCustom)

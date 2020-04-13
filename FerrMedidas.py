@@ -2,6 +2,60 @@ import bpy
 import math
 from math import sqrt
 
+def CriaPontoMedidasDef():
+
+    context = bpy.context
+    objInicial = context.active_object # Objeto selecionado
+    scn = context.scene
+
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=1)
+    bpy.context.object.name = "MeasurePoint"
+    bpy.context.object.show_name = True
+
+    obj = context.active_object # Muda para o ponto
+
+    ListaMateriais = []
+    MateriaisCena = bpy.data.materials
+
+    for i in MateriaisCena:
+        ListaMateriais.append(i.name)
+
+    if 'MatCustomPoints' in ListaMateriais:
+        activeObject = bpy.context.active_object #Set active object to variable
+        mat = bpy.data.materials["MatCustomPoints"] #set new material to variable
+        activeObject.data.materials.append(mat) #add the material to the object
+        bpy.context.object.active_material.diffuse_color = (0.45, 0.0, 0.9, 1)
+    else:
+        activeObject = bpy.context.active_object #Set active object to variable
+        mat = bpy.data.materials.new(name="MatCustomPoints") #set new material to variable
+        activeObject.data.materials.append(mat) #add the material to the object
+        bpy.context.object.active_material.diffuse_color = (0.45, 0.0, 0.9, 1)
+
+
+class CriaPontoMedida(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.cria_ponto_medida"
+    bl_label = "Create Measure Anatomical Point"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = len(bpy.context.selected_objects)
+
+        if found == 1:
+            return True
+        else:
+            if found != 1:
+                return False
+
+
+    def execute(self, context):
+        CriaPontoMedidasDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(CriaPontoMedida)
+
 
 def CalculaAngulo(Obj1, Obj2, Obj3):
 

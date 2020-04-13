@@ -127,6 +127,12 @@ def GeraModelosTomoDef(self, context):
         if CpuNum == 1:
             DecimFactor = '0.99'
 
+        try:
+            print("Processadores", CpuNum)
+        except:
+            print("Erro na contagem de processadores!")
+            DecimFactor = '0.95'
+
         ReconTomo(scn.my_tool.path, interesseOssos, 'Bones', DecimFactor)
         ReconTomo(scn.my_tool.path, interesseMole, 'SoftTissue', DecimFactor)
         ReconTomo(scn.my_tool.path, interesseDentes, 'Teeth', DecimFactor)
