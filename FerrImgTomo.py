@@ -188,6 +188,45 @@ def ImportaFatiasDef():
 
     bpy.context.space_data.shading.type = 'MATERIAL' # Descobri sozinho!
 
+    # Importa node group
+
+    if platform.system() == "Linux":
+
+        dirScript = bpy.utils.user_resource('SCRIPTS')
+
+        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+#        section   = "\\Collection\\"
+#        object    = "SPLINT"
+        section   = "\\NodeTree\\"
+        object    = "GroupVoxelShader"
+
+    if platform.system() == "Darwin":
+
+        dirScript = bpy.utils.user_resource('SCRIPTS')
+
+        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+        section   = "\\NodeTree\\"
+        object    = "GroupVoxelShader"
+
+    if platform.system() == "Windows":
+
+        dirScript = 'C:/OrtogOnBlender/Blender280/2.80/scripts/'
+
+        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+        section   = "\\NodeTree\\"
+        object    = "GroupVoxelShader"
+
+    filepath  = blendfile + section + object
+    directory = blendfile + section
+    filename  = object
+
+    bpy.ops.wm.append(
+        filepath=filepath,
+        filename=filename,
+        directory=directory)
+
+
+    # Importa fatias
     for Arquivo in ListaArquivos:
 
         bpy.ops.import_image.to_plane(files=[{"name":Arquivo, "name":Arquivo}], directory=TmpDirPNG)
@@ -222,6 +261,52 @@ def ImportaFatiasDef():
         ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
         ImageTexture.image = bpy.data.images.load(image_path)
 
+        materialOutput = m.nodes['Material Output']
+
+        m.link(ImageTexture, 'Color', materialOutput, 'Surface')
+
+        # Faze ro link com o GROUP
+
+        node_tree = bpy.data.materials["mat_"+Arquivo].node_tree
+        # And a node group that you have in the file:
+        node_group_name = "GroupVoxelShader"
+
+
+        nodes = node_tree.nodes
+        links = node_tree.links
+
+        # Let's at least check if some image node and output node exists
+        # you might need a way to determine which ones to use if there are multiple
+        image_node = output_node = None
+        node_group_exists = False
+        for node in nodes:
+            if node.type == 'TEX_IMAGE':
+                image_node = node
+            elif node.type == 'OUTPUT_MATERIAL':
+                output_node = node
+            elif node.type == 'GROUP': # in case the script was used already
+                if node.node_tree.name == node_group_name:
+                    node_group_exists = True
+                    print('exists')
+                    group_node = node
+
+        if output_node and image_node:
+            if node_group_name in bpy.data.node_groups and not node_group_exists:
+                group_node=nodes.new("ShaderNodeGroup")
+                # Creating the group is not enough, we need to specify data(node tree) for it
+                group_node.node_tree = bpy.data.node_groups[node_group_name]
+                group_node.location = (0,0) #This is default anyway,  but in case you wish to move it
+
+            links.new(image_node.outputs[0], group_node.inputs[0])
+            links.new(group_node.outputs[0], output_node.inputs[0])
+
+
+
+        # Código original
+        '''
+        ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
+        ImageTexture.image = bpy.data.images.load(image_path)
+
 
         diffuseBSDF = m.nodes['Principled BSDF']
         diffuseBSDF.inputs["Base Color"].default_value = [0.3, 0.2, 0.4, 0.5]
@@ -241,6 +326,7 @@ def ImportaFatiasDef():
 
         m.link(ImageTexture, 'Color', invertColor, 'Color')
         m.link(invertColor, 'Color', transparentBSDF, 'Color')
+        '''
 
         bpy.ops.object.material_slot_remove()
         bpy.ops.object.material_slot_add()
