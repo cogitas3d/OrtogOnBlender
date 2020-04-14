@@ -334,7 +334,8 @@ def ImportaFatiasDef():
         bpy.data.objects[bpy.context.view_layer.objects.active.name].active_material = bpy.data.materials["mat_"+Arquivo]
 
 
-        bpy.context.object.active_material.blend_method = 'BLEND' # Descobri sozinho!
+        #bpy.context.object.active_material.blend_method = 'BLEND' # Descobri sozinho!
+        bpy.context.object.active_material.blend_method = 'CLIP'
 
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
