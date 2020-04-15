@@ -261,6 +261,9 @@ def ImportaFatiasDef():
         ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
         ImageTexture.image = bpy.data.images.load(image_path)
 
+        bpy.data.materials["mat_"+Arquivo].node_tree.nodes['Image Texture'].color_space = "NONE" # Sozinho! Coloca como Non-Color Data
+
+
         materialOutput = m.nodes['Material Output']
 
         m.link(ImageTexture, 'Color', materialOutput, 'Surface')
