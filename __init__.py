@@ -2492,6 +2492,37 @@ class ORTOG_PT_CinematicaPanel(bpy.types.Panel):
 #bpy.context.scene.tool_settings.transform_pivot_point = 'CURSOR'
 #bpy.context.scene.tool_settings.transform_pivot_point = 'MEDIAN_POINT'
 
+        row = layout.row()
+        row.label(text="Custom Anatomical Point:")
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        row = layout.row()
+        row.label(text="Select an object before!")
+
+        row = layout.row()
+        if context.window_manager.measureit_run_opengl is False:
+            icon = 'PLAY'
+            txt = 'Show'
+        else:
+            icon = "PAUSE"
+            txt = 'Hide'
+        row.operator("measureit.runopengl", text=txt, icon=icon)
+        row.prop(scn, "measureit_gl_ghost", text="", icon='GHOST_ENABLED')
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+        col = self.layout.column(align = True)
+        col.alignment = 'CENTER'
+        col.prop(context.scene, "nome_ponto_customizado")
+
+        row = layout.row()
+        row.operator("object.cria_ponto_medida", text="Create Custom Point!", icon="SHADING_RENDERED")
+
 
         row = layout.row()
         row.label(text="Controllers:")
@@ -3162,6 +3193,14 @@ def register():
         description= "",
         items=[(ENUM_VALUES_DYNAMIC.DEFAULT, "DEFAULT", "Default dynamic."), (ENUM_VALUES_DYNAMIC.NOSE, "NOSE EXP.", "Better deformation of nose."), (ENUM_VALUES_DYNAMIC.EXPERIMENTAL, "EXPERIMENTAL SLICES", "Dynamic with indetermined slices.")],)
     bpy.utils.register_class(ORTOG_PT_ArmatureDynamic)
+
+    bpy.types.Scene.nome_ponto_customizado = bpy.props.StringProperty \
+      (
+        name = "Object Name",
+        description = "Object Name",
+        default = "MeasurePoint"
+      )
+
     bpy.utils.register_class(ORTOG_PT_CinematicaPanel)
     bpy.utils.register_class(ORTOG_PT_FechaLabios)
     bpy.utils.register_class(ORTOG_PT_GuideCreation)

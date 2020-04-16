@@ -239,7 +239,7 @@ class OTHER_PT_Objeto_para_Dicom(bpy.types.Panel):
 
 bpy.utils.register_class(OTHER_PT_Objeto_para_Dicom)
 
-
+'''
 class OTHER_PT_PontoAnatomicoCustom(bpy.types.Panel):
     bl_label = "Custom Anatomical Point"
     bl_region_type = 'UI'
@@ -291,3 +291,4 @@ bpy.types.Scene.nome_ponto_customizado = bpy.props.StringProperty \
     description = "Object Name",
     default = "MeasurePoint"
   )
+'''
