@@ -178,7 +178,7 @@ def GeraModeloFotoDef(self, context):
             FatorPixel = 2536
 
         if CpuNum == 4:
-            FatorPixel = 2400
+            FatorPixel = 2536
 
         if CpuNum == 2:
             FatorPixel = 2200
@@ -411,7 +411,7 @@ def GeraModeloFotoDef(self, context):
             subprocess.call("wsl \"mkdir\" "+tmpdirNovo+"\"/MVS\"", shell=True)
 
             os.chdir(tmpdir) # Se não trocar o diretóri ele gera os distrts e demais dentro do dir do Blender e dá erro!
-            
+
             subprocess.call("wsl \"/mnt/c/OrtogOnBlender/OpenMVGLinux/openMVG/./openMVG_main_openMVG2openMVS\" -i \""+tmpdirNovo+"/OpenMVG/reconstruction_sequential/sfm_data.bin\" -o \""+tmpdirNovo+"/MVS/scene.mvs\"", shell=True)
 
             subprocess.call("wsl \"/mnt/c/OrtogOnBlender/OpenMVGLinux/openMVS/./DensifyPointCloud\" --estimate-normals \"1\" \""+tmpdirNovo+"/MVS/scene.mvs\"", shell=True)

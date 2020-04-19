@@ -178,7 +178,7 @@ def GeraModeloFotoDef(self, context):
             FatorPixel = 2536
 
         if CpuNum == 4:
-            FatorPixel = 2400
+            FatorPixel = 2536
 
         if CpuNum == 2:
             FatorPixel = 2200
