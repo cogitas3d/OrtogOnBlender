@@ -200,7 +200,13 @@ def GeraModeloFotoDef(self, context):
 
 
             if platform.system() == "Windows":
-                    subprocess.call('C:\OrtogOnBlender\ImageMagick\convert -resize '+str(100/FatorDivisao)+'% '+tmpdirFotos+'\\'+ArquivoAtual+' '+tmpdirIMagemgick+'\\'+ArquivoAtual, shell=True) # O convert zoa os dados do EXIF no Windows!
+                    #subprocess.call('C:\OrtogOnBlender\ImageMagick\convert -resize '+str(100/FatorDivisao)+'% '+tmpdirFotos+'\\'+ArquivoAtual+' '+tmpdirIMagemgick+'\\'+ArquivoAtual, shell=True) # O convert zoa os dados do EXIF no Windows!
+
+                    FotosAtual = str(tmpdirFotos+"/"+ArquivoAtual).replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
+                    MagickAtual = str(tmpdirIMagemgick+"/"+ArquivoAtual).replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
+
+                    subprocess.call("wsl \"convert\" -resize \""+str(100/FatorDivisao)+"%\" \""+FotosAtual+"\" \""+MagickAtual+"\"", shell=True)
+                    print("Reduzido com convert")
 
         #bpy.data.images[ArquivoAtual].save()
 
@@ -243,9 +249,20 @@ def GeraModeloFotoDef(self, context):
             if platform.system() == "Windows":
                 print(mypath)
 
-                subprocess.call(['C:\OrtogOnBlender\ExitTool\exiftool.exe', '-all=', mypath]) # Necessário pq o convert zoa os dados do EXIF no Windows!
-                print("Exif apagado tudo!")
+                #subprocess.call(['C:\OrtogOnBlender\ExitTool\exiftool.exe', '-all=', mypath]) # Necessário pq o convert zoa os dados do EXIF no Windows!
+                #print("Exif apagado tudo!")
                 subprocess.call(['C:\OrtogOnBlender\ExitTool\exiftool.exe', '-overwrite_original', '-Model=Z00AD', '-FocalLength=4', mypath+'*']) # Solução colocando o 4 sem as aspas duplas!
+
+
+                # CASO SEJA NECESSARIO EXIFTOOL WINDOWS
+
+                tmpdirNovo = str(tmpdir).replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
+
+                print("COMANDO EXIFTOOL")
+                print("wsl \"exiftoolz\" -overwrite_original -Model=\"Z00AD\" -FocalLength=\"3.8 mm\" \""+tmpdirNovo+"/*\"")
+
+                subprocess.call("wsl \"exiftoolz\" -overwrite_original -Model=\"Z00AD\" -FocalLength=\"3.8 mm\" \""+tmpdirNovo+"/*\"" , shell=True)
+
 
             print("Resolvido!")
 
@@ -359,7 +376,14 @@ def GeraModeloFotoDef(self, context):
 
 
         if platform.system() == "Windows":
-            subprocess.call(['C:/OrtogOnBlender/Python27/python', OpenMVGPath , scn.my_tool.path_photo ,  OpenMVGtmpDir])
+            OpenMVGtmpDir = tmpdir+'/OpenMVG/'
+            Fotos = str(scn.my_tool.path_photo).replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
+            Saida = str(OpenMVGtmpDir).replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
+
+            subprocess.call("wsl \"python\" \"/mnt/c/OrtogOnBlender/OpenMVGLinux/openMVG/software/SfM/SfM_SequentialPipeline.py\" \""+Fotos+"\" \""+Saida+"\"" , shell=True)
+
+            #subprocess.call(['C:/OrtogOnBlender/Python27/python', OpenMVGPath , scn.my_tool.path_photo ,  OpenMVGtmpDir])
+
 
         if platform.system() == "Darwin":
             subprocess.call(['python', OpenMVGPath , scn.my_tool.path_photo ,  OpenMVGtmpDir])
@@ -377,7 +401,35 @@ def GeraModeloFotoDef(self, context):
 
         if platform.system() == "Windows":
 
-            subprocess.call('cd '+tmpdir+' && mkdir MVS && C:\OrtogOnBlender\openMVGWin\openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && C:\OrtogOnBlender\openMVSWin\DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && C:\OrtogOnBlender\openMVSWin\ReconstructMesh -d '+dFactor+' --smooth '+smoothFactor+' '+tmpdir+'/MVS/scene_dense.mvs && C:\OrtogOnBlender\openMVSWin\TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
+            #subprocess.call('cd '+tmpdir+' && mkdir MVS && C:\OrtogOnBlender\openMVGWin\openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && C:\OrtogOnBlender\openMVSWin\DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && C:\OrtogOnBlender\openMVSWin\ReconstructMesh -d '+dFactor+' --smooth '+smoothFactor+' '+tmpdir+'/MVS/scene_dense.mvs && C:\OrtogOnBlender\openMVSWin\TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
+
+            #print("CONVERTE WINDOWS!!!")
+            #subprocess.call('cd '+tmpdir+' && mkdir MVS && C:\OrtogOnBlender\openMVGWin\openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs', shell = True)
+
+            tmpdirNovo = str(tmpdir).replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
+
+            subprocess.call("wsl \"mkdir\" "+tmpdirNovo+"\"/MVS\"", shell=True)
+
+            os.chdir(tmpdir) # Se não trocar o diretóri ele gera os distrts e demais dentro do dir do Blender e dá erro!
+            
+            subprocess.call("wsl \"/mnt/c/OrtogOnBlender/OpenMVGLinux/openMVG/./openMVG_main_openMVG2openMVS\" -i \""+tmpdirNovo+"/OpenMVG/reconstruction_sequential/sfm_data.bin\" -o \""+tmpdirNovo+"/MVS/scene.mvs\"", shell=True)
+
+            subprocess.call("wsl \"/mnt/c/OrtogOnBlender/OpenMVGLinux/openMVS/./DensifyPointCloud\" --estimate-normals \"1\" \""+tmpdirNovo+"/MVS/scene.mvs\"", shell=True)
+
+            subprocess.call("wsl \"/mnt/c/OrtogOnBlender/OpenMVGLinux/openMVS/./ReconstructMesh\" -d  \""+dFactor+"\" --smooth "+smoothFactor+" "+tmpdirNovo+"/MVS/scene_dense.mvs", shell=True)
+
+            subprocess.call("wsl \"/mnt/c/OrtogOnBlender/OpenMVGLinux/openMVS/./TextureMesh\" --export-type \"obj\"  \""+tmpdirNovo+"/MVS/scene_dense_mesh.mvs\"" , shell=True)
+
+            #print("MVS WINDOWS!!!")
+            #print("DENSIFY")
+            #subprocess.call('C:\OrtogOnBlender\openMVSWin\DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs', shell=True)
+            #print("RECONMESH")
+            #subprocess.call('C:\OrtogOnBlender\openMVSWin\ReconstructMesh -d '+dFactor+' --smooth '+smoothFactor+' '+tmpdir+'/MVS/scene_dense.mvs', shell=True)
+            #print("TEXTURING")
+            #subprocess.call('C:\OrtogOnBlender\openMVSWin\TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
+
+
+#            subprocess.call("wsl \"cd "+tmpdirNovo+" && mkdir MVS && /mnt/c/OrtogOnBlender/OpenMVGLinux/openMVG/./openMVG_main_openMVG2openMVS -i "+tmpdirNovo+"/OpenMVG/reconstruction_sequential/sfm_data.bin -o "+tmpdirNovo+"/MVS/scene.mvs && /mnt/c/OrtogOnBlender/OpenMVGLinux/openMVS/./DensifyPointCloud --estimate-normals 1 "+tmpdirNovo+"/MVS/scene.mvs && /mnt/c/OrtogOnBlender/OpenMVGLinux/openMVS/./ReconstructMesh -d  "+dFactor+" --smooth "+smoothFactor+" "+tmpdirNovo+"/MVS/scene_dense.mvs && /mnt/c/OrtogOnBlender/OpenMVGLinux/openMVS/./TextureMesh --export-type obj  "+tmpdirNovo+"/MVS/scene_dense_mesh.mvs\"" , shell=True)
 
 #        else:
 #            subprocess.call(OpenMVSPath ,  shell=True)
@@ -458,8 +510,8 @@ def GeraModeloFotoDef(self, context):
 
 class GeraModeloFoto(bpy.types.Operator):
     """Tooltip"""
-    bl_idname = "object.gera_modelo_foto"
-    bl_label = "Gera Modelos Foto"
+    bl_idname = "object.gera_modelo_foto_win"
+    bl_label = "Gera Modelos Foto Win"
 
     def execute(self, context):
         GeraModeloFotoDef(self, context)

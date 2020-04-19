@@ -3,6 +3,7 @@ import os
 import tempfile
 import subprocess
 import platform
+from os.path import expanduser
 
 class MessageErroCollection(bpy.types.Operator):
     bl_idname = "object.dialog_operator_erro_collection"
@@ -146,11 +147,14 @@ def BooleanaMandDef(self, context):
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
     if platform.system() == "Darwin":
-        subprocess.call('/OrtogOnBlender/Cork/./cork -diff '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Skull.off', shell=True)
+ 
+        homeall = expanduser("~")
+ 
+        subprocess.call(homeall+'/Programs/OrtogOnBlender/Cork/./cork -diff '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Skull.off', shell=True)
         bpy.ops.import_mesh.off(filepath=tmpdir+"/Skull.off")
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
-        subprocess.call('/OrtogOnBlender/Cork/./cork -isct '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Mandible.off', shell=True)
+        subprocess.call(homeall+'/Programs/OrtogOnBlender/Cork/./cork -isct '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Mandible.off', shell=True)
         bpy.ops.import_mesh.off(filepath=tmpdir+"/Mandible.off")
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
@@ -295,7 +299,10 @@ def BooleanaOsteoDef(self, context):
             bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
         if platform.system() == "Darwin":
-            subprocess.call('/OrtogOnBlender/Cork/./cork -diff '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
+
+            homeall = expanduser("~")
+
+            subprocess.call(homeall+'/Programs/OrtogOnBlender/Cork/./cork -diff '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
             bpy.ops.import_mesh.off(filepath=tmpdir+"/Result.off")
             bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
@@ -493,7 +500,10 @@ def BooleanaOsteoGeralDef(self, context):
             bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
         if platform.system() == "Darwin":
-            subprocess.call('/OrtogOnBlender/Cork/./cork -diff '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
+
+            homeall = expanduser("~")
+
+            subprocess.call(homeall+'/Programs/OrtogOnBlender/Cork/./cork -diff '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
             bpy.ops.import_mesh.off(filepath=tmpdir+"/Result.off")
             bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
@@ -686,7 +696,10 @@ def BooleanaOsteoUnionDef(self, context):
             bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
         if platform.system() == "Darwin":
-            subprocess.call('/OrtogOnBlender/Cork/./cork -union '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
+
+            homeall = expanduser("~")
+
+            subprocess.call(homeall+'/Programs/OrtogOnBlender/Cork/./cork -union '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
             bpy.ops.import_mesh.off(filepath=tmpdir+"/Result.off")
             bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
@@ -884,7 +897,10 @@ def BooleanaOsteoInterDef(self, context):
             bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
         if platform.system() == "Darwin":
-            subprocess.call('/OrtogOnBlender/Cork/./cork -isct '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
+
+            homeall = expanduser("~")
+
+            subprocess.call(homeall+'/Programs//OrtogOnBlender/Cork/./cork -isct '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
             bpy.ops.import_mesh.off(filepath=tmpdir+"/Result.off")
             bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
@@ -1088,7 +1104,10 @@ def BooleanaUnionSimplesDef(self, context):
             bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
         if platform.system() == "Darwin":
-            subprocess.call('/OrtogOnBlender/Cork/./cork -union '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
+
+            homeall = expanduser("~")
+
+            subprocess.call(homeall+'/Programs/OrtogOnBlender/Cork/./cork -union '+tmpdir+'/A.off '+tmpdir+'/B.off '+tmpdir+'/Result.off', shell=True)
             bpy.ops.import_mesh.off(filepath=tmpdir+"/Result.off")
             bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 

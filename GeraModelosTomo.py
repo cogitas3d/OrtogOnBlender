@@ -40,7 +40,11 @@ class GeraModeloTomoAutoMole(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        GeraModeloTomoAutoMoleDef()
+        try:
+            GeraModeloTomoAutoMoleDef()
+        except:
+            bpy.ops.object.corrige_dicom()
+            GeraModeloTomoAutoMoleDef()
         return {'FINISHED'}
 
 bpy.utils.register_class(GeraModeloTomoAutoMole)
@@ -116,6 +120,9 @@ def GeraModelosTomoDef(self, context):
         CpuNum = multiprocessing.cpu_count()
 
         if CpuNum >= 8:
+            DecimFactor = '0.90'
+
+        if CpuNum == 6:
             DecimFactor = '0.90'
 
         if CpuNum == 4:
@@ -638,6 +645,26 @@ def IdentificaTomografo(Arquivo):
         bpy.context.scene.interesse_ossos = "400"
         bpy.context.scene.interesse_mole = "-700"
         bpy.context.scene.interesse_dentes = "820"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+    if ManufacturerLimpo == "'Imaging Sciences International'" and StationNameLimpo == "'TOMO'" and ManufacturerModelNameLimpo == "'17-19'":
+
+        os.chdir(scn.my_tool.path+"/0")
+
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+        bpy.ops.object.reduz_dimensao_dicom()
+
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        bpy.context.scene.interesse_ossos = "320"
+        bpy.context.scene.interesse_mole = "-545"
+        bpy.context.scene.interesse_dentes = "890"
 
         bpy.ops.object.gera_modelos_tomo()
 

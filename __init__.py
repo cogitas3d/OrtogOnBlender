@@ -31,6 +31,7 @@ else:
     from .BooleanaOsteo import *
     from .AlinhaObjetos import *
     from .FotogrametriaOpenMVG import *
+    from . FotogrametriaOpenMVGWinWSL import * # Solcao erro Windows
     from .FotogrametriaSMVS import *
     from .FotogrametriaMeshroom import *
 #    from .AlinhaTresPontosNovo import *
@@ -936,6 +937,7 @@ class ENUM_VALUES_PHOTOGRAMMETRY:
     OPENMVG = 'OpenMVG+OpenMVS'
     SMVS = 'SMVS+MeshLab'
     MESHROOM = 'Meshroom'
+    OPENMVGWIN = 'OpenMVG on Windows'
 
 
 class ORTOG_PT_Fotogrametria(bpy.types.Panel):
@@ -1008,6 +1010,26 @@ class ORTOG_PT_Fotogrametria(bpy.types.Panel):
 
             row = layout.row()
             row.operator("object.gera_modelo_foto_meshroom", text="Alternative Photogrammetry II", icon="IMAGE_DATA")
+
+        if my_enum == ENUM_VALUES_PHOTOGRAMMETRY.OPENMVGWIN:
+#            row = layout.row()
+#            row.label(text="OpenMVG+OpenMVS:")
+
+            row = layout.row()
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path_photo", text="")
+
+            col = self.layout.column(align = True)
+            col.alignment = 'RIGHT'
+            col.prop(context.scene, "d_factor")
+            col.prop(context.scene, "smooth_factor")
+
+            if platform.system() == "Windows":
+                row = layout.row()
+                row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
+
+            row = layout.row()
+            row.operator("object.gera_modelo_foto_win", text="Start Photogrammetry!", icon="IMAGE_DATA")
 
         row = layout.row()
         box = layout.box()
@@ -3144,7 +3166,7 @@ def register():
     bpy.types.Scene.my_enum = bpy.props.EnumProperty(
         name="Select",
         description= "",
-        items=[(ENUM_VALUES_PHOTOGRAMMETRY.OPENMVG, "OpenMVG+OpenMVS", "Standard Photogrammetry"), (ENUM_VALUES_PHOTOGRAMMETRY.SMVS, "SMVS+MeshLab", "Alternative Photogrammetry I"), (ENUM_VALUES_PHOTOGRAMMETRY.MESHROOM, "Meshroom (AliceVision)", "Alternative Photogrammetry II")],)
+        items=[(ENUM_VALUES_PHOTOGRAMMETRY.OPENMVG, "OpenMVG+OpenMVS", "Standard Photogrammetry"), (ENUM_VALUES_PHOTOGRAMMETRY.SMVS, "SMVS+MeshLab", "Alternative Photogrammetry I"), (ENUM_VALUES_PHOTOGRAMMETRY.MESHROOM, "Meshroom (AliceVision)", "Alternative Photogrammetry II"), (ENUM_VALUES_PHOTOGRAMMETRY.OPENMVGWIN, "OpenMVS on Windows", "Alternative Photogrammetry III")],)
 
     bpy.utils.register_class(ORTOG_PT_Fotogrametria)
     bpy.utils.register_class(ORTOG_PT_AlinhaFace)

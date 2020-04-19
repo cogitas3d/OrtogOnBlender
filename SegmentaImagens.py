@@ -13,6 +13,8 @@ def SegmentacaoImagemFaceDef():
 
     TmpDirSegFace = tempfile.mkdtemp()
     SegFaceScript = TmpDirSegFace+'/SegmentaFace.py'
+    
+    homeall = expanduser("~")
 
     with open(SegFaceScript, "a") as ScriptF:
         ScriptF.write("from imutils import face_utils\n")
@@ -48,6 +50,8 @@ def SegmentacaoImagemFaceDef():
             ScriptF.write("    predictor = dlib.shape_predictor('/home/linux3dcs/Programs/OrtogOnBlender/SegmentaImagens/shape_predictor_81_face_landmarks.dat')\n")
         if platform.system() == "Windows":
             ScriptF.write("    predictor = dlib.shape_predictor('C:\OrtogOnBlender\SegmentaImagens\shape_predictor_81_face_landmarks.dat')\n")
+        if platform.system() == "Darwin":
+            ScriptF.write("    predictor = dlib.shape_predictor('"+homeall+"/Programs/OrtogOnBlender/SegmentaImagens/shape_predictor_81_face_landmarks.dat')\n")            
         ScriptF.write("\n")
         ScriptF.write("    rects = detector(gray, 1)\n")
         ScriptF.write("\n")
@@ -84,16 +88,16 @@ def SegmentacaoImagemFaceDef():
         ScriptF.write("        subprocess.call(['C:\OrtogOnBlender\ExitTool\exiftool.exe', '-overwrite_original', '-Model=\"Z00AD\"', '-FocalLength=4', diretorioFinalFotos+'*'])\n")
         ScriptF.write("\n")
         ScriptF.write("dirOrigi = '/home/linux3dcs/prj/Estudos/DLIB/ROSTO/'\n")
-        if platform.system() == "Linux":
+        if platform.system() == "Linux" or platform.system() == "Darwin":
             ScriptF.write("os.mkdir('"+TmpDirSegFace+"/SegmentedPhotos')\n")
         if platform.system() == "Windows":
             ScriptF.write("os.mkdir(r'"+TmpDirSegFace+"/SegmentedPhotos')\n")
-        if platform.system() == "Linux":
+        if platform.system() == "Linux" or platform.system() == "Darwin":
             ScriptF.write("dirFinal = '"+TmpDirSegFace+"/SegmentedPhotos/'\n")
         if platform.system() == "Windows":
             ScriptF.write("dirFinal = r'"+TmpDirSegFace+"/SegmentedPhotos/'\n")
         ScriptF.write("\n")
-        if platform.system() == "Linux":
+        if platform.system() == "Linux" or platform.system() == "Darwin":
             ScriptF.write("mypath = '"+scn.my_tool.path_photo+"'\n")
         if platform.system() == "Windows":
             ScriptF.write("mypath = '"+scn.my_tool.path_photo+"\\'\n")
@@ -106,7 +110,7 @@ def SegmentacaoImagemFaceDef():
         ScriptF.write("AdicionaModeloDistanciaFocal(dirFinal)\n")
         ScriptF.close()
 
-    if platform.system() == "Linux":
+    if platform.system() == "Linux" or platform.system() == "Darwin":
         os.system('python3 '+TmpDirSegFace+'/SegmentaFace.py')
         scn.my_tool.path_photo = TmpDirSegFace+"/SegmentedPhotos/"
         abrir_diretorio(TmpDirSegFace+"/SegmentedPhotos/")

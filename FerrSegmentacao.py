@@ -11,6 +11,150 @@ from .AjustaTomo import *
 
 from math import sqrt
 
+def CriaVoxelCubePlanosDef():
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects['VoxelCube'].select_set(True)
+    bpy.context.view_layer.objects.active = bpy.data.objects['VoxelCube']
+
+    Origem = bpy.data.objects['VoxelCube'].location
+
+    bpy.ops.mesh.primitive_cube_add(size=300, view_align=False, enter_editmode=False, location=Origem)
+
+    ListaMateriais = []
+    MateriaisCena = bpy.data.materials
+
+    for i in MateriaisCena:
+        ListaMateriais.append(i.name)
+
+    if 'MatVoxelCube' in ListaMateriais:
+        activeObject = bpy.context.active_object #Set active object to variable
+        mat = bpy.data.materials["MatVoxelCube"] #set new material to variable
+        activeObject.data.materials.append(mat) #add the material to the object
+        bpy.context.object.active_material.diffuse_color = (1, 1, 1, 0.5)
+    else:
+        activeObject = bpy.context.active_object #Set active object to variable
+        mat = bpy.data.materials.new(name="MatVoxelCube") #set new material to variable
+        activeObject.data.materials.append(mat) #add the material to the object
+        bpy.context.object.active_material.diffuse_color = (1, 1, 1, 0.5)
+
+
+class CriaVoxelCubePlanos(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.cria_voxelcube_planos"
+    bl_label = "Create VoxelCube Planes"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        CriaVoxelCubePlanosDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(CriaVoxelCubePlanos)
+
+
+def ImportaObjBlendDef(nome): #, colecao):
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    try:
+        bpy.ops.object.mode_set(mode='OBJECT')
+    except:
+        print("Erro com o Object Mode!")
+
+
+    if platform.system() == "Linux":
+
+        dirScript = bpy.utils.user_resource('SCRIPTS')
+
+        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+#        section   = "\\Collection\\"
+#        object    = "SPLINT"
+        section   = "\\Object\\"
+        object    = nome
+
+    if platform.system() == "Darwin":
+
+        dirScript = bpy.utils.user_resource('SCRIPTS')
+
+        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+        section   = "\\Object\\"
+        object    = nome
+
+    if platform.system() == "Windows":
+
+        dirScript = 'C:/OrtogOnBlender/Blender280/2.80/scripts/'
+
+        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+        section   = "\\Object\\"
+        object    = nome
+
+
+    filepath  = blendfile + section + object
+    directory = blendfile + section
+    filename  = object
+
+    bpy.ops.wm.append(
+        filepath=filepath,
+        filename=filename,
+        directory=directory)
+
+    ObjImportado = bpy.data.objects[nome]
+
+
+    bpy.ops.object.select_all(action='DESELECT')
+    ObjImportado.select_set(True)
+    context.view_layer.objects.active = ObjImportado
+
+    # Coloca na camada
+    obj2 = bpy.context.view_layer.objects.active
+
+    '''
+    ListaColl = []
+
+    for i in bpy.data.collections:
+        ListaColl.append(i.name)
+
+    if colecao not in ListaColl:
+
+        myCol = bpy.data.collections.new(colecao)
+        bpy.context.scene.collection.children.link(myCol)
+        bpy.ops.object.collection_link(collection=colecao)
+#        mainCol = bpy.data.collections['Collection']
+#        bpy.context.scene.collection.children.unlink(mainCol)
+        bpy.data.collections['Collection'].objects.unlink(obj2)
+
+    else:
+        bpy.ops.object.collection_link(collection=colecao)
+#        mainCol = bpy.data.collections['Collection']
+#        bpy.context.scene.collection.children.unlink(mainCol)
+        bpy.data.collections['Collection'].objects.unlink(obj2)
+        '''
+
+class ImportaVoxelCube(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.importa_voxelcube"
+    bl_label = "Import VoxelCube"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'VoxelCube' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        ImportaObjBlendDef("VoxelCube") #, "Collection")
+        return {'FINISHED'}
+
+bpy.utils.register_class(ImportaVoxelCube)
+
 
 def Converte3DparaVoxelDef():
 
@@ -20,6 +164,11 @@ def Converte3DparaVoxelDef():
 
     tmpdir = tempfile.mkdtemp()
 
+    # Seleciona o VoxelCube
+
+    bpy.data.objects['VoxelCube'].select_set(True)
+
+    # Exporta como STL
     bpy.ops.export_mesh.stl(filepath=tmpdir+"/Model.stl", check_existing=True, filter_glob="*.stl", use_selection=True, global_scale=1, use_scene_unit=False, ascii=False, use_mesh_modifiers=True, batch_mode='OFF', axis_forward='Y', axis_up='Z')
 
     if platform.system() == "Linux":
@@ -41,6 +190,17 @@ class Converte3DparaVoxel(bpy.types.Operator):
     bl_idname = "object.converte_3d_voxel"
     bl_label = "Convert 3D to Voxel"
     bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'VoxelCube' in bpy.data.objects
+
+        if found == False:
+            return False
+        else:
+            if found == True:
+                return True
 
     def execute(self, context):
         Converte3DparaVoxelDef()
