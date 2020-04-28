@@ -1067,7 +1067,7 @@ def ForensicImportaOBJDef():
 
     bpy.data.objects[NomeOBJ].active_material = bpy.data.materials["Final_Eyelashes"]
 
-    bpy.context.object.active_material.blend_method = 'BLEND'
+    bpy.context.object.active_material.blend_method = 'HASHED'
     bpy.context.object.active_material.shadow_method = 'NONE'
 
     # Atribui material
@@ -1121,7 +1121,7 @@ def ForensicImportaOBJDef():
 
     bpy.data.objects[NomeOBJ].active_material = bpy.data.materials["Final_Eyebrow"]
 
-    bpy.context.object.active_material.blend_method = 'BLEND'
+    bpy.context.object.active_material.blend_method = 'HASHED'
     bpy.context.object.active_material.shadow_method = 'NONE'
 
     # Atribui material
@@ -1177,7 +1177,7 @@ def ForensicImportaOBJDef():
 
     bpy.data.objects[NomeOBJ].active_material = bpy.data.materials["Final_Hair"]
 
-    bpy.context.object.active_material.blend_method = 'CLIP'
+    bpy.context.object.active_material.blend_method = 'HASHED'
     bpy.context.object.active_material.shadow_method = 'NONE'
 
     # Atribui material

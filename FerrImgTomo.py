@@ -338,7 +338,7 @@ def ImportaFatiasDef():
 
 
         #bpy.context.object.active_material.blend_method = 'BLEND' # Descobri sozinho!
-        bpy.context.object.active_material.blend_method = 'CLIP'
+        bpy.context.object.active_material.blend_method = 'HASHED'
 
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
