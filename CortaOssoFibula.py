@@ -37,8 +37,6 @@ def CriaCotaCut(Objeto1, Objeto2):
     context = bpy.context
     scn = context.scene
 
-    bpy.ops.measureit.runopengl()
-
     bpy.ops.object.select_all(action='DESELECT')
     bpy.data.objects[Objeto1].select_set(True)
     bpy.data.objects[Objeto2].select_set(True)
