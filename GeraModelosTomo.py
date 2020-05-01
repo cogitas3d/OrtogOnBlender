@@ -623,6 +623,27 @@ def IdentificaTomografo(Arquivo):
 
             bpy.ops.object.gera_modelos_tomo()
 
+    if ManufacturerLimpo == "'Imaging Sciences International'" and StationNameLimpo == "'IMAGING-F708FEC'" and ManufacturerModelNameLimpo == "'17-19'":
+
+        os.chdir(scn.my_tool.path+"/0")
+
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+        bpy.ops.object.reduz_dimensao_dicom()
+
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        bpy.context.scene.interesse_ossos = "200"
+        bpy.context.scene.interesse_mole = "-565"
+        bpy.context.scene.interesse_dentes = "530"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+
     if ManufacturerLimpo == "'Imaging Sciences International'" and StationNameLimpo == "'ICATSERVER'" and ManufacturerModelNameLimpo == "'17-19'":
         print("SÉRIE 0")
         print("Bone: 400")
@@ -2014,6 +2035,25 @@ def IdentificaTomografo(Arquivo):
 
         bpy.ops.object.gera_modelos_tomo()
 
+    if ManufacturerLimpo == "'Xoran Technologies ®'" and StationNameLimpo == "'DESKTOP4139'" and ManufacturerModelNameLimpo == "'i-CAT\\x99 3D Dental Imaging System'":
+
+        os.chdir(scn.my_tool.path+"/1")
+
+        scn.my_tool.path = os.getcwd()
+        bpy.ops.object.corrige_dicom()
+
+        bpy.ops.object.reduz_dimensao_dicom()
+
+        try:
+            CopiaTomoDir(scn.my_tool.path)
+        except:
+            print("Doesn't have Patient Dir")
+
+        bpy.context.scene.interesse_ossos = "420"
+        bpy.context.scene.interesse_mole = "-870"
+        bpy.context.scene.interesse_dentes = "655"
+
+        bpy.ops.object.gera_modelos_tomo()
 
     if ManufacturerLimpo == "'Xoran Technologies ®'" and StationNameLimpo == "'EXAME-02'" and ManufacturerModelNameLimpo == "'i-CAT\\x99 3D Dental Imaging System'": # i-CAT\x99 (Original) --> i-CAT\\x99 (Modificado)
         print("SÉRIE 1")
