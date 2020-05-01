@@ -2614,3 +2614,30 @@ class MostraPontosAnatomicos(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(MostraPontosAnatomicos)
+
+
+class Cut_Point_pt(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.cut_point_pt"
+    bl_label = "Condyle Rotation Point"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    '''
+    @classmethod
+    def poll(cls, context):
+
+        found = 'Condyle Rotation Point' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+    '''
+
+    def execute(self, context):
+        CriaPontoDef('CutPoint', 'Cut Points')
+        #TestaPontoCollDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(Cut_Point_pt)

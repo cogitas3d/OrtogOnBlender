@@ -239,6 +239,39 @@ class OTHER_PT_Objeto_para_Dicom(bpy.types.Panel):
 
 bpy.utils.register_class(OTHER_PT_Objeto_para_Dicom)
 
+
+class OTHER_PT_Cut_Points(bpy.types.Panel):
+    bl_label = "Cut Points"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Others"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+#        row = layout.row()
+#        row.label(text="Dimensions:")
+
+#       Add Volume Area
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+        row = layout.row()
+        row.operator("object.cut_point_pt", text="Add Cut Point", icon="NODE_MATERIAL")
+
+        row = layout.row()
+        row.operator("object.cria_cotas_botao", text="Create Measures", icon="TRACKING_FORWARDS_SINGLE")
+
+
+bpy.utils.register_class(OTHER_PT_Cut_Points)
+
 '''
 class OTHER_PT_PontoAnatomicoCustom(bpy.types.Panel):
     bl_label = "Custom Anatomical Point"
