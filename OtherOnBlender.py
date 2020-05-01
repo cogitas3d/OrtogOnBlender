@@ -3,6 +3,7 @@ import platform
 from .__init__ import *
 from .Version import *
 from .FerrSegmentacao import *
+from .CortaOssoFibula import *
 
 class OTHER_PT_AtualizaAddonSec(bpy.types.Panel):
     bl_label = "Upgrade Script"
@@ -23,6 +24,8 @@ class OTHER_PT_AtualizaAddonSec(bpy.types.Panel):
 
         row = layout.row()
         row.operator("object.atualiza_script", text="UPGRADE OTHERTOOLS!", icon="RECOVER_LAST")
+
+
 
 bpy.utils.register_class(OTHER_PT_AtualizaAddonSec)
 
@@ -267,7 +270,22 @@ class OTHER_PT_Cut_Points(bpy.types.Panel):
         row.operator("object.cut_point_pt", text="Add Cut Point", icon="NODE_MATERIAL")
 
         row = layout.row()
+        if context.window_manager.measureit_run_opengl is False:
+            icon = 'PLAY'
+            txt = 'Show'
+        else:
+            icon = "PAUSE"
+            txt = 'Hide'
+        row.operator("measureit.runopengl", text=txt, icon=icon)
+        row.prop(scn, "measureit_gl_ghost", text="", icon='GHOST_ENABLED')
+
+        row = layout.row()
         row.operator("object.cria_cotas_botao", text="Create Measures", icon="TRACKING_FORWARDS_SINGLE")
+
+
+        row = layout.row()
+        row.operator("object.cria_bones_fibula", text="Create Bones", icon="BONE_DATA")
+
 
 
 bpy.utils.register_class(OTHER_PT_Cut_Points)
