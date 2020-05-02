@@ -259,9 +259,9 @@ def GeraModeloFotoDef(self, context):
                 tmpdirNovo = str(tmpdir).replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
 
                 print("COMANDO EXIFTOOL")
-                print("wsl \"exiftoolz\" -overwrite_original -Model=\"Z00AD\" -FocalLength=\"3.8 mm\" \""+tmpdirNovo+"/*\"")
+                print("wsl \"exiftool \" -overwrite_original -Model=\"Z00AD\" -FocalLength=\"3.8 mm\" \""+tmpdirNovo+"/*\"")
 
-                subprocess.call("wsl \"exiftoolz\" -overwrite_original -Model=\"Z00AD\" -FocalLength=\"3.8 mm\" \""+tmpdirNovo+"/*\"" , shell=True)
+                subprocess.call("wsl \"exiftool \" -overwrite_original -Model=\"Z00AD\" -FocalLength=\"3.8 mm\" \""+tmpdirNovo+"/*\"" , shell=True)
 
 
             print("Resolvido!")

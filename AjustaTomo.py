@@ -390,22 +390,51 @@ def CorrigeDicomDef(self, context):
     #    scene = context.scene
     #    rd = scene.render
 
+        tmpdirFIXED = tempfile.mkdtemp()
         os.chdir(scn.my_tool.path)
-        os.makedirs("FIXED")
+        dirDICOM = scn.my_tool.path
+        #os.makedirs("FIXED")
         if platform.system() == "Linux":
-            os.system("dicomtodicom -o FIXED *")
+            os.system("dicomtodicom -o "+tmpdirFIXED+" *")
     #        os.system("for i in *; do gdcmconv -X $i FIXED/$i; done")
     #        print("TOMO AJUSTADA PELO GDCM")
 
         if platform.system() == "Darwin":
-            os.system(homeall+"/Programs/OrtogOnBlender/vtk-dicom/./dicomtodicom --verbose -o FIXED *")
+            os.system(homeall+"/Programs/OrtogOnBlender/vtk-dicom/./dicomtodicom --verbose -o "+tmpdirFIXED+" *")
         print("DICOM FIXED")
 
         if platform.system() == "Windows":
-            os.system("C:\OrtogOnBlender\dicomtools\dicomtodicom --verbose -o FIXED *")
-        print("DICOM FIXED")
+          
 
-        scn.my_tool.path = os.getcwd()+"/FIXED/"
+            try:
+                os.system("C:\OrtogOnBlender\dicomtools\dicomtodicom --verbose -o "+tmpdirFIXED+" *")
+                print("DICOM FIXED")
+                if os.path.isfile(tmpdirFIXED+"/IM-0001-0001.dcm"):
+                    print("EXISTE O ARQUIVO EM FIXED!")
+                    scn.my_tool.path = tmpdirFIXED
+                else:
+                    print("Não funcionou com o dicomtodicom no Windows!")
+            except ExplicitException:
+                pass
+            try:
+                tmpdirFIXED2 = tempfile.mkdtemp()
+                print("TENTA WSL FIXED!!!")
+                tmpdirFIXEDAtual = str(tmpdirFIXED2).replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
+                #dirDICOMAtual = str(dirDICOM).replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
+                
+                os.chdir(dirDICOM)
+                #print("wsl \"dicomtodicom\" -o \""+tmpdirFIXEDAtual+"\" \""+dirDICOMAtual+"\"")
+                print("wsl \"dicomtodicom\" -o \""+tmpdirFIXEDAtual+"\" *")
+                
+                #subprocess.call("wsl \"dicomtodicom\" -o \""+tmpdirFIXEDAtual+"\" \""+dirDICOMAtual+"\"", shell=True)
+                subprocess.call("wsl \"dicomtodicom\" -o \""+tmpdirFIXEDAtual+"\" *", shell=True)
+               
+                scn.my_tool.path = tmpdirFIXED2
+                
+            except:
+                print("Não foi possível deletar o diretório FIXED!")
+                
+            
 
 class CorrigeDicom(bpy.types.Operator):
     """Tooltip"""
