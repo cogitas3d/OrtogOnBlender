@@ -934,13 +934,22 @@ def ForensicImportaOBJDef():
     context = bpy.context
     obj = context.object
     scn = context.scene
-
+    
     bpy.ops.import_scene.obj(filepath=scn.my_tool.filepathobj, filter_glob="*.obj;*.mtl", use_edges=True, use_smooth_groups=True, use_split_objects=True, use_split_groups=False, use_groups_as_vgroups=False, use_image_search=True, split_mode='ON', global_clight_size=0, axis_forward='-Z', axis_up='Y')
 
     bpy.ops.transform.resize(value=(101, 101, 101), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
 
-    NomeOBJ = scn.my_tool.filepathobj.split("/")[-1].split(".")[0] # Separa o nome do objeto
 
+    if platform.system() == "Linux" or platform.system() == "Darwin":
+        NomeOBJ = scn.my_tool.filepathobj.split("/")[-1].split(".")[0] # Separa o nome do objeto
+        print("NOME HUMANO:", NomeOBJ)
+
+   
+    if platform.system() == "Windows":
+        NomeOBJ = scn.my_tool.filepathobj.split("\\")[-1].split(".")[0] # Separa o nome do objeto
+        print("NOME HUMANO:", NomeOBJ)
+    
+    
     bpy.ops.object.select_all(action='DESELECT')
     bpy.data.objects[NomeOBJ].select_set(True)
     context.view_layer.objects.active = bpy.data.objects[NomeOBJ]
@@ -1068,7 +1077,16 @@ def ForensicImportaOBJDef():
     bpy.data.objects[NomeOBJ].active_material = bpy.data.materials["Final_Eyelashes"]
 
     bpy.context.object.active_material.blend_method = 'HASHED'
-    bpy.context.object.active_material.shadow_method = 'NONE'
+    
+    if platform.system() == "Windows":
+        bpy.context.object.active_material.transparent_shadow_method = 'NONE'
+        
+    if platform.system() == "Linux" or platform.system() == "Darwin":
+        bpy.context.object.active_material.shadow_method = 'NONE'
+    
+    
+
+
 
     # Atribui material
 
@@ -1122,7 +1140,13 @@ def ForensicImportaOBJDef():
     bpy.data.objects[NomeOBJ].active_material = bpy.data.materials["Final_Eyebrow"]
 
     bpy.context.object.active_material.blend_method = 'HASHED'
-    bpy.context.object.active_material.shadow_method = 'NONE'
+    
+    if platform.system() == "Windows":
+        bpy.context.object.active_material.transparent_shadow_method = 'NONE'
+        
+    if platform.system() == "Linux" or platform.system() == "Darwin":
+        bpy.context.object.active_material.shadow_method = 'NONE'
+
 
     # Atribui material
 
@@ -1178,7 +1202,13 @@ def ForensicImportaOBJDef():
     bpy.data.objects[NomeOBJ].active_material = bpy.data.materials["Final_Hair"]
 
     bpy.context.object.active_material.blend_method = 'HASHED'
-    bpy.context.object.active_material.shadow_method = 'NONE'
+    
+    if platform.system() == "Windows":
+        bpy.context.object.active_material.transparent_shadow_method = 'NONE'
+        
+    if platform.system() == "Linux" or platform.system() == "Darwin":
+        bpy.context.object.active_material.shadow_method = 'NONE'
+
 
     # Atribui material
 

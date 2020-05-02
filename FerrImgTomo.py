@@ -23,8 +23,13 @@ def ExtraiDadosTomo():
 
     TmpDirPNG = tempfile.mkdtemp()
 
-    ds = dicom.dcmread(DiretorioDCM+ListaArquivos[0], force = True) # Diretório e arquivo concatenados
+    if platform.system() == "Linux" or platform.system() == "Darwin":
+        ds = dicom.dcmread(DiretorioDCM+ListaArquivos[0], force = True) # Diretório e arquivo concatenados
 
+
+    if platform.system() == "Windows":
+        ds = dicom.dcmread(DiretorioDCM+"\\"+ListaArquivos[0], force = True) # Diretório e arquivo concatenados
+        
 
     # Distância da altura dos slices
 
@@ -340,7 +345,13 @@ def ImportaFatiasDef():
         #bpy.context.object.active_material.blend_method = 'BLEND' # Descobri sozinho!
         #bpy.context.object.active_material.blend_method = 'CLIP'
         bpy.context.object.active_material.blend_method = 'HASHED' # Para a textura
-        bpy.context.object.active_material.shadow_method = 'HASHED' # Para a sombra
+        
+        if platform.system() == "Windows":
+            bpy.context.object.active_material.transparent_shadow_method = 'HASHED'
+            
+        if platform.system() == "Linux" or platform.system() == "Darwin":
+            bpy.context.object.active_material.shadow_method = 'HASHED'
+
 
 
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
