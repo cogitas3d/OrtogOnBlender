@@ -332,6 +332,34 @@ def AjustaTomoDef(self, context):
         except:
             print("Algum problema aconteceu com a leitura dos dados do tomógrafo.")
 
+            try:
+
+                with open(tmpdirCSV+'/C-Scan_DATA.csv', mode='w') as centroid_file:
+                    report_writer = csv.writer(centroid_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                    report_writer.writerow(['DIRECTORY', 'NUMBER OF FILES', 'DESCRIPTION'])
+
+
+                    for linha in lista_compara:
+                        report_writer.writerow([linha[1],linha[0],linha[2]])
+                        print("Directory:", linha[1], "|| Number of files", linha[0], "|| Description:", linha[2])
+
+                try:
+                    if platform.system() == "Linux":
+                    #    abrir_diretorio(tmpdir)
+                        subprocess.Popen("libreoffice "+tmpdirCSV+"/C-Scan_DATA.csv", shell=True)
+
+                    if platform.system() == "Windows":
+                    #    abrir_diretorio(tmpdir)
+                        subprocess.Popen('cd "C:/Program Files/LibreOffice/program/" & dir & soffice.bin '+tmpdirCSV+"/C-Scan_DATA.csv", shell=True)
+
+                    if platform.system() == "Darwin":
+                    #    abrir_diretorio(tmpdir)
+                        subprocess.Popen('/Applications/LibreOffice.app/Contents/MacOS/soffice '+tmpdirCSV+"/C-Scan_DATA.csv", shell=True)
+                except:
+                    print("Não há programa atribuído ao CSV!")
+            except:
+                print("Problemas com o CSV!")
+
 # Atualiza path
 
 #        abrir_diretorio(tmpdirTomo)
@@ -404,39 +432,39 @@ def CorrigeDicomDef(self, context):
         print("DICOM FIXED")
 
         if platform.system() == "Windows":
-          
+
 
             os.chdir(scn.my_tool.path)
             os.system("C:\\OrtogOnBlender\\dicomtools\\dicomtodicom --verbose -o "+tmpdirFIXED+" *")
-            
+
             print("C:\\OrtogOnBlender\\dicomtools\\dicomtodicom --verbose -o "+tmpdirFIXED+" *")
 
             a = os.path.isfile(tmpdirFIXED+"\\"+"IM-0001-0001.dcm")
             print("teste", a)
             print("Diretorio FIXED: ", tmpdirFIXED+"\\"+"IM-0001-0001.dcm")
-            
+
             #print("DICOM FIXED")
             if os.path.isfile(tmpdirFIXED+"\\"+"IM-0001-0001.dcm"):
                 print("EXISTE O ARQUIVO EM FIXED!")
                 scn.my_tool.path = tmpdirFIXED
-            
-            if not os.path.isfile(tmpdirFIXED+"\\"+"IM-0001-0001.dcm"):      
+
+            if not os.path.isfile(tmpdirFIXED+"\\"+"IM-0001-0001.dcm"):
                 tmpdirFIXED2 = tempfile.mkdtemp()
                 print("TENTA WSL FIXED!!!")
                 tmpdirFIXEDAtual = str(tmpdirFIXED2).replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
                 #dirDICOMAtual = str(dirDICOM).replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
-                
+
                 os.chdir(dirDICOM)
                 #print("wsl \"dicomtodicom\" -o \""+tmpdirFIXEDAtual+"\" \""+dirDICOMAtual+"\"")
                 #print("wsl \"dicomtodicom\" -o \""+tmpdirFIXEDAtual+"\" *")
-                
+
                 #subprocess.call("wsl \"dicomtodicom\" -o \""+tmpdirFIXEDAtual+"\" \""+dirDICOMAtual+"\"", shell=True)
                 subprocess.call("wsl \"dicomtodicom\" -o \""+tmpdirFIXEDAtual+"\" *", shell=True)
-               
+
                 scn.my_tool.path = tmpdirFIXED2
-                
- 
-            
+
+
+
 
 class CorrigeDicom(bpy.types.Operator):
     """Tooltip"""
