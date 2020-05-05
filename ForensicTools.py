@@ -934,7 +934,7 @@ def ForensicImportaOBJDef():
     context = bpy.context
     obj = context.object
     scn = context.scene
-    
+
     bpy.ops.import_scene.obj(filepath=scn.my_tool.filepathobj, filter_glob="*.obj;*.mtl", use_edges=True, use_smooth_groups=True, use_split_objects=True, use_split_groups=False, use_groups_as_vgroups=False, use_image_search=True, split_mode='ON', global_clight_size=0, axis_forward='-Z', axis_up='Y')
 
     bpy.ops.transform.resize(value=(101, 101, 101), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
@@ -944,12 +944,12 @@ def ForensicImportaOBJDef():
         NomeOBJ = scn.my_tool.filepathobj.split("/")[-1].split(".")[0] # Separa o nome do objeto
         print("NOME HUMANO:", NomeOBJ)
 
-   
+
     if platform.system() == "Windows":
         NomeOBJ = scn.my_tool.filepathobj.split("\\")[-1].split(".")[0] # Separa o nome do objeto
         print("NOME HUMANO:", NomeOBJ)
-    
-    
+
+
     bpy.ops.object.select_all(action='DESELECT')
     bpy.data.objects[NomeOBJ].select_set(True)
     context.view_layer.objects.active = bpy.data.objects[NomeOBJ]
@@ -1047,67 +1047,73 @@ def ForensicImportaOBJDef():
 
     # Criando material dos cílios
 
-    bpy.data.objects[NomeOBJ].active_material_index = 4
-    MaterialSobrancelhaNativo = bpy.data.objects[NomeOBJ].active_material
-    NomeTextura = MaterialSobrancelhaNativo.node_tree.nodes['Image Texture'].image.name
+    try:
 
-    m = Material()
-    m.make_material("Final_Eyelashes")
+        bpy.data.objects[NomeOBJ].active_material_index = 4
+        MaterialSobrancelhaNativo = bpy.data.objects[NomeOBJ].active_material
+        NomeTextura = MaterialSobrancelhaNativo.node_tree.nodes['Image Texture'].image.name
 
-    ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
-    ImageTexture.image = bpy.data.images[NomeTextura]
+        m = Material()
+        m.make_material("Final_Eyelashes")
 
-    diffuseBSDF = m.nodes['Principled BSDF']
-    materialOutput = m.nodes['Material Output']
+        ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
+        ImageTexture.image = bpy.data.images[NomeTextura]
 
-
-
-    transpBSDF = m.makeNode('ShaderNodeBsdfTransparent', 'Transparent BSDF')
-
-    mixShader = m.makeNode('ShaderNodeMixShader', 'Mix Shader')
-
-    m.link(diffuseBSDF, 'BSDF', mixShader, 2)
-    m.link(ImageTexture, 'Color', diffuseBSDF, 'Base Color')
-    m.link(transpBSDF, 'BSDF', mixShader, 1)
-    m.link(ImageTexture, 'Alpha', mixShader, 0)
-    m.link(mixShader, 'Shader', materialOutput, 'Surface')
-
-    bpy.ops.object.material_slot_add()
-
-    bpy.data.objects[NomeOBJ].active_material = bpy.data.materials["Final_Eyelashes"]
-
-    bpy.context.object.active_material.blend_method = 'HASHED'
-    
-    if platform.system() == "Windows":
-        bpy.context.object.active_material.transparent_shadow_method = 'NONE'
-        
-    if platform.system() == "Linux" or platform.system() == "Darwin":
-        bpy.context.object.active_material.shadow_method = 'NONE'
-    
-    
+        diffuseBSDF = m.nodes['Principled BSDF']
+        materialOutput = m.nodes['Material Output']
 
 
 
-    # Atribui material
+        transpBSDF = m.makeNode('ShaderNodeBsdfTransparent', 'Transparent BSDF')
 
-    bpy.ops.object.mode_set(mode='EDIT')
-    bpy.ops.mesh.select_all(action='DESELECT')
+        mixShader = m.makeNode('ShaderNodeMixShader', 'Mix Shader')
 
-    bpy.data.objects[NomeOBJ].active_material_index = 4
-    bpy.ops.object.material_slot_select()
+        m.link(diffuseBSDF, 'BSDF', mixShader, 2)
+        m.link(ImageTexture, 'Color', diffuseBSDF, 'Base Color')
+        m.link(transpBSDF, 'BSDF', mixShader, 1)
+        m.link(ImageTexture, 'Alpha', mixShader, 0)
+        m.link(mixShader, 'Shader', materialOutput, 'Surface')
 
-    ListaMaterial3 = []
+        bpy.ops.object.material_slot_add()
 
-    for i in bpy.data.objects[NomeOBJ].material_slots:
-        ListaMaterial3.append(i.name)
+        bpy.data.objects[NomeOBJ].active_material = bpy.data.materials["Final_Eyelashes"]
 
-    IndexMaterial3 = ListaMaterial3.index('Final_Eyelashes')
+        bpy.context.object.active_material.blend_method = 'HASHED'
 
-    bpy.data.objects[NomeOBJ].active_material_index = IndexMaterial3
+        if platform.system() == "Windows":
+            bpy.context.object.active_material.transparent_shadow_method = 'NONE'
 
-    bpy.ops.object.material_slot_assign()
+        if platform.system() == "Linux" or platform.system() == "Darwin":
+            bpy.context.object.active_material.shadow_method = 'NONE'
 
-    bpy.ops.object.mode_set(mode='OBJECT')
+
+
+
+
+        # Atribui material
+
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.select_all(action='DESELECT')
+
+        bpy.data.objects[NomeOBJ].active_material_index = 4
+        bpy.ops.object.material_slot_select()
+
+
+        ListaMaterial3 = []
+
+        for i in bpy.data.objects[NomeOBJ].material_slots:
+            ListaMaterial3.append(i.name)
+
+        IndexMaterial3 = ListaMaterial3.index('Final_Eyelashes')
+
+        bpy.data.objects[NomeOBJ].active_material_index = IndexMaterial3
+
+        bpy.ops.object.material_slot_assign()
+
+        bpy.ops.object.mode_set(mode='OBJECT')
+
+    except:
+        print("Problema com o material!")
 
 
     # Criando material da sobrancelha
@@ -1140,10 +1146,10 @@ def ForensicImportaOBJDef():
     bpy.data.objects[NomeOBJ].active_material = bpy.data.materials["Final_Eyebrow"]
 
     bpy.context.object.active_material.blend_method = 'HASHED'
-    
+
     if platform.system() == "Windows":
         bpy.context.object.active_material.transparent_shadow_method = 'NONE'
-        
+
     if platform.system() == "Linux" or platform.system() == "Darwin":
         bpy.context.object.active_material.shadow_method = 'NONE'
 
@@ -1202,10 +1208,10 @@ def ForensicImportaOBJDef():
     bpy.data.objects[NomeOBJ].active_material = bpy.data.materials["Final_Hair"]
 
     bpy.context.object.active_material.blend_method = 'HASHED'
-    
+
     if platform.system() == "Windows":
         bpy.context.object.active_material.transparent_shadow_method = 'NONE'
-        
+
     if platform.system() == "Linux" or platform.system() == "Darwin":
         bpy.context.object.active_material.shadow_method = 'NONE'
 
