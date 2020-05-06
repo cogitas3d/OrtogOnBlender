@@ -82,9 +82,15 @@ def CriaBotoesDef():
 
     posicaoZ = 0
 
+    if fnmatch.fnmatchcase(fileLines[0], '*;*'):
+        separador = ";"
+    if not fnmatch.fnmatchcase(fileLines[0], '*;*'):
+        separador = ","
+
     for i in range(len(fileLines))[::-1]:
         limpaFinalLinha = fileLines[i].strip()
-        separa = limpaFinalLinha.split(',')
+
+        separa = limpaFinalLinha.split(separador)
         #print(separa)
 
         # Cria def do botão
