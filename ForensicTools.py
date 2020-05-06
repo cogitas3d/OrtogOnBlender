@@ -2,6 +2,7 @@ import bpy
 import re
 import platform
 import subprocess
+import tempfile
 
 from datetime import datetime
 
@@ -82,10 +83,36 @@ def CriaBotoesDef():
 
     posicaoZ = 0
 
+    # Se vier do Excel
     if fnmatch.fnmatchcase(fileLines[0], '*;*'):
         separador = ";"
+
+    # Se vier do LibreOffile
     if not fnmatch.fnmatchcase(fileLines[0], '*;*'):
         separador = ","
+
+    # Se o arquivo tiver medidas com vírgula
+    arquivoNovo = []
+
+    tmpdirCSV = tempfile.mkdtemp()
+
+    if fnmatch.fnmatchcase(fileLines[0], '*\"*'):
+        with open(tmpdirCSV+'/teste.csv', "a") as arq:
+            for i in fileLines:
+                linha = i.split("\"")
+                valor1 = linha[0]
+                valor2 = linha[1].replace(',','.')
+                valor3 = '\n'
+                linhaCompleta = valor1+valor2+valor3
+                #print(valor1,valor2,valor3)
+                arq.write(linhaCompleta)
+            arq.close()
+
+            with open(tmpdirCSV+'/teste.csv', 'r') as f:
+                fileLines = f.readlines()
+                print(fileLines)
+
+
 
     for i in range(len(fileLines))[::-1]:
         limpaFinalLinha = fileLines[i].strip()
