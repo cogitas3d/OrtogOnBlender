@@ -3453,32 +3453,25 @@ def IdentificaTomografo(Arquivo):
         bpy.ops.object.gera_modelos_tomo()
 
 
-    if ManufacturerLimpo == "'Philips'" and StationNameLimpo == "'HOST-10703'":
-        print("SÉRIE 80328")
-        print("Bone: 200")
-        print("SoftTissue: -300")
-        print("Teeth: 1430")
-        print("Condylus: 655")
+    if ManufacturerLimpo == "'Philips'" and StationNameLimpo == "'HOST-10703'" and ManufacturerModelNameLimpo == "'Brilliance 64'":
 
-        # TAMBÉM FUNCIONA O 201
-        os.chdir(scn.my_tool.path+"/80328")
+        os.chdir(scn.my_tool.path+"/4")
+
         scn.my_tool.path = os.getcwd()
-#        bpy.ops.object.corrige_dicom()
+        bpy.ops.object.corrige_dicom()
 
-#        bpy.ops.object.reduz_dimensao_dicom()
 
-        # Copia para o diretório
         try:
             CopiaTomoDir(scn.my_tool.path)
         except:
             print("Doesn't have Patient Dir")
 
-        # Gera o 3D
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
         bpy.context.scene.interesse_dentes = "1430"
 
         bpy.ops.object.gera_modelos_tomo()
+
 
     if ManufacturerLimpo == "'Philips'" and StationNameLimpo == "'HOST-10662'":
         print("SÉRIE 2")

@@ -110,6 +110,7 @@ def AjustaTomoDef(self, context):
         for x in range(NumeroLinhas):
             ArquivoAtual = ListaArquivos[x].strip('\n') # mostra linha 1 sem o caractere de quebra de linha
         #	print(ArquivoAtual)
+
             DCMInstanceNumber = InstanceNumber(ArquivoAtual)
             os.chdir(tmpdirTomo)
 
@@ -256,34 +257,54 @@ def AjustaTomoDef(self, context):
             lista = [ name for name in os.listdir(diretorio) if os.path.isdir(os.path.join(diretorio, name)) ]
 
             #print(lista)
+            try:
+                for i in lista:
+                #    print("\n")
+                #    print("Directory:", i)
+                #    print(os.listdir(diretorio+i)[0])
+                #    print("Number of files:", len(os.listdir(diretorio+i)))
+                    ArquivoAtual = os.listdir(diretorio+i)[0]
+                #    print(diretorio+i+"/"+ArquivoAtual)
+                    ds = dicom.dcmread(diretorio+i+"/"+ArquivoAtual, force=True)
 
-            for i in lista:
-            #    print("\n")
-            #    print("Directory:", i)
-            #    print(os.listdir(diretorio+i)[0])
-            #    print("Number of files:", len(os.listdir(diretorio+i)))
-                ArquivoAtual = os.listdir(diretorio+i)[0]
-            #    print(diretorio+i+"/"+ArquivoAtual)
-                ds = dicom.dcmread(diretorio+i+"/"+ArquivoAtual, force=True)
-                SeriesDescription = ds.data_element("SeriesDescription")
-                SeriesDescriptionLimpa1 = str(SeriesDescription).split('LO: ')
-                SeriesDescriptionLimpa2 = str(SeriesDescriptionLimpa1[1]).strip('"')
-            #    print(SeriesDescriptionLimpa2)
-            #    print("Directory:", i, "|| Number of files:", len(os.listdir(diretorio+i)), "||", SeriesDescriptionLimpa2, "\n")
-                lista_compara.append([len(os.listdir(diretorio+i)), i, SeriesDescriptionLimpa2])
-                lista_compara.sort(reverse = True)
-                #print("LISTA COMPARA!!!")
-                #print(lista_compara)
+                    if ds.data_element("SeriesDescription"):
+                        SeriesDescription = ds.data_element("SeriesDescription")
+                        SeriesDescriptionLimpa1 = str(SeriesDescription).split('LO: ')
+                        SeriesDescriptionLimpa2 = str(SeriesDescriptionLimpa1[1]).strip('"')
+                    #    print(SeriesDescriptionLimpa2)
+                    #    print("Directory:", i, "|| Number of files:", len(os.listdir(diretorio+i)), "||", SeriesDescriptionLimpa2, "\n")
+                        lista_compara.append([len(os.listdir(diretorio+i)), i, SeriesDescriptionLimpa2])
+                        lista_compara.sort(reverse = True)
+                        #print("LISTA COMPARA!!!")
+                        #print(lista_compara)
+                    if not ds.data_element("SeriesDescription"):
+                        SeriesDescriptionLimpa2 = ("Erro O!")
+                    #    print(SeriesDescriptionLimpa2)
+                    #    print("Directory:", i, "|| Number of files:", len(os.listdir(diretorio+i)), "||", SeriesDescriptionLimpa2, "\n")
+                        lista_compara.append([len(os.listdir(diretorio+i)), i, SeriesDescriptionLimpa2])
+                        lista_compara.sort(reverse = True)
+            except:
+                print("Erro no SeriesDescription")
+                try:
+                    SeriesDescriptionLimpa2 = ("Erro 1!")
+                #    print(SeriesDescriptionLimpa2)
+                #    print("Directory:", i, "|| Number of files:", len(os.listdir(diretorio+i)), "||", SeriesDescriptionLimpa2, "\n")
+                    lista_compara.append([len(os.listdir(diretorio+i)), i, SeriesDescriptionLimpa2])
+                    lista_compara.sort(reverse = True)
+                except:
+                    print("Problema ao inserir o SeriesDescription!")
 
 
             lista_diretorios_mole = []
+            print("LISTA COMPARA MOLE", lista_compara)
 
             try:
+
                 print("lista compara:",lista_compara)
                 for i in lista_compara:
                     print("Comecou a comparar!")
                     print("i Atual:", i)
-                    if fnmatch.fnmatchcase(str(i[2]), "*PM*") or fnmatch.fnmatchcase(str(i[2]), "*Soft*") or fnmatch.fnmatchcase(str(i[2]), "*Sft Tissue*") or fnmatch.fnmatchcase(str(i[2]), "*STD*") or fnmatch.fnmatchcase(str(i[2]), "*PARTES MOLES*") or fnmatch.fnmatchcase(str(i[2]), "*Head*") or fnmatch.fnmatchcase(str(i[2]), "*FACE*") or fnmatch.fnmatchcase(str(i[2]), "*Recon 3*") or fnmatch.fnmatchcase(str(i[2]), "*ARQUIVO*") or fnmatch.fnmatchcase(str(i[2]), "*RECON*") or fnmatch.fnmatchcase(str(i[2]), "*Cranio*") or fnmatch.fnmatchcase(str(i[2]), "*VOLUME STD*")  or fnmatch.fnmatchcase(str(i[2]), "*VOL*") or fnmatch.fnmatchcase(str(i[2]), "*Imagens Processadas*"):
+                    if fnmatch.fnmatchcase(str(i[2]), "*PM*") or fnmatch.fnmatchcase(str(i[2]), "*Soft*") or fnmatch.fnmatchcase(str(i[2]), "*Sft Tissue*") or fnmatch.fnmatchcase(str(i[2]), "*STD*") or fnmatch.fnmatchcase(str(i[2]), "*PARTES MOLES*") or fnmatch.fnmatchcase(str(i[2]), "*Head*") or fnmatch.fnmatchcase(str(i[2]), "*SEM CONTRASTE*") or fnmatch.fnmatchcase(str(i[2]), "*FACE*") or fnmatch.fnmatchcase(str(i[2]), "*Recon 3*") or fnmatch.fnmatchcase(str(i[2]), "*ARQUIVO*") or fnmatch.fnmatchcase(str(i[2]), "*RECON*") or fnmatch.fnmatchcase(str(i[2]), "*Cranio*") or fnmatch.fnmatchcase(str(i[2]), "*VOLUME STD*")  or fnmatch.fnmatchcase(str(i[2]), "*VOL*") or fnmatch.fnmatchcase(str(i[2]), "*Imagens Processadas*"):
                             print("Encontrou!")
                             lista_diretorios_mole.append(i[1])
                     else:
@@ -306,14 +327,21 @@ def AjustaTomoDef(self, context):
             except:
                 print("Problema para encontrar diretório com tecido mole na tomo!")
 
+
+
             with open(tmpdirCSV+'/C-Scan_DATA.csv', mode='w') as centroid_file:
                 report_writer = csv.writer(centroid_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                 report_writer.writerow(['DIRECTORY', 'NUMBER OF FILES', 'DESCRIPTION'])
 
 
-                for linha in lista_compara:
-                    report_writer.writerow([linha[1],linha[0],linha[2]])
-                    print("Directory:", linha[1], "|| Number of files", linha[0], "|| Description:", linha[2])
+                if lista_compara == []:
+                    report_writer.writerow(["No data", "No data", "No data"])
+
+                if lista_compara != []:
+                    for linha in lista_compara:
+                        report_writer.writerow([linha[1],linha[0],linha[2]])
+                        print("Directory:", linha[1], "|| Number of files", linha[0], "|| Description:", linha[2])
+
 
             try:
                 if platform.system() == "Linux":
@@ -332,16 +360,20 @@ def AjustaTomoDef(self, context):
         except:
             print("Algum problema aconteceu com a leitura dos dados do tomógrafo.")
 
+
             try:
 
                 with open(tmpdirCSV+'/C-Scan_DATA.csv', mode='w') as centroid_file:
                     report_writer = csv.writer(centroid_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                     report_writer.writerow(['DIRECTORY', 'NUMBER OF FILES', 'DESCRIPTION'])
 
+                    if lista_compara == []:
+                        report_writer.writerow(["No data", "No data", "No data"])
 
-                    for linha in lista_compara:
-                        report_writer.writerow([linha[1],linha[0],linha[2]])
-                        print("Directory:", linha[1], "|| Number of files", linha[0], "|| Description:", linha[2])
+                    if lista_compara != []:
+                        for linha in lista_compara:
+                            report_writer.writerow([linha[1],linha[0],linha[2]])
+                            print("Directory:", linha[1], "|| Number of files", linha[0], "|| Description:", linha[2])
 
                 try:
                     if platform.system() == "Linux":
@@ -369,7 +401,10 @@ def AjustaTomoDef(self, context):
 
         try:
             with open(tmpdirTomo+'/AUTOEXPDIR.txt', "a") as arq:
-                arq.write(tmpdirTomo+"/"+diretorio_final_reconstruir_mole)
+                if diretorio_final_reconstruir_mole:
+                    arq.write(tmpdirTomo+"/"+diretorio_final_reconstruir_mole)
+                if not diretorio_final_reconstruir_mole:
+                    arq.write(tmpdirTomo+"/")
                 arq.close()
 
         except:
