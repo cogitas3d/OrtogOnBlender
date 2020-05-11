@@ -4370,16 +4370,20 @@ def GeraModelosTomoManualDef(self, context):
         # Lê arquivo DICOM
 
 
-        ds = pydicom.dcmread(ArqAtual)
+        ds = pydicom.dcmread(ArqAtual, force=True)
 
-        # Separa Manufacturer
-        ManufacturerComplete = ds.data_element("Manufacturer")
-        ManufacturerLimpa1 = str(ManufacturerComplete).split('LO: ')
-        ManufacturerLimpo = str(ManufacturerLimpa1[1]).strip('"')
+        try:
+            # Separa Manufacturer
+            ManufacturerComplete = ds.data_element("Manufacturer")
+            ManufacturerLimpa1 = str(ManufacturerComplete).split('LO: ')
+            ManufacturerLimpo = str(ManufacturerLimpa1[1]).strip('"')
 
-        print("ManufacturerComplete:", ManufacturerComplete)
-        print("ManufacturerLimpa1:", ManufacturerLimpa1)
-        print("ManufacturerLimpo:", ManufacturerLimpo)
+            print("ManufacturerComplete:", ManufacturerComplete)
+            print("ManufacturerLimpa1:", ManufacturerLimpa1)
+            print("ManufacturerLimpo:", ManufacturerLimpo)
+
+        except:
+            print("Sem Manufacturer")
 
 
         try:
@@ -4392,7 +4396,7 @@ def GeraModelosTomoManualDef(self, context):
             print("StationNameLimpa1:", StationNameLimpa1)
             print("StationNameLimpo:", StationNameLimpo)
         except:
-            print("Sem StationNam")
+            print("Sem StationName")
 
 
 

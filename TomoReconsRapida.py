@@ -29,6 +29,7 @@ def TomoRecRapidaDef():
 
     ListaConvolutionKernel = []
     ListaSeriesNumber = []
+    ListaArquivosDICOM = []
     #ListaInstanceCreationTime = []
 
     NaoEhDICOM = []
@@ -38,10 +39,20 @@ def TomoRecRapidaDef():
         try:
             ds = dicom.dcmread(ArquivoAtual, force=True)
 
+            ListaArquivosDICOM.append(ArquivoAtual)
 
             #ListaInstanceCreationTime.append(ds.InstanceCreationTime)
-            ListaSeriesNumber.append(ds.SeriesNumber)
-            ListaConvolutionKernel.append(ds.ConvolutionKernel)
+            try:
+                ListaSeriesNumber.append(ds.SeriesNumber)
+            except:
+                print("Problem com o SeriesNumer")
+                print("Series:", ArquivoAtual)
+
+            try:
+                ListaConvolutionKernel.append(ds.ConvolutionKernel)
+            except:
+                print("Problema com o ConvolutionKernel")
+                print("ConvKernel:", ArquivoAtual)
 
         except:
            NaoEhDICOM.append(ArquivoAtual)
@@ -56,7 +67,10 @@ def TomoRecRapidaDef():
     #print(DiretorioDCM)
     #print(Counter(ListaInstanceCreationTime))
     print(Counter(ListaSeriesNumber))
-    print(Counter(ListaConvolutionKernel))
+    try:
+        print(Counter(ListaConvolutionKernel))
+    except:
+        print("Problema ao imprimir o ConvKernel")
 
     SeriesValores = Counter(ListaSeriesNumber)
 
@@ -88,19 +102,25 @@ def TomoRecRapidaDef():
 
     DCMNum = 0
 
-    for ArquivoAtual in ListaArquivosAbs:
+    for ArquivoAtual in ListaArquivosDICOM:
 
         ds = dicom.dcmread(ArquivoAtual, force=True)
 
 
-        if ds.SeriesNumber == DiretorioFinal:
-            #print(ds.SeriesNumber )
+        try:
+            if ds.SeriesNumber == DiretorioFinal:
+                #print(ds.SeriesNumber )
 
-            os.chdir(tmpdirTomo)
+                os.chdir(tmpdirTomo)
 
-            shutil.copy(ArquivoAtual, "Copy-"+str(DCMNum))
-            #print("Copiado de: ", ArquivoAtual, " Para: ", "Copy-"+str(DCMNum))
-            DCMNum += 1
+                shutil.copy(ArquivoAtual, "Copy-"+str(DCMNum))
+                #print("Copiado de: ", ArquivoAtual, " Para: ", "Copy-"+str(DCMNum))
+                DCMNum += 1
+        except:
+            print("Erro de leitura do SeriesNumber no:", ArquivoAtual)
+
+    scn.my_tool.path = tmpdirTomo
+
 
     print("Arquivos DICOM copiados!")
 
@@ -122,8 +142,23 @@ def TomoRecRapidaDef():
 
     # Reconstrói tomografia
 
-    if ConvKernel == "FC03":
-        print("Reconstrói!")
+    if ConvKernel == "FC03" or ConvKernel == "STANDARD" or ConvKernel == "H30s" or ConvKernel == "SOFT" or ConvKernel == "UB" or ConvKernel == "SA" or ConvKernel == "FC23" or ConvKernel == "FC08" or ConvKernel == ['Hr40f', '3'] or ConvKernel == "FC21":
+
+        bpy.context.scene.interesse_ossos = "200"
+        bpy.context.scene.interesse_mole = "-300"
+        bpy.context.scene.interesse_dentes = "1430"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+    if ConvKernel == "BONE" or ConvKernel =="FC30" or ConvKernel =="H70s" or ConvKernel =="D" or ConvKernel =="EA" or ConvKernel == ['Hr60f', '3']:
+
+        bpy.context.scene.interesse_ossos = "400"
+        bpy.context.scene.interesse_mole = "-300"
+        bpy.context.scene.interesse_dentes = "995"
+
+        bpy.ops.object.gera_modelos_tomo()
+
+
 
 class TomoRecRapida(bpy.types.Operator):
     """Tooltip"""
