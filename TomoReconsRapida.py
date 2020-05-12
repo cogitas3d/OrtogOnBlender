@@ -142,7 +142,7 @@ def TomoRecRapidaDef():
 
     # Reconstrói tomografia
 
-    if ConvKernel == "FC03" or ConvKernel == "STANDARD" or ConvKernel == "H30s" or ConvKernel == "SOFT" or ConvKernel == "UB" or ConvKernel == "SA" or ConvKernel == "FC23" or ConvKernel == "FC08" or ConvKernel == ['Hr40f', '3'] or ConvKernel == "FC21":
+    if ConvKernel == "FC03" or ConvKernel == "STANDARD" or ConvKernel == "H30s" or ConvKernel == "SOFT" or ConvKernel == "UB" or ConvKernel == "SA" or ConvKernel == "FC23" or ConvKernel == "FC08" or ConvKernel == ['Hr40f', '3'] or ConvKernel == "FC21" or ConvKernel =="A" or ConvKernel =="FC02":
 
         bpy.context.scene.interesse_ossos = "200"
         bpy.context.scene.interesse_mole = "-300"
@@ -150,7 +150,7 @@ def TomoRecRapidaDef():
 
         bpy.ops.object.gera_modelos_tomo()
 
-    if ConvKernel == "BONE" or ConvKernel =="FC30" or ConvKernel =="H70s" or ConvKernel =="D" or ConvKernel =="EA" or ConvKernel == ['Hr60f', '3']:
+    if ConvKernel == "BONE" or ConvKernel =="FC30" or ConvKernel =="H70s" or ConvKernel =="D" or ConvKernel =="EA" or ConvKernel == ['Hr60f', '3'] or ConvKernel =="FC81" or ConvKernel =="YC":
 
         bpy.context.scene.interesse_ossos = "400"
         bpy.context.scene.interesse_mole = "-300"
