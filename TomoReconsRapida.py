@@ -4,6 +4,32 @@ import pydicom as dicom
 from collections import Counter
 import tempfile
 import shutil
+import subprocess
+import platform
+
+def CorrigeTomoRawDef():
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    os.chdir(scn.my_tool.path)
+
+    if platform.system() == "Linux" or platform.system() == "Darwin":
+        subprocess.call('for i in *; do gdcmconv -w -i $i -o $i; done', shell=True)
+        print("Tomografia corrigida!!!")
+
+class CorrigeTomoRaw(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.corrige_tomo_raw"
+    bl_label = "CT-Scan fix raw"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+            CorrigeTomoRawDef()
+            return {'FINISHED'}
+
+bpy.utils.register_class(CorrigeTomoRaw)
 
 
 def TomoRecRapidaDef():
@@ -81,8 +107,11 @@ def TomoRecRapidaDef():
     listaSeries = []
 
     for i in SeriesValores:
-        listaSeries.append([SeriesValores[i], i])
+        if i == "":
+            i = "2312457886300"
+        listaSeries.append([SeriesValores[i], int(i)])
 
+    print("ORDEM ORIGINAL")
     print(listaSeries)
 
     # Calcula o número de arquivos por diretório
@@ -129,7 +158,6 @@ def TomoRecRapidaDef():
     ArquivoTopo = os.listdir(os.getcwd())[0]
     print("Arquivo topo:", ArquivoTopo)
 
-
     ds = dicom.dcmread(ArquivoTopo, force=True)
 
     try:
@@ -166,13 +194,13 @@ def TomoRecRapidaDef():
     if not ConvKernel == "":
         print("Há ConvKernel!")
 
-        if ConvKernel == "FC03" or ConvKernel =="FC04" or ConvKernel == "STANDARD" or ConvKernel == "H30s" or ConvKernel == "SOFT" or ConvKernel == "UB" or ConvKernel == "SA" or ConvKernel == "FC23" or ConvKernel == "FC08" or ConvKernel == ['Hr40f', '3'] or ConvKernel == "FC21" or ConvKernel =="A" or ConvKernel =="FC02" or ConvKernel =="B" or ConvKernel =="H23s" or ConvKernel =="H20s" or ConvKernel == "H31s":
-
+        if ConvKernel == "FC03" or ConvKernel =="FC04" or ConvKernel == "STANDARD" or ConvKernel == "H30s" or ConvKernel == "SOFT" or ConvKernel == "UB" or ConvKernel == "SA" or ConvKernel == "FC23" or ConvKernel == "FC08" or ConvKernel == ['Hr40f', '3'] or ConvKernel == "FC21" or ConvKernel =="A" or ConvKernel =="FC02" or ConvKernel =="B" or ConvKernel =="H23s" or ConvKernel =="H20s" or ConvKernel == "H31s" or ConvKernel == ['J30s', '3'] or ConvKernel == "H40s" or ConvKernel == "H31s" or ConvKernel == "B41s" or ConvKernel == "B70s" or ConvKernel == "H22s" or ConvKernel == ['J30f', '2']:
 
             if ReducaoTomo == "REDUZIR":
                 bpy.ops.object.reduz_dimensao_dicom()
 
             bpy.ops.object.corrige_dicom()
+            bpy.ops.object.corrige_tomo_raw()
 
             bpy.context.scene.interesse_ossos = "200"
             bpy.context.scene.interesse_mole = "-300"
@@ -180,12 +208,13 @@ def TomoRecRapidaDef():
 
             bpy.ops.object.gera_modelos_tomo()
 
-        if ConvKernel == "BONE" or ConvKernel =="BONEPLUS" or ConvKernel =="FC30" or ConvKernel =="H70s" or ConvKernel =="D" or ConvKernel =="EA" or ConvKernel == ['Hr60f', '3'] or ConvKernel =="FC81" or ConvKernel =="YC" or ConvKernel =="H70h":
+        if ConvKernel == "BONE" or ConvKernel =="BONEPLUS" or ConvKernel =="FC30" or ConvKernel =="H70s" or ConvKernel =="D" or ConvKernel =="EA" or ConvKernel == ['Hr60f', '3'] or ConvKernel =="FC81" or ConvKernel =="YC" or ConvKernel =="H70h" or ConvKernel =="H60s" or ConvKernel == "H60f":
 
             if ReducaoTomo == "REDUZIR":
                 bpy.ops.object.reduz_dimensao_dicom()
 
             bpy.ops.object.corrige_dicom()
+            bpy.ops.object.corrige_tomo_raw()
 
             bpy.context.scene.interesse_ossos = "400"
             bpy.context.scene.interesse_mole = "-300"
@@ -202,6 +231,7 @@ def TomoRecRapidaDef():
         if Manufacturer == "Imaging Sciences International":
 
             bpy.ops.object.corrige_dicom()
+            bpy.ops.object.corrige_tomo_raw()
 
             if ReducaoTomo == "REDUZIR":
                 bpy.ops.object.reduz_dimensao_dicom()
@@ -217,6 +247,7 @@ def TomoRecRapidaDef():
         if Manufacturer == "Xoran Technologies ®":
 
             bpy.ops.object.corrige_dicom()
+            bpy.ops.object.corrige_tomo_raw()
 
             if ReducaoTomo == "REDUZIR":
                 bpy.ops.object.reduz_dimensao_dicom()
@@ -227,11 +258,65 @@ def TomoRecRapidaDef():
 
             bpy.ops.object.gera_modelos_tomo()
 
-    else:
-        print("Nenhuma tentativa bem sucedida :(")
+
+        if Manufacturer == "Planmeca":
+
+            bpy.ops.object.corrige_dicom()
+            bpy.ops.object.corrige_tomo_raw()
+
+            if ReducaoTomo == "REDUZIR":
+                bpy.ops.object.reduz_dimensao_dicom()
+
+            bpy.context.scene.interesse_ossos = "330"
+            bpy.context.scene.interesse_mole = "-548"
+            bpy.context.scene.interesse_dentes = "756"
+
+            bpy.ops.object.gera_modelos_tomo()
 
 
+        if Manufacturer == "J.Morita.Mfg.Corp.":
 
+            bpy.ops.object.corrige_dicom()
+            bpy.ops.object.corrige_tomo_raw()
+
+            if ReducaoTomo == "REDUZIR":
+                bpy.ops.object.reduz_dimensao_dicom()
+
+            bpy.context.scene.interesse_ossos = "245"
+            bpy.context.scene.interesse_mole = "-315"
+            bpy.context.scene.interesse_dentes = "585"
+
+            bpy.ops.object.gera_modelos_tomo()
+
+
+        if Manufacturer == "Carestream Health":
+
+            bpy.ops.object.corrige_dicom()
+            bpy.ops.object.corrige_tomo_raw()
+
+            if ReducaoTomo == "REDUZIR":
+                bpy.ops.object.reduz_dimensao_dicom()
+
+            bpy.context.scene.interesse_ossos = "388"
+            bpy.context.scene.interesse_mole = "-598"
+            bpy.context.scene.interesse_dentes = "1013"
+
+            bpy.ops.object.gera_modelos_tomo()
+
+
+        if Manufacturer == "NewTom":
+
+            bpy.ops.object.corrige_dicom()
+            bpy.ops.object.corrige_tomo_raw()
+
+            if ReducaoTomo == "REDUZIR":
+                bpy.ops.object.reduz_dimensao_dicom()
+
+            bpy.context.scene.interesse_ossos = "602"
+            bpy.context.scene.interesse_mole = "-525"
+            bpy.context.scene.interesse_dentes = "1061"
+
+            bpy.ops.object.gera_modelos_tomo()
 
 class TomoRecRapida(bpy.types.Operator):
     """Tooltip"""
