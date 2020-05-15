@@ -181,6 +181,7 @@ class ORTOG_UI_Local(PropertyGroup):
 
 class ENUM_VALUES_CTSCAN:
     MANUAL = 'Manual'
+    DEFAULT = 'Default'
     VOXEL = 'Voxel'
     AUTO = 'Auto'
     CUSTOM = 'Custom'
@@ -275,6 +276,27 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
             row.scale_y=1.5
             row.alignment = 'CENTER'
             row.operator("object.gera_dir_nome_paciente_tomo", text="SAVE!", icon="FILE_TICK")
+
+
+        if my_enum_ct == ENUM_VALUES_CTSCAN.DEFAULT:
+
+            #row = layout.row()
+            #row.label(text="Default CT-Scan Reconstruction:")
+
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path", text="")
+
+            row = layout.row()
+            row.operator("object.gera_modelotomo_rec_rapida", text="CT-Scan Reconstruction", icon="SNAP_FACE")
+
+            row = layout.row()
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.5
+            row.alignment = 'CENTER'
+            row.operator("object.gera_dir_nome_paciente_tomo_auto", text="SAVE!", icon="FILE_TICK")
+
 
         if my_enum_ct == ENUM_VALUES_CTSCAN.VOXEL:
 
@@ -3084,7 +3106,7 @@ def register():
     bpy.types.Scene.my_enum_ct = bpy.props.EnumProperty(
         name="Select",
         description= "",
-        items=[(ENUM_VALUES_CTSCAN.MANUAL, "MANUAL", "Manual CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.VOXEL, "VOXEL", "Voxel Data CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.AUTO, "AUTOMATIC", "Automatic CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.CUSTOM, "CUSTOM", "Customized CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.AUTOEXP, "AUTO EXP.!!!", "Manual CT-Scan Reconstruction")],)
+        items=[(ENUM_VALUES_CTSCAN.MANUAL, "MANUAL", "Manual CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.DEFAULT, "DEFAULT", "Default CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.VOXEL, "VOXEL", "Voxel Data CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.AUTO, "AUTOMATIC", "Automatic CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.CUSTOM, "CUSTOM", "Customized CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.AUTOEXP, "AUTO EXP.!!!", "Manual CT-Scan Reconstruction")],)
     bpy.utils.register_class(GeraModelosTomo)
 #    bpy.utils.register_class(ORTOG_PT_CTScanFerrImg)
 #    bpy.utils.register_class(ORTOG_PT_CTScanRec)

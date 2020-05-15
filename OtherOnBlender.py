@@ -291,7 +291,7 @@ class OTHER_PT_Cut_Points(bpy.types.Panel):
 
 bpy.utils.register_class(OTHER_PT_Cut_Points)
 
-
+'''
 class OTHER_PT_TomoReconRapida(bpy.types.Panel):
     bl_label = "CT-Scan Fast Reconstruction"
     bl_region_type = 'UI'
@@ -308,8 +308,9 @@ class OTHER_PT_TomoReconRapida(bpy.types.Panel):
 
         col = layout.column(align=True)
         col.prop(scn.my_tool, "path", text="")
-            
+
         row = layout.row()
         row.operator("object.gera_modelotomo_rec_rapida", text="CT-Scan Fast Recon", icon="NODE_MATERIAL")
 
 bpy.utils.register_class(OTHER_PT_TomoReconRapida)
+'''
