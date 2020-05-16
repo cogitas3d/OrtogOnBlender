@@ -45,6 +45,10 @@ def CorrigeTomoRawDef():
         subprocess.call('for i in *; do gdcmconv -w -i $i -o '+tmpdirTomo2+'/$i; done', shell=True)
         print("Tomografia corrigida!!!")
 
+    if platform.system() == "Linux" or platform.system() == "Darwin":
+        subprocess.call('for %f in (*) do C:\OrtogOnBlender\GDCM\gdcmconv -w -i %f -o '+tmpdirTomo2+'/%f', shell=True)
+        print("Tomografia corrigida!!!")
+
     scn.my_tool.path = tmpdirTomo2
 
 class CorrigeTomoRaw(bpy.types.Operator):
@@ -98,6 +102,14 @@ def TomoRecRapidaDef():
 
             ListaArquivosDICOM.append(ArquivoAtual)
 
+            print("SERIESSSSSS", ds.SeriesNumber)
+            if ds.SeriesNumber == "":
+                try:
+                    ds.SeriesNumber = "198291829182"
+                    ds.save_as(str(ArquivoAtual))
+                    print("SALVOOOO")
+                except:
+                    print("ZIKA NA INSERCAO!")
             #ListaInstanceCreationTime.append(ds.InstanceCreationTime)
             try:
                 ListaSeriesNumber.append(ds.SeriesNumber)
@@ -108,7 +120,7 @@ def TomoRecRapidaDef():
             try:
                 ListaConvolutionKernel.append(ds.ConvolutionKernel)
             except:
-                print("Problema com o ConvolutionKernel")
+                print("Problema com o ConvolutionKernel KAKAKAKA")
                 print("ConvKernel:", ArquivoAtual)
 
         except:
@@ -138,7 +150,7 @@ def TomoRecRapidaDef():
     listaSeries = []
 
     for i in SeriesValores:
-        if i == "":
+        if i == '':
             i = "2312457886300"
         listaSeries.append([SeriesValores[i], int(i)])
 
@@ -229,7 +241,7 @@ def TomoRecRapidaDef():
 
     # Reconstrói tomografia HELICOIDAL
 
-    if not ConvKernel == "":
+    if not ConvKernel == "" and not Manufacturer == "NewTom":
         print("Há ConvKernel!")
 
         if ConvKernel == "FC03" or ConvKernel =="FC04" or ConvKernel == "STANDARD" or ConvKernel == "H30s" or ConvKernel == "SOFT" or ConvKernel == "UB" or ConvKernel == "SA" or ConvKernel == "FC23" or ConvKernel == "FC08" or ConvKernel == ['Hr40f', '3'] or ConvKernel == "FC21" or ConvKernel =="A" or ConvKernel =="FC02" or ConvKernel =="B" or ConvKernel =="H23s" or ConvKernel =="H20s" or ConvKernel == "H31s" or ConvKernel == ['J30s', '3'] or ConvKernel == "H40s" or ConvKernel == "H31s" or ConvKernel == "B41s" or ConvKernel == "B70s" or ConvKernel == "H22s" or ConvKernel == ['J30f', '2'] or ConvKernel == "H20f" or ConvKernel == "FC68" or ConvKernel == "FC07":
@@ -243,6 +255,11 @@ def TomoRecRapidaDef():
 
     # Reconstrói tomografia CONE BEAM
 
+    # Excepcionalmente!
+    if not ConvKernel == "" and Manufacturer == "NewTom":
+            GeraModelo3DTomo("606", "-466", "1032")
+
+    # Normal
     if ConvKernel == "" and not Manufacturer == "":
         print("Tentando pelo modelo...")
 
@@ -256,13 +273,13 @@ def TomoRecRapidaDef():
             GeraModelo3DTomo("330", "-548", "756")
 
         if Manufacturer == "J.Morita.Mfg.Corp.":
-            GeraModelo3DTomo("245", "-315", "585")
+            GeraModelo3DTomo("487", "-315", "787")
 
         if Manufacturer == "Carestream Health":
             GeraModelo3DTomo("388", "-598", "1013")
 
         if Manufacturer == "NewTom":
-            GeraModelo3DTomo("602", "-525", "1061")
+            GeraModelo3DTomo("606", "-466", "1032")
 
         if Manufacturer == "MyRay":
             GeraModelo3DTomo("850", "-360", "1735")
@@ -278,6 +295,9 @@ def TomoRecRapidaDef():
 
         if Manufacturer == "Dabi Atlante":
             GeraModelo3DTomo("575", "-375", "1080")
+
+        if Manufacturer == "INSTRUMENTARIUM DENTAL":
+            GeraModelo3DTomo("430", "-480", "995")
 
 
 class TomoRecRapida(bpy.types.Operator):
