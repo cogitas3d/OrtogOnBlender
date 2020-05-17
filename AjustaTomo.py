@@ -454,6 +454,22 @@ def CorrigeDicomDef(self, context):
     #    rd = scene.render
 
         tmpdirFIXED = tempfile.mkdtemp()
+
+        # Cria arquivo com o nome do diretorio FIXED para ser acessado
+
+        DirTemporario = tempfile.gettempdir()
+
+        if os.path.isfile(DirTemporario+"/tmpdirFIXED.txt"):
+            print("Apagando tmpdirFIXED.txt!")
+            os.remove(DirTemporario+"/tmpdirFIXED.txt")
+
+        if not os.path.isfile(DirTemporario+"/tmpdirFIXED.txt"):
+            with open(DirTemporario+"/tmpdirFIXED.txt", 'w') as arquivo:
+                arquivo.write(str(tmpdirFIXED))
+
+
+        print("DIRETÓRIO CORREÇÂO:", tmpdirFIXED)
+
         os.chdir(scn.my_tool.path)
         dirDICOM = scn.my_tool.path
         #os.makedirs("FIXED")
@@ -465,6 +481,7 @@ def CorrigeDicomDef(self, context):
         if platform.system() == "Darwin":
             os.system(homeall+"/Programs/OrtogOnBlender/vtk-dicom/./dicomtodicom --verbose -o "+tmpdirFIXED+" *")
         print("DICOM FIXED")
+
 
         if platform.system() == "Windows":
 
@@ -483,6 +500,8 @@ def CorrigeDicomDef(self, context):
                 print("EXISTE O ARQUIVO EM FIXED!")
                 scn.my_tool.path = tmpdirFIXED
 
+                return tmpdirFIXED
+
             if not os.path.isfile(tmpdirFIXED+"\\"+"IM-0001-0001.dcm"):
                 tmpdirFIXED2 = tempfile.mkdtemp()
                 print("TENTA WSL FIXED!!!")
@@ -497,8 +516,6 @@ def CorrigeDicomDef(self, context):
                 subprocess.call("wsl \"dicomtodicom\" -o \""+tmpdirFIXEDAtual+"\" *", shell=True)
 
                 scn.my_tool.path = tmpdirFIXED2
-
-
 
 
 class CorrigeDicom(bpy.types.Operator):

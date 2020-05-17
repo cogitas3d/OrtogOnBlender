@@ -102,14 +102,14 @@ def TomoRecRapidaDef():
 
             ListaArquivosDICOM.append(ArquivoAtual)
 
-            print("SERIESSSSSS", ds.SeriesNumber)
+            #print("SERIESSSSSS", ds.SeriesNumber)
             if ds.SeriesNumber == "":
                 try:
                     ds.SeriesNumber = "198291829182"
                     ds.save_as(str(ArquivoAtual))
                     print("SALVOOOO")
                 except:
-                    print("ZIKA NA INSERCAO!")
+                    print("PROBLEMA NA INSERÇÃO!")
             #ListaInstanceCreationTime.append(ds.InstanceCreationTime)
             try:
                 ListaSeriesNumber.append(ds.SeriesNumber)
@@ -120,7 +120,6 @@ def TomoRecRapidaDef():
             try:
                 ListaConvolutionKernel.append(ds.ConvolutionKernel)
             except:
-                print("Problema com o ConvolutionKernel KAKAKAKA")
                 print("ConvKernel:", ArquivoAtual)
 
         except:
@@ -174,6 +173,9 @@ def TomoRecRapidaDef():
     tmpdirTomo = tempfile.mkdtemp()
     tmpdirTomo2 = tempfile.mkdtemp()
 
+    print("DELLLLLLLLLLL")
+    print("tmpdirTomo", tmpdirTomo)
+    print("tmpdirTomo2", tmpdirTomo2)
 
     DCMNum = 0
 
@@ -241,17 +243,41 @@ def TomoRecRapidaDef():
 
     # Reconstrói tomografia HELICOIDAL
 
+
     if not ConvKernel == "" and not Manufacturer == "NewTom":
-        print("Há ConvKernel!")
 
-        if ConvKernel == "FC03" or ConvKernel =="FC04" or ConvKernel == "STANDARD" or ConvKernel == "H30s" or ConvKernel == "SOFT" or ConvKernel == "UB" or ConvKernel == "SA" or ConvKernel == "FC23" or ConvKernel == "FC08" or ConvKernel == ['Hr40f', '3'] or ConvKernel == "FC21" or ConvKernel =="A" or ConvKernel =="FC02" or ConvKernel =="B" or ConvKernel =="H23s" or ConvKernel =="H20s" or ConvKernel == "H31s" or ConvKernel == ['J30s', '3'] or ConvKernel == "H40s" or ConvKernel == "H31s" or ConvKernel == "B41s" or ConvKernel == "B70s" or ConvKernel == "H22s" or ConvKernel == ['J30f', '2'] or ConvKernel == "H20f" or ConvKernel == "FC68" or ConvKernel == "FC07":
+        try:
+            print("Há ConvKernel!")
 
-            GeraModelo3DTomo("200", "-300", "1430")
+            if ConvKernel == "FC03" or ConvKernel =="FC04" or ConvKernel == "STANDARD" or ConvKernel == "H30s" or ConvKernel == "SOFT" or ConvKernel == "UB" or ConvKernel == "SA" or ConvKernel == "FC23" or ConvKernel == "FC08" or ConvKernel == ['Hr40f', '3'] or ConvKernel == "FC21" or ConvKernel =="A" or ConvKernel =="FC02" or ConvKernel =="B" or ConvKernel =="H23s" or ConvKernel =="H20s" or ConvKernel == "H31s" or ConvKernel == ['J30s', '3'] or ConvKernel == "H40s" or ConvKernel == "H31s" or ConvKernel == "B41s" or ConvKernel == "B70s" or ConvKernel == "H22s" or ConvKernel == ['J30f', '2'] or ConvKernel == "H20f" or ConvKernel == "FC68" or ConvKernel == "FC07":
+
+                GeraModelo3DTomo("200", "-300", "1430")
 
 
-        if ConvKernel == "BONE" or ConvKernel =="BONEPLUS" or ConvKernel =="FC30" or ConvKernel =="H70s" or ConvKernel =="D" or ConvKernel =="EA" or ConvKernel == ['Hr60f', '3'] or ConvKernel =="FC81" or ConvKernel =="YC" or ConvKernel =="H70h" or ConvKernel =="H60s" or ConvKernel == "H60f" or ConvKernel == "FC35":
+            if ConvKernel == "BONE" or ConvKernel =="BONEPLUS" or ConvKernel =="FC30" or ConvKernel =="H70s" or ConvKernel =="D" or ConvKernel =="EA" or ConvKernel == ['Hr60f', '3'] or ConvKernel =="FC81" or ConvKernel =="YC" or ConvKernel =="H70h" or ConvKernel =="H60s" or ConvKernel == "H60f" or ConvKernel == "FC35":
 
-            GeraModelo3DTomo("400", "-300", "995")
+                GeraModelo3DTomo("400", "-300", "995")
+
+        except:
+
+            # Usa o diretório FIXED em caso de erro com o gdcmconv
+            
+            print("Problema na reconstrução... tentando outro meio:")
+
+            DirTemporario = tempfile.gettempdir()
+
+            if os.path.isfile(DirTemporario+"/tmpdirFIXED.txt"):
+                arquivo = open(DirTemporario+"/tmpdirFIXED.txt", 'r')
+                DiretorioFIXED = arquivo.read()
+                arquivo.close()
+
+                scn.my_tool.path = DiretorioFIXED
+
+                bpy.ops.object.gera_modelo_tomo_manual()
+
+            if not os.path.isfile(DirTemporario+"/tmpdirFIXED.txt"):
+                print("Infelizmente não foi possível reconstruir, tente exportar no Slicer!")
+
 
     # Reconstrói tomografia CONE BEAM
 
