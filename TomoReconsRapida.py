@@ -173,10 +173,6 @@ def TomoRecRapidaDef():
     tmpdirTomo = tempfile.mkdtemp()
     tmpdirTomo2 = tempfile.mkdtemp()
 
-    print("DELLLLLLLLLLL")
-    print("tmpdirTomo", tmpdirTomo)
-    print("tmpdirTomo2", tmpdirTomo2)
-
     DCMNum = 0
 
     for ArquivoAtual in ListaArquivosDICOM:
@@ -254,14 +250,14 @@ def TomoRecRapidaDef():
                 GeraModelo3DTomo("200", "-300", "1430")
 
 
-            if ConvKernel == "BONE" or ConvKernel =="BONEPLUS" or ConvKernel =="FC30" or ConvKernel =="H70s" or ConvKernel =="D" or ConvKernel =="EA" or ConvKernel == ['Hr60f', '3'] or ConvKernel =="FC81" or ConvKernel =="YC" or ConvKernel =="H70h" or ConvKernel =="H60s" or ConvKernel == "H60f" or ConvKernel == "FC35":
+            if ConvKernel == "BONE" or ConvKernel =="BONEPLUS" or ConvKernel =="FC30" or ConvKernel =="H70s" or ConvKernel =="D" or ConvKernel =="EA" or ConvKernel == ['Hr60f', '3'] or ConvKernel =="FC81" or ConvKernel =="YC" or ConvKernel =="YD" or ConvKernel =="H70h" or ConvKernel =="H60s" or ConvKernel == "H60f" or ConvKernel == "FC35":
 
                 GeraModelo3DTomo("400", "-300", "995")
 
         except:
 
             # Usa o diretório FIXED em caso de erro com o gdcmconv
-            
+
             print("Problema na reconstrução... tentando outro meio:")
 
             DirTemporario = tempfile.gettempdir()
