@@ -245,12 +245,12 @@ def TomoRecRapidaDef():
         try:
             print("Há ConvKernel!")
 
-            if ConvKernel == "FC03" or ConvKernel =="FC04" or ConvKernel == "STANDARD" or ConvKernel == "H30s" or ConvKernel == "SOFT" or ConvKernel == "UB" or ConvKernel == "SA" or ConvKernel == "FC23" or ConvKernel == "FC08" or ConvKernel == ['Hr40f', '3'] or ConvKernel == "FC21" or ConvKernel =="A" or ConvKernel =="FC02" or ConvKernel =="B" or ConvKernel =="H23s" or ConvKernel =="H20s" or ConvKernel == "H31s" or ConvKernel == ['J30s', '3'] or ConvKernel == "H40s" or ConvKernel == "H31s" or ConvKernel == "B41s" or ConvKernel == "B70s" or ConvKernel == "H22s" or ConvKernel == ['J30f', '2'] or ConvKernel == "H20f" or ConvKernel == "FC68" or ConvKernel == "FC07":
+            if ConvKernel == "FC03" or ConvKernel =="FC04" or ConvKernel == "STANDARD" or ConvKernel == "H30s" or ConvKernel == "SOFT" or ConvKernel == "UB" or ConvKernel == "SA" or ConvKernel == "FC23" or ConvKernel == "FC08" or ConvKernel == ['Hr40f', '3'] or ConvKernel == "FC21" or ConvKernel =="A" or ConvKernel =="FC02" or ConvKernel =="B" or ConvKernel =="H23s" or ConvKernel =="H20s" or ConvKernel == "H31s" or ConvKernel == "H32s" or ConvKernel == ['J30s', '3'] or ConvKernel == "H40s" or ConvKernel == "H31s" or ConvKernel == "B41s" or ConvKernel == "B70s" or ConvKernel == "H22s" or ConvKernel == ['J30f', '2'] or ConvKernel == "H20f" or ConvKernel == "FC68" or ConvKernel == "FC07" or ConvKernel == "B30s" or ConvKernel == "B41s" or ConvKernel == ['I31f', '3'] or ConvKernel == ['Br40f', '3']:
 
                 GeraModelo3DTomo("200", "-300", "1430")
 
 
-            if ConvKernel == "BONE" or ConvKernel =="BONEPLUS" or ConvKernel =="FC30" or ConvKernel =="H70s" or ConvKernel =="D" or ConvKernel =="EA" or ConvKernel == ['Hr60f', '3'] or ConvKernel =="FC81" or ConvKernel =="YC" or ConvKernel =="YD" or ConvKernel =="H70h" or ConvKernel =="H60s" or ConvKernel == "H60f" or ConvKernel == "FC35":
+            if ConvKernel == "BONE" or ConvKernel =="BONEPLUS" or ConvKernel =="FC30" or ConvKernel =="H70s" or ConvKernel =="D" or ConvKernel =="EA" or ConvKernel == ['Hr60f', '3'] or ConvKernel =="FC81" or ConvKernel =="YC" or ConvKernel =="YD" or ConvKernel =="H70h" or ConvKernel =="H60s" or ConvKernel == "H60f" or ConvKernel == "FC35" or ConvKernel == "B80s" or ConvKernel == "H90s" or ConvKernel == ['I70f', '3']:
 
                 GeraModelo3DTomo("400", "-300", "995")
 
