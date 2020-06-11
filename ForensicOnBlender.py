@@ -295,6 +295,10 @@ class FORENSIC_PT_ColocaMarcadores(bpy.types.Panel):
         linha=row.operator("object.forensic_importa_luzes", text="ILLUMINATE!", icon="LIGHT_DATA")
 
         row = layout.row()
+        row.label(text="1) Please select the skull.")
+        row = layout.row()
+        row.label(text="2) So, click on Skull Material Adjustment.")
+        row = layout.row()
         linha=row.operator("object.ajusta_material_cranio", text="Skull Material Adjustment", icon="OUTLINER_OB_CURVE")
 
         row = layout.row()

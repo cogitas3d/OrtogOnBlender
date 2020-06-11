@@ -830,6 +830,14 @@ bpy.utils.register_class(ForensicImportaLuzes)
 
 def CriaMaterialOssosDef():
 
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    Cranio = obj.name
+
+
+
     m = Material()
 #    m.set_cycles()
     # from chapter 1 of [DRM protected book, could not copy author/title]
@@ -838,7 +846,11 @@ def CriaMaterialOssosDef():
 #    image_path = TmpDirPNG+"/"+Arquivo
 
     ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
-    ImageTexture.image = bpy.data.images["scene_dense_mesh_texture_material_0_map_Kd.jpg"]
+    bpy.data.objects[Cranio].active_material_index = 0
+    MaterialPeleNativo = bpy.data.objects[Cranio].active_material
+    NomeTextura = MaterialPeleNativo.node_tree.nodes['Image Texture'].image.name
+    ImageTexture.image = bpy.data.images[NomeTextura]
+    #ImageTexture.image = bpy.data.images["scene_dense_mesh_texture_material_0_map_Kd.jpg"]
 
 
     diffuseBSDF = m.nodes['Principled BSDF']
