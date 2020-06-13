@@ -12,6 +12,7 @@ from random import randint
 
 from .ImportaObjMat import *
 from .AjustaTomo import *
+from .ConfOsteotomiaAuto import *
 
 # MENSAGENS
 
@@ -193,6 +194,25 @@ def GeraModelosTomoDef(self, context):
 
         bpy.ops.view3d.view_all(center=False)
 
+        bpy.ops.object.select_all(action='DESELECT')
+        reconst = bpy.data.objects['Bones']
+        reconst.select_set(True)
+        context.view_layer.objects.active = reconst
+        CriaMaterialOsteotomia("SCATTER_bone", 0.8, 0.7, 0.5)
+
+        bpy.ops.object.select_all(action='DESELECT')
+        reconst = bpy.data.objects['SoftTissue']
+        reconst.select_set(True)
+        context.view_layer.objects.active = reconst
+        CriaMaterialOsteotomia("SCATTER_skin", 0.8, 0.3, 0.15)
+
+        bpy.ops.object.select_all(action='DESELECT')
+        reconst = bpy.data.objects['Teeth']
+        reconst.select_set(True)
+        context.view_layer.objects.active = reconst
+        CriaMaterialOsteotomia("SCATTER_teeth", 0.5, 0.6, 1)
+
+        '''
         impMaterial = 'SCATTER_bone'
         SelObj = 'Bones'
         ImportaMaterial(impMaterial, SelObj)
@@ -204,6 +224,7 @@ def GeraModelosTomoDef(self, context):
         impMaterial = 'SCATTER_teeth'
         SelObj = 'Teeth'
         ImportaMaterial(impMaterial, SelObj)
+        '''
 
         bpy.ops.object.select_all(action='DESELECT')
         a.select_set(True)

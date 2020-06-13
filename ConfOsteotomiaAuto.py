@@ -3,7 +3,46 @@ import platform
 import bmesh
 from random import randint
 
+from .FerrImgTomo import *
+
 # MENSAGENS
+
+def CriaMaterialOsteotomia(NomeMaterial, R, G, B):
+
+    activeObject = bpy.context.active_object
+    m = Material()
+    m.make_material(NomeMaterial)
+
+    diffuseBSDF = m.nodes['Principled BSDF']
+    diffuseBSDF.inputs["Base Color"].default_value = [R, G, B, 1]
+    materialOutput = m.nodes['Material Output']
+
+    mixShader = m.makeNode('ShaderNodeMixShader', 'Mix Shader')
+    m.dump_node(mixShader)
+    mixShader.inputs['Fac'].default_value = 0.3
+
+    mixShader2 = m.makeNode('ShaderNodeMixShader', 'Mix Shader 2')
+    mixShader2.inputs['Fac'].default_value = 0.05
+
+    sssShader = m.makeNode('ShaderNodeSubsurfaceScattering', 'Subsurface Scattering')
+    sssShader.inputs[1].default_value = 60
+    sssShader.inputs["Color"].default_value = [R, G, B, 1]
+
+    glossyShader = m.makeNode('ShaderNodeBsdfGlossy', 'Glossy BSDF')
+    glossyShader.inputs[1].default_value = .30
+
+    m.link(diffuseBSDF, 'BSDF', mixShader, 2)
+    m.link(sssShader, 'BSSRDF', mixShader, 1)
+    m.link(glossyShader, 'BSDF', mixShader2, 2)
+    m.link(mixShader, 'Shader', mixShader2, 1)
+    m.link(mixShader2, 'Shader', materialOutput, 'Surface')
+
+    bpy.ops.object.material_slot_remove()
+    bpy.ops.object.material_slot_add()
+
+    activeObject.active_material = bpy.data.materials[NomeMaterial]
+    bpy.context.object.active_material.diffuse_color = (R, G, B, 1)
+
 
 class MessageObjSelecionados(bpy.types.Operator):
     bl_idname = "object.dialog_operator_obj_selecionados"
@@ -102,10 +141,9 @@ def ConfiguraCabecaDef(self, context):
     bpy.ops.object.vertex_group_assign()
     bpy.ops.object.mode_set(mode='OBJECT')
 
-    activeObject = bpy.context.active_object #Set active object to variable
-    mat = bpy.data.materials.new(name="MaterialCabeca") #set new material to variable
-    activeObject.data.materials.append(mat) #add the material to the object
-    bpy.context.object.active_material.diffuse_color = (0.8, 0.75, 0.2, 1) #change color
+    # Material
+    CriaMaterialOsteotomia("MaterialCabeca", 0.8, 0.75, 0.2)
+
     bpy.context.object.name = "ca"
 
     armatureHead = bpy.data.objects['Armature_Head']
@@ -165,10 +203,8 @@ def ConfiguraMaxilaDef(self, context):
     bpy.ops.object.vertex_group_assign()
     bpy.ops.object.mode_set(mode='OBJECT')
 
-    activeObject = bpy.context.active_object #Set active object to variable
-    mat = bpy.data.materials.new(name="MaterialMaxila") #set new material to variable
-    activeObject.data.materials.append(mat) #add the material to the object
-    bpy.context.object.active_material.diffuse_color = (0.8, 0.3, 0.2, 1) #change color
+    CriaMaterialOsteotomia("MaterialMaxila", 0.8, 0.3, 0.2)
+
     bpy.context.object.name = "ma"
 
     armatureHead = bpy.data.objects['Armature_Head']
@@ -227,10 +263,8 @@ def ConfiguraRamoDirDef(self, context):
     bpy.ops.object.vertex_group_assign()
     bpy.ops.object.mode_set(mode='OBJECT')
 
-    activeObject = bpy.context.active_object #Set active object to variable
-    mat = bpy.data.materials.new(name="MaterialRamoDir") #set new material to variable
-    activeObject.data.materials.append(mat) #add the material to the object
-    bpy.context.object.active_material.diffuse_color = (0.4, 0.3, 0.8, 1) #change color
+    CriaMaterialOsteotomia("MaterialRamoDir", 0.4, 0.3, 0.8)
+
     bpy.context.object.name = "rd"
 
     armatureHead = bpy.data.objects['Armature_Head']
@@ -289,10 +323,8 @@ def ConfiguraRamoEsqDef(self, context):
     bpy.ops.object.vertex_group_assign()
     bpy.ops.object.mode_set(mode='OBJECT')
 
-    activeObject = bpy.context.active_object #Set active object to variable
-    mat = bpy.data.materials.new(name="MaterialRamoEsq") #set new material to variable
-    activeObject.data.materials.append(mat) #add the material to the object
-    bpy.context.object.active_material.diffuse_color = (0.4, 0.3, 0.8, 1) #change color
+    CriaMaterialOsteotomia("MaterialRamoEsq", 0.4, 0.3, 0.8)
+
     bpy.context.object.name = "re"
 
     armatureHead = bpy.data.objects['Armature_Head']
@@ -351,10 +383,8 @@ def ConfiguraCorpoMandDef(self, context):
     bpy.ops.object.vertex_group_assign()
     bpy.ops.object.mode_set(mode='OBJECT')
 
-    activeObject = bpy.context.active_object #Set active object to variable
-    mat = bpy.data.materials.new(name="MaterialCorpoMand") #set new material to variable
-    activeObject.data.materials.append(mat) #add the material to the object
-    bpy.context.object.active_material.diffuse_color = (0.35, 0.8, 0.4, 1) #change color
+    CriaMaterialOsteotomia("MaterialCorpoMand", 0.35, 0.8, 0.4)
+
     bpy.context.object.name = "cm"
 
     armatureHead = bpy.data.objects['Armature_Head']
@@ -419,10 +449,8 @@ def ConfiguraMentoDef(self, context):
     bpy.ops.object.vertex_group_assign()
     bpy.ops.object.mode_set(mode='OBJECT')
 
-    activeObject = bpy.context.active_object #Set active object to variable
-    mat = bpy.data.materials.new(name="MaterialMento") #set new material to variable
-    activeObject.data.materials.append(mat) #add the material to the object
-    bpy.context.object.active_material.diffuse_color = (0.8, 0.35, 0.2, 1) #change color
+    CriaMaterialOsteotomia("MaterialMento", 0.4, 0.3, 0.8)
+
     bpy.context.object.name = "me"
 
     armatureHead = bpy.data.objects['Armature_Head']
