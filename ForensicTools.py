@@ -113,6 +113,7 @@ def CriaBotoesDef():
                 print(fileLines)
 
 
+    Mk_Numero = len(fileLines) # Conta o número de itens, pois está invertido.
 
     for i in range(len(fileLines))[::-1]:
         limpaFinalLinha = fileLines[i].strip()
@@ -121,7 +122,7 @@ def CriaBotoesDef():
         #print(separa)
 
         # Cria def do botão
-        Nome = "Mk "+separa[0]
+        Nome = str(Mk_Numero)+" "+separa[0]
         NomeClass = Nome.replace(" ", "")
         NomeMin = "object."+Nome.lower().replace(" ", "_")
 
@@ -131,6 +132,7 @@ def CriaBotoesDef():
         bpy.context.object.show_name = True
         bpy.ops.transform.rotate(value=1.5708, orient_axis='Y')
         posicaoZ += 10
+        Mk_Numero -= 1
 
     # ENVIA COLLECTION
 
