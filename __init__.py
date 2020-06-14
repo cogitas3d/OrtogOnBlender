@@ -3003,6 +3003,17 @@ class ORTOG_PT_ImportTomoImg(bpy.types.Panel):
         row = layout.row()
         row.operator("object.exporta_img_tomo", text="Export DICOM Slices", icon="EXPORT")
 
+class ORTOG_PT_Render(bpy.types.Panel):
+    bl_label = "Render"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_category = "Ortog"
+
+    def draw(self, context):
+        layout = self.layout
+        
+        row = layout.row()
+        linha=row.operator("object.forensic_importa_luzes", text="ILLUMINATE!", icon="LIGHT_DATA")
 
 
 def register():
@@ -3249,6 +3260,7 @@ def register():
     bpy.utils.register_class(ORTOG_PT_FechaLabios)
     bpy.utils.register_class(ORTOG_PT_GuideCreation)
     bpy.utils.register_class(ORTOG_PT_ImportTomoImg)
+    bpy.utils.register_class(ORTOG_PT_Render)
     bpy.types.Scene.IMGPathSeq = bpy.props.StringProperty \
       (
         name = "IMGPathSeq",

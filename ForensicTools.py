@@ -825,6 +825,10 @@ class ForensicImportaLuzes(bpy.types.Operator):
         bpy.context.scene.view_settings.exposure = 0.2
 
         bpy.context.space_data.shading.type = 'RENDERED'
+
+        bpy.context.space_data.overlay.show_extras = False # Oculta gráficos das luzes
+
+
         return {'FINISHED'}
 
 bpy.utils.register_class(ForensicImportaLuzes)
