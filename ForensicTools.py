@@ -826,6 +826,8 @@ class ForensicImportaLuzes(bpy.types.Operator):
 
         bpy.context.space_data.shading.type = 'RENDERED'
 
+        bpy.context.scene.render.engine = 'BLENDER_EEVEE'
+
         bpy.context.space_data.overlay.show_extras = False # Oculta gráficos das luzes
 
 

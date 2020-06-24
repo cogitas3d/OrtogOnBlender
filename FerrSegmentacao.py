@@ -185,6 +185,41 @@ def Converte3DparaVoxelDef():
 
         subprocess.call('~/Programs/OrtogOnBlender/VolView/bin/VolView '+tmpdir+'/VOXEL/GREY/DCM/0000.dcm &', shell=True)
 
+
+
+    if platform.system() == "Windows":
+
+
+        Temporario = str(tmpdir).replace("\\", "/").replace('\\', "/").replace("C:", "/mnt/c")
+
+        os.chdir(tmpdir)
+
+        subprocess.call('mkdir VOXEL', shell=True)
+
+        # Converte objeto em slices de imagens
+        subprocess.call("wsl python3 \"/mnt/c/OrtogOnBlender/StlToVoxel/stltovoxel.py\" \""+Temporario+"/Model.stl\" \""+Temporario+"/VOXEL/img.png\"", shell=True)
+
+
+        # Converte em greyscale
+        os.chdir(tmpdir+"/VOXEL")
+        subprocess.call('mkdir GREY', shell=True)
+
+        subprocess.call("wsl for i in *.png; do convert $i -type Grayscale -depth 8 GREY/${i%.png}.png; done", shell=True)
+
+
+        # Converte em DICOM
+        os.chdir(tmpdir+"/VOXEL/GREY")
+        subprocess.call('mkdir DEC', shell=True)
+
+        subprocess.call("wsl python \"/mnt/c/OrtogOnBlender/Img2Dcm/img2dcm.py\" -i \""+Temporario+"/VOXEL/GREY\" -o \""+Temporario+"/DCM\" -s \"0.588\" \"0.588\" \"0.588\" -t png", shell=True)
+
+        print("DICOM BASE GERADO!!!")
+
+        #subprocess.call('C:/OrtogOnBlender/VolView/bin/VolView.exe '+tmpdir+'/DCM/0000.dcm', shell=True) # POR ALGUM MOTIVO NÃO FUNCIONA!!! USE O DE BAIXO!
+
+        subprocess.call("C:\\OrtogOnBlender\\VolView\\bin\\VolView "+tmpdir+"\\DCM\\0000.dcm &", shell=True)
+
+
 class Converte3DparaVoxel(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.converte_3d_voxel"
