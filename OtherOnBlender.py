@@ -5,6 +5,7 @@ from .Version import *
 from .FerrSegmentacao import *
 from .CortaOssoFibula import *
 from .TomoReconsRapida import * # Apagar!
+from .DesenhaObjetos import *
 
 class OTHER_PT_AtualizaAddonSec(bpy.types.Panel):
     bl_label = "Upgrade Script"
@@ -314,3 +315,35 @@ class OTHER_PT_TomoReconRapida(bpy.types.Panel):
 
 bpy.utils.register_class(OTHER_PT_TomoReconRapida)
 '''
+
+class OTHER_PT_Vein(bpy.types.Panel):
+    bl_label = "Vein and Nerves"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Others"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+#        row = layout.row()
+#        row.label(text="Dimensions:")
+
+#       Add Volume Area
+
+        row = layout.row()
+        linha=row.operator("wm.tool_set_by_id", text="Cursor", icon="PIVOT_CURSOR").name="builtin.cursor"
+        linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
+
+        row = layout.row()
+        row.operator("mesh.add_ponto_veia", text="Create Point", icon="TRACKING_FORWARDS_SINGLE")
+
+        row = layout.row()
+        row.operator("mesh.add_curva_bezier_veia", text="Create Vein or Nerve", icon="TRACKING_FORWARDS_SINGLE")
+
+
+bpy.utils.register_class(OTHER_PT_Vein)

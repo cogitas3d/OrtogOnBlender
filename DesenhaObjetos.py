@@ -668,6 +668,155 @@ class CriaLinhaPontos(Operator, AddObjectHelper):
 
 bpy.utils.register_class(CriaLinhaPontos)
 
+#-----------------
+
+#Pontos veia
+
+def CriaPontoVeiaDef():
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=0.2, location=(0,0,0)) #Atrasa também
+    bpy.ops.transform.translate(value=(bpy.context.scene.cursor.location))
+    bpy.context.object.name = "PT_Linha"
+
+    ListaMateriais = []
+    MateriaisCena = bpy.data.materials
+
+    for i in MateriaisCena:
+        ListaMateriais.append(i.name)
+
+    if 'MatModalPoints' in ListaMateriais:
+        activeObject = bpy.context.active_object #Set active object to variable
+        mat = bpy.data.materials["MatModalPointsTeeth"] #set new material to variable
+        activeObject.data.materials.append(mat) #add the material to the object
+        bpy.context.object.active_material.diffuse_color = (0.2, 0.2, 0.9, 1)
+    else:
+        activeObject = bpy.context.active_object #Set active object to variable
+        mat = bpy.data.materials.new(name="MatModalPointsTeeth") #set new material to variable
+        activeObject.data.materials.append(mat) #add the material to the object
+        bpy.context.object.active_material.diffuse_color = (0.2, 0.2, 0.9, 1)
+
+    #bpy.ops.object.select_all(action='DESELECT')
+
+    #obj.select_set(True)
+    #bpy.context.view_layer.objects.active = obj
+
+
+class CriaPontoVeia(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "mesh.add_ponto_veia"
+    bl_label = "Create Vein Point"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+
+        CriaPontoVeiaDef()
+
+        return {'FINISHED'}
+
+bpy.utils.register_class(CriaPontoVeia)
+
+
+# Bezier veia
+
+def CriaBezierVeiaDef(self, context):
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+
+    Pontos = [obj for obj in bpy.context.scene.objects if fnmatch.fnmatchcase(obj.name, "PT_Linh*")]
+
+    coords = []
+
+    for i in Pontos:
+        VetorAtual = i.location
+        VetX = i.location[0]
+        VetY = i.location[1]
+        VetZ = i.location[2]
+        coords.append((VetX, VetY, VetZ))
+
+#    edges = []
+
+#    for i in range(len(vertices)):
+#        edges.append([i,i+1])
+
+#    del(edges[-1]) # Apaga o último elemento da cena
+
+
+    # create the Curve Datablock
+    curveData = bpy.data.curves.new('myCurve', type='CURVE')
+    curveData.dimensions = '3D'
+    curveData.resolution_u = 6
+
+    # map coords to spline
+    polyline = curveData.splines.new('BEZIER')
+    polyline.bezier_points.add(len(coords)-1)
+#    for i, coord in enumerate(coords):
+#        x,y,z = coord
+#        polyline.points[i].co = (x, y, z, 1)
+
+    from bpy_extras.io_utils import unpack_list
+    polyline.bezier_points.foreach_set("co", unpack_list(coords))
+
+    # Apaga pontos
+    bpy.ops.object.select_all(action='DESELECT')
+
+    for i in Pontos:
+        i.select_set(True)
+
+    bpy.ops.object.delete(use_global=False)
+
+
+
+    # Cria Linha
+    curveOB = bpy.data.objects.new('myCurve', curveData)
+
+    # attach to scene and validate context
+    scn = bpy.context.scene
+#   scn.objects.link(curveOB)
+    scn.collection.objects.link(curveOB)
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.context.view_layer.objects.active = curveOB
+    curveOB.select_set(True)
+
+    bpy.ops.object.editmode_toggle()
+    bpy.ops.curve.select_all(action='SELECT')
+    bpy.ops.curve.handle_type_set(type='AUTOMATIC')
+    bpy.ops.object.editmode_toggle()
+
+    bpy.context.object.data.bevel_depth = 2.0
+
+
+#    obj = context.active_object
+    bpy.ops.object.collection_link(collection='Collection')
+    bpy.ops.object.move_to_collection(collection_index=1)
+#    bpy.data.collections['Scene Collection'].objects.unlink(obj)
+
+
+#    bpy.context.object.location = 0,0,0
+
+class CriaBezierVeia(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "mesh.add_curva_bezier_veia"
+    bl_label = "Create Bezier Vein"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+
+        CriaBezierVeiaDef(self, context)
+
+        return {'FINISHED'}
+
+bpy.utils.register_class(CriaBezierVeia)
+
+
+#-----------------
+
 def CriaBezierDef(self, context):
 
     context = bpy.context
