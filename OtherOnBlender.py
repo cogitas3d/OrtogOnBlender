@@ -340,10 +340,10 @@ class OTHER_PT_Vein(bpy.types.Panel):
         linha=row.operator("wm.tool_set_by_id", text="Select", icon="RESTRICT_SELECT_OFF").name="builtin.select_box"
 
         row = layout.row()
-        row.operator("mesh.add_ponto_veia", text="Create Point", icon="TRACKING_FORWARDS_SINGLE")
+        row.operator("mesh.add_ponto_veia", text="Create Point", icon="NODE_MATERIAL")
 
         row = layout.row()
-        row.operator("mesh.add_curva_bezier_veia", text="Create Vein or Nerve", icon="TRACKING_FORWARDS_SINGLE")
+        row.operator("mesh.add_curva_bezier_veia", text="Create Vein or Nerve", icon="OUTLINER_OB_CURVE")
 
 
 bpy.utils.register_class(OTHER_PT_Vein)

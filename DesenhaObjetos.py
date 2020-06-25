@@ -12,6 +12,9 @@ from bpy.types import (Panel,
 from mathutils import Matrix, Vector
 from bpy_extras.object_utils import AddObjectHelper, object_data_add
 
+from .ConfOsteotomiaAuto import *
+
+
 def DesenhaGuiaDef(self, context):
 
     context = bpy.context
@@ -678,7 +681,7 @@ def CriaPontoVeiaDef():
     obj = context.active_object
     scn = context.scene
 
-    bpy.ops.mesh.primitive_uv_sphere_add(radius=0.2, location=(0,0,0)) #Atrasa também
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=(0,0,0)) #Atrasa também
     bpy.ops.transform.translate(value=(bpy.context.scene.cursor.location))
     bpy.context.object.name = "PT_Linha"
 
@@ -687,6 +690,7 @@ def CriaPontoVeiaDef():
 
     for i in MateriaisCena:
         ListaMateriais.append(i.name)
+
 
     if 'MatModalPoints' in ListaMateriais:
         activeObject = bpy.context.active_object #Set active object to variable
@@ -699,10 +703,13 @@ def CriaPontoVeiaDef():
         activeObject.data.materials.append(mat) #add the material to the object
         bpy.context.object.active_material.diffuse_color = (0.2, 0.2, 0.9, 1)
 
-    #bpy.ops.object.select_all(action='DESELECT')
+    bpy.ops.object.select_all(action='DESELECT')
 
-    #obj.select_set(True)
-    #bpy.context.view_layer.objects.active = obj
+    try:
+        obj.select_set(True)
+        bpy.context.view_layer.objects.active = obj
+    except:
+        print("Não há objeto selecionado!")
 
 
 class CriaPontoVeia(Operator, AddObjectHelper):
@@ -789,7 +796,7 @@ def CriaBezierVeiaDef(self, context):
     bpy.ops.curve.handle_type_set(type='AUTOMATIC')
     bpy.ops.object.editmode_toggle()
 
-    bpy.context.object.data.bevel_depth = 2.0
+    bpy.context.object.data.bevel_depth = 1.6
 
 
 #    obj = context.active_object
@@ -797,6 +804,8 @@ def CriaBezierVeiaDef(self, context):
     bpy.ops.object.move_to_collection(collection_index=1)
 #    bpy.data.collections['Scene Collection'].objects.unlink(obj)
 
+
+    CriaMaterialOsteotomia("VeinNerve", 1, 0, 0)
 
 #    bpy.context.object.location = 0,0,0
 

@@ -8,6 +8,7 @@ import platform
 #from .__init__ import *
 
 from .AjustaTomo import *
+from .ConfOsteotomiaAuto import *
 
 from math import sqrt
 
