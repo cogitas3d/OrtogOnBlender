@@ -29,7 +29,7 @@ def ExtraiDadosTomo():
 
     if platform.system() == "Windows":
         ds = dicom.dcmread(DiretorioDCM+"\\"+ListaArquivos[0], force = True) # Diretório e arquivo concatenados
-        
+
 
     # Distância da altura dos slices
 
@@ -345,10 +345,10 @@ def ImportaFatiasDef():
         #bpy.context.object.active_material.blend_method = 'BLEND' # Descobri sozinho!
         #bpy.context.object.active_material.blend_method = 'CLIP'
         bpy.context.object.active_material.blend_method = 'HASHED' # Para a textura
-        
+
         if platform.system() == "Windows":
             bpy.context.object.active_material.transparent_shadow_method = 'HASHED'
-            
+
         if platform.system() == "Linux" or platform.system() == "Darwin":
             bpy.context.object.active_material.shadow_method = 'HASHED'
 
@@ -414,7 +414,7 @@ def ImportaFatiasDef():
         default = str(TmpDirPNG)
       )
 
-
+    bpy.ops.file.pack_all()
 
 
 
