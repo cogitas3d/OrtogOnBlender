@@ -390,6 +390,14 @@ def ImportaFatiasDef():
 
     bpy.ops.transform.mirror(orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
 
+    # Adiciona Array
+    bpy.ops.object.modifier_add(type='ARRAY')
+    bpy.context.object.modifiers["Array"].use_constant_offset = True
+    bpy.context.object.modifiers["Array"].use_relative_offset = False
+    bpy.context.object.modifiers["Array"].constant_offset_displace[2] = 0.1
+    bpy.context.object.modifiers["Array"].count = 4
+    bpy.context.object.modifiers["Array"].show_viewport = False
+
     # Centraliza
     for area in bpy.context.screen.areas:
         if area.type == 'VIEW_3D':
