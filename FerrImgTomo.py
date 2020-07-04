@@ -192,6 +192,7 @@ def ImportaFatiasDef():
     EscalaY = DimensaoLateralY * ColumnsPixels
 
     bpy.context.space_data.shading.type = 'MATERIAL' # Descobri sozinho!
+    bpy.context.space_data.shading.use_scene_world = True # Tem que ser aqui  - muda fundo
 
     # Importa node group
 
@@ -397,6 +398,18 @@ def ImportaFatiasDef():
     bpy.context.object.modifiers["Array"].constant_offset_displace[2] = 0.1
     bpy.context.object.modifiers["Array"].count = 4
     bpy.context.object.modifiers["Array"].show_viewport = False
+
+    # Renderizador
+    bpy.context.scene.eevee.use_sss = False
+
+    bpy.context.scene.eevee.gtao_distance = 30
+    bpy.context.scene.eevee.gtao_factor = 2
+    bpy.context.scene.eevee.use_gtao_bounce = True
+
+#    bpy.data.node_groups["Shader Nodetree"].nodes["Background"].inputs[0].default_value = (0.983241, 0.914842, 1, 1)
+
+    #bpy.data.screens["Default"].shading.use_scene_world = True
+
 
     # Centraliza
     for area in bpy.context.screen.areas:
