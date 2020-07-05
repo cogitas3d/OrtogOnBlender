@@ -794,6 +794,9 @@ def VoxelShaderOssoDef():
 
         bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[1].position = 0.20
 
+        # Cor pele
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[1].position = 0.364313
+
     except:
         print("Problema com o material do voxel na cena, pode não conter!")
 
