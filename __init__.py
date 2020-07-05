@@ -326,6 +326,18 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
     #        system = prefs.system
     #        row.prop(system, "gl_clip_alpha", slider=True)
 
+            row = layout.row()
+            row.label(text="Shader/Material:")
+
+            row = layout.row()
+            row.operator("object.voxelshader_osso", text="Bone", icon="NODE_MATERIAL")
+
+            row = layout.row()
+            row.operator("object.voxelshader_pele", text="Skin", icon="NODE_MATERIAL")
+
+            row = layout.row()
+            row.operator("object.voxelshader_default", text="Default", icon="NODE_MATERIAL")
+
             box = layout.box()
             col = box.column(align=True)
             row = col.row()
@@ -3011,7 +3023,7 @@ class ORTOG_PT_Render(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        
+
         row = layout.row()
         linha=row.operator("object.forensic_importa_luzes", text="ILLUMINATE!", icon="LIGHT_DATA")
 

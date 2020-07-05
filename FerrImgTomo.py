@@ -191,8 +191,32 @@ def ImportaFatiasDef():
     EscalaX = DimensaoLateralX * RowsPixels
     EscalaY = DimensaoLateralY * ColumnsPixels
 
+    #Renderização
+    bpy.context.scene.eevee.use_gtao = True
+    bpy.context.scene.eevee.gtao_distance = 8
+    bpy.context.scene.eevee.use_gtao_bent_normals = False
+    # bpy.context.scene.eevee.use_bloom = True # NÃO FICA BOM!
+    bpy.context.scene.eevee.use_sss = False #Senão não fica bom!
+    bpy.context.scene.eevee.use_ssr = True
+    bpy.context.scene.eevee.use_ssr_refraction = True
+    bpy.context.scene.eevee.ssr_thickness = 3
+    bpy.context.scene.render.hair_type = 'STRIP'
+    bpy.context.scene.eevee.shadow_method = 'ESM'
+    bpy.context.scene.eevee.shadow_cube_size = '512'
+    bpy.context.scene.eevee.shadow_cascade_size = '512'
+    bpy.context.scene.eevee.use_soft_shadows = True
+    bpy.context.scene.eevee.light_threshold = 0.013
+    bpy.context.scene.view_settings.exposure = 0.2
+
+    bpy.context.scene.render.engine = 'BLENDER_EEVEE'
+
     bpy.context.space_data.shading.type = 'MATERIAL' # Descobri sozinho!
     bpy.context.space_data.shading.use_scene_world = True # Tem que ser aqui  - muda fundo
+
+    # Background
+    BackNodeTree = bpy.data.materials.data.worlds['World'].node_tree
+    BackNodeTree.nodes['Background'].inputs['Color'].default_value = (1,1,1,1)
+
 
     # Importa node group
 
@@ -726,9 +750,89 @@ class AbreSlicerMHA(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.abre_slicer_mha"
     bl_label = "Open Slicer MHA"
+    bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
         AbreSlicerMHADef(self, context)
         return {'FINISHED'}
 
 bpy.utils.register_class(AbreSlicerMHA)
+
+
+def VoxelShaderDefaultDef():
+
+    try:
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[0].position = 0.164
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[1].position = 1
+
+        # Cor pele
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[1].position = 0.364313
+
+    except:
+        print("Problema com o material do voxel na cena, pode não conter!")
+
+
+class VoxelShaderDefault(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.voxelshader_default"
+    bl_label = "Voxel Shader Default"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        VoxelShaderDefaultDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(VoxelShaderDefault)
+
+
+
+def VoxelShaderOssoDef():
+
+    try:
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[0].position = 0.11
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[1].position = 0.20
+
+    except:
+        print("Problema com o material do voxel na cena, pode não conter!")
+
+
+class VoxelShaderOsso(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.voxelshader_osso"
+    bl_label = "Voxel Shader Bone"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        VoxelShaderOssoDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(VoxelShaderOsso)
+
+
+def VoxelShaderPeleDef():
+
+    try:
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[0].position = 0.0
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[1].position = 0.20
+
+        # Cor pele
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[1].position = 0.071017
+
+    except:
+        print("Problema com o material do voxel na cena, pode não conter!")
+
+
+class VoxelShaderPele(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.voxelshader_pele"
+    bl_label = "Voxel Shader Skin"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        VoxelShaderPeleDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(VoxelShaderPele)
