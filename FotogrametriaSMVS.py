@@ -36,20 +36,45 @@ def GeraModeloFotoSMVSDef(self, context):
 
     else:
         if platform.system() == "Linux":
-            SMVSPath = homeall+"/Programs/OrtogOnBlender/SMVS/"
-            subprocess.call(['rm', '-rf', tmpdir+'/scene'])
-            subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path_photo, tmpdir+'/scene'])
-            subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
-            subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
-            subprocess.call(['meshlabserver', '-i', tmpdir+'/scene/smvs-B2.ply', '-o', tmpdir+'/scene/meshlab.ply', '-s', SMVSPath+'SMVSmeshlab.mlx', '-om'])
-            subprocess.call([SMVSPath+'./texrecon', '--data_term=area', '--skip_global_seam_leveling', '--outlier_removal=gauss_damping', tmpdir+'/scene::undistorted', tmpdir+'/scene/meshlab.ply', tmpdir+'/scene/scene_dense_mesh_texture2'])
-            bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
-            scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
-            bpy.ops.object.select_all(action='DESELECT')
-            bpy.context.view_layer.objects.active = scene_dense_mesh_texture2
-            bpy.data.objects['scene_dense_mesh_texture2'].select_set(True)
-            bpy.ops.view3d.view_all(center=False)
-            bpy.ops.file.pack_all()
+
+            with open("/etc/issue") as f:
+             Versao = str(f.read().lower().split()[1])
+
+            if Versao == "18.04":
+
+                SMVSPath = homeall+"/Programs/OrtogOnBlender/SMVS/"
+                subprocess.call(['rm', '-rf', tmpdir+'/scene'])
+                subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path_photo, tmpdir+'/scene'])
+                subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
+                subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
+                subprocess.call(['meshlabserver', '-i', tmpdir+'/scene/smvs-B2.ply', '-o', tmpdir+'/scene/meshlab.ply', '-s', SMVSPath+'SMVSmeshlab.mlx', '-om'])
+                subprocess.call([SMVSPath+'./texrecon', '--data_term=area', '--skip_global_seam_leveling', '--outlier_removal=gauss_damping', tmpdir+'/scene::undistorted', tmpdir+'/scene/meshlab.ply', tmpdir+'/scene/scene_dense_mesh_texture2'])
+                bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
+                scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
+                bpy.ops.object.select_all(action='DESELECT')
+                bpy.context.view_layer.objects.active = scene_dense_mesh_texture2
+                bpy.data.objects['scene_dense_mesh_texture2'].select_set(True)
+                bpy.ops.view3d.view_all(center=False)
+                bpy.ops.file.pack_all()
+
+
+            if Versao == "20.04":
+
+                SMVSPath = homeall+"/Programs/OrtogOnBlender/SMVS/"
+                subprocess.call(['rm', '-rf', tmpdir+'/scene'])
+                subprocess.call([SMVSPath+'./makescene', '-i', scn.my_tool.path_photo, tmpdir+'/scene'])
+                subprocess.call([SMVSPath+'./sfmrecon', tmpdir+'/scene'])
+                subprocess.call([SMVSPath+'./smvsrecon', '-s2', tmpdir+'/scene'])
+                subprocess.call([SMVSPath+'./fssrecon', tmpdir+'/scene/smvs-B2.ply', tmpdir+'/scene/smvs-surface.ply'])
+                subprocess.call([SMVSPath+'./meshclean', '-p10', tmpdir+'/scene/smvs-surface.ply', tmpdir+'/scene/smvs-surface-clean.ply'])
+                subprocess.call([SMVSPath+'./texrecon', '--data_term=area', '--skip_global_seam_leveling', '--outlier_removal=gauss_damping', tmpdir+'/scene::undistorted', tmpdir+'/scene/smvs-surface-clean.ply', tmpdir+'/scene/scene_dense_mesh_texture2'])
+                bpy.ops.import_scene.obj(filepath=tmpOBJface, filter_glob="*.obj;*.mtl")
+                scene_dense_mesh_texture2 = bpy.data.objects['scene_dense_mesh_texture2']
+                bpy.ops.object.select_all(action='DESELECT')
+                bpy.context.view_layer.objects.active = scene_dense_mesh_texture2
+                bpy.data.objects['scene_dense_mesh_texture2'].select_set(True)
+                bpy.ops.view3d.view_all(center=False)
+                bpy.ops.file.pack_all()
 
 
         if platform.system() == "Windows":

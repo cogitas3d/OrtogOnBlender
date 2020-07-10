@@ -45,7 +45,7 @@ def CorrigeTomoRawDef():
         subprocess.call('for i in *; do gdcmconv -w -i $i -o '+tmpdirTomo2+'/$i; done', shell=True)
         print("Tomografia corrigida!!!")
 
-    if platform.system() == "Linux" or platform.system() == "Darwin":
+    if platform.system() == "Windows":
         subprocess.call('for %f in (*) do C:\OrtogOnBlender\GDCM\gdcmconv -w -i %f -o '+tmpdirTomo2+'/%f', shell=True)
         print("Tomografia corrigida!!!")
 
@@ -245,7 +245,7 @@ def TomoRecRapidaDef():
         try:
             print("Há ConvKernel!")
 
-            if ConvKernel == "FC03" or ConvKernel =="FC04" or ConvKernel == "STANDARD" or ConvKernel == "H30s" or ConvKernel == "SOFT" or ConvKernel == "UB" or ConvKernel == "SA" or ConvKernel == "FC23" or ConvKernel == "FC08" or ConvKernel == ['Hr40f', '3'] or ConvKernel == "FC21" or ConvKernel =="A" or ConvKernel =="FC02" or ConvKernel =="B" or ConvKernel =="H23s" or ConvKernel =="H20s" or ConvKernel == "H31s" or ConvKernel == "H32s" or ConvKernel == ['J30s', '3'] or ConvKernel == "H40s" or ConvKernel == "H31s" or ConvKernel == "B41s" or ConvKernel == "B70s" or ConvKernel == "H22s" or ConvKernel == ['J30f', '2'] or ConvKernel == "H20f" or ConvKernel == "FC68" or ConvKernel == "FC07" or ConvKernel == "B30s" or ConvKernel == "B41s" or ConvKernel == ['I31f', '3'] or ConvKernel == ['Br40f', '3'] or ConvKernel == "D10f" or ConvKernel == "B45s" or ConvKernel == "B26f" or ConvKernel == "B30f":
+            if ConvKernel == "FC03" or ConvKernel =="FC04" or ConvKernel == "STANDARD" or ConvKernel == "H30s" or ConvKernel == "SOFT" or ConvKernel == "UB" or ConvKernel == "SA" or ConvKernel == "FC23" or ConvKernel == "FC08" or ConvKernel == ['Hr40f', '3'] or ConvKernel == "FC21" or ConvKernel =="A" or ConvKernel =="FC02" or ConvKernel =="B" or ConvKernel =="H23s" or ConvKernel =="H20s" or ConvKernel == "H31s" or ConvKernel == "H32s" or ConvKernel == ['J30s', '3'] or ConvKernel == "H40s" or ConvKernel == "H31s" or ConvKernel == "B41s" or ConvKernel == "B70s" or ConvKernel == "H22s" or ConvKernel == ['J30f', '2'] or ConvKernel == "H20f" or ConvKernel == "FC68" or ConvKernel == "FC07" or ConvKernel == "B30s" or ConvKernel == "B41s" or ConvKernel == ['I31f', '3'] or ConvKernel == ['Br40f', '3'] or ConvKernel == "D10f" or ConvKernel == "B45s" or ConvKernel == "B26f" or ConvKernel == "B30f" or ConvKernel == "32":
 
                 GeraModelo3DTomo("200", "-300", "1430")
 

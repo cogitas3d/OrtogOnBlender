@@ -355,8 +355,15 @@ def GeraModeloFotoDef(self, context):
 
 
         if platform.system() == "Linux":
-            subprocess.call(['python', OpenMVGPath , scn.my_tool.path_photo ,  OpenMVGtmpDir])
 
+            with open("/etc/issue") as f:
+             Versao = str(f.read().lower().split()[1])
+
+            if Versao == "18.04":
+                subprocess.call(['python', OpenMVGPath , scn.my_tool.path_photo ,  OpenMVGtmpDir])
+
+            if Versao == "20.04":
+                subprocess.call(['python2', OpenMVGPath , scn.my_tool.path_photo ,  OpenMVGtmpDir])
 
         if platform.system() == "Windows":
             subprocess.call(['C:/OrtogOnBlender/Python27/python', OpenMVGPath , scn.my_tool.path_photo ,  OpenMVGtmpDir])
@@ -369,7 +376,16 @@ def GeraModeloFotoDef(self, context):
 
         if platform.system() == "Linux":
 
-            subprocess.call('cd '+tmpdir+' && mkdir MVS && ~/Programs/OrtogOnBlender/openMVG/./openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && ~/Programs/OrtogOnBlender/openMVS/./DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && ~/Programs/OrtogOnBlender/openMVS/./ReconstructMesh -d '+dFactor+' --smooth '+smoothFactor+' '+tmpdir+'/MVS/scene_dense.mvs && ~/Programs/OrtogOnBlender/openMVS/./TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
+            with open("/etc/issue") as f:
+             Versao = str(f.read().lower().split()[1])
+
+            if Versao == "18.04":
+
+                subprocess.call('cd '+tmpdir+' && mkdir MVS && ~/Programs/OrtogOnBlender/openMVG/./openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && ~/Programs/OrtogOnBlender/openMVS/./DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && ~/Programs/OrtogOnBlender/openMVS/./ReconstructMesh -d '+dFactor+' --smooth '+smoothFactor+' '+tmpdir+'/MVS/scene_dense.mvs && ~/Programs/OrtogOnBlender/openMVS/./TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
+
+            if Versao == "20.04":
+
+                subprocess.call('cd '+tmpdir+' && mkdir MVS && ~/Programs/OrtogOnBlender/openMVG/./openMVG_main_openMVG2openMVS -i '+tmpdir+'/OpenMVG/reconstruction_sequential/sfm_data.bin -o '+tmpdir+'/MVS/scene.mvs && ~/Programs/OrtogOnBlender/openMVS_ubuntu_2004/./DensifyPointCloud --estimate-normals 1 '+tmpdir+'/MVS/scene.mvs && ~/Programs/OrtogOnBlender/openMVS_ubuntu_2004/./ReconstructMesh -d '+dFactor+' --smooth '+smoothFactor+' '+tmpdir+'/MVS/scene_dense.mvs && ~/Programs/OrtogOnBlender/openMVS_ubuntu_2004/./TextureMesh --export-type obj '+tmpdir+'/MVS/scene_dense_mesh.mvs', shell=True)
 
         if platform.system() == "Darwin":
 

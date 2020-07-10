@@ -7,17 +7,39 @@ import platform
 from os.path import expanduser
 import platform
 
+if platform.system() == "Linux":
+    import SimpleITK as sitk
 
 # EXTRAI DADOS DA TOMOGRAFIA
 def ExtraiDadosTomo():
-
-    global  EspacoSlices, DimensaoLateralX, DimensaoLateralY, RowsPixels, ColumnsPixels, TmpDirPNG, DiretorioDCM
 
     context = bpy.context
 #    obj = context.active_object
     scn = context.scene
 
-    DiretorioDCM = scn.my_tool.path #"/home/linux3dcs/prj/Estudos/Tomografia/TOMOGRAFIA_2_MENOR/ScalarVolume_10/"
+
+    #Corrige tomo
+    bpy.ops.object.corrige_dicom()
+    tmpdirTomo2 = tempfile.mkdtemp()
+
+
+    os.chdir(scn.my_tool.path)
+
+    if platform.system() == "Linux" or platform.system() == "Darwin":
+        subprocess.call('for i in *; do gdcmconv -w -i $i -o '+tmpdirTomo2+'/$i; done', shell=True)
+        print("Tomografia corrigida!!!")
+
+    if platform.system() == "Windows":
+        subprocess.call('for %f in (*) do C:\OrtogOnBlender\GDCM\gdcmconv -w -i %f -o '+tmpdirTomo2+'/%f', shell=True)
+        print("Tomografia corrigida!!!")
+
+    scn.my_tool.path = tmpdirTomo2+"/"
+
+    #Extrai dados
+
+    global  EspacoSlices, DimensaoLateralX, DimensaoLateralY, RowsPixels, ColumnsPixels, TmpDirPNG, DiretorioDCM
+
+    DiretorioDCM = scn.my_tool.path #tmpdirTomo2+"/" #scn.my_tool.path #"/home/linux3dcs/prj/Estudos/Tomografia/TOMOGRAFIA_2_MENOR/ScalarVolume_10/"
 
     ListaArquivos =  sorted(os.listdir(DiretorioDCM))
 
@@ -31,15 +53,42 @@ def ExtraiDadosTomo():
         ds = dicom.dcmread(DiretorioDCM+"\\"+ListaArquivos[0], force = True) # Diretório e arquivo concatenados
 
 
+
+
+    if platform.system() == "Linux" or platform.system() == "Darwin":
+        ds = dicom.dcmread(DiretorioDCM+ListaArquivos[0], force = True) # Diretório e arquivo concatenados
+
+
+    if platform.system() == "Windows":
+        ds = dicom.dcmread(DiretorioDCM+"\\"+ListaArquivos[0], force = True)
+
+
     # Distância da altura dos slices
 
-    slice_thickness = ds.data_element("SliceThickness")
-    sliceLimpa1 = str(slice_thickness).split('DS: ')
-    sliceLimpa2 = sliceLimpa1[1].strip('"')
-#    sliceLimpa1 = str(slice_thickness).strip('(0018, 0050) Slice Thickness DS:')
-#    sliceLimpa2 = sliceLimpa1.strip('"')
-    EspacoSlices = float(sliceLimpa2)
+    #Tenta pegar por
+    try:
 
+        if platform.system() == "Linux" or platform.system() == "Darwin":
+            ds2 = dicom.dcmread(DiretorioDCM+ListaArquivos[1], force = True)
+
+        if platform.system() == "Windows":
+            ds2 = dicom.dcmread(DiretorioDCM+"\\"+ListaArquivos[1], force = True)
+
+        EspacoSlices = abs(ds.SliceLocation - ds2.SliceLocation)
+
+        print("Deu certo por SliceLocation!")
+
+
+    except:
+
+        slice_thickness = ds.data_element("SliceThickness")
+        sliceLimpa1 = str(slice_thickness).split('DS: ')
+        sliceLimpa2 = sliceLimpa1[1].strip('"')
+    #    sliceLimpa1 = str(slice_thickness).strip('(0018, 0050) Slice Thickness DS:')
+    #    sliceLimpa2 = sliceLimpa1.strip('"')
+        EspacoSlices = float(sliceLimpa2)
+
+    print("Espaço entre os slices:", EspacoSlices)
 
     bpy.types.Scene.SliceThickness = bpy.props.StringProperty \
       (
@@ -109,8 +158,27 @@ def ExtraiDadosTomo():
 def ConverteDCMparaPNG():
 
     if platform.system() == "Linux":
-        subprocess.call('cd '+DiretorioDCM+' && for i in *; do convert -verbose -auto-level $i "${i%.dcm}".png; done && mv *.png '+TmpDirPNG, shell=True)
+
+        os.chdir(DiretorioDCM)
+        ListaArquivos = os.listdir(DiretorioDCM)
+
+        for ArquivoAtual in ListaArquivos:
+            img = sitk.ReadImage(ArquivoAtual)
+            # rescale intensity range from [-1000,1000] to [0,255]
+            img = sitk.IntensityWindowing(img, -1000, 1000, 0, 255)
+            # convert 16-bit pixels to 8-bit
+            img = sitk.Cast(img, sitk.sitkUInt8)
+            sitk.WriteImage(img, TmpDirPNG+"/"+ArquivoAtual+".png")
+
         print("DICOMs convertidos em PNG")
+
+# Oficial
+#        subprocess.call('cd '+DiretorioDCM+' && for i in *; do convert -verbose -auto-level $i "${i%.dcm}".png; done && mv *.png '+TmpDirPNG, shell=True)
+#        print("DICOMs convertidos em PNG")
+# Alternativa DCMTK
+#        subprocess.call('cd '+DiretorioDCM+' && for x in *.dcm; do dcmj2pnm --write-png $x "${x%.dcm}".png; done && mv *.png '+TmpDirPNG, shell=True)
+#        print("DICOMs convertidos em PNG")
+# Alternativa
 #        subprocess.call('cd '+DiretorioDCM+' && for i in *; do mogrify -verbose -format png $i; done && mv *.png '+TmpDirPNG, shell=True)
 #        print("DICOMs convertidos em PNG")
 
@@ -415,13 +483,46 @@ def ImportaFatiasDef():
 
     bpy.ops.transform.mirror(orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
 
-    # Adiciona Array
+    # Corrige rotacao
+    bpy.ops.transform.rotate(value=3.14159, orient_axis='Z', orient_type='VIEW', orient_matrix=((-1, 0, 0), (0, -1, 0), (-0, 0, -1)), orient_matrix_type='VIEW', mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='MEDIAN')
+
     bpy.ops.object.modifier_add(type='ARRAY')
     bpy.context.object.modifiers["Array"].use_constant_offset = True
     bpy.context.object.modifiers["Array"].use_relative_offset = False
     bpy.context.object.modifiers["Array"].constant_offset_displace[2] = 0.1
     bpy.context.object.modifiers["Array"].count = 4
     bpy.context.object.modifiers["Array"].show_viewport = False
+
+    # Cria booleana
+
+    bpy.context.object.name = "VOXEL"
+    bpy.context.object.name = "VOXEL"
+
+    VoxelDimensoes = bpy.data.objects['VOXEL'].dimensions
+
+    VoxelLoc = bpy.data.objects['VOXEL'].location
+
+    bpy.ops.mesh.primitive_cube_add(size=2, view_align=False, enter_editmode=False, location=(-24.6565, -42.9511, 16.0004))
+
+    bpy.context.object.name = "VOXEL_Boolean"
+    bpy.context.object.name = "VOXEL_Boolean"
+
+    bpy.data.objects['VOXEL_Boolean'].dimensions = VoxelDimensoes * 1.01
+    bpy.data.objects['VOXEL_Boolean'].location = VoxelLoc
+
+    bpy.context.object.display_type = 'WIRE'
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects['VOXEL'].select_set(True)
+    bpy.context.view_layer.objects.active = bpy.data.objects['VOXEL']
+
+    bpy.ops.object.modifier_add(type='BOOLEAN')
+    bpy.context.object.modifiers["Boolean"].operation = 'INTERSECT'
+    bpy.context.object.modifiers["Boolean"].object = bpy.data.objects["VOXEL_Boolean"]
+
+
 
     # Renderizador
     bpy.context.scene.eevee.use_sss = False
@@ -469,7 +570,7 @@ class ImportaFatias(bpy.types.Operator):
     bl_label = "Importa fatias de tomografia DICOM"
 
     def execute(self, context):
-       bpy.ops.object.corrige_dicom()
+       #bpy.ops.object.corrige_dicom()
        ImportaFatiasDef()
        return {'FINISHED'}
 
@@ -539,7 +640,66 @@ def ExportaSeqTomoDef(self, context):
         subprocess.call('cd '+IMGDir+' && mkdir GREY && for i in *.png; do convert $i -type Grayscale -depth 8 GREY/$i; done', shell=True)
         print("PNGs GERADOS!!!")
 
-        subprocess.call('python ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -i '+IMGDir+'/GREY/ -o '+DirDcmExp+' -s '+PixelSpacingX+' '+PixelSpacingY+' '+SliceThickness+' -t png', shell=True)
+        with open("/etc/issue") as f:
+         Versao = str(f.read().lower().split()[1])
+
+        if Versao == "18.04":
+
+            subprocess.call('python ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -i '+IMGDir+'/GREY/ -o '+DirDcmExp+' -s '+PixelSpacingX+' '+PixelSpacingY+' '+SliceThickness+' -t png', shell=True)
+        print("DICOM BASE GERADO!!!")
+
+        if Versao == "20.04":
+
+            subprocess.call('python3 ~/Programs/OrtogOnBlender/Img2Dcm2004/img2dcm.py -i '+IMGDir+'/GREY/ -o '+DirDcmExp+' -s '+PixelSpacingX+' '+PixelSpacingY+' '+SliceThickness+' -t png', shell=True)
+
+            #print("Entrando....")
+            #subprocess.call('cd '+IMGDir+'/GREY/ && for i in *.png; do convert -quality 100 $i ${i%.png}.jpg; done && for i in *.jpg; do img2dcm $i ${i%.jpg}.dcm; done && mv *.dcm '+DirDcmExp, shell=True)
+            #print("Feito")
+
+            ListaArquivos = sorted(os.listdir(DirDcmExp))
+
+            os.chdir(DirDcmExp)
+
+            for fatia in range(len(ListaArquivos)):
+                ds = dicom.dcmread(str(ListaArquivos[fatia]), force=True)
+                ds.SeriesNumber = "1"
+                ds.AccessionNumber = "1"
+                ds.Modality = "CT"
+                #ds.ImagePositionPatient = "0\\0\\"+str((fatia)*float(SliceThickness)) # Valor do SliceThickness
+                ds.PatientID = "OrtogOnBlender"
+                ds.InstanceNumber = str(int(fatia)-1)
+                ds.SliceThickness = SliceThickness
+                ds.SliceLocation = str((fatia)*float(SliceThickness))
+                ds.PixelSpacing = PixelSpacingX+"\\"+PixelSpacingY
+                ds.StudyID = "TESTEID"
+                ds.PatientName = "Teste"
+                ds.Rows = int(float(DimPixelX))
+                ds.Columns = int(float(DimPixelY))
+                ds.save_as(str(ListaArquivos[fatia]))
+
+                scn.my_tool.path = DirDcmExp
+                print("DirDcmExp:", DirDcmExp)
+
+        scn.my_tool.path = DirDcmExp+"/"
+
+        bpy.ops.object.corrige_dicom()
+
+
+        # Corrige Raw
+        tmpdirTomo2 = tempfile.mkdtemp()
+
+        if platform.system() == "Linux" or platform.system() == "Darwin":
+            subprocess.call('for i in *; do gdcmconv -w -i $i -o '+tmpdirTomo2+'/$i; done', shell=True)
+            print("Tomografia corrigida!!!")
+
+        if platform.system() == "Windows":
+            subprocess.call('for %f in (*) do C:\OrtogOnBlender\GDCM\gdcmconv -w -i %f -o '+tmpdirTomo2+'/%f', shell=True)
+            print("Tomografia corrigida!!!")
+
+        scn.my_tool.path = tmpdirTomo2+"/"
+        print("tmpdirTomo2:", tmpdirTomo2)
+
+#            subprocess.call('python2 ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -i '+IMGDir+'/GREY/ -o '+DirDcmExp+' -s '+PixelSpacingX+' '+PixelSpacingY+' '+SliceThickness+' -t png', shell=True)
         print("DICOM BASE GERADO!!!")
 
 #        ListaArquivos = sorted(os.listdir(DirDcmExp))
@@ -554,7 +714,7 @@ def ExportaSeqTomoDef(self, context):
 #            ds.save_as(ListaArquivos[fatia])
 #        print("LOOP FINALIZADO")
 
-        scn.my_tool.path = DirDcmExp+"/"
+
 
 
     if platform.system() == "Darwin":
@@ -563,7 +723,6 @@ def ExportaSeqTomoDef(self, context):
 # Converte slices em PNGs e depois o PNGs em JPGs monocromaticos
         subprocess.call('cd '+IMGDir+' && mkdir GREY && for i in *.png; do convert $i -type Grayscale -depth 8 -quality 100 GREY/${i%.png}.jpg; done', shell=True)
         print("JPEGs GERADOS!!!")
-
 
         subprocess.call('cd '+IMGDir+'/GREY/ && for i in *.jpg; do img2dcm $i ${i%.jpg}.dcm; done && rm *.jpg', shell=True)
 
@@ -579,7 +738,7 @@ def ExportaSeqTomoDef(self, context):
             ds.Modality = "CT"
             ds.ImagePositionPatient = "0\\0\\"+str((fatia)*float(SliceThickness)) # Valor do SliceThickness
             ds.PatientID = "OrtogOnBlender"
-            ds.InstanceNumber = str(int(fatia)-1)
+            #ds.InstanceNumber = str(int(fatia)-1)
             ds.SliceThickness = SliceThickness
             ds.PixelSpacing = PixelSpacingX+"\\"+PixelSpacingY
             ds.StudyID = "TESTEID"
@@ -646,7 +805,9 @@ def ExportaSeqTomoDef(self, context):
 
 # Ajusta com o dicomtodicom e corrige os pontos que dao erro na importacao
 
+
         bpy.ops.object.corrige_dicom()
+
 
         ListaArquivos = sorted(os.listdir(DirGrayDcm+"/FIXED/"))
 
