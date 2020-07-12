@@ -258,7 +258,7 @@ def ImportaFatiasDef():
     EscalaY = DimensaoLateralY * ColumnsPixels
 
     #Renderização
-    bpy.context.scene.eevee.use_gtao = True
+    #bpy.context.scene.eevee.use_gtao = True
     bpy.context.scene.eevee.gtao_distance = 8
     bpy.context.scene.eevee.use_gtao_bent_normals = False
     # bpy.context.scene.eevee.use_bloom = True # NÃO FICA BOM!
@@ -527,7 +527,7 @@ def ImportaFatiasDef():
 
     bpy.context.scene.eevee.gtao_distance = 30
     bpy.context.scene.eevee.gtao_factor = 2
-    bpy.context.scene.eevee.use_gtao_bounce = True
+    #bpy.context.scene.eevee.use_gtao_bounce = True
 
 #    bpy.data.node_groups["Shader Nodetree"].nodes["Background"].inputs[0].default_value = (0.983241, 0.914842, 1, 1)
 

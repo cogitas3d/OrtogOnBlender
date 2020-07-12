@@ -334,7 +334,11 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
     #        row.prop(system, "gl_clip_alpha", slider=True)
 
             row = layout.row()
-            row.label(text="Shader/Material:")
+            row.label(text="View/Shader/Material:")
+
+            scene = context.scene
+            props = scene.eevee
+            self.layout.prop(props, "use_gtao", text="Ambient Occlusion")
 
             row = layout.row()
             row.operator("object.voxelshader_osso", text="Bone", icon="NODE_MATERIAL")
