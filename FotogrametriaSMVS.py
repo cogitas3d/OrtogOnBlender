@@ -5,6 +5,8 @@ from os.path import expanduser
 import shutil
 import tempfile
 import bmesh
+from os import listdir
+from os.path import isfile, join
 
 from .FerrImgTomo import *
 
@@ -29,6 +31,9 @@ def GeraModeloFotoSMVSDef(self, context):
 #    subprocess.call(['rm /tmp/DIRETORIO_FOTOS.txt'],  shell=True)
 
     homeall = expanduser("~")
+
+
+    # Inicia os trabalhos
 
     if scn.my_tool.path_photo == "":
         ERROTermFoto()

@@ -30,7 +30,7 @@ def ExtraiDadosTomo():
         print("Tomografia corrigida!!!")
 
     if platform.system() == "Windows":
-        subprocess.call('for %f in (*) do C:\OrtogOnBlender\GDCM\gdcmconv -w -i %f -o '+tmpdirTomo2+'/%f', shell=True)
+        subprocess.call('for %f in (*) do C:\OrtogOnBlender\GDCM\\bin\gdcmconv -w -i %f -o '+tmpdirTomo2+'/%f', shell=True)
         print("Tomografia corrigida!!!")
 
     scn.my_tool.path = tmpdirTomo2+"/"
@@ -51,8 +51,6 @@ def ExtraiDadosTomo():
 
     if platform.system() == "Windows":
         ds = dicom.dcmread(DiretorioDCM+"\\"+ListaArquivos[0], force = True) # Diretório e arquivo concatenados
-
-
 
 
     if platform.system() == "Linux" or platform.system() == "Darwin":
@@ -439,10 +437,10 @@ def ImportaFatiasDef():
         #bpy.context.object.active_material.blend_method = 'CLIP'
         bpy.context.object.active_material.blend_method = 'HASHED' # Para a textura
 
-        if platform.system() == "Windows":
+        if platform.system() == "Windows" or platform.system() == "Darwin":
             bpy.context.object.active_material.transparent_shadow_method = 'HASHED'
 
-        if platform.system() == "Linux" or platform.system() == "Darwin":
+        if platform.system() == "Linux":
             bpy.context.object.active_material.shadow_method = 'HASHED'
 
 
@@ -693,7 +691,7 @@ def ExportaSeqTomoDef(self, context):
             print("Tomografia corrigida!!!")
 
         if platform.system() == "Windows":
-            subprocess.call('for %f in (*) do C:\OrtogOnBlender\GDCM\gdcmconv -w -i %f -o '+tmpdirTomo2+'/%f', shell=True)
+            subprocess.call('for %f in (*) do C:\OrtogOnBlender\GDCM\\bin\gdcmconv -w -i %f -o '+tmpdirTomo2+'/%f', shell=True)
             print("Tomografia corrigida!!!")
 
         scn.my_tool.path = tmpdirTomo2+"/"

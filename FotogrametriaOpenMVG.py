@@ -71,7 +71,6 @@ def GeraModeloFotoDef(self, context):
 
     scn = context.scene
 
-
     #CRIA OU SETA DIRETÓRIO TEMPORÁRIO
 #    if platform.system() == "Linux":
     tmpdir = tempfile.mkdtemp()
@@ -83,14 +82,59 @@ def GeraModeloFotoDef(self, context):
 
     homeall = expanduser("~")
 
-	# TESTA ARQUIVOS
     mypath = scn.my_tool.path_photo
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
     FotoTeste = onlyfiles[1]
+    print("Listando arquivos...")
 
+    Testajpg = ".jpg" in FotoTeste
     TestaHEIC = ".HEIC" in FotoTeste
+    Testaheic = ".heic" in FotoTeste
+    Testajpeg = ".jpeg" in FotoTeste
+    TestaJPEG = ".JPEG" in FotoTeste
 
-    if TestaHEIC == True:
+
+    # Copia arquivos tmp
+
+    if Testajpg == True or TestaHEIC == True or Testaheic == True or Testajpeg == True or TestaJPEG == True:
+
+        tmpFotos = tempfile.mkdtemp()
+
+
+        print("COPIANDO ARQUIOS...")
+        print("tmpFotos:", tmpFotos)
+
+        os.chdir(scn.my_tool.path_photo)
+
+        if platform.system() == "Linux" or platform.system() == "Darwin":
+            subprocess.call('cp * '+tmpFotos, shell=True)
+            scn.my_tool.path_photo = tmpFotos+"/"
+
+        if platform.system() == "Windows":
+            subprocess.call('copy *.* '+tmpFotos, shell=True)
+            scn.my_tool.path_photo = tmpFotos+"\\"
+
+        os.chdir(scn.my_tool.path_photo)
+
+    else:
+        print("Algo deu errado com a cópia dos arquivos...")
+
+
+
+	# TESTA ARQUIVOS
+
+    mypath = scn.my_tool.path_photo # Novamente para atualizar
+    onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+    FotoTeste = onlyfiles[1]
+    print("Listando arquivos...")
+
+    Testajpg = ".jpg" in FotoTeste
+    TestaHEIC = ".HEIC" in FotoTeste
+    Testaheic = ".heic" in FotoTeste
+    Testajpeg = ".jpeg" in FotoTeste
+    TestaJPEG = ".JPEG" in FotoTeste
+
+    if TestaHEIC == True or Testaheic == True:
         if platform.system() == "Linux":
             subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && for i in *; do heif-convert $i $i.jpg; done && mv *.jpg '+tmpdir+'/JPG/', shell=True)
             scn.my_tool.path_photo = tmpdir+'/JPG/'
@@ -99,7 +143,6 @@ def GeraModeloFotoDef(self, context):
             subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && mogrify -format jpg *.HEIC && mv *.jpg '+tmpdir+'/JPG/', shell=True)
             scn.my_tool.path_photo = tmpdir+'/JPG/'
 
-    Testajpeg = ".jpeg" in FotoTeste
 
     if Testajpeg == True:
         if platform.system() == "Linux" or platform.system() == "Darwin":
@@ -112,8 +155,6 @@ def GeraModeloFotoDef(self, context):
             scn.my_tool.path_photo = tmpdir+'\JPG\\' # Se não colocar as duas barras não funciona!
 
 
-    TestaJPEG = ".JPEG" in FotoTeste
-
     if TestaJPEG == True:
         if platform.system() == "Linux" or platform.system() == "Darwin":
             subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && for i in *; do cp $i $i.jpg; done && mv *.jpg '+tmpdir+'/JPG/', shell=True)
@@ -124,87 +165,90 @@ def GeraModeloFotoDef(self, context):
             subprocess.call('mkdir '+tmpdir+'\JPG & cd '+mypath+' & for %f in (*) do copy %f %f.jpg & move *.jpg '+tmpdir+'\JPG', shell=True)
             scn.my_tool.path_photo = tmpdir+'\JPG\\' # Se não colocar as duas barras não funciona!
 
-    # REDUZ FOTOS
+    # REDUZ FOTOS ------------------------------------------------------------
 
-    print("REDUZ FOTOS")
-    print("bpy.context.scene.my_tool.path_photo", bpy.context.scene.my_tool.path_photo)
-
-    tmpdirFotos = tempfile.mkdtemp()
-
-    Origem = bpy.context.scene.my_tool.path_photo
-
-    # Copia imagens para temporário
-    ListaImagens = sorted(os.listdir(Origem))
-
-    ImagContador = 0
-
-    for ImagemAtual in ListaImagens:
-        shutil.copyfile(Origem+ImagemAtual, tmpdirFotos+"/"+str(ImagContador)+".jpg")
-        ImagContador += 1
+    if bpy.context.scene.my_tool.imagem_bool == True:
 
 
-        print("Copiando:", Origem+ImagemAtual, "para:", tmpdirFotos+"/"+str(ImagContador)+".jpg")
+        print("REDUZ FOTOS")
+        print("bpy.context.scene.my_tool.path_photo", bpy.context.scene.my_tool.path_photo)
 
-    bpy.context.scene.my_tool.path_photo = Origem
+        tmpdirFotos = tempfile.mkdtemp()
 
-    # Reduz imagens
-    ListaArquivos = sorted(os.listdir(tmpdirFotos))
+        Origem = bpy.context.scene.my_tool.path_photo
 
-#    print("ORIGEM:", Origem)
+        # Copia imagens para temporário
+        ListaImagens = sorted(os.listdir(Origem))
 
-    print("FOOOOOOOOOOOOOOOOI")
+        ImagContador = 0
 
-    tmpdirIMagemgick = tempfile.mkdtemp()
-
-
-    for ArquivoAtual in ListaArquivos:
-
-        print("Reduzindo",ArquivoAtual)
-
-        bpy.ops.image.open(filepath=tmpdirFotos+ArquivoAtual, directory=tmpdirFotos, files=[{"name":ArquivoAtual, "name":ArquivoAtual}], relative_path=False, show_multiview=False)
-
-        ImgDim0 = bpy.data.images[ArquivoAtual].size[0]
-        ImgDim1 = bpy.data.images[ArquivoAtual].size[1]
-
-        LadoMaior = max(ImgDim0, ImgDim1)
+        for ImagemAtual in ListaImagens:
+            shutil.copyfile(Origem+ImagemAtual, tmpdirFotos+"/"+str(ImagContador)+".jpg")
+            ImagContador += 1
 
 
-        CpuNum = multiprocessing.cpu_count()
+            print("Copiando:", Origem+ImagemAtual, "para:", tmpdirFotos+"/"+str(ImagContador)+".jpg")
 
-        if CpuNum >= 8:
-            FatorPixel = 2536
+        bpy.context.scene.my_tool.path_photo = Origem
 
-        if CpuNum == 6:
-            FatorPixel = 2536
+        # Reduz imagens
+        ListaArquivos = sorted(os.listdir(tmpdirFotos))
 
-        if CpuNum == 4:
-            FatorPixel = 2536
+    #    print("ORIGEM:", Origem)
 
-        if CpuNum == 2:
-            FatorPixel = 2200
+        print("FOOOOOOOOOOOOOOOOI")
 
-        if CpuNum == 1:
-            FatorPixel = 2200
-
-        if LadoMaior > FatorPixel:
-            print("Maior que "+str(FatorPixel)+"!")
-            FatorDivisao = LadoMaior/FatorPixel
-#            bpy.data.images[ArquivoAtual].scale( int(ImgDim0/FatorDivisao), int(ImgDim1/FatorDivisao) )
-
-            if platform.system() == "Linux" or platform.system() == "Darwin":
-                    subprocess.call('convert -resize '+str(100/FatorDivisao)+'% '+tmpdirFotos+"/"+ArquivoAtual+' '+tmpdirIMagemgick+"/"+ArquivoAtual, shell=True)
-
-        #bpy.data.images[ArquivoAtual].save()
-
-            bpy.context.scene.my_tool.path_photo = tmpdirIMagemgick+"/"
+        tmpdirIMagemgick = tempfile.mkdtemp()
 
 
-            if platform.system() == "Windows":
-                    subprocess.call('C:\OrtogOnBlender\ImageMagick\convert -resize '+str(100/FatorDivisao)+'% '+tmpdirFotos+'\\'+ArquivoAtual+' '+tmpdirIMagemgick+'\\'+ArquivoAtual, shell=True) # O convert zoa os dados do EXIF no Windows!
+        for ArquivoAtual in ListaArquivos:
 
-        #bpy.data.images[ArquivoAtual].save()
+            print("Reduzindo",ArquivoAtual)
 
-            bpy.context.scene.my_tool.path_photo = tmpdirIMagemgick+"/"
+            bpy.ops.image.open(filepath=tmpdirFotos+ArquivoAtual, directory=tmpdirFotos, files=[{"name":ArquivoAtual, "name":ArquivoAtual}], relative_path=False, show_multiview=False)
+
+            ImgDim0 = bpy.data.images[ArquivoAtual].size[0]
+            ImgDim1 = bpy.data.images[ArquivoAtual].size[1]
+
+            LadoMaior = max(ImgDim0, ImgDim1)
+
+
+            CpuNum = multiprocessing.cpu_count()
+
+            if CpuNum >= 8:
+                FatorPixel = 2536
+
+            if CpuNum == 6:
+                FatorPixel = 2536
+
+            if CpuNum == 4:
+                FatorPixel = 2536
+
+            if CpuNum == 2:
+                FatorPixel = 2200
+
+            if CpuNum == 1:
+                FatorPixel = 2200
+
+            if LadoMaior > FatorPixel:
+                print("Maior que "+str(FatorPixel)+"!")
+                FatorDivisao = LadoMaior/FatorPixel
+    #            bpy.data.images[ArquivoAtual].scale( int(ImgDim0/FatorDivisao), int(ImgDim1/FatorDivisao) )
+
+                if platform.system() == "Linux" or platform.system() == "Darwin":
+                        subprocess.call('convert -resize '+str(100/FatorDivisao)+'% '+tmpdirFotos+"/"+ArquivoAtual+' '+tmpdirIMagemgick+"/"+ArquivoAtual, shell=True)
+
+            #bpy.data.images[ArquivoAtual].save()
+
+                bpy.context.scene.my_tool.path_photo = tmpdirIMagemgick+"/"
+
+
+                if platform.system() == "Windows":
+                        subprocess.call('C:\OrtogOnBlender\ImageMagick\convert -resize '+str(100/FatorDivisao)+'% '+tmpdirFotos+'\\'+ArquivoAtual+' '+tmpdirIMagemgick+'\\'+ArquivoAtual, shell=True) # O convert zoa os dados do EXIF no Windows!
+
+            #bpy.data.images[ArquivoAtual].save()
+
+                bpy.context.scene.my_tool.path_photo = tmpdirIMagemgick+"/"
 
 
     # TESTA CAMERA
@@ -249,60 +293,62 @@ def GeraModeloFotoDef(self, context):
 
             print("Resolvido!")
 
-        with open(mypath + FotoTeste, 'rb') as f_jpg:
-            tags = exifread.process_file(f_jpg, details=True)
-            print (tags['Image Model'])
-            CamModel = str(tags['Image Model'])+";"
+        try:
+            with open(mypath + FotoTeste, 'rb') as f_jpg:
+                tags = exifread.process_file(f_jpg, details=True)
+                print (tags['Image Model'])
+                CamModel = str(tags['Image Model'])+";"
 
 
-        # TESTA MODELO CAMERA
+            # TESTA MODELO CAMERA
 
-        if platform.system() == "Linux":
-            camDatabase = homeall+"/Programs/OrtogOnBlender/openMVG/sensor_width_camera_database.txt"
+            if platform.system() == "Linux":
+                camDatabase = homeall+"/Programs/OrtogOnBlender/openMVG/sensor_width_camera_database.txt"
 
-        if platform.system() == "Darwin":
-            camDatabase = homeall+"/Programs/OrtogOnBlender/openMVGMACelcap/sensor_width_camera_database.txt"
-
-
-        if platform.system() == "Windows":
-            camDatabase = "C:/OrtogOnBlender/openMVGWIN/sensor_width_camera_database.txt"
+            if platform.system() == "Darwin":
+                camDatabase = homeall+"/Programs/OrtogOnBlender/openMVGMACelcap/sensor_width_camera_database.txt"
 
 
+            if platform.system() == "Windows":
+                camDatabase = "C:/OrtogOnBlender/openMVGWIN/sensor_width_camera_database.txt"
 
-        infile = open(camDatabase, "r")
 
-        numlines = 0
-        found = 0
-        for line in infile:
-            numlines += 1
-            while 1:
-                str_found_at = line.find(CamModel)
-                if str_found_at == -1:
-                    # string not found in line ...
-                    # go to next (ie break out of the while loop)
-                    break
-                else:
-                    # string found in line
-                    found += 1
-                    # more than once in this line?
-                    # lets strip string and anything prior from line and
-                    # then go through the testing loop again
-                    line = line[str_found_at + len(CamModel):]
-        infile.close()
 
-        print(CamModel, "was found", found, "times in", numlines, "lines")
+            infile = open(camDatabase, "r")
 
-        if found == 0:
-            print("Nao apareceu!")
+            numlines = 0
+            found = 0
+            for line in infile:
+                numlines += 1
+                while 1:
+                    str_found_at = line.find(CamModel)
+                    if str_found_at == -1:
+                        # string not found in line ...
+                        # go to next (ie break out of the while loop)
+                        break
+                    else:
+                        # string found in line
+                        found += 1
+                        # more than once in this line?
+                        # lets strip string and anything prior from line and
+                        # then go through the testing loop again
+                        line = line[str_found_at + len(CamModel):]
+            infile.close()
 
-            with open(camDatabase, 'a') as file:
-                inputCam = CamModel, " 3.80"
-                print(inputCam)
-     #           if platform.system() == "Darwin" or platform.system() == "Windows":
-     #              file.write("\n")
-                file.write("\n")
-                file.writelines(inputCam) # Escreve o modelo de camera no arquivo
+            print(CamModel, "was found", found, "times in", numlines, "lines")
 
+            if found == 0:
+                print("Nao apareceu!")
+
+                with open(camDatabase, 'a') as file:
+                    inputCam = CamModel, " 3.80"
+                    print(inputCam)
+         #           if platform.system() == "Darwin" or platform.system() == "Windows":
+         #              file.write("\n")
+                    file.write("\n")
+                    file.writelines(inputCam) # Escreve o modelo de camera no arquivo
+        except:
+            print("Algum problema com o Modelo de Câmera!")
 
 
         # GERA FOTOGRAMETRIA

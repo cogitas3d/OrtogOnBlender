@@ -58,6 +58,7 @@ from bpy_extras.object_utils import AddObjectHelper, object_data_add
 
 from bpy.props import (StringProperty,
                        PointerProperty,
+                       BoolProperty,
                        )
 from bpy.types import (Panel,
                        Operator,
@@ -65,7 +66,8 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
-# VERSION = "20200309a"
+# Comandos Booleanos
+
 
 # ATUALIZA SCRIPT
 class ORTOG_PT_AtualizaAddonSec(bpy.types.Panel):
@@ -131,8 +133,6 @@ class ORTOG_PT_NomePaciente(bpy.types.Panel):
 
 
 
-# IMPORTA TOMO
-
 class ORTOG_UI_Local(PropertyGroup):
 
     path = StringProperty(
@@ -176,6 +176,13 @@ class ORTOG_UI_Local(PropertyGroup):
         description="Select File",
         maxlen=1024,
         subtype='FILE_PATH')
+
+    imagem_bool = BoolProperty(
+        name="",
+        description="Decrease picture size!",
+        default = True
+    )
+
 
 # IMPORTA TOMO MOLDES
 
@@ -1007,6 +1014,10 @@ class ORTOG_PT_Fotogrametria(bpy.types.Panel):
             row = layout.row()
             col = layout.column(align=True)
             col.prop(scn.my_tool, "path_photo", text="")
+
+            #self.layout.prop(context.scene, "use_gravity", text="Decrease picture size!")
+            #self.layout.prop(scn.my_tool, "imagem_bool", text="")
+            col.prop(scn.my_tool, "imagem_bool", text="Decrease picture size!")
 
             col = self.layout.column(align = True)
             col.alignment = 'RIGHT'
