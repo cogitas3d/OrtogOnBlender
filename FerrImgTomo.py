@@ -7,8 +7,8 @@ import platform
 from os.path import expanduser
 import platform
 
-if platform.system() == "Linux":
-    import SimpleITK as sitk
+#if platform.system() == "Linux":
+import SimpleITK as sitk
 
 # EXTRAI DADOS DA TOMOGRAFIA
 def ExtraiDadosTomo():
@@ -155,20 +155,20 @@ def ExtraiDadosTomo():
 
 def ConverteDCMparaPNG():
 
-    if platform.system() == "Linux":
+    #if platform.system() == "Linux":
 
-        os.chdir(DiretorioDCM)
-        ListaArquivos = os.listdir(DiretorioDCM)
+    os.chdir(DiretorioDCM)
+    ListaArquivos = os.listdir(DiretorioDCM)
 
-        for ArquivoAtual in ListaArquivos:
-            img = sitk.ReadImage(ArquivoAtual)
-            # rescale intensity range from [-1000,1000] to [0,255]
-            img = sitk.IntensityWindowing(img, -1000, 1000, 0, 255)
-            # convert 16-bit pixels to 8-bit
-            img = sitk.Cast(img, sitk.sitkUInt8)
-            sitk.WriteImage(img, TmpDirPNG+"/"+ArquivoAtual+".png")
+    for ArquivoAtual in ListaArquivos:
+        img = sitk.ReadImage(ArquivoAtual)
+        # rescale intensity range from [-1000,1000] to [0,255]
+        img = sitk.IntensityWindowing(img, -1000, 1000, 0, 255)
+        # convert 16-bit pixels to 8-bit
+        img = sitk.Cast(img, sitk.sitkUInt8)
+        sitk.WriteImage(img, TmpDirPNG+"/"+ArquivoAtual+".png")
 
-        print("DICOMs convertidos em PNG")
+    print("DICOMs convertidos em PNG")
 
 # Oficial
 #        subprocess.call('cd '+DiretorioDCM+' && for i in *; do convert -verbose -auto-level $i "${i%.dcm}".png; done && mv *.png '+TmpDirPNG, shell=True)
@@ -179,7 +179,7 @@ def ConverteDCMparaPNG():
 # Alternativa
 #        subprocess.call('cd '+DiretorioDCM+' && for i in *; do mogrify -verbose -format png $i; done && mv *.png '+TmpDirPNG, shell=True)
 #        print("DICOMs convertidos em PNG")
-
+'''
     if platform.system() == "Darwin":
         subprocess.call('cd '+DiretorioDCM+' && for i in *; do magick $i -auto-level -verbose "${i%.dcm}".png; done && mv *.png '+TmpDirPNG, shell=True)
         print("DICOMs convertidos em PNG")
@@ -190,7 +190,7 @@ def ConverteDCMparaPNG():
 #        subprocess.call('cd '+DiretorioDCM+' & for %f in (*) do C:\OrtogOnBlender\ImageMagick\mogrify -verbose -format png %f & move *.png '+TmpDirPNG, shell=True)
 #        print("DICOMs convertidos em PNG")
 
-
+'''
 
 
 # Material
