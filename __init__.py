@@ -344,6 +344,9 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
             row.operator("object.voxelshader_osso", text="Bone", icon="NODE_MATERIAL")
 
             row = layout.row()
+            row.operator("object.voxelshader_musculo", text="Muscle", icon="NODE_MATERIAL")
+
+            row = layout.row()
             row.operator("object.voxelshader_pele", text="Skin", icon="NODE_MATERIAL")
 
             row = layout.row()

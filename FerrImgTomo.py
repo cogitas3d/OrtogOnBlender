@@ -928,6 +928,18 @@ def VoxelShaderDefaultDef():
         # Cor pele
         bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[1].position = 0.364313
 
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['RGB Curves'].inputs['Fac'].default_value = 0
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['RGB Curves'].inputs['Fac'].default_value = 0
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[0].position = 0
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[1].position = 0.364
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[2].position = 0.776
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[3].position = 1
+
     except:
         print("Problema com o material do voxel na cena, pode não conter!")
 
@@ -949,12 +961,25 @@ bpy.utils.register_class(VoxelShaderDefault)
 def VoxelShaderOssoDef():
 
     try:
-        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[0].position = 0.11
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[0].position = 0.55
 
-        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[1].position = 0.20
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[1].position = 1
 
         # Cor pele
         bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[1].position = 0.364313
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['RGB Curves'].inputs['Fac'].default_value = 0
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['RGB Curves'].inputs['Fac'].default_value = 0
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[0].position = 0
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[1].position = 0.364
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[2].position = 0.776
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[3].position = 1
 
     except:
         print("Problema com o material do voxel na cena, pode não conter!")
@@ -976,12 +1001,22 @@ bpy.utils.register_class(VoxelShaderOsso)
 def VoxelShaderPeleDef():
 
     try:
-        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[0].position = 0.0
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[0].position = 0.04
 
-        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[1].position = 0.20
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[1].position = 1
 
         # Cor pele
-        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[1].position = 0.071017
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[1].position = 0.08
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['RGB Curves'].inputs['Fac'].default_value = 0
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[0].position = 0
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[1].position = 0.364
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[2].position = 0.776
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[3].position = 1
 
     except:
         print("Problema com o material do voxel na cena, pode não conter!")
@@ -998,3 +1033,40 @@ class VoxelShaderPele(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(VoxelShaderPele)
+
+
+def VoxelShaderMusculoDef():
+
+    try:
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[0].position = 0.444
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.004'].color_ramp.elements[1].position = 1
+
+        # Cor pele
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[1].position = 0.08
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['RGB Curves'].inputs['Fac'].default_value = 1
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[0].position = 0
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[1].position = 0.191
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[2].position = 0.303
+
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[3].position = 1
+
+    except:
+        print("Problema com o material do voxel na cena, pode não conter!")
+
+
+class VoxelShaderMusculo(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.voxelshader_musculo"
+    bl_label = "Voxel Shader Muscle"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        VoxelShaderMusculoDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(VoxelShaderMusculo)
