@@ -1049,9 +1049,9 @@ def VoxelShaderMusculoDef():
 
         bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[0].position = 0
 
-        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[1].position = 0.191
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[1].position = 0.108
 
-        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[2].position = 0.303
+        bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[2].position = 0.286
 
         bpy.data.materials.data.node_groups['GroupVoxelShader'].nodes['ColorRamp.003'].color_ramp.elements[3].position = 1
 
