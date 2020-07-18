@@ -190,6 +190,7 @@ class ENUM_VALUES_CTSCAN:
     MANUAL = 'Manual'
     DEFAULT = 'Default'
     VOXEL = 'Voxel'
+    VOXEL_FULL = 'Voxel Full'
     AUTO = 'Auto'
     CUSTOM = 'Custom'
     AUTOEXP = 'Auto EXP.!!!'
@@ -304,7 +305,6 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
             row.alignment = 'CENTER'
             row.operator("object.gera_dir_nome_paciente_tomo_auto", text="SAVE!", icon="FILE_TICK")
 
-
         if my_enum_ct == ENUM_VALUES_CTSCAN.VOXEL:
 
             row = layout.row()
@@ -327,6 +327,61 @@ class ORTOG_PT_CTScanSelect(bpy.types.Panel):
 
             row = layout.row()
             row.operator("object.importa_fatias_dcm", text="Import DICOM Slices", icon="ALEMBIC")
+
+    #        row = layout.row()
+    #        prefs = context.preferences
+    #        system = prefs.system
+    #        row.prop(system, "gl_clip_alpha", slider=True)
+
+            row = layout.row()
+            row.label(text="View/Shader/Material:")
+
+            scene = context.scene
+            props = scene.eevee
+            self.layout.prop(props, "use_gtao", text="Ambient Occlusion")
+
+            row = layout.row()
+            row.operator("object.voxelshader_osso", text="Bone", icon="NODE_MATERIAL")
+
+            row = layout.row()
+            row.operator("object.voxelshader_musculo", text="Muscle", icon="NODE_MATERIAL")
+
+            row = layout.row()
+            row.operator("object.voxelshader_pele", text="Skin", icon="NODE_MATERIAL")
+
+            row = layout.row()
+            row.operator("object.voxelshader_default", text="Default", icon="NODE_MATERIAL")
+
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.scale_y=1.5
+            row.alignment = 'CENTER'
+            row.operator("object.gera_dir_nome_paciente_voxel", text="SAVE!", icon="FILE_TICK")
+
+
+        if my_enum_ct == ENUM_VALUES_CTSCAN.VOXEL_FULL:
+
+            row = layout.row()
+            row.label(text="CT-Scan Preparing:")
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path", text="")
+            row = layout.row()
+            row.operator("object.ajusta_tomo", text="Organize", icon="NODETREE")
+
+
+            row = layout.row()
+            row.label(text="CT-Scan Voxel Importing:")
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path", text="")
+    #        layout.prop(rd, "filepath", text="")
+
+            if platform.system() == "Windows":
+                row = layout.row()
+                row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
+
+            row = layout.row()
+            row.operator("object.importa_fatias_axial_coronal_sagital", text="Import DICOM Slices", icon="ALEMBIC")
 
     #        row = layout.row()
     #        prefs = context.preferences
@@ -985,7 +1040,7 @@ class ENUM_VALUES_PHOTOGRAMMETRY:
     OPENMVG = 'OpenMVG+OpenMVS'
     SMVS = 'SMVS+MeshLab'
     MESHROOM = 'Meshroom'
-    OPENMVGWIN = 'OpenMVG on Windows'
+    OPENMVGWIN = 'OpenMVG Linux on Win'
 
 
 class ORTOG_PT_Fotogrametria(bpy.types.Panel):
@@ -1075,6 +1130,8 @@ class ORTOG_PT_Fotogrametria(bpy.types.Panel):
             col.alignment = 'RIGHT'
             col.prop(context.scene, "d_factor")
             col.prop(context.scene, "smooth_factor")
+
+            col.prop(scn.my_tool, "imagem_bool", text="Decrease picture size!")
 
             if platform.system() == "Windows":
                 row = layout.row()
@@ -3147,7 +3204,7 @@ def register():
     bpy.types.Scene.my_enum_ct = bpy.props.EnumProperty(
         name="Select",
         description= "",
-        items=[(ENUM_VALUES_CTSCAN.MANUAL, "MANUAL", "Manual CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.DEFAULT, "DEFAULT", "Default CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.VOXEL, "VOXEL", "Voxel Data CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.AUTO, "AUTOMATIC", "Automatic CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.CUSTOM, "CUSTOM", "Customized CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.AUTOEXP, "AUTO EXP.!!!", "Manual CT-Scan Reconstruction")],)
+        items=[(ENUM_VALUES_CTSCAN.MANUAL, "MANUAL", "Manual CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.DEFAULT, "DEFAULT", "Default CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.VOXEL, "VOXEL", "Voxel Data CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.VOXEL_FULL, "VOXEL-FULL!", "Voxel Axial + Coronal + Sagital"), (ENUM_VALUES_CTSCAN.AUTO, "AUTOMATIC", "Automatic CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.CUSTOM, "CUSTOM", "Customized CT-Scan Reconstruction"), (ENUM_VALUES_CTSCAN.AUTOEXP, "AUTO EXP.!!!", "Manual CT-Scan Reconstruction")],)
     bpy.utils.register_class(GeraModelosTomo)
 #    bpy.utils.register_class(ORTOG_PT_CTScanFerrImg)
 #    bpy.utils.register_class(ORTOG_PT_CTScanRec)
@@ -3229,7 +3286,7 @@ def register():
     bpy.types.Scene.my_enum = bpy.props.EnumProperty(
         name="Select",
         description= "",
-        items=[(ENUM_VALUES_PHOTOGRAMMETRY.OPENMVG, "OpenMVG+OpenMVS", "Standard Photogrammetry"), (ENUM_VALUES_PHOTOGRAMMETRY.SMVS, "SMVS+MeshLab", "Alternative Photogrammetry I"), (ENUM_VALUES_PHOTOGRAMMETRY.MESHROOM, "Meshroom (AliceVision)", "Alternative Photogrammetry II"), (ENUM_VALUES_PHOTOGRAMMETRY.OPENMVGWIN, "OpenMVS on Windows", "Alternative Photogrammetry III")],)
+        items=[(ENUM_VALUES_PHOTOGRAMMETRY.OPENMVG, "OpenMVG+OpenMVS", "Standard Photogrammetry"), (ENUM_VALUES_PHOTOGRAMMETRY.SMVS, "SMVS+MeshLab", "Alternative Photogrammetry I"), (ENUM_VALUES_PHOTOGRAMMETRY.MESHROOM, "Meshroom (AliceVision)", "Alternative Photogrammetry II"), (ENUM_VALUES_PHOTOGRAMMETRY.OPENMVGWIN, "OpenMVS Linux on Win", "Alternative Photogrammetry III")],)
 
     bpy.utils.register_class(ORTOG_PT_Fotogrametria)
     bpy.utils.register_class(ORTOG_PT_AlinhaFace)

@@ -41,46 +41,14 @@ def ERROTermFoto():
      print(CRED + "Doesn't have photo path!" + CEND)
 '''
 
-# PREPARA CENA
+# Converte JPG
 
-def PreparaCenaFotogramDef(self, context):
-    try:
-        bpy.ops.object.select_all(action='SELECT')
+def ConverteHEICtoJPG():
 
-        objetos_selecionados = [ o for o in bpy.context.scene.objects if o.select_get() == True ]
-
-        for i in objetos_selecionados:
-            i.hide_viewport = True
-    except:
-        print("Cena já preparada.")
-
-class PreparaCenaFotogram(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.prepara_cena_fotogram"
-    bl_label = "Photogrammetry Scene Setup"
-
-    def execute(self, context):
-        PreparaCenaFotogramDef(self, context)
-        return {'FINISHED'}
-
-bpy.utils.register_class(PreparaCenaFotogram)
-
-# MODELOS
-
-def GeraModeloFotoDef(self, context):
-
+    context = bpy.context
     scn = context.scene
 
-    #CRIA OU SETA DIRETÓRIO TEMPORÁRIO
-#    if platform.system() == "Linux":
     tmpdir = tempfile.mkdtemp()
-#    else:
-#        tmpdir = tempfile.gettempdir()
-
-    dFactor = scn.d_factor
-    smoothFactor = scn.smooth_factor
-
-    homeall = expanduser("~")
 
     mypath = scn.my_tool.path_photo
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
@@ -118,7 +86,6 @@ def GeraModeloFotoDef(self, context):
 
     else:
         print("Algo deu errado com a cópia dos arquivos...")
-
 
 
 	# TESTA ARQUIVOS
@@ -164,6 +131,137 @@ def GeraModeloFotoDef(self, context):
 
             subprocess.call('mkdir '+tmpdir+'\JPG & cd '+mypath+' & for %f in (*) do copy %f %f.jpg & move *.jpg '+tmpdir+'\JPG', shell=True)
             scn.my_tool.path_photo = tmpdir+'\JPG\\' # Se não colocar as duas barras não funciona!
+
+
+# PREPARA CENA
+
+def PreparaCenaFotogramDef(self, context):
+    try:
+        bpy.ops.object.select_all(action='SELECT')
+
+        objetos_selecionados = [ o for o in bpy.context.scene.objects if o.select_get() == True ]
+
+        for i in objetos_selecionados:
+            i.hide_viewport = True
+    except:
+        print("Cena já preparada.")
+
+class PreparaCenaFotogram(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.prepara_cena_fotogram"
+    bl_label = "Photogrammetry Scene Setup"
+
+    def execute(self, context):
+        PreparaCenaFotogramDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(PreparaCenaFotogram)
+
+# MODELOS
+
+def GeraModeloFotoDef(self, context):
+
+    scn = context.scene
+
+    #CRIA OU SETA DIRETÓRIO TEMPORÁRIO
+#    if platform.system() == "Linux":
+    tmpdir = tempfile.mkdtemp()
+#    else:
+#        tmpdir = tempfile.gettempdir()
+
+    dFactor = scn.d_factor
+    smoothFactor = scn.smooth_factor
+
+    homeall = expanduser("~")
+
+    '''
+
+    mypath = scn.my_tool.path_photo
+    onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+    FotoTeste = onlyfiles[1]
+    print("Listando arquivos...")
+
+    Testajpg = ".jpg" in FotoTeste
+    TestaHEIC = ".HEIC" in FotoTeste
+    Testaheic = ".heic" in FotoTeste
+    Testajpeg = ".jpeg" in FotoTeste
+    TestaJPEG = ".JPEG" in FotoTeste
+
+
+    # Copia arquivos tmp
+
+    if Testajpg == True or TestaHEIC == True or Testaheic == True or Testajpeg == True or TestaJPEG == True:
+
+        tmpFotos = tempfile.mkdtemp()
+
+
+        print("COPIANDO ARQUIOS...")
+        print("tmpFotos:", tmpFotos)
+
+        os.chdir(scn.my_tool.path_photo)
+
+        if platform.system() == "Linux" or platform.system() == "Darwin":
+            subprocess.call('cp * '+tmpFotos, shell=True)
+            scn.my_tool.path_photo = tmpFotos+"/"
+
+        if platform.system() == "Windows":
+            subprocess.call('copy *.* '+tmpFotos, shell=True)
+            scn.my_tool.path_photo = tmpFotos+"\\"
+
+        os.chdir(scn.my_tool.path_photo)
+
+    else:
+        print("Algo deu errado com a cópia dos arquivos...")
+
+
+	# TESTA ARQUIVOS
+
+    mypath = scn.my_tool.path_photo # Novamente para atualizar
+    onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+    FotoTeste = onlyfiles[1]
+    print("Listando arquivos...")
+
+    Testajpg = ".jpg" in FotoTeste
+    TestaHEIC = ".HEIC" in FotoTeste
+    Testaheic = ".heic" in FotoTeste
+    Testajpeg = ".jpeg" in FotoTeste
+    TestaJPEG = ".JPEG" in FotoTeste
+
+    if TestaHEIC == True or Testaheic == True:
+        if platform.system() == "Linux":
+            subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && for i in *; do heif-convert $i $i.jpg; done && mv *.jpg '+tmpdir+'/JPG/', shell=True)
+            scn.my_tool.path_photo = tmpdir+'/JPG/'
+
+        if platform.system() == "Darwin":
+            subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && mogrify -format jpg *.HEIC && mv *.jpg '+tmpdir+'/JPG/', shell=True)
+            scn.my_tool.path_photo = tmpdir+'/JPG/'
+
+
+    if Testajpeg == True:
+        if platform.system() == "Linux" or platform.system() == "Darwin":
+            subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && for i in *; do cp $i $i.jpg; done && mv *.jpg '+tmpdir+'/JPG/', shell=True)
+            scn.my_tool.path_photo = tmpdir+'/JPG/'
+
+        if platform.system() == "Windows" :
+
+            subprocess.call('mkdir '+tmpdir+'\JPG & cd '+mypath+' & for %f in (*) do copy %f %f.jpg & move *.jpg '+tmpdir+'\JPG', shell=True)
+            scn.my_tool.path_photo = tmpdir+'\JPG\\' # Se não colocar as duas barras não funciona!
+
+
+    if TestaJPEG == True:
+        if platform.system() == "Linux" or platform.system() == "Darwin":
+            subprocess.call('mkdir '+tmpdir+'/JPG && cd '+mypath+' && for i in *; do cp $i $i.jpg; done && mv *.jpg '+tmpdir+'/JPG/', shell=True)
+            scn.my_tool.path_photo = tmpdir+'/JPG/'
+
+        if platform.system() == "Windows" :
+
+            subprocess.call('mkdir '+tmpdir+'\JPG & cd '+mypath+' & for %f in (*) do copy %f %f.jpg & move *.jpg '+tmpdir+'\JPG', shell=True)
+            scn.my_tool.path_photo = tmpdir+'\JPG\\' # Se não colocar as duas barras não funciona!
+
+
+    '''
+
+    ConverteHEICtoJPG()
 
     # REDUZ FOTOS ------------------------------------------------------------
 

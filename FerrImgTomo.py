@@ -566,6 +566,7 @@ class ImportaFatias(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.importa_fatias_dcm"
     bl_label = "Importa fatias de tomografia DICOM"
+    bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
        #bpy.ops.object.corrige_dicom()
@@ -573,6 +574,408 @@ class ImportaFatias(bpy.types.Operator):
        return {'FINISHED'}
 
 bpy.utils.register_class(ImportaFatias)
+
+def ImportaFatiasSimplesDef():
+
+    context = bpy.context
+#    obj = context.active_object
+    scn = context.scene
+
+    ExtraiDadosTomo()
+    ConverteDCMparaPNG()
+
+    #Diretorio = "/home/linux3dcs/prj/Estudos/Tomografia/TOMOGRAFIA_2_MENOR/imagens/"
+
+    ListaArquivos = sorted(os.listdir(TmpDirPNG))
+#    ListaArquivos = sorted(os.listdir(TmpDirPNG))
+
+
+    DistanciaZ = 0
+
+    EscalaX = DimensaoLateralX * RowsPixels
+    EscalaY = DimensaoLateralY * ColumnsPixels
+
+    # Importa node group
+
+    if platform.system() == "Linux":
+
+        dirScript = bpy.utils.user_resource('SCRIPTS')
+
+        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+#        section   = "\\Collection\\"
+#        object    = "SPLINT"
+        section   = "\\NodeTree\\"
+        object    = "GroupVoxelShader"
+
+    if platform.system() == "Darwin":
+
+        dirScript = bpy.utils.user_resource('SCRIPTS')
+
+        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+        section   = "\\NodeTree\\"
+        object    = "GroupVoxelShader"
+
+    if platform.system() == "Windows":
+
+        dirScript = 'C:/OrtogOnBlender/Blender280/2.80/scripts/'
+
+        blendfile = dirScript+"addons/OrtogOnBlender-master/objetos.blend"
+        section   = "\\NodeTree\\"
+        object    = "GroupVoxelShader"
+
+    filepath  = blendfile + section + object
+    directory = blendfile + section
+    filename  = object
+
+    bpy.ops.wm.append(
+        filepath=filepath,
+        filename=filename,
+        directory=directory)
+
+
+    # Importa fatias
+    for Arquivo in ListaArquivos:
+
+        bpy.ops.import_image.to_plane(files=[{"name":Arquivo, "name":Arquivo}], directory=TmpDirPNG)
+
+        bpy.ops.transform.translate(value=(0, 0, DistanciaZ), constraint_axis=(False, False, True), mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1, release_confirm=True)
+
+        bpy.ops.transform.resize(value=(EscalaX, EscalaY, 0), constraint_axis=(False, False, False), mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+        bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+
+        #bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+
+        for area in bpy.context.screen.areas:
+            if area.type == 'VIEW_3D':
+                for region in area.regions:
+                    if region.type == 'WINDOW':
+                        override = {'area': area, 'region': region, 'edit_object': bpy.context.edit_object}
+                        bpy.ops.view3d.view_all(override)
+
+        print(Arquivo)
+
+        DistanciaZ += EspacoSlices
+
+    # ATRIBUI MATERIAL
+
+        m = Material()
+        m.set_cycles()
+        # from chapter 1 of [DRM protected book, could not copy author/title]
+        m.make_material("mat_"+Arquivo)
+
+        image_path = TmpDirPNG+"/"+Arquivo
+
+        ImageTexture = m.makeNode('ShaderNodeTexImage', 'Image Texture')
+        ImageTexture.image = bpy.data.images.load(image_path)
+
+        bpy.data.materials["mat_"+Arquivo].node_tree.nodes['Image Texture'].color_space = "NONE" # Sozinho! Coloca como Non-Color Data
+
+
+        materialOutput = m.nodes['Material Output']
+
+        m.link(ImageTexture, 'Color', materialOutput, 'Surface')
+
+        # Faze ro link com o GROUP
+
+        node_tree = bpy.data.materials["mat_"+Arquivo].node_tree
+        # And a node group that you have in the file:
+        node_group_name = "GroupVoxelShader"
+
+
+        nodes = node_tree.nodes
+        links = node_tree.links
+
+        # Let's at least check if some image node and output node exists
+        # you might need a way to determine which ones to use if there are multiple
+        image_node = output_node = None
+        node_group_exists = False
+        for node in nodes:
+            if node.type == 'TEX_IMAGE':
+                image_node = node
+            elif node.type == 'OUTPUT_MATERIAL':
+                output_node = node
+            elif node.type == 'GROUP': # in case the script was used already
+                if node.node_tree.name == node_group_name:
+                    node_group_exists = True
+                    print('exists')
+                    group_node = node
+
+        if output_node and image_node:
+            if node_group_name in bpy.data.node_groups and not node_group_exists:
+                group_node=nodes.new("ShaderNodeGroup")
+                # Creating the group is not enough, we need to specify data(node tree) for it
+                group_node.node_tree = bpy.data.node_groups[node_group_name]
+                group_node.location = (0,0) #This is default anyway,  but in case you wish to move it
+
+            links.new(image_node.outputs[0], group_node.inputs[0])
+            links.new(group_node.outputs[0], output_node.inputs[0])
+
+
+        bpy.ops.object.material_slot_remove()
+        bpy.ops.object.material_slot_add()
+
+        bpy.data.objects[bpy.context.view_layer.objects.active.name].active_material = bpy.data.materials["mat_"+Arquivo]
+
+
+        #bpy.context.object.active_material.blend_method = 'BLEND' # Descobri sozinho!
+        #bpy.context.object.active_material.blend_method = 'CLIP'
+        bpy.context.object.active_material.blend_method = 'HASHED' # Para a textura
+
+        if platform.system() == "Windows" or platform.system() == "Darwin":
+            bpy.context.object.active_material.transparent_shadow_method = 'HASHED'
+
+        if platform.system() == "Linux":
+            bpy.context.object.active_material.shadow_method = 'HASHED'
+
+
+
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+
+        # ENVIA COLLECTION
+
+        ListaColl = []
+
+        for i in bpy.data.collections:
+            ListaColl.append(i.name)
+
+        if "CT_Scan Voxel" not in ListaColl:
+
+            obj = context.active_object
+            myCol = bpy.data.collections.new("CT_Scan Voxel")
+            bpy.context.scene.collection.children.link(myCol)
+            obj.instance_collection = myCol
+            bpy.ops.object.collection_link(collection='CT_Scan Voxel')
+            bpy.data.collections['Collection'].objects.unlink(obj)
+
+        else:
+            obj = context.active_object
+            bpy.ops.object.collection_link(collection='CT_Scan Voxel')
+            bpy.data.collections['Collection'].objects.unlink(obj)
+
+
+    # Agrupa e ajusta posição
+
+    bpy.ops.object.select_all(action='DESELECT')
+
+    for Arquivo in ListaArquivos:
+        bpy.data.objects[str(Arquivo).strip('.png')].select_set(True)
+        bpy.context.view_layer.objects.active = bpy.data.objects[str(Arquivo).strip('.png')]
+
+    bpy.ops.object.join()
+
+    bpy.ops.transform.mirror(orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+
+    # Corrige rotacao
+    bpy.ops.transform.rotate(value=3.14159, orient_axis='Z', orient_type='VIEW', orient_matrix=((-1, 0, 0), (0, -1, 0), (-0, 0, -1)), orient_matrix_type='VIEW', mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='MEDIAN')
+
+    bpy.ops.object.modifier_add(type='ARRAY')
+    bpy.context.object.modifiers["Array"].use_constant_offset = True
+    bpy.context.object.modifiers["Array"].use_relative_offset = False
+    bpy.context.object.modifiers["Array"].constant_offset_displace[2] = 0.1
+    bpy.context.object.modifiers["Array"].count = 4
+    bpy.context.object.modifiers["Array"].show_viewport = False
+
+    # Centraliza
+    for area in bpy.context.screen.areas:
+        if area.type == 'VIEW_3D':
+            for region in area.regions:
+                if region.type == 'WINDOW':
+                    override = {'area': area, 'region': region, 'edit_object': bpy.context.edit_object}
+                    bpy.ops.view3d.view_all(override)
+
+
+    bpy.context.scene.frame_end = int(len(ListaArquivos))+1
+
+
+    bpy.types.Scene.IMGPathSeq = bpy.props.StringProperty \
+      (
+        name = "IMGPathSeq",
+        description = "IMGPathSeq",
+        default = str(TmpDirPNG)
+      )
+
+    bpy.ops.file.pack_all()
+
+
+class ImportaFatiasSimples(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.importa_fatias_simples_dcm"
+    bl_label = "Import DICOM slices"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+       #bpy.ops.object.corrige_dicom()
+       ImportaFatiasSimplesDef()
+       return {'FINISHED'}
+
+bpy.utils.register_class(ImportaFatiasSimples)
+
+
+def FatiasAxialSagitalCoronalDef():
+
+    context = bpy.context
+    scn = context.scene
+    obj = context.object
+
+    bpy.context.space_data.shading.type = 'MATERIAL' # Descobri sozinho!
+    bpy.context.space_data.shading.use_scene_world = True # Tem que ser aqui  - muda fundo
+
+    tmpdirAxial = tempfile.mkdtemp()
+    tmpdirCoronal = tempfile.mkdtemp()
+    tmpdirSagital = tempfile.mkdtemp()
+
+    # Converte tomos em dicom
+    def GeraSlicesVista(Vista, DiretorioDestino):
+
+        context = bpy.context
+        scn = context.scene
+
+        os.chdir(scn.my_tool.path)
+
+        if platform.system() == "Linux":
+            os.system("dicomtodicom --verbose --"+Vista+" -o "+DiretorioDestino+" *")
+
+        if platform.system() == "Darwin":
+            os.system(homeall+"/Programs/OrtogOnBlender/vtk-dicom/./dicomtodicom --verbose --"+Vista+" -o "+DiretorioDestino+" *")
+
+        if platform.system() == "Windows":
+            os.system("C:\\OrtogOnBlender\\dicomtools\\dicomtodicom --verbose --"+Vista+" -o "+DiretorioDestino+" *")
+
+    GeraSlicesVista("axial", tmpdirAxial)
+    GeraSlicesVista("coronal", tmpdirCoronal)
+    GeraSlicesVista("sagittal", tmpdirSagital)
+
+    # Renomeia arquivos para evitar problema de nome dubplicado
+    # É possível que no futuro seja necessário renomear com ID dia_mes_ano_hora_minuto_segundo_milesimo, tem que ser assim para criar um ID único, com número de ordem ou afins pode ser duplicado.
+
+    def ConverteNome(Diretorio, NomeBase):
+
+    	ListaArquivos = os.listdir(Diretorio)
+
+    	os.chdir(Diretorio)
+
+    	for i in ListaArquivos:
+    		os.rename(i,NomeBase+"-"+i)
+
+    	print("Renomeado para", NomeBase)
+
+    ConverteNome(tmpdirAxial, "Axial")
+    ConverteNome(tmpdirCoronal, "Coronal")
+    ConverteNome(tmpdirSagital, "Sagital")
+
+    scn.my_tool.path = tmpdirAxial
+    bpy.ops.object.importa_fatias_simples_dcm()
+    bpy.context.object.name = "VOXEL_AXIAL"
+    bpy.context.object.name = "VOXEL_AXIAL"
+
+    scn.my_tool.path = tmpdirCoronal
+    bpy.ops.object.importa_fatias_simples_dcm()
+    bpy.context.object.name = "VOXEL_CORONAL"
+    bpy.context.object.name = "VOXEL_CORONAL"
+
+    bpy.ops.transform.rotate(value=-1.5708, orient_axis='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+
+    bpy.data.objects['VOXEL_CORONAL'].location = bpy.data.objects['VOXEL_AXIAL'].location
+    bpy.data.objects['VOXEL_CORONAL'].dimensions = bpy.data.objects['VOXEL_AXIAL'].dimensions
+
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+
+    scn.my_tool.path = tmpdirSagital
+    bpy.ops.object.importa_fatias_simples_dcm()
+    bpy.context.object.name = "VOXEL_SAGITTAL"
+    bpy.context.object.name = "VOXEL_SAGITTAL"
+
+    bpy.ops.transform.rotate(value=-1.5708, orient_axis='Y', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(False, True, False), mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+
+    bpy.ops.transform.rotate(value=-1.5708, orient_axis='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), mirror=True, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+
+    bpy.data.objects['VOXEL_SAGITTAL'].location = bpy.data.objects['VOXEL_AXIAL'].location
+    bpy.data.objects['VOXEL_SAGITTAL'].dimensions = bpy.data.objects['VOXEL_AXIAL'].dimensions
+
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+
+    #Renderização
+    #bpy.context.scene.eevee.use_gtao = True
+    bpy.context.scene.eevee.gtao_distance = 8
+    bpy.context.scene.eevee.use_gtao_bent_normals = False
+    # bpy.context.scene.eevee.use_bloom = True # NÃO FICA BOM!
+    bpy.context.scene.eevee.use_sss = False #Senão não fica bom!
+    bpy.context.scene.eevee.use_ssr = True
+    bpy.context.scene.eevee.use_ssr_refraction = True
+    bpy.context.scene.eevee.ssr_thickness = 3
+    bpy.context.scene.render.hair_type = 'STRIP'
+    bpy.context.scene.eevee.shadow_method = 'ESM'
+    bpy.context.scene.eevee.shadow_cube_size = '512'
+    bpy.context.scene.eevee.shadow_cascade_size = '512'
+    bpy.context.scene.eevee.use_soft_shadows = True
+    bpy.context.scene.eevee.light_threshold = 0.013
+    bpy.context.scene.view_settings.exposure = 0.2
+
+    bpy.context.scene.render.engine = 'BLENDER_EEVEE'
+
+    # Background
+    BackNodeTree = bpy.data.materials.data.worlds['World'].node_tree
+    BackNodeTree.nodes['Background'].inputs['Color'].default_value = (1,1,1,1)
+
+    # Boolean
+
+    VoxelDimensoes = bpy.data.objects['VOXEL_AXIAL'].dimensions
+
+    VoxelLoc = bpy.data.objects['VOXEL_AXIAL'].location
+
+    bpy.ops.mesh.primitive_cube_add(size=2, view_align=False, enter_editmode=False, location=(0, 0, 0))
+
+    bpy.context.object.name = "VOXEL_Boolean"
+    bpy.context.object.name = "VOXEL_Boolean"
+
+    bpy.data.objects['VOXEL_Boolean'].dimensions = VoxelDimensoes * 1.01
+    bpy.data.objects['VOXEL_Boolean'].location = VoxelLoc
+
+    bpy.context.object.display_type = 'WIRE'
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects['VOXEL_AXIAL'].select_set(True)
+    bpy.context.view_layer.objects.active = bpy.data.objects['VOXEL_AXIAL']
+
+    bpy.ops.object.modifier_add(type='BOOLEAN')
+    bpy.context.object.modifiers["Boolean"].operation = 'INTERSECT'
+    bpy.context.object.modifiers["Boolean"].object = bpy.data.objects["VOXEL_Boolean"]
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects['VOXEL_CORONAL'].select_set(True)
+    bpy.context.view_layer.objects.active = bpy.data.objects['VOXEL_CORONAL']
+
+    bpy.ops.object.modifier_add(type='BOOLEAN')
+    bpy.context.object.modifiers["Boolean"].operation = 'INTERSECT'
+    bpy.context.object.modifiers["Boolean"].object = bpy.data.objects["VOXEL_Boolean"]
+
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects['VOXEL_SAGITTAL'].select_set(True)
+    bpy.context.view_layer.objects.active = bpy.data.objects['VOXEL_SAGITTAL']
+
+    bpy.ops.object.modifier_add(type='BOOLEAN')
+    bpy.context.object.modifiers["Boolean"].operation = 'INTERSECT'
+    bpy.context.object.modifiers["Boolean"].object = bpy.data.objects["VOXEL_Boolean"]
+
+class FatiasAxialSagitalCoronal(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.importa_fatias_axial_coronal_sagital"
+    bl_label = "Import DICOM slices axial, coronal and sagittal"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+       #bpy.ops.object.corrige_dicom()
+       FatiasAxialSagitalCoronalDef()
+       return {'FINISHED'}
+
+bpy.utils.register_class(FatiasAxialSagitalCoronal)
 
 # IMPORTA IMAGENS
 

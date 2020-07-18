@@ -9,6 +9,7 @@ from os import listdir
 from os.path import isfile, join
 
 from .FerrImgTomo import *
+from .FotogrametriaOpenMVG import *
 
 # ERROS
 
@@ -32,6 +33,7 @@ def GeraModeloFotoSMVSDef(self, context):
 
     homeall = expanduser("~")
 
+    ConverteHEICtoJPG()
 
     # Inicia os trabalhos
 

@@ -4,6 +4,7 @@ import platform
 import os
 
 from .AjustaTomo import *
+from .FotogrametriaOpenMVG import *
 
 def SegmentacaoImagemFaceDef():
 
@@ -13,8 +14,14 @@ def SegmentacaoImagemFaceDef():
 
     TmpDirSegFace = tempfile.mkdtemp()
     SegFaceScript = TmpDirSegFace+'/SegmentaFace.py'
-    
+
     homeall = expanduser("~")
+
+# -------- HEIC
+
+    ConverteHEICtoJPG()
+
+# ------------
 
     with open(SegFaceScript, "a") as ScriptF:
         ScriptF.write("from imutils import face_utils\n")
@@ -51,7 +58,7 @@ def SegmentacaoImagemFaceDef():
         if platform.system() == "Windows":
             ScriptF.write("    predictor = dlib.shape_predictor('C:\OrtogOnBlender\SegmentaImagens\shape_predictor_81_face_landmarks.dat')\n")
         if platform.system() == "Darwin":
-            ScriptF.write("    predictor = dlib.shape_predictor('"+homeall+"/Programs/OrtogOnBlender/SegmentaImagens/shape_predictor_81_face_landmarks.dat')\n")            
+            ScriptF.write("    predictor = dlib.shape_predictor('"+homeall+"/Programs/OrtogOnBlender/SegmentaImagens/shape_predictor_81_face_landmarks.dat')\n")
         ScriptF.write("\n")
         ScriptF.write("    rects = detector(gray, 1)\n")
         ScriptF.write("\n")
@@ -118,8 +125,8 @@ def SegmentacaoImagemFaceDef():
     if platform.system() == "Windows":
         os.system('C:\OrtogOnBlender\Python36\python '+TmpDirSegFace+'/SegmentaFace.py')
         scn.my_tool.path_photo = TmpDirSegFace+"/SegmentedPhotos/"
-        abrir_diretorio(TmpDirSegFace+"/SegmentedPhotos/")        
-        
+        abrir_diretorio(TmpDirSegFace+"/SegmentedPhotos/")
+
 class SegmentacaoImagemFace(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "object.segmenta_imagem_face"

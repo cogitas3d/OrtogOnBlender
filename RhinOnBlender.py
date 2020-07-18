@@ -92,6 +92,8 @@ class RHIN_PT_Fotogrametria(bpy.types.Panel):
             col.prop(context.scene, "d_factor")
             col.prop(context.scene, "smooth_factor")
 
+            col.prop(scn.my_tool, "imagem_bool", text="Decrease picture size!")
+
             if platform.system() == "Windows":
                 row = layout.row()
                 row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
@@ -123,6 +125,28 @@ class RHIN_PT_Fotogrametria(bpy.types.Panel):
 
             row = layout.row()
             row.operator("object.gera_modelo_foto_meshroom", text="Alternative Photogrammetry II", icon="IMAGE_DATA")
+
+        if my_enum == ENUM_VALUES_PHOTOGRAMMETRY.OPENMVGWIN:
+#            row = layout.row()
+#            row.label(text="OpenMVG+OpenMVS:")
+
+            row = layout.row()
+            col = layout.column(align=True)
+            col.prop(scn.my_tool, "path_photo", text="")
+
+            col = self.layout.column(align = True)
+            col.alignment = 'RIGHT'
+            col.prop(context.scene, "d_factor")
+            col.prop(context.scene, "smooth_factor")
+
+            col.prop(scn.my_tool, "imagem_bool", text="Decrease picture size!")
+
+            if platform.system() == "Windows":
+                row = layout.row()
+                row.operator("wm.console_toggle", text="Open Terminal?", icon="CONSOLE")
+
+            row = layout.row()
+            row.operator("object.gera_modelo_foto_win", text="Start Photogrammetry!", icon="IMAGE_DATA")
 
         row = layout.row()
         box = layout.box()
