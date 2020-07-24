@@ -347,3 +347,100 @@ class OTHER_PT_Vein(bpy.types.Panel):
 
 
 bpy.utils.register_class(OTHER_PT_Vein)
+
+
+def CriaSplintDentesPintaDef():
+
+    # Grava a arcada selecionada
+    context = bpy.context
+    objArcada = context.active_object
+
+    bpy.ops.object.mode_set(mode = 'OBJECT')
+
+    # Cria Metabal
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.ops.object.metaball_add(type='BALL', radius=1, view_align=False, enter_editmode=False, location=(0,0,0))
+    objMetaball = context.active_object
+
+    # Seleciona a arcada
+    bpy.ops.object.select_all(action='DESELECT')
+    objArcada.select_set(True)
+    bpy.context.view_layer.objects.active = objArcada
+
+
+    # Adiciona partícula
+    bpy.ops.object.particle_system_add()
+    #bpy.data.particles.new("Espessura")
+    bpy.data.particles["ParticleSettings"].type = 'HAIR'
+    bpy.context.object.particle_systems["ParticleSettings"].vertex_group_density = "Group"
+    bpy.data.particles["ParticleSettings"].render_type = 'OBJECT'
+    bpy.data.particles["ParticleSettings"].instance_object = bpy.data.objects["Mball"]
+    bpy.data.particles["ParticleSettings"].particle_size = 0.4
+    bpy.data.particles["ParticleSettings"].name = "DELETE"
+
+    # Seleciona MBall
+    bpy.ops.object.select_all(action='DESELECT')
+    objMetaball.select_set(True)
+    bpy.context.view_layer.objects.active = objMetaball
+    objMetaball.name = "Splint_Offset"
+    objMetaball.name = "Splint_Offset"
+
+    # Converte MBall em malha
+    bpy.ops.object.convert(target='MESH')
+
+    bpy.context.view_layer.objects.active = bpy.data.objects["Splint_Offset.001"]
+    bpy.data.objects["Splint_Offset.001"].select_set(True)
+    bpy.data.objects["Splint_Offset.001"].name = "Splint_Offset_final"
+
+
+    # Modificador Smooth
+    bpy.ops.object.modifier_add(type='SMOOTH')
+    bpy.context.object.modifiers["Smooth"].factor = 2
+    bpy.context.object.modifiers["Smooth"].iterations = 30
+
+    # Modificador Remesh
+    bpy.ops.object.modifier_add(type='REMESH')
+    bpy.context.object.modifiers["Remesh"].mode = 'SMOOTH'
+    bpy.context.object.modifiers["Remesh"].octree_depth = 7
+
+    # Converte malha
+    bpy.ops.object.convert(target='MESH')
+
+
+class CriaSplintDentesPinta(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.cria_splint_dentes_pinta"
+    bl_label = "Create Teeth Offset"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        CriaSplintDentesPintaDef()
+        return {'FINISHED'}
+
+bpy.utils.register_class(CriaSplintDentesPinta)
+
+
+class OTHER_PintaOffset(bpy.types.Panel):
+    bl_label = "Offset Splint"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Others"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+        row = layout.row()
+        row.operator("object.weight_1", text="Weight Paint 1", icon="COLORSET_01_VEC")
+
+        row = layout.row()
+        row.operator("object.weight_0", text="Weight Paint 0", icon="COLORSET_04_VEC")
+
+        row = layout.row()
+        row.operator("object.cria_splint_dentes_pinta", text="Create Offset!", icon="MOD_SKIN")
+
+bpy.utils.register_class(OTHER_PintaOffset)
