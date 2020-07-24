@@ -435,6 +435,9 @@ class OTHER_PintaOffset(bpy.types.Panel):
         scn = context.scene
 
         row = layout.row()
+        row.label(text="Create Offset:")
+
+        row = layout.row()
         row.operator("object.weight_1", text="Weight Paint 1", icon="COLORSET_01_VEC")
 
         row = layout.row()
@@ -442,5 +445,36 @@ class OTHER_PintaOffset(bpy.types.Panel):
 
         row = layout.row()
         row.operator("object.cria_splint_dentes_pinta", text="Create Offset!", icon="MOD_SKIN")
+
+        row = layout.row()
+        row = layout.row()
+        row.label(text="Boolean Segmentation:")
+
+        row = layout.row()
+#        row.operator("gpencil.annotate", icon='LINE_DATA', text="Draw Line").mode = 'DRAW_POLY'
+        row.operator("object.linha_corte_fora_a_fora", icon='LINE_DATA', text="Draw Line")
+
+        row = layout.row()
+        row = layout.row()
+        circle=row.operator("object.desenha_booleana_dentro", text="Subtract IN", icon="LIGHTPROBE_CUBEMAP")
+
+        row = layout.row()
+        circle=row.operator("object.desenha_booleana_fora", text="Subtract OUT", icon="MESH_CUBE")
+
+        row = layout.row()
+        row.label(text="Boolean:")
+
+        row = layout.row()
+        circle=row.operator("object.booleana_osteo_geral", text="Difference", icon="MOD_BOOLEAN")
+
+        row = layout.row()
+        circle=row.operator("object.booleana_osteo_union", text="Union", icon="MOD_CAST")
+
+        row = layout.row()
+        circle=row.operator("object.booleana_osteo_inter", text="Intersect", icon="MOD_MASK")
+
+        row = layout.row()
+        row = layout.row()
+        circle=row.operator("object.booleana_union_multipla", text="MULTIPLE UNION", icon="STICKY_UVS_LOC")
 
 bpy.utils.register_class(OTHER_PintaOffset)
