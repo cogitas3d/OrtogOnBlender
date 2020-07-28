@@ -441,6 +441,12 @@ class RHIN_PT_DistAngles(bpy.types.Panel):
         row.label(text="Facial Analysis Points:")
 
         row = layout.row()
+        linha=row.operator("object.lateral_canthus_right_pt", text="Lateral Canthus right")
+
+        row = layout.row()
+        linha=row.operator("object.lateral_canthus_left_pt", text="Lateral Canthus left")
+
+        row = layout.row()
         linha=row.operator("object.medial_canthus_right_pt", text="Medial Canthus right")
 
         row = layout.row()

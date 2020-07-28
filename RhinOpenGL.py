@@ -28,12 +28,26 @@ def LinhasCentraisCria():
 
     print("DISTANCIA CANTUS!!!", DistanciaCantus)
 
-    coords = [(CantusRightX,CantusRightY,-1000), (CantusRightX,CantusRightY,1000), (CantusLeftX,CantusLeftY,-1000), (CantusLeftX,CantusLeftY, 1000), (1000, TrichionY, TrichionZ), (-1000, TrichionY, TrichionZ), (1000, STGlabellaY, STGlabellaZ), (-1000, STGlabellaY, STGlabellaZ), (1000, SubnasaleY, SubnasaleZ), (-1000, SubnasaleY, SubnasaleZ), (1000, STMentonY, STMentonZ), (-1000, STMentonY, STMentonZ) ] #, (CantusRightX-DistanciaCantus,CantusRightY,-1000), (CantusRightX-DistanciaCantus,CantusRightY, 1000), (CantusLeftX+DistanciaCantus,CantusLeftY,-1000), (CantusLeftX+DistanciaCantus,CantusLeftY, 1000)]
+    try:
 
-    shader = gpu.shader.from_builtin('3D_UNIFORM_COLOR')
+        LatCantusRightX = bpy.data.objects['Lateral Canthus right'].location[0]
+        LatCantusRightY = bpy.data.objects['Lateral Canthus right'].location[1]
 
-    batch = batch_for_shader(shader, 'LINES', {"pos": coords})
+        LatCantusLeftX = bpy.data.objects['Lateral Canthus left'].location[0]
+        LatCantusLeftY = bpy.data.objects['Lateral Canthus left'].location[1]
 
+        coords = [(LatCantusRightX,LatCantusRightY,-1000), (LatCantusRightX,LatCantusRightY,1000),(CantusRightX,CantusRightY,-1000), (CantusRightX,CantusRightY,1000), (LatCantusLeftX,LatCantusLeftY,-1000), (LatCantusLeftX,LatCantusLeftY, 1000),(CantusLeftX,CantusLeftY,-1000), (CantusLeftX,CantusLeftY, 1000), (1000, TrichionY, TrichionZ), (-1000, TrichionY, TrichionZ), (1000, STGlabellaY, STGlabellaZ), (-1000, STGlabellaY, STGlabellaZ), (1000, SubnasaleY, SubnasaleZ), (-1000, SubnasaleY, SubnasaleZ), (1000, STMentonY, STMentonZ), (-1000, STMentonY, STMentonZ) ] #, (CantusRightX-DistanciaCantus,CantusRightY,-1000), (CantusRightX-DistanciaCantus,CantusRightY, 1000), (CantusLeftX+DistanciaCantus,CantusLeftY,-1000), (CantusLeftX+DistanciaCantus,CantusLeftY, 1000)]
+
+        shader = gpu.shader.from_builtin('3D_UNIFORM_COLOR')
+
+        batch = batch_for_shader(shader, 'LINES', {"pos": coords})
+
+    except:
+        coords = [(CantusRightX,CantusRightY,-1000), (CantusRightX,CantusRightY,1000),(CantusLeftX,CantusLeftY,-1000), (CantusLeftX,CantusLeftY, 1000), (1000, TrichionY, TrichionZ), (-1000, TrichionY, TrichionZ), (1000, STGlabellaY, STGlabellaZ), (-1000, STGlabellaY, STGlabellaZ), (1000, SubnasaleY, SubnasaleZ), (-1000, SubnasaleY, SubnasaleZ), (1000, STMentonY, STMentonZ), (-1000, STMentonY, STMentonZ) ] #, (CantusRightX-DistanciaCantus,CantusRightY,-1000), (CantusRightX-DistanciaCantus,CantusRightY, 1000), (CantusLeftX+DistanciaCantus,CantusLeftY,-1000), (CantusLeftX+DistanciaCantus,CantusLeftY, 1000)]
+
+        shader = gpu.shader.from_builtin('3D_UNIFORM_COLOR')
+
+        batch = batch_for_shader(shader, 'LINES', {"pos": coords})
 
     def draw():
         shader.bind()
