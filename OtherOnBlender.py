@@ -420,7 +420,7 @@ class CriaSplintDentesPinta(bpy.types.Operator):
 bpy.utils.register_class(CriaSplintDentesPinta)
 
 
-class OTHER_PintaOffset(bpy.types.Panel):
+class OTHER_PT_PintaOffset(bpy.types.Panel):
     bl_label = "Offset Splint"
     bl_region_type = 'UI'
     bl_space_type = 'VIEW_3D'
@@ -477,4 +477,4 @@ class OTHER_PintaOffset(bpy.types.Panel):
         row = layout.row()
         circle=row.operator("object.booleana_union_multipla", text="MULTIPLE UNION", icon="STICKY_UVS_LOC")
 
-bpy.utils.register_class(OTHER_PintaOffset)
+bpy.utils.register_class(OTHER_PT_PintaOffset)
