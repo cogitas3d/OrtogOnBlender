@@ -6,6 +6,7 @@ from .FerrSegmentacao import *
 from .CortaOssoFibula import *
 from .TomoReconsRapida import * # Apagar!
 from .DesenhaObjetos import *
+from .Poisson import *
 
 class OTHER_PT_AtualizaAddonSec(bpy.types.Panel):
     bl_label = "Upgrade Script"
@@ -478,3 +479,29 @@ class OTHER_PT_PintaOffset(bpy.types.Panel):
         circle=row.operator("object.booleana_union_multipla", text="MULTIPLE UNION", icon="STICKY_UVS_LOC")
 
 bpy.utils.register_class(OTHER_PT_PintaOffset)
+
+class OTHER_PT_MicrosXYZ(bpy.types.Panel):
+    bl_label = "Import Microscopy File"
+    bl_region_type = 'UI'
+    bl_space_type = 'VIEW_3D'
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_category = "Others"
+
+    def draw(self, context):
+        layout = self.layout
+
+        context = bpy.context
+        obj = context.object
+        scn = context.scene
+
+#        row = layout.row()
+#        row.label(text="Convert MHA to DCM:")
+
+        row = layout.row()
+        col = layout.column(align=True)
+        col.prop(scn.my_tool, "filepathmha", text="")
+
+        row = layout.row()
+        row.operator("object.importa_reconstroi_xyz", text="Import and Reconstruc XYZ", icon="OVERLAY")
+
+bpy.utils.register_class(OTHER_PT_MicrosXYZ)

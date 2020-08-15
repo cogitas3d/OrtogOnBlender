@@ -22,19 +22,51 @@ def PoissonDef(self, context):
 
     if platform.system() == "Linux":
         subprocess.call('meshlabserver -i '+tmpdir+'/Pontos.dae -o '+tmpdir+'/Poisson.ply -s ~/Programs/OrtogOnBlender/Meshlab/Poisson.mlx -om vc fq wn', shell=True)
-        
+
     bpy.ops.object.delete(use_global=False)
 
-        
+
     bpy.ops.import_mesh.ply(filepath=tmpdir+"/Poisson.ply", files=[], directory="", filter_glob="*.ply")
 
 class Poisson(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "mesh.poisson"
     bl_label = "Ortog Poisson"
-    
+
     def execute(self, context):
        PoissonDef(self, context)
        return {'FINISHED'}
 
 bpy.utils.register_class(Poisson)
+
+def ReconstXYZDef():
+
+    context = bpy.context
+    obj = context.object
+    scn = context.scene
+
+    tmpdir = tempfile.mkdtemp()
+
+    dirScript = bpy.utils.user_resource('SCRIPTS')
+
+
+    if platform.system() == "Linux":
+        print("AQUIIII")
+        print(scn.my_tool.filepathmha)
+        print("AQUIIII")
+        subprocess.call('meshlabserver -i '+scn.my_tool.filepathmha+' -o '+tmpdir+'/ObjectXYZ.ply -s '+dirScript+'addons/OrtogOnBlender-master/MicrosGenerate3D.mlx -om', shell=True)
+
+    bpy.ops.object.delete(use_global=False)
+
+    bpy.ops.import_mesh.ply(filepath=tmpdir+"/ObjectXYZ.ply", files=[], directory="", filter_glob="*.ply")
+
+class ReconstXYZ(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.importa_reconstroi_xyz"
+    bl_label = "Import and Reconstruc XYZ"
+
+    def execute(self, context):
+       ReconstXYZDef()
+       return {'FINISHED'}
+
+bpy.utils.register_class(ReconstXYZ)

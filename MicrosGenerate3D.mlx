@@ -1,0 +1,25 @@
+<!DOCTYPE FilterScript>
+<FilterScript>
+ <filter name="Compute normals for point sets">
+  <Param description="Neighbour num" tooltip="The number of neighbors used to estimate normals." type="RichInt" value="10" name="K" isxmlparam="0"/>
+  <Param description="Smooth Iteration" tooltip="The number of smoothing iteration done on the p used to estimate and propagate normals." type="RichInt" value="0" name="smoothIter" isxmlparam="0"/>
+  <Param description="Flip normals w.r.t. viewpoint" tooltip="If the 'viewpoint' (i.e. scanner position) is known, it can be used to disambiguate normals orientation, so that all the normals will be oriented in the same direction." type="RichBool" value="false" name="flipFlag" isxmlparam="0"/>
+  <Param z="0" y="0" description="Viewpoint Pos." tooltip="The viewpoint position can be set by hand (i.e. getting the current viewpoint) or it can be retrieved from mesh camera, if the viewpoint position is stored there." x="0" type="RichPoint3f" name="viewPos" isxmlparam="0"/>
+ </filter>
+ <xmlfilter name="Surface Reconstruction: Screened Poisson">
+  <xmlparam value="0" name="cgDepth"/>
+  <xmlparam value="false" name="confidence"/>
+  <xmlparam value="8" name="depth"/>
+  <xmlparam value="5" name="fullDepth"/>
+  <xmlparam value="8" name="iters"/>
+  <xmlparam value="4" name="pointWeight"/>
+  <xmlparam value="false" name="preClean"/>
+  <xmlparam value="1.5" name="samplesPerNode"/>
+  <xmlparam value="1.1" name="scale"/>
+  <xmlparam value="false" name="visibleLayer"/>
+ </xmlfilter>
+ <filter name="Invert Faces Orientation">
+  <Param description="Force Flip" tooltip="If selected, the normals will always be flipped; otherwise, the filter tries to set them outside" type="RichBool" value="true" name="forceFlip" isxmlparam="0"/>
+  <Param description="Flip only selected faces" tooltip="If selected, only selected faces will be affected" type="RichBool" value="false" name="onlySelected" isxmlparam="0"/>
+ </filter>
+</FilterScript>
