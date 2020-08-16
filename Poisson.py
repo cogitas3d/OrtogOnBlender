@@ -2,6 +2,7 @@ import bpy
 import tempfile
 import platform
 import subprocess
+import shutil
 
 def PoissonDef(self, context):
 
@@ -49,11 +50,13 @@ def ReconstXYZDef():
 
     dirScript = bpy.utils.user_resource('SCRIPTS')
 
+    shutil.copyfile(scn.my_tool.filepathmha, tmpdir+"/file.xyz")
+
 
     if platform.system() == "Linux":
-        subprocess.call('meshlabserver -i '+scn.my_tool.filepathmha+' -o '+tmpdir+'/ObjectXYZ.ply -s '+dirScript+'addons/OrtogOnBlender-master/MicrosGenerate3D.mlx -om', shell=True)
+        subprocess.call('meshlabserver -i '+tmpdir+'/file.xyz -o '+tmpdir+'/ObjectXYZ.ply -s '+dirScript+'addons/OrtogOnBlender-master/MicrosGenerate3D.mlx -om', shell=True)
 
-    bpy.ops.object.delete(use_global=False)
+    #bpy.ops.object.delete(use_global=False)
 
     bpy.ops.import_mesh.ply(filepath=tmpdir+"/ObjectXYZ.ply", files=[], directory="", filter_glob="*.ply")
 
@@ -74,6 +77,8 @@ def ReconstXYZDef():
     bpy.context.scene.display.shadow_focus = 0.270833
 #    bpy.context.scene.light_direction = (0.666667, 0.319444, 0.673432)
 #    bpy.context.scene.shadow_focus = 0.270833
+
+    bpy.ops.view3d.view_selected(use_all_regions=False)
 
 
 class ReconstXYZ(bpy.types.Operator):

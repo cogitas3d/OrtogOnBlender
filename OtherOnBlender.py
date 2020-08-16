@@ -482,7 +482,7 @@ class OTHER_PT_PintaOffset(bpy.types.Panel):
 bpy.utils.register_class(OTHER_PT_PintaOffset)
 
 class OTHER_PT_MicrosXYZ(bpy.types.Panel):
-    bl_label = "Import Microscopy File"
+    bl_label = "Atomic Force Microscope"
     bl_region_type = 'UI'
     bl_space_type = 'VIEW_3D'
     bl_options = {'DEFAULT_CLOSED'}
@@ -503,7 +503,7 @@ class OTHER_PT_MicrosXYZ(bpy.types.Panel):
         col.prop(scn.my_tool, "filepathmha", text="")
 
         row = layout.row()
-        row.operator("object.importa_reconstroi_xyz", text="Import and Reconstruc XYZ", icon="OVERLAY")
+        row.operator("object.importa_reconstroi_xyz", text="Import and Reconstruct XYZ", icon="OVERLAY")
 
         row = layout.row()
         row.label(text="Draw & Cut:")
