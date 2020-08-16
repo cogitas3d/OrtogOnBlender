@@ -51,14 +51,30 @@ def ReconstXYZDef():
 
 
     if platform.system() == "Linux":
-        print("AQUIIII")
-        print(scn.my_tool.filepathmha)
-        print("AQUIIII")
         subprocess.call('meshlabserver -i '+scn.my_tool.filepathmha+' -o '+tmpdir+'/ObjectXYZ.ply -s '+dirScript+'addons/OrtogOnBlender-master/MicrosGenerate3D.mlx -om', shell=True)
 
     bpy.ops.object.delete(use_global=False)
 
     bpy.ops.import_mesh.ply(filepath=tmpdir+"/ObjectXYZ.ply", files=[], directory="", filter_glob="*.ply")
+
+    bpy.context.space_data.shading.type = 'SOLID'
+    bpy.context.space_data.shading.show_shadows = True
+    bpy.context.space_data.shading.show_cavity = True
+    bpy.context.space_data.shading.cavity_valley_factor = 2.5
+    bpy.context.space_data.shading.cavity_ridge_factor = 2.5
+    bpy.context.space_data.shading.cavity_type = 'BOTH'
+    bpy.context.space_data.shading.curvature_valley_factor = 0.604167
+    bpy.context.space_data.shading.shadow_intensity = 0.884375
+
+    bpy.context.scene.display.matcap_ssao_distance = 0.53 # Funciona!
+#    bpy.context.scene.matcap_ssao_distance = 0.53 # Não funciona!
+#    bpy.context.scene.matcap_ssao_attenuation = 1
+
+    bpy.context.scene.display.light_direction = (0.666667, 0.319444, 0.673432)
+    bpy.context.scene.display.shadow_focus = 0.270833
+#    bpy.context.scene.light_direction = (0.666667, 0.319444, 0.673432)
+#    bpy.context.scene.shadow_focus = 0.270833
+
 
 class ReconstXYZ(bpy.types.Operator):
     """Tooltip"""

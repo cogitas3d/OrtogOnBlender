@@ -739,6 +739,7 @@ def SegmentaDesenhoDef(self, context):
 #    bpy.ops.mesh.delete(type='FACE')
     bpy.ops.mesh.select_all(action = 'SELECT')
 #    bpy.ops.mesh.flip_normals()
+    bpy.ops.mesh.select_mode(type='VERT')
     bpy.ops.object.editmode_toggle()
 
     bpy.ops.object.select_all(action='DESELECT')
@@ -1319,3 +1320,81 @@ class SeparaObjeto(bpy.types.Operator):
         return {'FINISHED'}
 
 bpy.utils.register_class(SeparaObjeto)
+
+
+# SEGMENTA MICROSCÓPIO
+
+def SegmentaDesenhoMicrosDef(self, context):
+
+    context = bpy.context
+    obj = context.active_object
+    scn = context.scene
+
+    bpy.ops.object.select_all(action='DESELECT')
+    linha = bpy.data.objects['myCurve']
+    linha.select_set(True)
+#    linha = bpy.context.view_layer.objects.active
+    bpy.context.view_layer.objects.active = bpy.data.objects['myCurve']
+
+    bpy.ops.object.convert(target='MESH')
+
+
+#    bpy.ops.gpencil.layer_remove()
+#    bpy.ops.object.editmode_toggle()
+#    bpy.ops.object.mode_set(mode='EDIT')
+
+    bpy.ops.object.select_all(action='DESELECT')
+    linha.select_set(True)
+    obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.mode_set(mode='EDIT')
+#    bpy.ops.object.editmode_toggle()
+    mesh=bmesh.from_edit_mesh(bpy.context.object.data)
+#    for v in mesh.verts:
+    for v in mesh.verts and mesh.faces:
+        #print(v)
+        v.select = True
+#        v.select = True
+    bpy.context.view_layer.objects.active = bpy.context.view_layer.objects.active # Atualiza viewport
+
+#    bpy.ops.mesh.flip_normals() # Inverter para funcionar o Knife fora a fora
+    bpy.ops.mesh.select_all(action = 'DESELECT')
+
+    bpy.ops.mesh.select_mode(type='FACE')
+    bpy.ops.mesh.knife_project(cut_through=True) # CUIDADO! Seleciona apenas a parte de trás
+#    bpy.context.scene.objects.active = bpy.context.scene.objects.active
+    bpy.context.view_layer.objects.active = bpy.context.view_layer.objects.active
+    bpy.ops.mesh.select_all(action='INVERT')
+    bpy.ops.mesh.separate(type='SELECTED')
+#    bpy.ops.mesh.delete(type='FACE') # Não é bom pois o usuário pode não querer apagar tudo
+#    bpy.ops.mesh.select_all(action = 'SELECT')
+#    bpy.ops.mesh.flip_normals()
+    bpy.ops.mesh.select_mode(type='VERT')
+    bpy.ops.object.editmode_toggle()
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects['myCurve'].select_set(True)
+    bpy.context.view_layer.objects.active = bpy.data.objects['myCurve']
+    #bpy.context.object.name = "Cutline_to_Delete"
+    bpy.ops.object.delete(use_global=False)
+
+    bpy.ops.object.select_all(action='DESELECT')
+    obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+
+    bpy.ops.wm.tool_set_by_id(name="builtin.select_box")
+
+
+#    bpy.ops.object.delete()
+
+
+class SegmentaDesenhoMicros(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.segmenta_desenho_micros"
+    bl_label = "Segmenta Desenho"
+
+    def execute(self, context):
+        SegmentaDesenhoMicrosDef(self, context)
+        return {'FINISHED'}
+
+bpy.utils.register_class(SegmentaDesenhoMicros)

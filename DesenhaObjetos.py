@@ -1003,7 +1003,10 @@ def CriaBezierUnidoDef(self, context):
     obj.select_set(True)
     bpy.context.view_layer.objects.active = obj
 
+    bpy.context.space_data.overlay.show_curve_normals = False
+    bpy.context.space_data.overlay.show_curve_handles = False
 
+    bpy.ops.wm.tool_set_by_id(name="builtin.select_box")
 
 
 class CriaBezierUnido(Operator, AddObjectHelper):
@@ -1659,3 +1662,109 @@ class SeparaEdgeSplit(Operator, AddObjectHelper):
         return {'FINISHED'}
 
 bpy.utils.register_class(SeparaEdgeSplit)
+
+# Modal cria pontos microscopio
+
+class ModalTimerOperatorMicros(bpy.types.Operator):
+    """Operator which runs its self from a timer"""
+    bl_idname = "wm.modal_cria_pontos_micros"
+    bl_label = "Create points line microscope"
+
+    _timer = None
+
+    def modal(self, context, event):
+
+        context = bpy.context
+        obj = context.active_object
+
+        context.view_layer.active_layer_collection = context.view_layer.layer_collection.children[0]
+
+        bpy.ops.wm.tool_set_by_id(name="builtin.cursor")
+
+
+        if event.type in {'RIGHTMOUSE', 'ESC'}:
+            self.cancel(context)
+            return {'CANCELLED'}
+
+#        bpy.ops.object.select_pattern(pattern="Cub*") # Seleciona objetos com esse padrão
+
+
+        if event.type == 'LEFTMOUSE' and event.value == 'RELEASE':
+
+
+            if context.area.type == 'VIEW_3D':
+                region = context.region
+                r3d = context.space_data.region_3d
+
+#                bpy.ops.object.empty_add(type='PLAIN_AXES', radius=1, location=(0,0,0))
+
+                bpy.ops.mesh.primitive_uv_sphere_add(radius=0.05, location=(0,0,0)) #Atrasa também
+                bpy.ops.transform.translate(value=(bpy.context.scene.cursor.location))
+                bpy.context.object.name = "PT_Linha"
+
+                ListaMateriais = []
+                MateriaisCena = bpy.data.materials
+
+                for i in MateriaisCena:
+                    ListaMateriais.append(i.name)
+
+                if 'MatModalPoints' in ListaMateriais:
+                    activeObject = bpy.context.active_object #Set active object to variable
+                    mat = bpy.data.materials["MatModalPoints"] #set new material to variable
+                    activeObject.data.materials.append(mat) #add the material to the object
+                    bpy.context.object.active_material.diffuse_color = (0.2, 0.9, 0.2, 1)
+                else:
+                    activeObject = bpy.context.active_object #Set active object to variable
+                    mat = bpy.data.materials.new(name="MatModalPoints") #set new material to variable
+                    activeObject.data.materials.append(mat) #add the material to the object
+                    bpy.context.object.active_material.diffuse_color = (0.2, 0.9, 0.2, 1)
+
+                bpy.ops.object.select_all(action='DESELECT')
+
+
+                obj.select_set(True)
+                bpy.context.view_layer.objects.active = obj
+
+
+        return {'PASS_THROUGH'}
+
+    def execute(self, context):
+
+        try:
+            PontosDel = [obj for obj in bpy.context.scene.objects if fnmatch.fnmatchcase(obj.name, "PT_Linh*")]
+
+            for i in PontosDel:
+                i.name = 'del'
+
+        except:
+            print("Não conta nenhum ponto PT_Linha!")
+
+        # Torna Collection active
+        context.view_layer.active_layer_collection = context.view_layer.layer_collection.children[0]
+
+        if context.area.type != 'VIEW_3D':
+            print("Must use in a 3d region")
+            return {'CANCELLED'}
+
+        wm = context.window_manager
+        wm.modal_handler_add(self)
+        return {'RUNNING_MODAL'}
+
+    def cancel(self, context):
+        wm = context.window_manager
+
+    def end_ui(self, context):
+        context.area.header_text_set()
+        context.window.cursor_modal_restore()
+
+    def cleanup(self, context, cleantype=''):
+        '''
+        remove temporary object
+        '''
+        if cleantype == 'commit':
+            pass
+
+        elif cleantype == 'cancel':
+            pass
+
+bpy.utils.register_class(ModalTimerOperatorMicros)

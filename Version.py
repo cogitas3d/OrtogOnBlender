@@ -1,3 +1,3 @@
 import bpy
 
-VERSION = "2020-08-15a-lin"
+VERSION = "2020-08-16a-lin"

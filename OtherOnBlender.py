@@ -7,6 +7,7 @@ from .CortaOssoFibula import *
 from .TomoReconsRapida import * # Apagar!
 from .DesenhaObjetos import *
 from .Poisson import *
+from .DesenhaObjetos import *
 
 class OTHER_PT_AtualizaAddonSec(bpy.types.Panel):
     bl_label = "Upgrade Script"
@@ -503,5 +504,21 @@ class OTHER_PT_MicrosXYZ(bpy.types.Panel):
 
         row = layout.row()
         row.operator("object.importa_reconstroi_xyz", text="Import and Reconstruc XYZ", icon="OVERLAY")
+
+        row = layout.row()
+        row.label(text="Draw & Cut:")
+
+        row = layout.row()
+        row.operator("wm.modal_cria_pontos_micros", icon='CURVE_DATA', text="Create Points")
+
+        row = layout.row()
+        row.operator("mesh.add_curva_bezier_unido", icon='CURVE_BEZCIRCLE', text="Create Bezier Line")
+
+        row = layout.row()
+        circle=row.operator("object.segmenta_desenho_micros", text="Cut Line!", icon="SCULPTMODE_HLT")
+
+        row = layout.row()
+        row.operator("object.fecha_buraco_todos", icon='MOD_TRIANGULATE', text="Close All Holes")
+
 
 bpy.utils.register_class(OTHER_PT_MicrosXYZ)
