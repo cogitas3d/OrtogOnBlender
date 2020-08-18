@@ -65,7 +65,7 @@ def GeraModeloFotoSMVSDef(self, context):
                 bpy.ops.file.pack_all()
 
 
-            if Versao == "20.04":
+            if Versao == "20.04.1" or Versao == "20.04":
 
                 SMVSPath = homeall+"/Programs/OrtogOnBlender/SMVS/"
                 subprocess.call(['rm', '-rf', tmpdir+'/scene'])

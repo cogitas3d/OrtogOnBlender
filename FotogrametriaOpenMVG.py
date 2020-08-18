@@ -506,7 +506,7 @@ def GeraModeloFotoDef(self, context):
             if Versao == "18.04":
                 subprocess.call(['python', OpenMVGPath , scn.my_tool.path_photo ,  OpenMVGtmpDir])
 
-            if Versao == "20.04":
+            if Versao == "20.04.1" or Versao == "20.04":
                 subprocess.call(['python2', OpenMVGPath , scn.my_tool.path_photo ,  OpenMVGtmpDir])
 
         if platform.system() == "Windows":

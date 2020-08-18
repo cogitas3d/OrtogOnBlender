@@ -174,17 +174,34 @@ def Converte3DparaVoxelDef():
 
     if platform.system() == "Linux":
 
-        # Converte objeto em slices de imagens
-        subprocess.call('cd '+tmpdir+' && mkdir '+tmpdir+'/VOXEL && python3 ~/Programs/OrtogOnBlender/StlToVoxel/stltovoxel.py '+tmpdir+'/Model.stl '+tmpdir+'/VOXEL/img.png', shell=True)
+        with open("/etc/issue") as f:
+            Versao = str(f.read().lower().split()[1])
 
-        # Converte em greyscale
-        subprocess.call('cd '+tmpdir+'/VOXEL && mkdir '+tmpdir+'/VOXEL/GREY && for i in *.png; do convert $i -type Grayscale -depth 8 '+tmpdir+'/VOXEL/GREY/${i%.png}.png; done', shell=True)
+        if Versao == "18.04":
+            # Converte objeto em slices de imagens
+            subprocess.call('cd '+tmpdir+' && mkdir '+tmpdir+'/VOXEL && python3 ~/Programs/OrtogOnBlender/StlToVoxel/stltovoxel.py '+tmpdir+'/Model.stl '+tmpdir+'/VOXEL/img.png', shell=True)
 
-        # Converte em DICOM
-        subprocess.call('cd '+tmpdir+'/VOXEL/GREY && mkdir '+tmpdir+'/VOXEL/GREY/DCM/ && python ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -i '+tmpdir+'/VOXEL/GREY/ -o '+tmpdir+'/VOXEL/GREY/DCM/ -s 0.588 0.588 0.588 -t png', shell=True)
-        print("DICOM BASE GERADO!!!")
+            # Converte em greyscale
+            subprocess.call('cd '+tmpdir+'/VOXEL && mkdir '+tmpdir+'/VOXEL/GREY && for i in *.png; do convert $i -type Grayscale -depth 8 '+tmpdir+'/VOXEL/GREY/${i%.png}.png; done', shell=True)
 
-        subprocess.call('~/Programs/OrtogOnBlender/VolView/bin/VolView '+tmpdir+'/VOXEL/GREY/DCM/0000.dcm &', shell=True)
+            # Converte em DICOM
+            subprocess.call('cd '+tmpdir+'/VOXEL/GREY && mkdir '+tmpdir+'/VOXEL/GREY/DCM/ && python ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -i '+tmpdir+'/VOXEL/GREY/ -o '+tmpdir+'/VOXEL/GREY/DCM/ -s 0.588 0.588 0.588 -t png', shell=True)
+            print("DICOM BASE GERADO!!!")
+
+            subprocess.call('~/Programs/OrtogOnBlender/VolView/bin/VolView '+tmpdir+'/VOXEL/GREY/DCM/0000.dcm &', shell=True)
+
+        if Versao == "20.04.1" or Versao == "20.04":
+            # Converte objeto em slices de imagens
+            subprocess.call('cd '+tmpdir+' && mkdir '+tmpdir+'/VOXEL && python3 ~/Programs/OrtogOnBlender/StlToVoxel/stltovoxel.py '+tmpdir+'/Model.stl '+tmpdir+'/VOXEL/img.png', shell=True)
+
+            # Converte em greyscale
+            subprocess.call('cd '+tmpdir+'/VOXEL && mkdir '+tmpdir+'/VOXEL/GREY && for i in *.png; do convert $i -type Grayscale -depth 8 '+tmpdir+'/VOXEL/GREY/${i%.png}.png; done', shell=True)
+
+            # Converte em DICOM
+            subprocess.call('cd '+tmpdir+'/VOXEL/GREY && mkdir '+tmpdir+'/VOXEL/GREY/DCM/ && python2 ~/Programs/OrtogOnBlender/Img2Dcm/img2dcm.py -i '+tmpdir+'/VOXEL/GREY/ -o '+tmpdir+'/VOXEL/GREY/DCM/ -s 0.588 0.588 0.588 -t png', shell=True)
+            print("DICOM BASE GERADO!!!")
+
+            subprocess.call('~/Programs/OrtogOnBlender/VolView/bin/VolView '+tmpdir+'/VOXEL/GREY/DCM/0000.dcm &', shell=True)
 
 
 
